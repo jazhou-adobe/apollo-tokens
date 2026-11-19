@@ -69,7 +69,8 @@ const GLANCE_TARGET_FLOOR_PX = 48;
 const ROOT_FONT_PX = 16;
 
 const SOURCE_EXTENSIONS = new Set(['.css', '.ts', '.tsx', '.md']);
-const SKIPPED_DIRS = new Set(['node_modules', '.next', 'out', 'research', 'validation']);
+// archive/ holds retired worlds (raw token values, unregistered); it is not part of the live system.
+const SKIPPED_DIRS = new Set(['node_modules', '.next', 'out', 'research', 'validation', 'archive']);
 const WORLD_REGISTRY = 'preview/themes.ts';
 
 // Worlds live beside the core tokens: tokens/worlds/<slug>.json (theme definition) + <slug>.css (runtime block and skins).

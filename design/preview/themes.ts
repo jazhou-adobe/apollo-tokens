@@ -12,7 +12,7 @@ import type { ThemeOption } from './theme-constants';
  * the CSS is inlined into every page by app/layout.tsx. The validator fails if a world on disk is missing from this
  * list, or a listed slug has no files.
  */
-export const WORLD_SLUGS: readonly string[] = ['deck-handling', 'starship', 'flight-director', 'comms-deck'];
+export const WORLD_SLUGS: readonly string[] = ['flight-director'];
 
 type ColourSet = Record<string, { $value: string }>;
 

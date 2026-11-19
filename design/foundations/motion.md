@@ -53,10 +53,8 @@ Each world has one signature tied to a Round outcome, on these same tokens, run 
 
 | World | Signature |
 |---|---|
-| `deck-handling` | When a Round is answered, its craft taxis to the catapult and off the board |
-| `comms-deck` | Answering patches the channel, and the lamp goes dark |
-| `starship` | A winged-sandal dispatch mark appears when a Round is sent back |
 | `flight-director` | GO / NO-GO polling for approve/reject Rounds, with text labels |
-| `telemetry-ribbon` | The Round log feeds up line by line |
+
+Archived worlds are listed in [`archive/README.md`](../archive/README.md); their signatures are described in each archived JSON's `signature` field.
 
 Worlds may not override motion tokens. Keyframe names start with `<slug>-`, `infinite` is rejected, and every animation uses `--hh-motion-*` durations or sits inside `@media (prefers-reduced-motion: no-preference)`.

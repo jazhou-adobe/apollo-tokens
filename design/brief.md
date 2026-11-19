@@ -24,6 +24,7 @@ Hermes Hub is a local human-in-the-loop command center. Many AI **Agents** (Clau
 | Voice | **Dispatcher**: terse, exact, unhurried. Every Round is a decision with stakes. No chatter, no emoji, no exclamation marks. Status words come before adjectives ("Pending · 2 Questions · waits 10 min, then applies recommended"). |
 | Core direction | **Flight Strips, carrier ops-room edition** (sci-fi, used future). |
 | Worlds | Five sci-fi worlds in a **used-future** style were previewed: Deck Handling Board, Comms Deck, Starship Hermes, Flight Director 2169, Telemetry Ribbon. After seeing the quick previews (`research/world-previews/`), the owner chose to build **Deck Handling Board, Comms Deck, Starship Hermes, Flight Director 2169**. Telemetry Ribbon stays as a preview only. Each built world has 4 colour options. |
+| Chosen design | After both review rounds (2026-11-20) the owner chose **Flight Director 2169** (`hermes-flight-director`) as Hermes Hub's design to take forward. Further review and refinement go to it only. The core themes stay; the other world options moved to `archive/` (unregistered, not validated). |
 | Reviewer | `design-reviewer`, copied from MathGo (`github-copilot/gpt-6.1-sol`), with thinking-level **medium**. |
 
 ## Core direction: Flight Strips, carrier ops room

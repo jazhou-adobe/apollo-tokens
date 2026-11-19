@@ -134,7 +134,7 @@ Use compact only where the Human scans many rows with a keyboard. Use glance on 
 
 ## Worlds
 
-Flight Strips is the core direction. Five **worlds** give Hermes radically different looks over the same system, all in the used-future style: **Deck Handling Board** (`deck-handling`), **Comms Deck** (`comms-deck`), **Starship Hermes** (`starship`), **Flight Director 2169** (`flight-director`) and **Telemetry Ribbon** (`telemetry-ribbon`). Each lives in `tokens/worlds/<slug>.json` and `.css`, with theme value `hermes-<slug>` and four colour options on `data-palette`.
+Flight Strips is the core direction. The chosen **world** is **Flight Director 2169** (`flight-director`), in the used-future style. It lives in `tokens/worlds/flight-director.json` and `.css`, with theme value `hermes-flight-director` and four colour options on `data-palette`. The other options explored (Deck Handling Board, Comms Deck, Starship Hermes, Telemetry Ribbon) are kept in [`archive/`](../archive/README.md). Any future world follows the same contract.
 
 - A world changes how Hermes looks, never how it behaves: same components, copy, states, keyboard map and Dispatcher voice.
 - A world may override only type, shape and depth tokens. Motion, density, spacing, layout and component sizes stay system-wide.

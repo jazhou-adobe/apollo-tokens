@@ -66,7 +66,7 @@ Source: [EUROCONTROL, Integrated Tower Working Position (ITWP) HMI Description, 
 
 **Hermes takes:**
 
-- The `deck-handling` world: Agents as craft parked in deck zones; an answered Round's craft taxis to the catapult and off the board.
+- The `deck-handling` world (now archived): Agents as craft parked in deck zones; an answered Round's craft taxis to the catapult and off the board.
 - Marker meanings are local in the Navy; in Hermes they are fixed and spelled out, because the Human may change and agents build screens.
 - "Look at the board and tell": the bay must answer "what is waiting, from whom, and what happens if I don't act" at a glance.
 - Used future: tactile, worn-in and functional, not glossy.
