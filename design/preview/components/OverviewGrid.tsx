@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { withBase } from '../paths';
 import type { WorldPalette } from '../themes';
 
 export type OverviewItem = { value: string; label: string; core: boolean; palettes: WorldPalette[] };
@@ -32,10 +33,10 @@ export function OverviewGrid({ items, worldCount }: { items: OverviewItem[]; wor
           </fieldset>
         ) : null}
         <nav className="sb-row" aria-label="Other previews">
-          <a className="sb-link" href="/worlds">
+          <a className="sb-link" href={withBase('/worlds')}>
             World gallery
           </a>
-          <a className="sb-link" href="/design">
+          <a className="sb-link" href={withBase('/design')}>
             Design system
           </a>
         </nav>
@@ -73,11 +74,11 @@ function Tile({ item, palette }: { item: OverviewItem; palette?: WorldPalette })
   return (
     <li className="sb-overview-tile">
       {/* Mouse shortcut to the caption link's target; the frame itself is inert, so keyboard and screen readers use the caption. */}
-      <a ref={frameRef} className="sb-overview-frame" href={`/design?${query}`} tabIndex={-1} aria-hidden="true">
-        <iframe ref={iframeRef} className="sb-overview-iframe" src={`/tile?${query}`} title={`${name} thumbnail`} inert style={{ '--overview-scale': scale } as CSSProperties} />
+      <a ref={frameRef} className="sb-overview-frame" href={withBase(`/design?${query}`)} tabIndex={-1} aria-hidden="true">
+        <iframe ref={iframeRef} className="sb-overview-iframe" src={withBase(`/tile?${query}`)} title={`${name} thumbnail`} inert style={{ '--overview-scale': scale } as CSSProperties} />
       </a>
       <div className="sb-overview-caption">
-        <a className="sb-link sb-label" href={`/design?${query}`}>
+        <a className="sb-link sb-label" href={withBase(`/design?${query}`)}>
           {item.label}
           <span className="sb-visually-hidden">{palette ? `, ${palette.label} colours` : ', core theme'}: open the design system</span>
         </a>

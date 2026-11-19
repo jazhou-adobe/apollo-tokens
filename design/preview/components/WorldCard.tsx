@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { withBase } from '../paths';
 import type { World } from '../themes';
 
 // One /worlds gallery card, led by the world itself: a name and one sentence, then a live Capture frame opened mid-Swim
@@ -31,7 +32,7 @@ export function WorldCard({ world }: { world: World }) {
         <h2 className="sb-heading-md">{world.label}</h2>
         <p className="sb-body-sm">{summary}</p>
       </div>
-      <iframe ref={frameRef} className="sb-world-frame" src={`/specimen?${frameQuery}`} title={`${world.label}, ${palette.label}: live Capture, illustrative Swim under way`} loading="lazy" />
+      <iframe ref={frameRef} className="sb-world-frame" src={withBase(`/specimen?${frameQuery}`)} title={`${world.label}, ${palette.label}: live Capture, illustrative Swim under way`} loading="lazy" />
       <div className="sb-row">
         <button type="button" className="sb-button" onClick={tryWallTap}>
           Try wall tap
@@ -65,10 +66,10 @@ export function WorldCard({ world }: { world: World }) {
         </p>
       </div>
       <div className="sb-row">
-        <a className="sb-button" data-variant="secondary" href={`/design?${query}`}>
+        <a className="sb-button" data-variant="secondary" href={withBase(`/design?${query}`)}>
           Open full system
         </a>
-        <a className="sb-button" data-variant="secondary" href={`/specimen?${frameQuery}`}>
+        <a className="sb-button" data-variant="secondary" href={withBase(`/specimen?${frameQuery}`)}>
           Open specimen
         </a>
       </div>

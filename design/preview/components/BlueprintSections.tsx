@@ -5,6 +5,7 @@ import { ConfigList } from './DomainWidgetsSection';
 import { Icon } from './Icon';
 import { Alert, Field, Figure, Frame, Illustrative, Section } from './primitives';
 import { ChipPicker, LengthStrip, SplitReadout } from './readouts';
+import { withBase } from '../paths';
 import { ProfileSwitcher, PublishBar } from './widgets';
 
 // The brief's pages, composed from the components above. Watcher pages are Light (Capture opts into Deck), Admin pages
@@ -108,7 +109,7 @@ export function WatcherBlueprintsSection() {
       </Frame>
 
       <Frame id="bp-capture" title="Live Capture (Tap Pad, Deck)" note="Pace Clock Deck · live /specimen frame" flush>
-        <iframe className="sb-frame-iframe" src="/specimen?theme=splitbook-deck&demo=midswim" title="Live Capture in the Deck theme, mid-Swim example" loading="lazy" />
+        <iframe className="sb-frame-iframe" src={withBase('/specimen?theme=splitbook-deck&demo=midswim')} title="Live Capture in the Deck theme, mid-Swim example" loading="lazy" />
       </Frame>
 
       <Frame id="bp-review" title="Review sheet" note="Deck at the pool, Light when finished later">
@@ -415,7 +416,7 @@ export function SystemStatesSection() {
             <Icon name="search" />
             <h4 className="sb-heading-md">We can&apos;t find that page</h4>
             <p>It may have moved, or the link may be incomplete.</p>
-            <a className="sb-button" href="/">
+            <a className="sb-button" href={withBase('/')}>
               Go to Swimmer home
             </a>
           </div>

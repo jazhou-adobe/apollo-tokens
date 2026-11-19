@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react';
+import { withBase } from '../paths';
 import { THEMES } from '../themes';
 import { SidebarIndex } from './SidebarIndex';
 import { DensitySwitch, ThemeSwitcher } from './ThemeSwitcher';
 
-// Plain anchors on purpose: a full load lets the layout script apply ?theme= previews.
+// Plain anchors on purpose: a full load lets the layout script apply ?theme= previews. Hrefs are app paths (compared with
+// `current`); withBase adds the basePath when rendering.
 export const REFERENCE_PAGES = [
   { href: '/design', label: 'Design system' },
   { href: '/specimen', label: 'Capture specimen' },
@@ -34,7 +36,7 @@ export function PreviewShell({ current, sections, children }: { current: Referen
               <DensitySwitch />
               <nav className="sb-side-nav" aria-label="Design system pages">
                 {REFERENCE_PAGES.map((page) => (
-                  <a key={page.href} href={page.href} aria-current={page.href === current ? 'page' : undefined}>
+                  <a key={page.href} href={withBase(page.href)} aria-current={page.href === current ? 'page' : undefined}>
                     {page.label}
                   </a>
                 ))}

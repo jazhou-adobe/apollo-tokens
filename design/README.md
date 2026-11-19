@@ -14,18 +14,20 @@ The brand master for every Splitbook app: tokens, the two core themes, the seede
 ```sh
 cd design
 npm install
-npm run dev          # http://localhost:3200/design
+npm run dev          # http://localhost:3200/splitbook/design
 ```
 
 | Command | What it does |
 |---|---|
-| `npm run dev` | Preview server on port 3200. |
-| `npm run build` / `npm start` | Production build, then serve on port 3200. |
+| `npm run dev` | Preview server on port 3200, under the basePath `/splitbook`. |
+| `npm run build` / `npm start` | Production build, then serve on port 3200 (also under `/splitbook`). |
 | `npm run validate` | The design-system validator: token contract, CSS parity, contrast, Deck knob, density and target floors, reduced motion, world rules, style bans, copy guards, raw values. |
 | `npm run test:validator` | Proves each validator rule fails on a broken fixture. |
 | `npx tsc --noEmit` | Type check. |
 
 ## Routes
+
+The app is served under the Next.js basePath `/splitbook` (set once in `next.config.mjs`, exposed as `process.env.BASE_PATH`; raw links and iframe sources go through `withBase` in `preview/paths.ts`). Standalone, open `http://localhost:3200/splitbook/design`; through the shared preview hub, `http://localhost:3000/splitbook/design`. The routes below are relative to that base.
 
 Every route accepts `?theme=<value>` and, for worlds, `?palette=<id>` (applied before first paint, not saved). `?density=deck` previews the Deck size knob with any theme or world; `?density=compact` previews compact density. `/specimen?demo=midswim` opens the Capture specimen mid-Swim.
 

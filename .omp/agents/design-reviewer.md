@@ -23,9 +23,9 @@ The documents are the contract. When the rendered UI and a contract disagree, th
 ## Procedure
 
 1. **Mechanical gates.** In `design/`, run `npm run validate` and `npm run test:validator`. Quote failures verbatim. A red gate is a critical finding.
-2. **Render.** Use the running dev server at http://localhost:3200 if `curl -s -o /dev/null -w "%{http_code}" http://localhost:3200/design` returns 200. Otherwise start `npx next dev --port 3202` as a named background service and stop it when you finish. Never stop a server you did not start.
+2. **Render.** Use the running dev server at http://localhost:3200/splitbook if `curl -s -o /dev/null -w "%{http_code}" http://localhost:3200/splitbook/design` returns 200 (the app lives under the basePath `/splitbook`; the shared hub serves the same pages at http://localhost:3000/splitbook/…). Otherwise start `npx next dev --port 3202` as a named background service (then use http://localhost:3202/splitbook/…) and stop it when you finish. Never stop a server you did not start.
 3. **Inspect visually**, in at most two batched screenshot rounds, with the Eval tool's `browser`. Open tabs with `app: { tern: false }`; any route accepts `?theme=<value>`.
-   - Cover the routes the change touches: `/design`, `/worlds`, `/overview`, `/specimen`.
+   - Cover the routes the change touches: `/splitbook/design`, `/splitbook/worlds`, `/splitbook/overview`, `/splitbook/specimen`.
    - Cover the themes it touches: the core themes (`splitbook-light`, `splitbook-deck`) and every changed `splitbook-<slug>` world.
    - Capture at 1440 and 390 wide. Settle one-shot animations before you capture, and open every capture to confirm it shows what its name claims.
 4. **Audit accessibility.** Run `tab.a11y()` (axe-core) on the same pages. Exercise keyboard paths, focus visibility, and the live demos (the Tap Pad: wall taps, Focus-metric counters, undo; the rating and fault controls; the Review sheet).

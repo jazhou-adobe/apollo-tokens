@@ -8,6 +8,7 @@ import { Illustrative, Section } from '../../preview/components/primitives';
 import { PreviewShell } from '../../preview/components/PreviewShell';
 import { LengthStrip, SplitReadout } from '../../preview/components/readouts';
 import { LENGTHS, SECTIONS } from '../../preview/fixtures';
+import { withBase } from '../../preview/paths';
 
 export const metadata: Metadata = { title: 'Splitbook Design System' };
 
@@ -36,7 +37,7 @@ export default function DesignPreviewPage() {
             unit="seconds"
             cells={[...LENGTHS.slice(0, 2).map((length) => ({ number: length.number, value: length.split, state: 'done' as const })), { number: 3, state: 'current' }, { number: 4, state: 'upcoming' }]}
           />
-          <a className="sb-link sb-body-sm" href="/specimen?demo=midswim">
+          <a className="sb-link sb-body-sm" href={withBase('/specimen?demo=midswim')}>
             Open the live Capture specimen
           </a>
         </div>
