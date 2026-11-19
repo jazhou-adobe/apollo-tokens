@@ -80,6 +80,7 @@ Starting from a design file instead, a prompt in the same spirit: *"Read @DESIGN
 2. Ask for a broad list of bold directions, not a deep one. Each idea is a candidate **world**: a complete alternative skin over the same structure, which may change palette, faces, shape, depth, texture, and one signature interaction, but never spacing, density, target sizes, or motion.
 3. Pick the direction for the core themes and the worlds worth building. Prune hard. MathGo built 20 worlds, deleted 12 after review and hands-on checks, and kept 8.
 4. Plan 4 colour options per world, each held to the same contrast rules as the core themes.
+5. Before building a world in full, have a `world-previewer` subagent (`.omp/agents/world-previewer.md`, effort medium) build a quick standalone preview of it, one agent per world, so the owner picks from what they can see.
 
 **Gate:** the owner has chosen the core direction and the list of worlds to build.
 
@@ -114,7 +115,7 @@ Example prompt: *"show me how to preview this design system"*. MathGo's answer: 
 
 **Goal:** get an outside view of taste and quality. The agent that built the design should not be the one that grades it.
 
-1. Create a read-only reviewer subagent for the repo, on a different model from the builder (MathGo: `design-reviewer`, GitHub Copilot `gpt-6.1-sol`, effort max). It reports findings and never edits.
+1. Create a read-only reviewer subagent for the repo, on a different model from the builder, at effort medium (`design-reviewer`, GitHub Copilot `gpt-6.1-sol`; MathGo first ran it at effort max). It reports findings and never edits.
 2. **Taste review:** give it only the URLs, with no context, so it judges what it sees. Ask for tweaks and at least 3 colour options per design.
 3. Apply the tweaks and add the colour options. Add an overview page that shows every theme on one screen.
 4. **Studio review:** ask it to name the aesthetic the design is aiming for, describe how a top studio would execute it, rank the biggest gaps, and score the design out of 10. Save the report under `research/` with an action table (MathGo scored 5.8/10, with actions ST-01 to ST-11).
