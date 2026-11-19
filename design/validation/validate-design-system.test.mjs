@@ -391,3 +391,16 @@ test('a world may not override a decorative elevation as a glow', () => {
   const pkg = withFixtureWorld(freshPackage(), { overrides: { 'elevation-raised': { $type: 'shadow', $value: '0 0 0.75rem 0 #e9c46a80', $description: 'Halo' } } });
   assert.equal(failuresMatching(pkg, /hermes-fixture: --hh-elevation-raised is overridden as a glow/).length, 1, all(pkg));
 });
+
+test('focus on a filled checked control must contrast with the fill in the theme and every colour option', () => {
+  const scope = 'html[data-theme="hermes-fixture"]';
+  const key = `${scope} .hh-approve-pair > .hh-option[data-checked='true']`;
+  const filled = `${key} { background: var(--hh-ring); color: var(--hh-background); }\n`;
+  const pattern = /^hermes-fixture: (theme|palette "[\w-]+"): focus on ".*\[data-checked='true'\]" \(--hh-ring\) against its fill --hh-ring is 1\.00:1; needs 3:1/;
+  const unfocused = failuresMatching(withFixtureWorld(freshPackage(), { css: filled }), pattern);
+  assert.equal(unfocused.length, 4, unfocused.join('\n'));
+  const ringed = withFixtureWorld(freshPackage(), { css: `${filled}${key} input:focus-visible { outline-color: var(--hh-background); }\n` });
+  assert.equal(failuresMatching(ringed, /focus on .* against its fill/).length, 0, all(ringed));
+  const called = withFixtureWorld(freshPackage(), { css: `${scope} .hh-question-response:has(> .hh-approve-pair > .hh-option[data-checked='true'])::before { background: var(--hh-ring); }\n` });
+  assert.equal(failuresMatching(called, /focus on .* against its fill/).length, 0, all(called));
+});

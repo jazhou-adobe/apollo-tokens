@@ -473,6 +473,39 @@ function worldHaloFailures(world, blocks, scope, paletteBlockPattern) {
   return failures;
 }
 
+// ---------- focus on filled checked controls ----------
+
+// A world that fills a checked control (a rule on `[data-checked='true']` that sets a background role) puts keyboard focus
+// on that fill, so the ring has to contrast with the fill, not only with the surface. The ring is the outline colour of
+// the world's matching focus rule (a selector that extends the checked selector with :focus-visible), else --hh-ring.
+// It is measured against the fill in the theme block and every colour option at the non-text minimum.
+const ROLE_VAR = new RegExp(`var\\(${PREFIX}([\\w-]+)\\)`);
+const FOCUS_ON_FILL_MINIMUM = 3;
+
+function checkedFocusFailures(world, blocks) {
+  const failures = [];
+  const colourSets = [['theme', world.json.color ?? {}], ...(Array.isArray(world.json.palettes) ? world.json.palettes : []).map((palette) => [`palette "${palette.id}"`, palette.color ?? {}])];
+  const rules = blocks.filter((block) => !block.parents.some((parent) => parent.startsWith('@keyframes')));
+  for (const block of rules) {
+    const fill = ROLE_VAR.exec(block.decls.get('background') ?? block.decls.get('background-color') ?? '')?.[1];
+    if (!fill) continue;
+    for (const selector of block.selectors) {
+      const own = selector.replace(/:has\((?:[^()]|\([^()]*\))*\)/g, '');
+      if (!own.includes("[data-checked='true']") || own.includes(':focus') || /::?(?:before|after)\b/.test(own)) continue;
+      const focus = rules.find((candidate) => candidate.selectors.some((other) => other !== selector && other.startsWith(selector) && other.includes(':focus-visible')) && (candidate.decls.has('outline-color') || candidate.decls.has('outline')));
+      const ring = ROLE_VAR.exec(focus?.decls.get('outline-color') ?? focus?.decls.get('outline') ?? '')?.[1] ?? 'ring';
+      for (const [label, colors] of colourSets) {
+        const ringValue = colors[ring]?.$value;
+        const fillValue = colors[fill]?.$value;
+        if (!ringValue || !fillValue) continue;
+        const ratio = contrastRatio(ringValue, fillValue);
+        if (ratio < FOCUS_ON_FILL_MINIMUM) failures.push(`${label}: focus on "${selector}" (${PREFIX}${ring}) against its fill ${PREFIX}${fill} is ${formatRatio(ratio)}:1; needs ${FOCUS_ON_FILL_MINIMUM}:1`);
+      }
+    }
+  }
+  return failures;
+}
+
 // ---------- worlds ----------
 
 const KEBAB = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/;
@@ -579,6 +612,7 @@ function worldFailures(world, roles) {
   for (const id of paletteIds) if ((paletteBlocks.get(id) ?? 0) !== 1) fail(`palette "${id}" needs exactly one ${paletteSelector(world.theme, id)} block (found ${paletteBlocks.get(id) ?? 0})`);
   for (const failure of liveGlowFailures(`tokens/worlds/${slug}.css`, css)) fail(failure);
   for (const failure of worldHaloFailures(world, parseCssBlocks(css), scope, paletteBlockPattern)) fail(failure);
+  for (const failure of checkedFocusFailures(world, parseCssBlocks(css))) fail(failure);
   return failures;
 }
 

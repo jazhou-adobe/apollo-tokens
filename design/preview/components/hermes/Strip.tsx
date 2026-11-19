@@ -38,21 +38,30 @@ type StripOptionProps = {
   itemRef: Ref<HTMLLIElement>;
 };
 
+/** In the phone pending list: the head is a native button and the whole strip is its target (no roving focus). */
+type StripButtonProps = {
+  mode: 'button';
+  departing?: boolean;
+  onClick: MouseEventHandler<HTMLButtonElement>;
+  onFocus: FocusEventHandler<HTMLButtonElement>;
+  itemRef: Ref<HTMLButtonElement>;
+};
+
 type StripDisclosureProps = { mode: 'disclosure'; expanded: boolean; onToggle: () => void };
 
-type StripProps = { round: Round; remaining?: number } & (StripOptionProps | StripDisclosureProps);
+type StripProps = { round: Round; remaining?: number } & (StripOptionProps | StripButtonProps | StripDisclosureProps);
 
 /**
  * One Round as a flight strip in its holder. The holder frames the paper on every side in the status colour; its tab prints
  * the status word and the Unanswered Policy, and the timer runs along its bottom edge. The policy appears there once.
- * In the bay a strip is a listbox option (selecting it opens the Round beside the bay or as the phone sheet); outside the
- * bay it is a disclosure that lists its Questions.
+ * In the desktop bay a strip is a listbox option (selecting it opens the Round beside the bay); in the phone pending list
+ * its head is a native button that opens the Round sheet; outside the bay it is a disclosure that lists its Questions.
  */
 export function Strip(props: StripProps) {
   const { round, remaining = round.remaining } = props;
   const bodyId = `${useId()}-body`;
   const status = STATUS_WORD[round.status];
-  const departing = props.mode === 'option' && props.departing;
+  const departing = props.mode !== 'disclosure' && props.departing;
   const cells = (
     <>
       <span className="hh-strip-cell" data-cell="callsign">
@@ -75,7 +84,7 @@ export function Strip(props: StripProps) {
     </>
   );
   const tab = (
-    <div className="hh-strip-tab" aria-hidden={props.mode === 'option' ? true : undefined}>
+    <div className="hh-strip-tab" aria-hidden={props.mode === 'disclosure' ? undefined : true}>
       <span>{status}</span>
       <span className="hh-mono-sm">{departing ? 'Delivered' : round.status === 'pending' ? policyReadout(round.policy, remaining) : round.outcome ?? status}</span>
     </div>
@@ -103,6 +112,28 @@ export function Strip(props: StripProps) {
         {tab}
         <div className="hh-strip-paper" aria-hidden="true">
           <div className="hh-strip-head">{cells}</div>
+        </div>
+        {timer}
+      </li>
+    );
+  }
+
+  if (props.mode === 'button') {
+    return (
+      <li className="hh-strip" data-mode="button" data-status={round.status} data-state={departing ? 'departing' : undefined} data-round={round.id} aria-hidden={departing ? true : undefined}>
+        {tab}
+        <div className="hh-strip-paper">
+          <button
+            ref={props.itemRef}
+            type="button"
+            className="hh-strip-head"
+            aria-label={departing ? undefined : stripLabel(round, remaining)}
+            tabIndex={departing ? -1 : undefined}
+            onClick={departing ? undefined : props.onClick}
+            onFocus={props.onFocus}
+          >
+            {cells}
+          </button>
         </div>
         {timer}
       </li>

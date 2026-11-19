@@ -5,20 +5,20 @@ import { withBase } from '../paths';
 import type { ThemeOption } from '../theme-constants';
 
 // Names the theme and colour option painted on <html>, which the layout script sets from ?theme= and ?palette= or the
-// saved choice before paint.
-export function ActiveTheme({ options, id, lead }: { options: ThemeOption[]; id?: string; lead?: string }) {
-  const [text, setText] = useState('Hermes Hub');
+// saved choice before paint. Kept to one short line: lead, theme, colour option, and the density only when one is set.
+export function ActiveTheme({ options, id, lead, className = 'hh-kicker' }: { options: ThemeOption[]; id?: string; lead?: string; className?: string }) {
+  const [text, setText] = useState([lead, 'Hermes Hub'].filter(Boolean).join(' · '));
 
   useEffect(() => {
     const root = document.documentElement;
     const theme = options.find((option) => option.value === root.dataset.theme);
     if (!theme) return;
     const palette = theme.palettes.find((option) => option.id === (root.dataset.palette ?? ''));
-    setText([lead, theme.label, palette?.label, theme.group === 'Core' ? 'core theme' : 'world', root.dataset.density].filter(Boolean).join(' · '));
+    setText([lead, theme.label, palette?.label, root.dataset.density].filter(Boolean).join(' · '));
   }, [options, lead]);
 
   return (
-    <p id={id} className="hh-kicker">
+    <p id={id} className={className}>
       {text}
     </p>
   );

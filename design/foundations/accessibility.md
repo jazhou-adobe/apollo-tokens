@@ -39,7 +39,7 @@ Triage must be fully operable from the keyboard, with every shortcut shown on sc
 
 ### Focus model
 
-- **Strip bay**: one Tab stop. Inside it, a roving `tabindex` moves focus between strips ([APG keyboard interface, roving tabindex](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)). The bay is a `role="listbox"` of strips when strips are single, selectable items, or a `role="grid"` when each strip has inner controls (see [round-widgets.md](../components/round-widgets.md#strip-bay--hh-strip-bay)). Live arrival uses the [APG feed](https://www.w3.org/WAI/ARIA/apg/patterns/feed/) only for the answered log, which loads more as the Human reads.
+- **Strip bay**: one Tab stop on desktop. Inside it, a roving `tabindex` moves focus between strips ([APG keyboard interface, roving tabindex](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)). The bay is a `role="listbox"` of strips when strips are single, selectable items, or a `role="grid"` when each strip has inner controls (see [round-widgets.md](../components/round-widgets.md#strip-bay--hh-strip-bay)). On phone (the stacked, narrow-container flow) it is a plain list whose strip heads are native buttons, so Tab and screen-reader swipe reach every strip without roving focus. Only actionable (pending) strips are in the bay; expired and cancelled Rounds move to the answered log. Live arrival uses the [APG feed](https://www.w3.org/WAI/ARIA/apg/patterns/feed/) only for the answered log, which loads more as the Human reads.
 - **Open Round**: one Tab stop per Question group, then the Answer bar. Single choice is an [APG radio group](https://www.w3.org/WAI/ARIA/apg/patterns/radio/) (arrows move and select); multiple choice is a group of [APG checkboxes](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/); approve/reject is a two-option radio group with text labels.
 - Focus order follows the Round: Questions top to bottom, notes, then Submit.
 - New Rounds never steal focus. They join the bay and are announced ([live regions](#live-regions)).
@@ -82,7 +82,8 @@ Announcements follow SC 4.1.3 Status Messages: they are read without moving focu
 | Submit fails | Answer bar | `role="alert"` | "Not sent · Hub unreachable · Answer kept · Retry" |
 | Submit succeeds | Bay status region | `polite` | "Answered · CLAUDE·api-refactor" |
 
-- Live regions exist and are empty at first paint, so their first update is announced.
+- Live regions exist and are empty at first paint, so their first update is announced. They never hold placeholder copy ("No Answer sent yet") and take no room while empty.
+- The surface's one connection readout (`.hh-connection` in the app bar, or in the bay head where there is no app bar) is the polite connection region; static examples of the widget are not live regions.
 - Timers never announce every second. The timer rail is decorative; the strip's policy text ("09:58 · then applies recommended") is the accessible source and reads the remaining time when focused.
 - `role="alert"` is only for failures the Human must act on.
 
@@ -108,6 +109,7 @@ The policy timer is a real-time constraint the Agent declares, not one the Hub c
 
 - Every interactive element has a visible focus ring: `--hh-ring` at `--hh-focus-ring-width` with `--hh-focus-ring-offset`, at least 3:1 against every surface it sits on (validated), above the 2 CSS px perimeter guidance in SC 2.4.13.
 - The selected strip (the Round open beside the bay) also gets an outer `--hh-ring` outline (`data-selected="true"`). Focus is never shown by glow.
+- **Focus on a filled checked control.** Where a world fills a chosen control (Flight Director's called GO / NO-GO keys), the shared ring would sit on the fill. The control then draws a two-colour perimeter: the ring inside the key takes the key's own ink (`success-foreground` on `success`, `destructive-foreground` on `destructive`, at least 4.5:1), and the key gains an outer `--hh-ring` outline against its module. The validator measures the ring of every world rule that fills `[data-checked='true']` against that fill, in every colour option (at least 3:1).
 
 ## Motion
 

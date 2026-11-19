@@ -2,7 +2,7 @@
   "label": "Flight Director 2169",
   "order": 4,
   "$description": "Flight Director 2169: the Command Center as a flight director's room a century and a half on. Every Agent holds a console position, Rounds are strips racked at the director's desk, a wide geometric face labels the consoles, and phosphor lights only values that are live right now.",
-  "signature": "GO / NO-GO polling for approve/reject Rounds, with text labels. Each approve/reject Question is a console position on the loop: its answer slot prints STANDBY, POLLING while it is the current position, or the latched call GO / NO-GO in words, and the Answer bar leads with the poll tally (GO, NO-GO, standing by) until the Round is sent.",
+  "signature": "GO / NO-GO polling for approve/reject Rounds, with text labels. Each approve/reject Question is a console position on the loop: its answer slot prints STANDBY, POLLING while it is the current position, or the latched call GO / NO-GO in words. A called key keeps a two-colour focus perimeter on its fill. The aggregate is the core's text tally in the Answer bar (secondary metadata, only for Rounds with several positions). On /worlds, Play signature polls and calls the first Round's position and holds the result until replay or a colour change.",
   "colorScheme": "dark",
   "color": {
     "background": {

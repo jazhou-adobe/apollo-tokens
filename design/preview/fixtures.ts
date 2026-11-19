@@ -255,6 +255,12 @@ export const ROUNDS: Round[] = [
         recommended: 'approve',
         attachments: [{ kind: 'code', title: 'migrate.sh --dry-run', meta: 'shell · 4 lines', code: 'pg_dump --schema-only staging > /tmp/schema.sql\npsql -f migrations/017_pg17.sql --set ON_ERROR_STOP=1\n./verify --tables invoices,payments\necho "dry-run complete"' }],
       },
+      {
+        id: 'q4',
+        kind: 'approve',
+        prompt: 'Pause the nightly invoice export while the migration runs?',
+        recommended: 'approve',
+      },
     ],
   },
   {

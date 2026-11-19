@@ -13,9 +13,9 @@ Regions:
 | Region | Component | Notes |
 |---|---|---|
 | Bay header | `.hh-strip-bay-head` | "Pending" with a `.hh-live-value` count, filter chips (status, callsigns), sort fixed to arrival order |
-| Strip bay | `.hh-strip-bay` (listbox) | `data-density="compact"`; one Tab stop; `j`/`k` |
+| Strip bay | `.hh-strip-bay` (listbox) | `data-density="compact"`; one Tab stop; `j`/`k`; pending strips only (expired and cancelled Rounds move to the answered log) |
 | Bay status | `role="status"` region | New Rounds, thresholds, policy fired |
-| Open Round | `section.hh-round` | The Round opened with Enter: `.hh-round-head` (status badge, title, callsign, id, `.hh-policy-badge`), `.hh-question` blocks, `.hh-answer-bar` |
+| Open Round | `form.hh-round` | The Round opened with Enter: `.hh-round-head` (status badge, title, callsign, id, `.hh-policy-badge`), `.hh-round-body` with the `.hh-question` blocks (the only scrolling part), `.hh-answer-bar`. Sized to the viewport space below its top offset so Send shows on entry |
 | Key tray | `.hh-kbd-hints` | Context keys at the foot of the bay |
 
 Layout: from 64rem the bay and the open Round sit side by side (bay at `--hh-layout-sidebar-width` or wider, Round fills the rest). Below 64rem the Round opens in an end-side sheet.
@@ -27,7 +27,7 @@ States:
 | Pending Rounds | Bay with strips, the oldest open by default when the page loads, focus on the bay |
 | Empty bay | Empty state in the bay ("No pending Rounds. Agents ask through the Hub Skill."); open-Round region shows the last answered Round summary or nothing |
 | New Round while answering | Joins the bay, polite announcement, focus stays |
-| Open Round expires | Answer bar alert "Not sent · Round expired at HH:MM · policy applied …"; draft kept; Close Round returns to the bay |
+| Open Round expires | Round stays open, read-only, badge "Expired"; Answer bar alert "Not sent · Expired HH:MM · policy applied …"; draft kept here and in the log; Copy draft and Back to pending (returns to the first pending strip) |
 | Open Round cancelled by Agent | Same, "Cancelled by CALLSIGN at HH:MM" |
 | Reconnecting | Warning alert above the bay; strips stay; Submit still possible if the Hub answers the POST |
 | Offline | Destructive alert, strips marked "Stale", Submit `aria-disabled` with reason |

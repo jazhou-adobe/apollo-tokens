@@ -6,8 +6,9 @@ import { withBase } from '../paths';
 import { ThumbFrame } from './OverviewGrid';
 
 // One /worlds card. It leads with the live specimen, then a one-line identity and a button that plays the world's
-// signature (the specimen answers its first Round with the recommendations and sends it). Colour options switch the frame
-// in place; "Compare all colours" shows the four side by side.
+// signature: the specimen polls the first Round's approve/reject Question and calls it with the recommendation. The
+// called result holds in the frame until Replay signature or a colour change (which returns the frame to its resting
+// Round). Colour options switch the frame in place; "Compare all colours" shows the four side by side.
 export function WorldCard({ world }: { world: World }) {
   const [paletteId, setPaletteId] = useState('');
   const [run, setRun] = useState(0);
@@ -17,7 +18,7 @@ export function WorldCard({ world }: { world: World }) {
   const frameQuery = new URLSearchParams(query);
   frameQuery.set('view', 'round');
   if (run) {
-    frameQuery.set('demo', 'send');
+    frameQuery.set('demo', 'poll');
     frameQuery.set('run', String(run));
   }
   const identity = world.idea.split(/(?<=\.)\s/)[0];
@@ -31,7 +32,7 @@ export function WorldCard({ world }: { world: World }) {
         <p className="hh-body-sm">{identity}</p>
         <div className="hh-row">
           <button type="button" className="hh-button" data-variant="primary" aria-describedby={signatureId} onClick={() => setRun(run + 1)}>
-            Play signature
+            {run ? 'Replay signature' : 'Play signature'}
           </button>
           <a className="hh-button" href={withBase(`/design?${query}`)}>
             Open full system
@@ -46,7 +47,16 @@ export function WorldCard({ world }: { world: World }) {
             <div className="hh-overview-chips">
               {world.palettes.map((option) => (
                 <label key={option.id || 'default'} className="hh-overview-chip" title={option.label}>
-                  <input className="hh-visually-hidden" type="radio" name={`palette-${world.slug}`} checked={option.id === paletteId} onChange={() => setPaletteId(option.id)} />
+                  <input
+                    className="hh-visually-hidden"
+                    type="radio"
+                    name={`palette-${world.slug}`}
+                    checked={option.id === paletteId}
+                    onChange={() => {
+                      setPaletteId(option.id);
+                      setRun(0);
+                    }}
+                  />
                   <span className="hh-palette-swatches" aria-hidden="true">
                     {option.swatches
                       .filter((swatch) => ['background', 'strip', 'pending'].includes(swatch.role))

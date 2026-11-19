@@ -72,13 +72,16 @@ Tokens: `--hh-surface-panel` / `--hh-surface-panel-foreground` (bay floor), `--h
 
 ### Keyboard and ARIA
 
-The bay is one Tab stop with roving focus ([APG keyboard interface](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)).
+On desktop the bay is one Tab stop with roving focus ([APG keyboard interface](https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)). It lists actionable Rounds only: pending strips, plus an answered strip for the moment it departs. Expired and cancelled Rounds leave the bay for the answered log, so keyboard movement never lands on a strip that cannot open.
 
 - **Default: listbox.** When strips have no inner controls (the Round opens beside the bay), the list is `role="listbox"` with `aria-label="Pending Rounds"` and each strip is `role="option"` with `aria-selected` ([APG listbox](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/)). Keys: ↓/`j` and ↑/`k` move, Home/End go to the ends, Enter opens the Round. Letters do not type-ahead; they are triage keys.
 - **With inline actions: grid.** When strips show inline Approve/Reject (`.hh-strip-actions`, compact density only), the list is `role="grid"`, each strip a `role="row"`, and the head and each action a `role="gridcell"` ([APG grid](https://www.w3.org/WAI/ARIA/apg/patterns/grid/)). ↑/↓ (`j`/`k`) move between rows, ←/→ between cells, Enter activates.
+- **Phone (narrow container): list of buttons.** When the bay and the Round stack (the command container is under 48rem), the list is a plain `<ul aria-label="Pending Rounds">` and each strip's `.hh-strip-head` is a native `<button>` whose hit area covers the whole strip (`.hh-strip[data-mode="button"]`). Every strip is its own Tab and swipe stop; there is no roving focus. The same surface takes `data-density="glance"` unless the page has set a density explicitly (a `?density=` preview override or a saved choice wins).
 - Each strip's accessible name starts with the status word: "Pending, Choose a migration strategy, CLAUDE·api-refactor, 2 Questions, waits 10 min then applies recommended".
 - New strips join at the end without moving focus; the bay's status region announces them ([accessibility.md](../foundations/accessibility.md#live-regions)).
 - When the focused strip leaves the bay (answered elsewhere, expired), focus moves to the next strip and the change is announced.
+- The bay's status region (`role="status"`) is in the DOM from first paint but takes no room until a confirmation lands; it never shows placeholder copy.
+- The bay head shows the connection readout only where the page has no app bar carrying it: one readout per surface.
 
 ### States
 
@@ -96,11 +99,15 @@ The bay is one Tab stop with roving focus ([APG keyboard interface](https://www.
 The Round being answered, beside the bay on desktop or in a full-screen sheet on phone. Its Questions sit beside their Answer slots.
 
 ```
-section.hh-round  (--hh-strip paper, opaque reading plane)
-├── .hh-round-head        status badge, title, callsign, Round id, .hh-policy-badge
-├── ol.hh-round-questions li > .hh-question …
-└── .hh-answer-bar        sticky footer
+form.hh-round  (--hh-strip paper, opaque reading plane)
+├── .hh-round-head        Back to pending, status badge, title, callsign, Round id, .hh-policy-badge
+├── .hh-round-body        the only part that scrolls: ol.hh-round-questions li > .hh-question …, notes
+└── .hh-answer-bar        footer in normal flow
 ```
+
+- **Fit.** The Round's height is the viewport space below its own top offset (`--round-top`, measured by the bay when the Round starts in the first half of the viewport), less `--hh-density-inset`. Head and Answer bar stay in view on entry at 1440 × 900 and 390 × 844; only `.hh-round-body` scrolls. Deeper in a long page the Round falls back to a sticky fit below the app bar.
+- **Expired or cancelled while open.** The Round stays on screen (`data-state="ended"`): the badge reads Expired or Cancelled, the Answers and notes stay visible but read-only, and the Answer bar swaps Send for the "Not sent" alert, **Copy draft** and **Back to pending** (see the Answer bar states). Its strip has already left the bay for the answered log, which records the draft as "Not sent".
+- Keys: `1`–`9` act on the current Question; `a`/`r` act only when the current Question is approve/reject (never on another Question in the Round); `n` opens notes; `⌘↵` sends; `Esc` goes back to pending.
 
 ## Question — `.hh-question`
 
@@ -174,10 +181,10 @@ A diff attachment: `ul.hh-diff` inside `.hh-attachment-body`.
 
 ## Answer bar — `.hh-answer-bar`
 
-The sticky footer of the open Round that submits the **whole** Round.
+The footer of the open Round, in normal flow below the scrolling body, that submits the **whole** Round.
 
-- Anatomy: `.hh-answer-bar-row` with `.hh-progress` ("2 of 3 Questions answered") and the Round's policy sentence; the notes `.hh-textarea` ("Note for the Agent (optional)"); `.hh-answer-bar-row` with Submit (`.hh-button[data-variant="primary"]` "Submit Answer" + `<kbd class="hh-kbd">⌘↵</kbd>`, `aria-keyshortcuts="Meta+Enter Control+Enter"`) and Close Round.
-- Tokens: `--hh-surface-tray`, `--hh-surface-tray-foreground`, `--hh-border` (top edge, full width), `--hh-layer-raised`, `--hh-density-inset`, `--hh-button-min-target`.
+- Anatomy: `.hh-answer-bar-row` with `.hh-answer-progress` ("2 of 3 required answered" in `.hh-mono-sm`, plus, for a Round with two or more approve/reject Questions, `.hh-answer-tally` "Poll · 1 approved · 0 rejected · 1 open" as muted secondary metadata) and Submit (`.hh-button[data-variant="primary"]` "Send Answer" + `<kbd class="hh-kbd">⌘↵</kbd>`, `aria-keyshortcuts="Meta+Enter Control+Enter"`). The tally is real text derived from the Answers, in the bar's accessible subtree; a Round with a single approve/reject Question has no tally, because its own Question already states the call. Notes fold into `.hh-notes` above the bar.
+- Tokens: `--hh-surface-tray`, `--hh-surface-tray-foreground`, `--hh-muted-foreground` (tally), `--hh-border` (top edge, full width), `--hh-layer-raised`, `--hh-density-inset`, `--hh-button-min-target`.
 
 | State | Shows |
 |---|---|
@@ -186,14 +193,14 @@ The sticky footer of the open Round that submits the **whole** Round.
 | Sending | `aria-busy="true"`, "Sending…"; responses read-only |
 | Sent | The strip leaves the bay for the answered log; toast "Answered · CLAUDE·api-refactor"; focus to the next pending strip |
 | Failed | `.hh-alert[data-tone="destructive"]` with `role="alert"`: "Not sent · Hub unreachable · your Answer is kept on this page · Retry" |
-| Expired while drafting | Alert once: "Not sent · Round expired at 14:10 · policy applied recommended". The draft stays, marked "Not sent", with Copy draft |
-| Cancelled while drafting | "Not sent · Cancelled by CLAUDE·api-refactor at 14:06"; same draft handling |
-| Offline | Submit `aria-disabled` with "Offline · cannot send until the Hub is reachable"; draft kept |
+| Expired while drafting | Alert once (`.hh-alert[data-tone="warning"]`, `role="alert"`, badge "Not sent"): "Expired 14:10 · policy applied recommended. Your draft is kept below and in the answered log." Answers and notes stay visible, read-only; the bar offers **Copy draft** (plain text: Round, each Question with its value, notes; the result is announced in a status line) and **Back to pending** (returns to the first pending strip). Phone and desktop alike |
+| Cancelled while drafting | "Cancelled 14:06 by policy" (or "by CLAUDE·api-refactor"); same draft handling |
+| Offline | Before any press, Send carries `aria-disabled="true"` and `aria-describedby` pointing at the visible reason "Offline · Cannot send until the Hub is reachable. Your Answers stay here." Pressing it does nothing else; the draft is kept |
 
 The bar never auto-submits, and a policy firing never sends the Human's draft.
 
 ## Agent recipe
 
-- Triage: `.hh-strip-bay` (listbox) beside a `.hh-round` with `.hh-question` blocks and the `.hh-answer-bar`.
+- Triage: `.hh-strip-bay` (listbox on desktop, list of buttons on phone) beside a `.hh-round` with `.hh-question` blocks and the `.hh-answer-bar`.
 - Every strip: holder with its status word in `.hh-strip-tab`, callsign, policy sentence, mono meta, timer when the policy has a deadline.
 - Tokens: `strip`, `strip-foreground`, `pending`, `answered`, `expired`, `recommended`, `code`, `code-foreground`, `diff-add`, `diff-remove`, `ring`, `strip-min-height`, `strip-holder-width`, `timer-track-height`, `option-row-min-height`, `kbd-size`, `code-max-height`.

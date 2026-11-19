@@ -94,6 +94,19 @@
   color: var(--hh-muted-foreground);
 }
 
+/* /specimen: the page title and its one-line preview note share a row, so the queue starts high on a phone. */
+.hh-specimen-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--hh-space-1) var(--hh-space-3);
+  min-width: 0;
+}
+
+.hh-specimen-title > * {
+  margin: 0;
+}
+
 .hh-toc-toggle {
   display: inline-flex;
   align-items: center;

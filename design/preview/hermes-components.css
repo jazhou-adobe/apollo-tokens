@@ -1188,6 +1188,17 @@ fieldset.hh-field {
   cursor: default;
 }
 
+/* In the phone pending list the head is a native button; its hit area stretches over the whole strip, holder included. */
+.hh-strip[data-mode='button'] {
+  position: relative;
+}
+
+.hh-strip[data-mode='button'] .hh-strip-head::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
 /* Shared outgoing transition: an answered strip stays mounted as data-state="departing" for --hh-motion-signature,
    then leaves. The core fades it; worlds may animate it (taxi, patch, dispatch). Reduced motion removes it at once. */
 .hh-strip[data-state='departing'] {
@@ -1356,11 +1367,15 @@ fieldset.hh-field {
   color: var(--hh-surface-panel-foreground);
 }
 
-/* Reserved bay-status region: confirmations and policy outcomes, never over the open Round's Answer bar. */
+/* Bay-status region: confirmations and policy outcomes, never over the open Round's Answer bar. It stays in the DOM (so
+   its first update is announced) but takes no room, and no stack gap, until a confirmation lands. */
 .hh-bay-status {
   display: flex;
   align-items: center;
-  min-height: calc(var(--hh-button-min-target) + var(--hh-space-2) * 2);
+}
+
+.hh-bay-status:not(:has(.hh-toast)) {
+  margin-block-end: calc(var(--hh-density-gap) * -1);
 }
 
 .hh-bay-status > * {
@@ -1460,8 +1475,11 @@ fieldset.hh-field {
   scroll-margin-top: calc(var(--hh-button-min-target) + var(--hh-space-4));
 }
 
+/* The Round fits the viewport space below its top offset (--round-top, measured by the bay when the Round starts in the
+   first half of the viewport), so Send shows on entry and only the Question body scrolls. Deeper in a long page it falls
+   back to the sticky fit below the app bar. */
 .hh-round:has(> .hh-round-body) {
-  max-height: calc(100dvh - var(--hh-button-min-target) - var(--hh-space-8));
+  max-height: calc(100dvh - var(--round-top, calc(var(--hh-button-min-target) + var(--hh-space-4))) - var(--hh-density-inset));
 }
 
 .hh-round-body {
@@ -1739,6 +1757,19 @@ pre.hh-attachment-body {
   align-items: center;
   justify-content: space-between;
   gap: var(--hh-space-2) var(--hh-space-4);
+}
+
+/* Completion and, for a Round with several approve/reject Questions, the poll tally: one line of secondary metadata. */
+.hh-answer-progress {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--hh-space-1) var(--hh-space-3);
+  min-width: 0;
+}
+
+.hh-answer-tally {
+  color: var(--hh-muted-foreground);
 }
 
 /* Optional notes fold away until wanted ("Add notes", or N). */

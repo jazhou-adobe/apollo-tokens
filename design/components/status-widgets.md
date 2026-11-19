@@ -44,7 +44,7 @@ The Command Center's link to the Hub over SSE, in the app bar.
 | none (offline) | Hollow ring in `--hh-expired` | Offline | last update HH:MM |
 
 - The word is always shown, also on phone. The lamp never loops forever and never flashes (the fade is slower than three per second).
-- A `role="status"` region announces changes politely: "Reconnecting · retry in 4 s", "Live".
+- The surface's one operational readout is a polite `role="status"` region (`<ConnectionStatus live />` in the preview) and announces changes: "Reconnecting · retry in 4 s", "Live". Each surface shows one readout: the app bar's, or the bay head's where there is no app bar. Static specimens of the widget are not live regions.
 - Activating the widget opens a popover with the Hub URL, exposure (local or tailnet) and "Reconnect now".
 - Tokens: `--hh-live`, `--hh-warning`, `--hh-expired`, `--hh-elevation-live`, `--hh-motion-pulse`, `--hh-icon-size`, `--hh-control-size-sm`, `--hh-border`, `--hh-muted-foreground`, `--hh-type-label-*`, `--hh-type-mono-sm-*`.
 

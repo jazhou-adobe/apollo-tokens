@@ -491,21 +491,10 @@ html[data-theme="hermes-flight-director"] .hh-notes-summary .hh-muted {
    the one console module in the Round and prints the call in words: STANDBY, POLLING (the current position,
    data-current, in phosphor), GO (Approve chosen) or NO-GO (Reject chosen). The core reports the choice as
    .hh-option[data-choice="approve|reject"][data-checked="true"] inside .hh-approve-pair. A called slot takes the call's
-   colour as its boundary. The call latches once per change on --hh-motion-signature (1ms under reduced motion), and
-   the Answer bar leads with the tally, counted by CSS counters.
+   colour as its boundary. The call latches once per change on --hh-motion-signature (1ms under reduced motion). The
+   aggregate is the core's text tally in the Answer bar (.hh-answer-tally), shown only for Rounds with several
+   positions; the world leaves it as secondary metadata.
    ===================================================================================================================== */
-html[data-theme="hermes-flight-director"] .hh-round {
-  counter-reset: flight-director-go flight-director-nogo flight-director-standby;
-}
-html[data-theme="hermes-flight-director"] .hh-question:has(.hh-approve-pair) {
-  counter-increment: flight-director-standby;
-}
-html[data-theme="hermes-flight-director"] .hh-question:has(.hh-approve-pair > .hh-option[data-choice='approve'][data-checked='true']) {
-  counter-increment: flight-director-go;
-}
-html[data-theme="hermes-flight-director"] .hh-question:has(.hh-approve-pair > .hh-option[data-choice='reject'][data-checked='true']) {
-  counter-increment: flight-director-nogo;
-}
 html[data-theme="hermes-flight-director"] .hh-question-response:has(> .hh-approve-pair) {
   padding: var(--hh-space-2);
   border: var(--hh-border-width-thin) solid var(--hh-border);
@@ -578,19 +567,18 @@ html[data-theme="hermes-flight-director"] .hh-approve-pair > .hh-option[data-cho
   background: var(--hh-destructive);
   color: var(--hh-destructive-foreground);
 }
-/* The poll tally leads the Answer bar of any Round that carries approve/reject Questions. */
-html[data-theme="hermes-flight-director"] .hh-round:has(.hh-approve-pair) .hh-answer-bar::before {
-  content: 'Poll  ' counter(flight-director-go) ' GO  ·  ' counter(flight-director-nogo) ' NO-GO  ·  ' counter(flight-director-standby) ' standing by';
-  justify-self: start;
-  padding: var(--hh-space-1) var(--hh-space-3);
-  border-radius: var(--hh-radius-sm);
-  background: var(--hh-surface-shelf);
-  color: var(--hh-surface-shelf-foreground);
-  font-family: var(--hh-font-mono);
-  font-size: var(--hh-type-heading-md-size);
-  line-height: var(--hh-type-heading-md-line-height);
-  font-weight: var(--hh-font-weight-semibold);
-  white-space: pre-wrap;
+/* Focus on a called key: the fill would swallow the shared ring, so the key draws a two-colour perimeter. The radio's
+   ring takes the key's own ink (the success / destructive foreground pair, at least 4.5:1 on the fill), and the key
+   gains an outer --hh-ring outline against the poll module. The validator measures each ring against its key's fill. */
+html[data-theme="hermes-flight-director"] .hh-approve-pair > .hh-option:has(input:focus-visible) {
+  outline: var(--hh-focus-ring-width) solid var(--hh-ring);
+  outline-offset: var(--hh-focus-ring-offset);
+}
+html[data-theme="hermes-flight-director"] .hh-approve-pair > .hh-option[data-choice='approve'][data-checked='true'] input:focus-visible {
+  outline-color: var(--hh-success-foreground);
+}
+html[data-theme="hermes-flight-director"] .hh-approve-pair > .hh-option[data-choice='reject'][data-checked='true'] input:focus-visible {
+  outline-color: var(--hh-destructive-foreground);
 }
 
 @keyframes flight-director-poll {

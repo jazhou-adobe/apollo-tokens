@@ -21,17 +21,45 @@ const CONNECTION_DETAIL: Record<ConnectionState, string> = {
   offline: 'Hub not reachable since 09:41',
 };
 
+/** Policy thresholds announced before the policy fires, in seconds left (5 min and 1 min). */
+const THRESHOLDS = [300, 60] as const;
+
 const now = () => new Date().toTimeString().slice(0, 5);
+
+/** One Question's value in words, or "not answered". */
+function valueText(question: Question, value: AnswerValue | undefined) {
+  if (question.kind === 'text') return typeof value === 'string' && value.trim() ? value.trim() : 'no note';
+  if (!isAnswered(question, value)) return 'not answered';
+  if (question.kind === 'approve') return value === 'approve' ? 'Approve' : 'Reject';
+  const ids = Array.isArray(value) ? value : [value];
+  return question.options
+    .filter((option) => ids.includes(option.id))
+    .map((option) => option.label)
+    .join(', ');
+}
 
 function summarise(round: Round, answers: Record<string, AnswerValue>, notes: string) {
   const parts = round.questions.map((question, index) => {
     const value = answers[question.id];
-    if (question.kind === 'approve') return `Q${index + 1} ${value === 'approve' ? 'Approve' : 'Reject'}`;
     if (question.kind === 'text') return typeof value === 'string' && value.trim() ? `Q${index + 1} note given` : `Q${index + 1} no note`;
-    const ids = Array.isArray(value) ? value : [value];
-    return `Q${index + 1} ${question.options.filter((option) => ids.includes(option.id)).map((option) => option.label).join(', ')}`;
+    return `Q${index + 1} ${valueText(question, value)}`;
   });
   return [...parts, notes.trim() ? `notes: ${notes.trim()}` : ''].filter(Boolean).join(' · ');
+}
+
+function hasDraft(answers: Record<string, AnswerValue>, notes: string) {
+  return notes.trim().length > 0 || Object.values(answers).some((value) => (Array.isArray(value) ? value.length > 0 : value.trim().length > 0));
+}
+
+/** The unsent draft as plain text for Copy draft: Round, each Question with its value, then the notes. */
+function draftText(round: Round, answers: Record<string, AnswerValue>, notes: string) {
+  return [
+    `${round.id} · ${round.title} · Not sent`,
+    ...round.questions.map((question, index) => `Q${index + 1} ${question.prompt} · ${valueText(question, answers[question.id])}`),
+    notes.trim() ? `Notes: ${notes.trim()}` : '',
+  ]
+    .filter(Boolean)
+    .join('\n');
 }
 
 /** The Agent's recommended value for every Question that has one (the demo fills a Round with these). */
@@ -54,7 +82,7 @@ function signatureMs() {
 type StripBayProps = {
   /** Rounds in the bay at load; defaults to the illustrative fixtures. Pass [] for the empty bay. */
   initialRounds?: Round[];
-  /** Show demo controls (shortcut switch, connection state). */
+  /** Show demo controls (shortcut switch, connection state) and the bay's own connection readout. Without them, the page's app bar carries the one readout. */
   controls?: boolean;
   showLog?: boolean;
   heading?: string;
@@ -65,14 +93,16 @@ type StripBayProps = {
   /** Phone flow only: start on the open Round instead of the pending list. */
   initialView?: 'queue' | 'round';
   initialOpenId?: string;
-  /** Gallery frames: honour ?view=round (open on the Round sheet) and ?demo=send (answer the first Round with its recommendations and send it). */
+  /** Gallery frames: honour ?view=round (open on the Round sheet) and ?demo=poll (call the first Round's approve/reject Question with its recommendation and hold the result). */
   demo?: boolean;
 };
 
 /**
- * The working triage screen: the strip bay beside the open Round (or, in a narrow container, the pending list and the Round
- * as a full-width sheet with "Back to pending"). Timers tick and policies fire; the Answer bar sends the whole Round; the
- * answered strip stays mounted as data-state="departing" for --hh-motion-signature so worlds can animate it, then leaves.
+ * The working triage screen: the strip bay beside the open Round (or, in a narrow container, the phone flow: a list of
+ * strip buttons, then the Round as a full-width sheet with "Back to pending", in glance density unless the page sets one).
+ * Timers tick, thresholds are announced, and policies fire: an expired Round leaves the bay for the answered log, and if it
+ * was open its draft stays on screen as "Not sent" with Copy draft. The Answer bar sends the whole Round; the answered strip
+ * stays mounted as data-state="departing" for --hh-motion-signature so worlds can animate it, then leaves.
  */
 export function StripBay({
   initialRounds = ROUNDS,
@@ -92,7 +122,7 @@ export function StripBay({
   const [departing, setDeparting] = useState<Set<string>>(new Set());
   const [log, setLog] = useState<LogEntry[]>(ANSWERED_LOG);
   const [openId, setOpenId] = useState<string | null>(firstPending);
-  const [activeId, setActiveId] = useState<string | null>(firstPending ?? initialRounds[0]?.id ?? null);
+  const [activeId, setActiveId] = useState<string | null>(firstPending);
   const [view, setView] = useState<'queue' | 'round'>(initialView);
   const [answers, setAnswers] = useState<Answers>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
@@ -103,20 +133,33 @@ export function StripBay({
   const [connection, setConnection] = useState<ConnectionState>('live');
   const [notice, setNotice] = useState<Notice | null>(null);
   const [error, setError] = useState<{ text: string; key: number } | null>(null);
+  const [copyState, setCopyState] = useState('');
+  // Threshold announcements: polite for the bay, assertive once for the open Round's final minute.
+  const [announcement, setAnnouncement] = useState('');
+  const [urgent, setUrgent] = useState<{ id: string; text: string } | null>(null);
+  // Phone flow: the command grid has one column. Glance applies there unless the page set a density explicitly.
+  const [stacked, setStacked] = useState(false);
+  const [phoneDensity, setPhoneDensity] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
-  const items = useRef(new Map<string, HTMLLIElement>());
+  const items = useRef(new Map<string, HTMLElement>());
   const roundRef = useRef<HTMLFormElement>(null);
   const roundHeadingRef = useRef<HTMLHeadingElement>(null);
   const notesRef = useRef<HTMLTextAreaElement>(null);
   const bayHeadingRef = useRef<HTMLHeadingElement>(null);
   const focusNext = useRef<(() => void) | null>(null);
+  const lastRemaining = useRef(new Map<string, number>());
+  const finalMinuteAnnounced = useRef(new Set<string>());
 
   const pending = rounds.filter((round) => round.status === 'pending');
-  const open = rounds.find((round) => round.id === openId && round.status === 'pending') ?? null;
-  const focusable = rounds.filter((round) => !departing.has(round.id));
+  // The bay lists actionable Rounds only (plus an answered strip while it departs); expired Rounds live in the answered log.
+  const bayRounds = rounds.filter((round) => round.status === 'pending' || departing.has(round.id));
+  const focusable = pending.filter((round) => !departing.has(round.id));
   const rovingId = focusable.some((round) => round.id === activeId) ? activeId : focusable[0]?.id ?? null;
+  // The open Round stays open when its policy fires, so the Human keeps the draft; only a sent Round closes.
+  const open = rounds.find((round) => round.id === openId && round.status !== 'answered') ?? null;
+  const ended = open?.status === 'expired';
+  const roundVisible = Boolean(open) && (!stacked || view === 'round');
 
-  // Stacked when the command grid has a single column: the narrow-container (phone) flow.
   const isStacked = () => (gridRef.current ? getComputedStyle(gridRef.current).gridTemplateColumns.trim().split(/\s+/).length < 2 : false);
 
   // Run focus moves after the render that shows their target.
@@ -125,6 +168,53 @@ export function StripBay({
     focusNext.current = null;
     action?.();
   });
+
+  // Track the phone flow and decide glance: on when stacked, unless <html> carries an explicit density (?density= wins).
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const update = () => {
+      const next = isStacked();
+      setStacked(next);
+      setPhoneDensity(next && !document.documentElement.dataset.density);
+    };
+    update();
+    const resize = new ResizeObserver(update);
+    resize.observe(grid);
+    const density = new MutationObserver(update);
+    density.observe(document.documentElement, { attributes: true, attributeFilter: ['data-density'] });
+    return () => {
+      resize.disconnect();
+      density.disconnect();
+    };
+  }, []);
+
+  // Fit the open Round to the viewport space below its top offset, so Send shows on entry and only the Question body
+  // scrolls. Deep in a long page (offset past half the viewport) the Round falls back to its sticky fit.
+  useEffect(() => {
+    const form = roundRef.current;
+    if (!form) return;
+    let frame = 0;
+    const fit = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const panel = form.parentElement;
+        if (!panel) return;
+        const top = panel.getBoundingClientRect().top + window.scrollY;
+        if (top < window.innerHeight / 2) form.style.setProperty('--round-top', `${Math.max(0, Math.round(top))}px`);
+        else form.style.removeProperty('--round-top');
+      });
+    };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(document.body);
+    window.addEventListener('resize', fit);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener('resize', fit);
+    };
+  }, [open?.id, view, stacked]);
 
   // Unanswered Policy clocks. The Hub owns real timers; the preview ticks once a second.
   useEffect(() => {
@@ -136,7 +226,30 @@ export function StripBay({
     return () => window.clearInterval(timer);
   }, []);
 
-  // A policy fires at zero: the Round expires and joins the answered log with what the policy did.
+  // Thresholds: 5 min and 1 min left are announced politely in the bay status region. The open Round's final minute is
+  // announced once, assertively, in the Round (when it crosses the minute, or when it is opened inside it).
+  useEffect(() => {
+    const polite: string[] = [];
+    for (const round of rounds) {
+      if (round.status !== 'pending' || round.policy.kind === 'wait') continue;
+      const before = lastRemaining.current.get(round.id);
+      lastRemaining.current.set(round.id, round.remaining);
+      const isOpen = round.id === open?.id && roundVisible;
+      const action = round.policy.kind === 'cancel' ? 'then cancels' : 'then applies recommended';
+      if (isOpen && round.remaining <= 60 && round.remaining > 0 && !finalMinuteAnnounced.current.has(round.id)) {
+        finalMinuteAnnounced.current.add(round.id);
+        setUrgent({ id: round.id, text: `1 min left on this Round · ${action}` });
+      }
+      if (before === undefined) continue;
+      const crossed = THRESHOLDS.find((threshold) => before > threshold && round.remaining <= threshold);
+      if (crossed === undefined || (crossed === 60 && isOpen)) continue;
+      polite.push(`${agentById(round.agentId).callsign} · ${crossed === 300 ? '5 min' : '1 min'} left · ${action}`);
+    }
+    if (polite.length) setAnnouncement(polite.join(' · '));
+  }, [rounds, open?.id, roundVisible]);
+
+  // A policy fires at zero: the Round expires, leaves the bay, and joins the answered log with what the policy did. An
+  // open Round stays on screen with its draft, marked "Not sent"; the log keeps the draft too.
   useEffect(() => {
     const due = rounds.filter((round) => round.status === 'pending' && round.policy.kind !== 'wait' && round.remaining <= 0);
     if (!due.length) return;
@@ -149,20 +262,35 @@ export function StripBay({
     );
     setRounds((previous) => previous.map((round) => (outcomes.has(round.id) ? { ...round, status: 'expired', outcome: outcomes.get(round.id) } : round)));
     setLog((previous) => [
-      ...due.map((round) => ({ id: round.id, agentId: round.agentId, title: round.title, status: 'expired' as const, at, summary: outcomes.get(round.id) ?? '' })),
+      ...due.map((round) => {
+        const draft = answers[round.id] ?? {};
+        const note = notes[round.id] ?? '';
+        const unsent = hasDraft(draft, note) ? ` · Not sent: ${summarise(round, draft, note)}` : '';
+        return { id: round.id, agentId: round.agentId, title: round.title, status: 'expired' as const, at, summary: `${outcomes.get(round.id) ?? ''}${unsent}` };
+      }),
       ...previous,
     ]);
     setNotice({ tone: 'expired', text: due.map((round) => `${round.id} · ${outcomes.get(round.id)}`).join(' · '), key: Date.now() });
+    if (openId && outcomes.has(openId)) {
+      setError(null);
+      setInvalid(new Set());
+      if (notes[openId]?.trim()) setNotesOpen(true);
+    }
+    // A focused strip that leaves the bay hands focus to the next pending strip, or to the bay heading.
+    if (due.some((round) => items.current.get(round.id)?.contains(document.activeElement))) {
+      focusStrip(focusable.find((round) => !outcomes.has(round.id))?.id ?? null);
+    }
+    // Runs when the clock moves; answers and notes are read as of that tick.
   }, [rounds]);
 
-  const focusStrip = (id: string | null) => {
+  function focusStrip(id: string | null) {
     if (!id) {
-      bayHeadingRef.current?.focus();
+      focusNext.current = () => bayHeadingRef.current?.focus();
       return;
     }
     setActiveId(id);
     focusNext.current = () => items.current.get(id)?.focus();
-  };
+  }
 
   const openRound = useCallback((id: string, moveFocus: boolean) => {
     setOpenId(id);
@@ -171,6 +299,7 @@ export function StripBay({
     setError(null);
     setInvalid(new Set());
     setNotesOpen(false);
+    setCopyState('');
     if (moveFocus && isStacked()) {
       setView('round');
       focusNext.current = () => {
@@ -181,8 +310,16 @@ export function StripBay({
   }, []);
 
   function closeRound() {
-    if (!openId) return;
-    const id = openId;
+    if (!open) return;
+    if (ended) {
+      // The Round has left the bay: close it and return to the first pending strip.
+      setOpenId(null);
+      setView('queue');
+      setCopyState('');
+      focusStrip(rovingId);
+      return;
+    }
+    const id = open.id;
     if (isStacked()) setView('queue');
     else setOpenId(null);
     focusStrip(id);
@@ -230,11 +367,9 @@ export function StripBay({
   }
 
   function send() {
-    if (!open) return;
-    if (connection === 'offline') {
-      setError({ text: 'Not sent. The Hub is offline; your Answers stay here until it is back.', key: Date.now() });
-      return;
-    }
+    if (!open || ended) return;
+    // Offline: Send is aria-disabled and its reason is already on screen; the draft stays as it is.
+    if (connection === 'offline') return;
     const roundAnswers = answers[open.id] ?? {};
     const missing = open.questions.filter((question) => !isAnswered(question, roundAnswers[question.id]));
     if (missing.length) {
@@ -246,6 +381,16 @@ export function StripBay({
       return;
     }
     sendRound(open, roundAnswers);
+  }
+
+  async function copyDraft() {
+    if (!open) return;
+    try {
+      await navigator.clipboard.writeText(draftText(open, answers[open.id] ?? {}, notes[open.id] ?? ''));
+      setCopyState('Draft copied to the clipboard.');
+    } catch {
+      setCopyState('Not copied · the browser blocked the clipboard; select the Answers and notes above instead.');
+    }
   }
 
   function pick(question: Question | undefined, round: Round, digit: number) {
@@ -260,7 +405,8 @@ export function StripBay({
     }
   }
 
-  // Strip bay listbox: one Tab stop, roving focus. Arrows always; J/K while single-key shortcuts are on.
+  // Strip bay keys. Desktop listbox: one Tab stop, roving focus, selection follows focus. Phone list: each strip is a
+  // native button (Tab and swipe reach every one); arrows and J/K still move focus for a keyboard on a narrow window.
   function onListKeyDown(event: KeyboardEvent<HTMLUListElement>) {
     if (event.metaKey || event.ctrlKey || event.altKey) return;
     const index = focusable.findIndex((round) => round.id === rovingId);
@@ -270,42 +416,43 @@ export function StripBay({
     else if (key === 'ArrowUp' || (shortcuts && key.toLowerCase() === 'k')) target = focusable[Math.max(index - 1, 0)];
     else if (key === 'Home') target = focusable[0];
     else if (key === 'End') target = focusable[focusable.length - 1];
-    else if (key === 'Enter' || key === ' ') {
+    else if (!stacked && (key === 'Enter' || key === ' ')) {
       event.preventDefault();
       const round = focusable[index];
-      if (round?.status === 'pending') openRound(round.id, true);
+      if (round) openRound(round.id, true);
       return;
     }
     if (!target) return;
     event.preventDefault();
     focusStrip(target.id);
     // Side by side, selection follows focus so the Round beside the bay always matches the focused strip.
-    if (target.status === 'pending' && !isStacked()) openRound(target.id, false);
+    if (!stacked) openRound(target.id, false);
   }
 
   function onRoundKeyDown(event: KeyboardEvent<HTMLFormElement>) {
     if (!open) return;
-    if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
-      event.preventDefault();
-      send();
-      return;
-    }
     if (event.key === 'Escape') {
       event.preventDefault();
       closeRound();
       return;
     }
+    if (ended) return;
+    if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+      event.preventDefault();
+      send();
+      return;
+    }
     if (!shortcuts || event.metaKey || event.ctrlKey || event.altKey || isTyping(event.target)) return;
     const key = event.key.toLowerCase();
+    const current = open.questions[currentQ];
     if (/^[1-9]$/.test(event.key)) {
       event.preventDefault();
-      pick(open.questions[currentQ], open, Number(event.key));
+      pick(current, open, Number(event.key));
     } else if (key === 'a' || key === 'r') {
-      const current = open.questions[currentQ];
-      const target = current?.kind === 'approve' ? current : open.questions.find((question) => question.kind === 'approve');
-      if (!target) return;
+      // A and R act on the focused Question only, and only when it is approve/reject.
+      if (current?.kind !== 'approve') return;
       event.preventDefault();
-      setAnswer(open, target.id, key === 'a' ? 'approve' : 'reject');
+      setAnswer(open, current.id, key === 'a' ? 'approve' : 'reject');
     } else if (key === 'n') {
       event.preventDefault();
       setNotesOpen(true);
@@ -314,28 +461,53 @@ export function StripBay({
   }
 
   // Gallery frames: ?view=round opens on the Round sheet (narrow frames would otherwise show only the queue), and
-  // ?demo=send (the /worlds signature trigger) fills the first Round with its recommendations, holds, then sends it.
+  // ?demo=poll (the /worlds signature trigger) makes the first Round's approve/reject Question the polling position, then
+  // calls it with the Agent's recommendation. The called result holds until the frame reloads (replay or colour change).
   useEffect(() => {
     if (!demo) return;
     const params = new URLSearchParams(window.location.search);
     if (params.get('view') === 'round') setView('round');
-    if (params.get('demo') !== 'send') return;
+    if (params.get('demo') !== 'poll') return;
     const round = initialRounds.find((candidate) => candidate.status === 'pending');
-    if (!round) return;
-    const filled = recommendedAnswers(round);
-    setAnswers({ [round.id]: filled });
-    const timer = window.setTimeout(() => sendRound(round, filled), 1500);
-    return () => window.clearTimeout(timer);
-    // Runs once on mount; sendRound only reads state through functional setters.
+    const position = round?.questions.findIndex((question) => question.kind === 'approve') ?? -1;
+    if (!round || position < 0) return;
+    // Scroll the Round body (never the page around the frame) so the poll module, where the call latches, is in view.
+    const reveal = () => {
+      const slot = document.getElementById(questionDomId(`${uid}-${round.id}`, round.questions[position].id))?.querySelector('.hh-question-response');
+      const body = slot?.closest<HTMLElement>('.hh-round-body');
+      if (slot && body) body.scrollTop += slot.getBoundingClientRect().top - body.getBoundingClientRect().top;
+    };
+    setCurrentQ(position);
+    // Once the Round has its fitted height, show the polling position; then call it and keep it in view.
+    const poll = window.setTimeout(reveal, signatureMs());
+    const call = window.setTimeout(() => {
+      setAnswers({ [round.id]: recommendedAnswers(round) });
+      focusNext.current = reveal;
+    }, signatureMs() * 2);
+    return () => {
+      window.clearTimeout(poll);
+      window.clearTimeout(call);
+    };
+    // Runs once on mount.
   }, []);
 
   const openAnswers = open ? answers[open.id] ?? {} : {};
   const answeredCount = open ? open.questions.filter((question) => question.kind !== 'text' && isAnswered(question, openAnswers[question.id])).length : 0;
   const requiredCount = open ? open.questions.filter((question) => question.kind !== 'text').length : 0;
+  // Poll tally: only a Round with two or more approve/reject Questions has an aggregate worth stating.
+  const positions = open ? open.questions.filter((question) => question.kind === 'approve') : [];
+  const go = positions.filter((question) => openAnswers[question.id] === 'approve').length;
+  const noGo = positions.filter((question) => openAnswers[question.id] === 'reject').length;
   const scope = open ? `${uid}-${open.id}` : uid;
+  const offline = connection === 'offline';
+  const reasonId = `${uid}-send-reason`;
+  const registerItem = (id: string) => (element: HTMLElement | null) => {
+    if (element) items.current.set(id, element);
+    else items.current.delete(id);
+  };
 
   return (
-    <div className="hh-stack">
+    <div className="hh-stack" data-density={phoneDensity ? 'glance' : undefined}>
       {controls ? (
         <div className="hh-row">
           <button type="button" role="switch" aria-checked={shortcuts} className="hh-switch" onClick={() => setShortcuts(!shortcuts)}>
@@ -355,7 +527,8 @@ export function StripBay({
         </div>
       ) : null}
 
-      {/* Reserved bay-status region: confirmations and policy outcomes land here, never over the next Round's Answer bar. */}
+      {/* Bay status region: confirmations and policy outcomes land here, never over the next Round's Answer bar; threshold
+          announcements ride along unseen. Empty until something happens. */}
       <div className="hh-bay-status" role="status">
         {notice ? (
           <div key={notice.key} className="hh-toast" data-placement="inline">
@@ -367,9 +540,8 @@ export function StripBay({
               Dismiss
             </button>
           </div>
-        ) : (
-          <p className="hh-body-sm hh-muted">No Answer sent yet.</p>
-        )}
+        ) : null}
+        <span className="hh-visually-hidden">{announcement}</span>
       </div>
 
       <div className="hh-command" data-view={view}>
@@ -382,33 +554,42 @@ export function StripBay({
               <span className="hh-live-value" data-live={connection === 'live' ? 'true' : undefined}>
                 {pending.length} pending
               </span>
-              <ConnectionStatus state={connection} detail={CONNECTION_DETAIL[connection]} />
+              {controls ? <ConnectionStatus state={connection} detail={CONNECTION_DETAIL[connection]} live /> : null}
             </div>
-            {rounds.length ? (
-              <ul className="hh-strip-bay-list" data-density="compact" role="listbox" aria-label="Pending Rounds" aria-keyshortcuts="J K ArrowDown ArrowUp Home End Enter" onKeyDown={onListKeyDown}>
-                {rounds.map((round) => (
+            {bayRounds.length === 0 ? (
+              <EmptyBay />
+            ) : stacked ? (
+              <ul className="hh-strip-bay-list" data-density="compact" aria-label="Pending Rounds" onKeyDown={onListKeyDown}>
+                {bayRounds.map((round) => (
                   <Strip
                     key={round.id}
-                    mode="option"
+                    mode="button"
                     round={round}
-                    selected={round.id === openId && round.status === 'pending'}
                     departing={departing.has(round.id)}
-                    tabIndex={round.id === rovingId ? 0 : -1}
                     onFocus={() => setActiveId(round.id)}
-                    onClick={() => {
-                      setActiveId(round.id);
-                      if (round.status === 'pending') openRound(round.id, true);
-                    }}
-                    itemRef={(element) => {
-                      if (element) items.current.set(round.id, element);
-                      else items.current.delete(round.id);
-                    }}
+                    onClick={() => openRound(round.id, true)}
+                    itemRef={registerItem(round.id)}
                   />
                 ))}
               </ul>
             ) : (
-              <EmptyBay />
+              <ul className="hh-strip-bay-list" data-density="compact" role="listbox" aria-label="Pending Rounds" aria-keyshortcuts="J K ArrowDown ArrowUp Home End Enter" onKeyDown={onListKeyDown}>
+                {bayRounds.map((round) => (
+                  <Strip
+                    key={round.id}
+                    mode="option"
+                    round={round}
+                    selected={round.id === openId}
+                    departing={departing.has(round.id)}
+                    tabIndex={round.id === rovingId ? 0 : -1}
+                    onFocus={() => setActiveId(round.id)}
+                    onClick={() => openRound(round.id, true)}
+                    itemRef={registerItem(round.id)}
+                  />
+                ))}
+              </ul>
             )}
+            <KbdHints label={`Keyboard shortcuts (${context})`} />
           </section>
 
           <div className="hh-command-panel">
@@ -416,6 +597,7 @@ export function StripBay({
               <form
                 ref={roundRef}
                 className="hh-round"
+                data-state={ended ? 'ended' : undefined}
                 aria-label={`Round ${open.id} (${context})`}
                 onKeyDown={onRoundKeyDown}
                 onSubmit={(event) => {
@@ -428,8 +610,8 @@ export function StripBay({
                     <Icon name="arrow-left" /> Back to pending
                   </button>
                   <div className="hh-row">
-                    <span className="hh-badge" data-tone="pending">
-                      Pending
+                    <span className="hh-badge" data-tone={ended ? 'expired' : 'pending'}>
+                      {ended ? (open.policy.kind === 'cancel' ? 'Cancelled' : 'Expired') : 'Pending'}
                     </span>
                     <Callsign agentId={open.agentId} />
                     <span className="hh-mono-sm">
@@ -439,9 +621,14 @@ export function StripBay({
                   <Heading ref={roundHeadingRef} tabIndex={-1} className="hh-strip-header">
                     {open.title}
                   </Heading>
-                  <div className="hh-round-policy">
-                    <PolicyBadge policy={open.policy} remaining={open.remaining} />
-                  </div>
+                  {ended ? null : (
+                    <div className="hh-round-policy">
+                      <PolicyBadge policy={open.policy} remaining={open.remaining} />
+                    </div>
+                  )}
+                  <p className="hh-visually-hidden" aria-live="assertive" aria-atomic="true">
+                    {urgent?.id === open.id && !ended ? urgent.text : ''}
+                  </p>
                 </div>
                 <div className="hh-round-body">
                   <ol className="hh-round-questions">
@@ -453,17 +640,18 @@ export function StripBay({
                         scope={scope}
                         value={openAnswers[question.id]}
                         onChange={(value) => setAnswer(open, question.id, value)}
-                        current={index === currentQ}
+                        current={!ended && index === currentQ}
                         onFocus={() => setCurrentQ(index)}
-                        hints={shortcuts}
+                        hints={shortcuts && !ended}
                         invalid={invalid.has(question.id)}
+                        readOnly={ended}
                       />
                     ))}
                   </ol>
                   <details className="hh-notes" open={notesOpen} onToggle={(event) => setNotesOpen(event.currentTarget.open)}>
                     <summary className="hh-notes-summary">
-                      Add notes for {agentById(open.agentId).callsign} (optional)
-                      {shortcuts ? (
+                      {ended ? `Notes for ${agentById(open.agentId).callsign} (not sent)` : `Add notes for ${agentById(open.agentId).callsign} (optional)`}
+                      {shortcuts && !ended ? (
                         <kbd className="hh-kbd" aria-hidden="true">
                           N
                         </kbd>
@@ -476,32 +664,82 @@ export function StripBay({
                       ref={notesRef}
                       id={`${uid}-notes`}
                       className="hh-textarea"
-                      aria-keyshortcuts="N"
+                      aria-keyshortcuts={ended ? undefined : 'N'}
+                      readOnly={ended}
                       value={notes[open.id] ?? ''}
                       onChange={(event) => setNotes((previous) => ({ ...previous, [open.id]: event.target.value }))}
                     />
                   </details>
                 </div>
                 <div className="hh-answer-bar">
-                  <div className="hh-answer-bar-row">
-                    <span className="hh-mono-sm">
-                      {answeredCount} of {requiredCount} required answered
-                    </span>
-                    <button type="submit" className="hh-button" data-variant="primary" aria-keyshortcuts="Meta+Enter Control+Enter">
-                      <Icon name="send" /> Send Answer
-                      <kbd className="hh-kbd" aria-hidden="true">
-                        ⌘↵
-                      </kbd>
-                    </button>
-                  </div>
-                  {error ? (
-                    <p key={error.key} className="hh-error" role="alert">
-                      <span className="hh-badge" data-tone="destructive">
-                        Error
-                      </span>
-                      {error.text}
-                    </p>
-                  ) : null}
+                  {ended ? (
+                    <>
+                      {/* Mounted once, when the policy fires, so it is announced once. */}
+                      <div className="hh-alert" data-tone="warning" role="alert">
+                        <span className="hh-badge" data-tone="expired">
+                          Not sent
+                        </span>
+                        <p className="hh-body-sm">
+                          {open.outcome}. Your draft is kept below{hasDraft(openAnswers, notes[open.id] ?? '') ? ' and in the answered log' : ''}.
+                        </p>
+                      </div>
+                      <div className="hh-answer-bar-row">
+                        <button type="button" className="hh-button" onClick={copyDraft}>
+                          <Icon name="file" /> Copy draft
+                        </button>
+                        <button type="button" className="hh-button" data-variant="primary" onClick={closeRound}>
+                          <Icon name="arrow-left" /> Back to pending
+                        </button>
+                      </div>
+                      <p className="hh-body-sm" role="status">
+                        {copyState}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="hh-answer-bar-row">
+                        <span className="hh-answer-progress">
+                          <span className="hh-mono-sm">
+                            {answeredCount} of {requiredCount} required answered
+                          </span>
+                          {positions.length > 1 ? (
+                            <span className="hh-answer-tally hh-mono-sm">
+                              Poll · {go} approved · {noGo} rejected · {positions.length - go - noGo} open
+                            </span>
+                          ) : null}
+                        </span>
+                        <button
+                          type="submit"
+                          className="hh-button"
+                          data-variant="primary"
+                          aria-keyshortcuts="Meta+Enter Control+Enter"
+                          aria-disabled={offline ? true : undefined}
+                          aria-describedby={offline ? reasonId : undefined}
+                        >
+                          <Icon name="send" /> Send Answer
+                          <kbd className="hh-kbd" aria-hidden="true">
+                            ⌘↵
+                          </kbd>
+                        </button>
+                      </div>
+                      {offline ? (
+                        <p id={reasonId} className="hh-error">
+                          <span className="hh-badge" data-tone="expired">
+                            Offline
+                          </span>
+                          Cannot send until the Hub is reachable. Your Answers stay here.
+                        </p>
+                      ) : null}
+                      {error ? (
+                        <p key={error.key} className="hh-error" role="alert">
+                          <span className="hh-badge" data-tone="destructive">
+                            Error
+                          </span>
+                          {error.text}
+                        </p>
+                      ) : null}
+                    </>
+                  )}
                 </div>
               </form>
             ) : (
@@ -511,7 +749,6 @@ export function StripBay({
                 <p className="hh-body-sm">{pending.length ? 'Pick a strip, or press J.' : 'Nothing is waiting for you.'}</p>
               </div>
             )}
-            <KbdHints label={`Keyboard shortcuts (${context})`} />
           </div>
         </div>
       </div>

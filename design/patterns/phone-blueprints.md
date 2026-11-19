@@ -1,6 +1,6 @@
 # Phone blueprints (glance)
 
-The phone is the second screen: quick approve/reject over the tailnet when the Human is away from the desk. Every phone page sets `data-density="glance"` on `<main>`: `button-min-target` ≥ 3rem, taller `option-row-min-height`, roomier `density-*`, larger `type-body-size`. No keyboard hints are shown.
+The phone is the second screen: quick approve/reject over the tailnet when the Human is away from the desk. Every phone page sets `data-density="glance"` on `<main>`: `button-min-target` ≥ 3rem, taller `option-row-min-height`, roomier `density-*`, larger `type-body-size`. No keyboard hints are shown. In the preview, the strip bay applies glance itself whenever it stacks into the phone flow, unless the page has set a density explicitly (a `?density=` override wins).
 
 Shared chrome: skip link → compact `.hh-app-bar` ("Pending · N" and `.hh-connection` word) → `main` → `.hh-bottom-nav` (Pending, Log, Agents) ([navigation-and-chrome.md](../components/navigation-and-chrome.md#bottom-navigation--hh-bottom-nav)).
 
@@ -48,7 +48,7 @@ Rules:
 
 - Approve or Reject alone never submits; Submit Answer does. One tap never sends an irreversible decision.
 - A Round that needs free text or many options is fully answerable on the phone, but long attachments show a hint: "Long diff · easier on desktop".
-- If the Round expires or is cancelled while open, the Answer bar shows the alert and keeps the draft, as on desktop.
+- If the Round expires or is cancelled while open, the sheet stays: badge "Expired" or "Cancelled", Answers and notes read-only and marked "Not sent", and the Answer bar offers Copy draft and Back to pending, as on desktop. Its strip has left the pending list for the log.
 
 States: pending, sending ("Sending…"), sent (sheet closes, toast "Answered · CALLSIGN", next pending strip focused), failed (alert with Retry, draft kept), expired, cancelled, offline (Submit `aria-disabled` with reason).
 

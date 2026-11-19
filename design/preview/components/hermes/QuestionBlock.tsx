@@ -18,6 +18,8 @@ type QuestionBlockProps = {
   hints?: boolean;
   /** Submit was tried while this Question had no Answer. */
   invalid?: boolean;
+  /** The Round expired or was cancelled: the draft stays visible and selectable, but can no longer change. */
+  readOnly?: boolean;
 };
 
 export function isAnswered(question: Question, value: AnswerValue | undefined) {
@@ -79,7 +81,7 @@ function OptionRow({ type, name, value, checked, onChange, hint, recommended, ch
 }
 
 /** One Question beside its Answer slot: the call on the left, the response on the right (stacked on narrow screens). */
-export function QuestionBlock({ question, index, scope, value, onChange, current = false, onFocus, hints = true, invalid = false }: QuestionBlockProps) {
+export function QuestionBlock({ question, index, scope, value, onChange, current = false, onFocus, hints = true, invalid = false, readOnly = false }: QuestionBlockProps) {
   const promptId = `${scope}-${question.id}-prompt`;
   const stateId = `${scope}-${question.id}-state`;
   const errorId = `${scope}-${question.id}-error`;
@@ -102,7 +104,7 @@ export function QuestionBlock({ question, index, scope, value, onChange, current
       </div>
 
       {question.kind === 'single' || question.kind === 'multi' ? (
-        <fieldset className="hh-question-response" aria-labelledby={promptId} aria-describedby={describedBy}>
+        <fieldset className="hh-question-response" aria-labelledby={promptId} aria-describedby={describedBy} disabled={readOnly}>
           {question.options.map((option, optionIndex) => {
             const selected = question.kind === 'multi' ? Array.isArray(value) && value.includes(option.id) : value === option.id;
             const recommended = question.kind === 'multi' ? question.recommended?.includes(option.id) : question.recommended === option.id;
@@ -132,7 +134,7 @@ export function QuestionBlock({ question, index, scope, value, onChange, current
 
       {question.kind === 'approve' ? (
         // APG radio group: two options, arrows move and select, A and R choose directly. Choosing never submits.
-        <fieldset className="hh-question-response" aria-labelledby={promptId} aria-describedby={describedBy}>
+        <fieldset className="hh-question-response" aria-labelledby={promptId} aria-describedby={describedBy} disabled={readOnly}>
           <div className="hh-approve-pair">
             {(['approve', 'reject'] as const).map((choice) => (
               <OptionRow
@@ -166,6 +168,7 @@ export function QuestionBlock({ question, index, scope, value, onChange, current
               aria-describedby={promptId}
               placeholder={question.placeholder}
               value={typeof value === 'string' ? value : ''}
+              readOnly={readOnly}
               onChange={(event) => onChange(event.target.value)}
             />
           </div>
