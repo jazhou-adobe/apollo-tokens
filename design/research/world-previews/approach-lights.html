@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en" data-theme="splitbook-approach-lights" data-palette="daylight">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Splitbook world preview · Approach Lights</title>
+<!--
+Measured WCAG contrast ratios (truncated to 2 decimals, never rounded up). Gates: text pairs >= 4.5, boundaries >= 3.
+Helpers bulb-*/housing are world helpers (--approach-lights-*).
+
+Deck Daylight [daylight] (recommended default)
+  foreground on background: 13.02 (gate 4.5) pass
+  surface-card-foreground on surface-card: 16.18 (gate 4.5) pass
+  tap-pad-foreground on tap-pad: 14.91 (gate 4.5) pass
+  muted-foreground on background: 6.23 (gate 4.5) pass
+  muted-foreground on surface-card: 7.74 (gate 4.5) pass
+  muted-foreground on tap-pad: 7.14 (gate 4.5) pass
+  muted-foreground on muted: 6.50 (gate 4.5) pass
+  primary-foreground on primary: 11.55 (gate 4.5) pass
+  live-foreground on live: 6.60 (gate 4.5) pass
+  metric-foreground on metric: 7.52 (gate 4.5) pass
+  improvement-foreground on improvement: 6.87 (gate 4.5) pass
+  fault-foreground on fault: 7.36 (gate 4.5) pass
+  metric on surface-card (as text): 6.83 (gate 4.5) pass
+  improvement on surface-card (as text): 6.23 (gate 4.5) pass
+  live on tap-pad (as text): 5.52 (gate 4.5) pass
+  fault on surface-card (as text): 6.68 (gate 4.5) pass
+  border on surface-card: 4.40 (gate 3) pass
+  border on background: 3.54 (gate 3) pass
+  border on tap-pad: 4.06 (gate 3) pass
+  ring on surface-card: 6.12 (gate 3) pass
+  ring on tap-pad: 5.63 (gate 3) pass
+  metric on surface-panel (chart line): 6.12 (gate 3) pass
+  bulb-on-foreground on bulb-on (lit bulb numeral): 9.58 (gate 4.5) pass
+  bulb-live-foreground on bulb-live (live bulb numeral): 6.77 (gate 4.5) pass
+  bulb-off-foreground on housing (unlit bulb numeral): 8.47 (gate 4.5) pass
+  bulb-off-ring on housing (unlit bulb ring): 4.24 (gate 3) pass
+  bulb-on on housing (lit bulb edge): 7.66 (gate 3) pass
+  bulb-live on housing (live bulb edge): 5.41 (gate 3) pass
+
+Blue Hour [bluehour]
+  foreground on background: 14.99 (gate 4.5) pass
+  surface-card-foreground on surface-card: 13.27 (gate 4.5) pass
+  tap-pad-foreground on tap-pad: 13.95 (gate 4.5) pass
+  muted-foreground on background: 9.14 (gate 4.5) pass
+  muted-foreground on surface-card: 8.09 (gate 4.5) pass
+  muted-foreground on tap-pad: 8.51 (gate 4.5) pass
+  muted-foreground on muted: 6.74 (gate 4.5) pass
+  primary-foreground on primary: 10.78 (gate 4.5) pass
+  live-foreground on live: 7.47 (gate 4.5) pass
+  metric-foreground on metric: 9.81 (gate 4.5) pass
+  improvement-foreground on improvement: 9.91 (gate 4.5) pass
+  fault-foreground on fault: 11.24 (gate 4.5) pass
+  metric on surface-card (as text): 8.38 (gate 4.5) pass
+  improvement on surface-card (as text): 8.54 (gate 4.5) pass
+  live on tap-pad (as text): 6.41 (gate 4.5) pass
+  fault on surface-card (as text): 9.52 (gate 4.5) pass
+  border on surface-card: 4.44 (gate 3) pass
+  border on background: 5.01 (gate 3) pass
+  border on tap-pad: 4.67 (gate 3) pass
+  ring on surface-card: 11.02 (gate 3) pass
+  ring on tap-pad: 11.58 (gate 3) pass
+  metric on surface-panel (chart line): 7.56 (gate 3) pass
+  bulb-on-foreground on bulb-on (lit bulb numeral): 16.28 (gate 4.5) pass
+  bulb-live-foreground on bulb-live (live bulb numeral): 7.47 (gate 4.5) pass
+  bulb-off-foreground on housing (unlit bulb numeral): 8.72 (gate 4.5) pass
+  bulb-off-ring on housing (unlit bulb ring): 4.65 (gate 3) pass
+  bulb-on on housing (lit bulb edge): 16.94 (gate 3) pass
+  bulb-live on housing (live bulb edge): 7.43 (gate 3) pass
+
+Fresnel Sand [fresnel]
+  foreground on background: 12.34 (gate 4.5) pass
+  surface-card-foreground on surface-card: 15.10 (gate 4.5) pass
+  tap-pad-foreground on tap-pad: 13.93 (gate 4.5) pass
+  muted-foreground on background: 6.40 (gate 4.5) pass
+  muted-foreground on surface-card: 7.83 (gate 4.5) pass
+  muted-foreground on tap-pad: 7.22 (gate 4.5) pass
+  muted-foreground on muted: 6.64 (gate 4.5) pass
+  primary-foreground on primary: 9.73 (gate 4.5) pass
+  live-foreground on live: 6.37 (gate 4.5) pass
+  metric-foreground on metric: 8.06 (gate 4.5) pass
+  improvement-foreground on improvement: 6.78 (gate 4.5) pass
+  fault-foreground on fault: 7.32 (gate 4.5) pass
+  metric on surface-card (as text): 7.15 (gate 4.5) pass
+  improvement on surface-card (as text): 6.01 (gate 4.5) pass
+  live on tap-pad (as text): 5.22 (gate 4.5) pass
+  fault on surface-card (as text): 6.49 (gate 4.5) pass
+  border on surface-card: 4.49 (gate 3) pass
+  border on background: 3.67 (gate 3) pass
+  border on tap-pad: 4.14 (gate 3) pass
+  ring on surface-card: 6.31 (gate 3) pass
+  ring on tap-pad: 5.82 (gate 3) pass
+  metric on surface-panel (chart line): 6.41 (gate 3) pass
+  bulb-on-foreground on bulb-on (lit bulb numeral): 7.92 (gate 4.5) pass
+  bulb-live-foreground on bulb-live (live bulb numeral): 6.34 (gate 4.5) pass
+  bulb-off-foreground on housing (unlit bulb numeral): 8.02 (gate 4.5) pass
+  bulb-off-ring on housing (unlit bulb ring): 3.91 (gate 3) pass
+  bulb-on on housing (lit bulb edge): 6.29 (gate 3) pass
+  bulb-live on housing (live bulb edge): 5.03 (gate 3) pass
+
+Sodium Night [original]
+  foreground on background: 15.08 (gate 4.5) pass
+  surface-card-foreground on surface-card: 13.50 (gate 4.5) pass
+  tap-pad-foreground on tap-pad: 14.13 (gate 4.5) pass
+  muted-foreground on background: 8.74 (gate 4.5) pass
+  muted-foreground on surface-card: 7.83 (gate 4.5) pass
+  muted-foreground on tap-pad: 8.19 (gate 4.5) pass
+  muted-foreground on muted: 6.70 (gate 4.5) pass
+  primary-foreground on primary: 8.82 (gate 4.5) pass
+  live-foreground on live: 6.97 (gate 4.5) pass
+  metric-foreground on metric: 8.60 (gate 4.5) pass
+  improvement-foreground on improvement: 10.13 (gate 4.5) pass
+  fault-foreground on fault: 10.14 (gate 4.5) pass
+  metric on surface-card (as text): 8.14 (gate 4.5) pass
+  improvement on surface-card (as text): 9.58 (gate 4.5) pass
+  live on tap-pad (as text): 6.30 (gate 4.5) pass
+  fault on surface-card (as text): 9.08 (gate 4.5) pass
+  border on surface-card: 4.44 (gate 3) pass
+  border on background: 4.96 (gate 3) pass
+  border on tap-pad: 4.65 (gate 3) pass
+  ring on surface-card: 9.49 (gate 3) pass
+  ring on tap-pad: 9.93 (gate 3) pass
+  metric on surface-panel (chart line): 7.46 (gate 3) pass
+  bulb-on-foreground on bulb-on (lit bulb numeral): 10.15 (gate 4.5) pass
+  bulb-live-foreground on bulb-live (live bulb numeral): 6.97 (gate 4.5) pass
+  bulb-off-foreground on housing (unlit bulb numeral): 7.54 (gate 4.5) pass
+  bulb-off-ring on housing (unlit bulb ring): 3.67 (gate 3) pass
+  bulb-on on housing (lit bulb edge): 10.90 (gate 3) pass
+  bulb-live on housing (live bulb edge): 7.14 (gate 3) pass
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Martian+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ---------- colour options (data-palette) ---------- */
+html[data-theme="splitbook-approach-lights"]:not([data-palette]),
+html[data-theme="splitbook-approach-lights"][data-palette="daylight"] {
+  color-scheme: light;
+  --sb-background: #dcddd5;
+  --sb-foreground: #14181d;
+  --sb-surface-card: #f5f4ef;
+  --sb-surface-card-foreground: #14181d;
+  --sb-surface-panel: #e9e8e1;
+  --sb-surface-panel-foreground: #14181d;
+  --sb-tap-pad: #ecebe4;
+  --sb-tap-pad-foreground: #14181d;
+  --sb-primary: #1f3a5c;
+  --sb-primary-foreground: #ffffff;
+  --sb-muted: #e2e1d9;
+  --sb-muted-foreground: #474d55;
+  --sb-border: #6c727a;
+  --sb-input: #fbfaf6;
+  --sb-ring: #1d58b5;
+  --sb-live: #ad2e19;
+  --sb-live-foreground: #ffffff;
+  --sb-metric: #1c5596;
+  --sb-metric-foreground: #ffffff;
+  --sb-improvement: #2b6636;
+  --sb-improvement-foreground: #ffffff;
+  --sb-fault: #7d4a00;
+  --sb-fault-foreground: #ffffff;
+  --approach-lights-housing: #262b31;
+  --approach-lights-bulb-on: #f2b33d;
+  --approach-lights-bulb-on-foreground: #14181d;
+  --approach-lights-bulb-off-ring: #858d97;
+  --approach-lights-bulb-off-foreground: #c3c8ce;
+  --approach-lights-bulb-live: #ff7656;
+  --approach-lights-bulb-live-foreground: #14181d;
+  --approach-lights-rope: #6c727a;
+  --sb-shadow: rgba(20, 24, 29, 0.35);
+}
+html[data-theme="splitbook-approach-lights"][data-palette="bluehour"] {
+  color-scheme: dark;
+  --sb-background: #111923;
+  --sb-foreground: #e6edf5;
+  --sb-surface-card: #1a2431;
+  --sb-surface-card-foreground: #e6edf5;
+  --sb-surface-panel: #202c3b;
+  --sb-surface-panel-foreground: #e6edf5;
+  --sb-tap-pad: #16202b;
+  --sb-tap-pad-foreground: #e6edf5;
+  --sb-primary: #a7c8ff;
+  --sb-primary-foreground: #0b1522;
+  --sb-muted: #26323f;
+  --sb-muted-foreground: #aebccb;
+  --sb-border: #7b8a9c;
+  --sb-input: #141d28;
+  --sb-ring: #ffd36b;
+  --sb-live: #ff7a59;
+  --sb-live-foreground: #1a0b06;
+  --sb-metric: #8fc1ff;
+  --sb-metric-foreground: #0b1522;
+  --sb-improvement: #6fd39a;
+  --sb-improvement-foreground: #08190f;
+  --sb-fault: #e9b8ff;
+  --sb-fault-foreground: #1e0b29;
+  --approach-lights-housing: #0a1018;
+  --approach-lights-bulb-on: #eaf2ff;
+  --approach-lights-bulb-on-foreground: #0b1522;
+  --approach-lights-bulb-off-ring: #6f7f92;
+  --approach-lights-bulb-off-foreground: #a2b1c2;
+  --approach-lights-bulb-live: #ff7a59;
+  --approach-lights-bulb-live-foreground: #1a0b06;
+  --approach-lights-rope: #7b8a9c;
+  --sb-shadow: rgba(0, 0, 0, 0.6);
+}
+html[data-theme="splitbook-approach-lights"][data-palette="fresnel"] {
+  color-scheme: light;
+  --sb-background: #e3dbc7;
+  --sb-foreground: #1e1c16;
+  --sb-surface-card: #f6f1e4;
+  --sb-surface-card-foreground: #1e1c16;
+  --sb-surface-panel: #ece5d3;
+  --sb-surface-panel-foreground: #1e1c16;
+  --sb-tap-pad: #efe8d6;
+  --sb-tap-pad-foreground: #1e1c16;
+  --sb-primary: #3d4829;
+  --sb-primary-foreground: #ffffff;
+  --sb-muted: #e6dfcc;
+  --sb-muted-foreground: #4f4a3c;
+  --sb-border: #756e5c;
+  --sb-input: #fbf8f0;
+  --sb-ring: #2f5a8a;
+  --sb-live: #b12f1b;
+  --sb-live-foreground: #ffffff;
+  --sb-metric: #28527f;
+  --sb-metric-foreground: #ffffff;
+  --sb-improvement: #376628;
+  --sb-improvement-foreground: #ffffff;
+  --sb-fault: #74418a;
+  --sb-fault-foreground: #ffffff;
+  --approach-lights-housing: #2c3022;
+  --approach-lights-bulb-on: #f0a02e;
+  --approach-lights-bulb-on-foreground: #1e1c16;
+  --approach-lights-bulb-off-ring: #878d72;
+  --approach-lights-bulb-off-foreground: #c6caae;
+  --approach-lights-bulb-live: #ff7350;
+  --approach-lights-bulb-live-foreground: #1e1c16;
+  --approach-lights-rope: #756e5c;
+  --sb-shadow: rgba(20, 24, 29, 0.35);
+}
+html[data-theme="splitbook-approach-lights"][data-palette="original"] {
+  color-scheme: dark;
+  --sb-background: #16130f;
+  --sb-foreground: #efe7da;
+  --sb-surface-card: #221e18;
+  --sb-surface-card-foreground: #efe7da;
+  --sb-surface-panel: #2a251e;
+  --sb-surface-panel-foreground: #efe7da;
+  --sb-tap-pad: #1d1a15;
+  --sb-tap-pad-foreground: #efe7da;
+  --sb-primary: #f0a531;
+  --sb-primary-foreground: #1a1408;
+  --sb-muted: #302a22;
+  --sb-muted-foreground: #bcb19e;
+  --sb-border: #8e8370;
+  --sb-input: #1b1814;
+  --sb-ring: #9cc7ff;
+  --sb-live: #ff6f4d;
+  --sb-live-foreground: #1a0b06;
+  --sb-metric: #86b8ff;
+  --sb-metric-foreground: #0d1a2a;
+  --sb-improvement: #86d6a0;
+  --sb-improvement-foreground: #0b1d11;
+  --sb-fault: #d6b0ff;
+  --sb-fault-foreground: #1e0b29;
+  --approach-lights-housing: #0d0b08;
+  --approach-lights-bulb-on: #f5b640;
+  --approach-lights-bulb-on-foreground: #1a1408;
+  --approach-lights-bulb-off-ring: #75695a;
+  --approach-lights-bulb-off-foreground: #ab9f8b;
+  --approach-lights-bulb-live: #ff6f4d;
+  --approach-lights-bulb-live-foreground: #1a0b06;
+  --approach-lights-rope: #8e8370;
+  --sb-shadow: rgba(0, 0, 0, 0.6);
+}
+
+
+/* ---------- world type / shape / depth ---------- */
+html[data-theme="splitbook-approach-lights"] {
+  --sb-font-body: "Archivo", system-ui, sans-serif;
+  --sb-font-numeral: "Barlow Condensed", "Archivo", sans-serif;
+  --sb-font-plate: "Martian Mono", ui-monospace, monospace;
+  --sb-radius-sm: 3px;
+  --sb-radius-md: 6px;
+  --sb-radius-lg: 10px;
+  --sb-radius-bulb: 999px;
+  --sb-bevel: inset 0 1px 0 color-mix(in srgb, var(--sb-foreground) 6%, transparent), inset 0 -2px 0 color-mix(in srgb, var(--sb-foreground) 10%, transparent);
+  --sb-elevation-1: 0 1px 0 var(--sb-shadow), 0 6px 16px -10px var(--sb-shadow);
+  --sb-button-min-target: 3rem;
+  --sb-tap-key-size: 5rem;
+  --sb-length-cell-size: 2.5rem;
+  --sb-rating-step-size: 3rem;
+  --sb-focus-ring-width: 3px;
+  --sb-focus-ring-offset: 2px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--sb-background);
+  color: var(--sb-foreground);
+  font: 400 15px/1.45 var(--sb-font-body);
+  -webkit-font-smoothing: antialiased;
+  min-width: 1200px;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: var(--sb-focus-ring-width) solid var(--sb-ring); outline-offset: var(--sb-focus-ring-offset); }
+.plate { font: 500 10.5px/1.2 var(--sb-font-plate); letter-spacing: .08em; text-transform: uppercase; color: var(--sb-muted-foreground); }
+.num { font-family: var(--sb-font-numeral); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* ---------- lane rope = run of lights (divider) ---------- */
+.light-run { height: 12px; display: flex; align-items: center; gap: 0; }
+.light-run::before {
+  content: ""; flex: 1; height: 8px;
+  background: radial-gradient(circle at 4px 4px, var(--approach-lights-rope) 3px, transparent 3.5px) 0 0 / 14px 8px repeat-x;
+}
+
+/* ---------- page header ---------- */
+.page { padding: 12px 32px 12px; display: grid; gap: 10px; }
+.masthead { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; }
+.masthead h1 { margin: 2px 0 2px; font: 700 36px/1 var(--sb-font-numeral); letter-spacing: .01em; text-transform: uppercase; }
+.masthead p { margin: 1px 0 0; max-width: 78ch; font-size: 14px; }
+.masthead .sig b { font-weight: 600; }
+.illus { display: inline-flex; gap: 6px; align-items: center; margin-left: 10px; padding: 2px 8px; border: 1px dashed var(--sb-border); border-radius: var(--sb-radius-sm); }
+
+.switcher { display: grid; gap: 6px; }
+.switcher [role="radiogroup"] { display: flex; gap: 6px; }
+.swatch-btn {
+  min-height: var(--sb-button-min-target); display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px 6px 8px; border: 1.5px solid var(--sb-border); border-radius: var(--sb-radius-md);
+  background: var(--sb-surface-card); color: var(--sb-surface-card-foreground); text-align: left; box-shadow: var(--sb-bevel);
+}
+.swatch-btn[aria-checked="true"] { border-color: var(--sb-foreground); border-width: 2.5px; padding: 5px 11px 5px 7px; }
+.swatch-btn[aria-checked="true"] .tick { visibility: visible; }
+.swatch-btn .tick { visibility: hidden; font-weight: 700; }
+.chips3 { display: inline-flex; border-radius: 4px; overflow: hidden; border: 1px solid var(--sb-border); }
+.chips3 i { width: 12px; height: 22px; display: block; }
+.swatch-btn .name { display: grid; line-height: 1.15; font-size: 13px; font-weight: 600; }
+.swatch-btn .name small { font: 400 9.5px/1.3 var(--sb-font-plate); text-transform: uppercase; letter-spacing: .06em; color: var(--sb-muted-foreground); }
+
+/* ---------- stage ---------- */
+.stage { display: grid; grid-template-columns: 390px 1fr; gap: 28px; align-items: start; }
+.stage-label { display: flex; justify-content: space-between; margin: 0 0 4px; }
+
+/* ---------- phone / Capture ---------- */
+.phone {
+  width: 390px; border-radius: 28px; padding: 10px; background: var(--approach-lights-housing);
+  box-shadow: var(--sb-elevation-1);
+}
+.screen { border-radius: 20px; overflow: hidden; background: var(--sb-tap-pad); color: var(--sb-tap-pad-foreground); display: grid; }
+.cap-top { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; padding: 12px 14px 10px; border-bottom: 1.5px solid var(--sb-border); background: var(--sb-surface-card); color: var(--sb-surface-card-foreground); }
+.cap-top h2 { margin: 2px 0 0; font: 600 16px/1.2 var(--sb-font-body); }
+.btn {
+  min-height: var(--sb-button-min-target); padding: 0 16px; border-radius: var(--sb-radius-md);
+  border: 1.5px solid var(--sb-border); background: var(--sb-surface-card); color: var(--sb-surface-card-foreground);
+  font-weight: 600; box-shadow: var(--sb-bevel); display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn:active { transform: scale(.97); }
+.btn[data-variant="primary"] { background: var(--sb-primary); color: var(--sb-primary-foreground); border-color: var(--sb-primary); }
+
+.readout { padding: 10px 16px 6px; display: grid; grid-template-columns: 1fr auto; align-items: end; }
+.live-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--sb-live); font: 500 11px/1 var(--sb-font-plate); letter-spacing: .08em; text-transform: uppercase; }
+.live-tag::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--sb-live); box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-live) 25%, transparent), 0 0 10px var(--sb-live); }
+.split-big { font: 700 58px/0.95 var(--sb-font-numeral); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.split-total { text-align: right; }
+.split-total .num { font-size: 26px; font-weight: 600; line-height: 1; display: block; }
+
+/* the light chain (Length strip) */
+.chain {
+  margin: 2px 12px 8px; padding: 10px 10px 8px; border-radius: var(--sb-radius-md);
+  background: var(--approach-lights-housing); color: var(--approach-lights-bulb-off-foreground);
+  box-shadow: inset 0 2px 0 rgba(0,0,0,.25);
+}
+.chain-head { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.chain-head .plate { color: var(--approach-lights-bulb-off-foreground); }
+.bulbs { display: grid; grid-template-columns: repeat(var(--n, 8), 1fr); position: relative; }
+.bulbs::before { content: ""; position: absolute; left: 8%; right: 8%; top: calc(var(--sb-length-cell-size) / 2); height: 2px; background: var(--approach-lights-bulb-off-ring); opacity: .55; }
+.bulb { display: grid; justify-items: center; gap: 4px; position: relative; }
+.bulb .lamp {
+  width: var(--sb-length-cell-size); height: var(--sb-length-cell-size); border-radius: var(--sb-radius-bulb);
+  display: grid; place-items: center; font: 700 19px/1 var(--sb-font-numeral); font-variant-numeric: tabular-nums;
+  background: var(--approach-lights-housing); color: var(--approach-lights-bulb-off-foreground);
+  border: 2px dashed var(--approach-lights-bulb-off-ring);
+}
+.bulb .sp { font: 500 10.5px/1 var(--sb-font-plate); letter-spacing: .02em; min-height: 11px; }
+.bulb[data-state="lit"] .lamp {
+  background: var(--approach-lights-bulb-on); color: var(--approach-lights-bulb-on-foreground);
+  border: 2px solid var(--approach-lights-bulb-on);
+  box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--approach-lights-bulb-on-foreground) 22%, transparent);
+}
+.bulb[data-state="live"] .lamp {
+  background: var(--approach-lights-bulb-live); color: var(--approach-lights-bulb-live-foreground);
+  border: 2px solid var(--approach-lights-bulb-live);
+  box-shadow: 0 0 0 3px var(--approach-lights-housing), 0 0 0 5px var(--approach-lights-bulb-live), 0 0 16px 2px var(--approach-lights-bulb-live);
+}
+.bulb[data-state="live"] .sp::before { content: "▲ now"; text-transform: uppercase; }
+.bulb[data-state="lit"].igniting .lamp { animation: al-ignite 420ms cubic-bezier(.2,.7,.2,1) both; }
+@keyframes al-ignite {
+  0% { background: var(--approach-lights-housing); color: var(--approach-lights-bulb-off-foreground); transform: scale(.86); }
+  45% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.counters { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px; }
+.counter {
+  border: 1.5px solid var(--sb-border); border-radius: var(--sb-radius-lg); padding: 8px 10px 10px;
+  background: var(--sb-surface-card); color: var(--sb-surface-card-foreground); display: grid; gap: 4px; box-shadow: var(--sb-bevel);
+}
+.counter .lbl { font-weight: 600; font-size: 13.5px; line-height: 1.2; }
+.counter .val-row { display: flex; align-items: baseline; gap: 6px; }
+.counter .val { font: 700 40px/1 var(--sb-font-numeral); font-variant-numeric: tabular-nums; color: var(--sb-metric); }
+.counter .key {
+  min-height: var(--sb-tap-key-size); border-radius: var(--sb-radius-md); border: 2px solid var(--sb-metric);
+  background: var(--sb-metric); color: var(--sb-metric-foreground); font: 700 22px/1 var(--sb-font-numeral); letter-spacing: .02em;
+}
+.counter .key:active, .walltap:active { transform: scale(.97); }
+
+.thumb { padding: 10px 12px 12px; display: grid; gap: 8px; }
+.walltap {
+  min-height: var(--sb-tap-key-size); border-radius: var(--sb-radius-lg); border: 0;
+  background: var(--sb-primary); color: var(--sb-primary-foreground); display: grid; place-items: center; gap: 2px; padding: 10px;
+  box-shadow: var(--sb-bevel), 0 3px 0 color-mix(in srgb, var(--sb-primary) 60%, #000);
+}
+.walltap b { font: 700 28px/1 var(--sb-font-numeral); text-transform: uppercase; letter-spacing: .03em; }
+.walltap span { font-size: 13px; opacity: 1; }
+.walltap[disabled] { cursor: default; }
+.undo-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.undo-row .btn { width: 100%; justify-content: flex-start; }
+.undo-row .btn[disabled] { color: var(--sb-muted-foreground); cursor: default; }
+
+/* ---------- desktop window ---------- */
+.desk { border-radius: var(--sb-radius-lg); background: var(--sb-surface-panel); color: var(--sb-surface-panel-foreground); border: 1.5px solid var(--sb-border); box-shadow: var(--sb-elevation-1); overflow: hidden; }
+.app-bar { display: flex; align-items: center; gap: 16px; padding: 0 16px; min-height: 48px; background: var(--sb-surface-card); color: var(--sb-surface-card-foreground); border-bottom: 1.5px solid var(--sb-border); }
+.wordmark { font: 700 20px/1 var(--sb-font-numeral); text-transform: uppercase; letter-spacing: .04em; }
+.app-bar nav { display: flex; gap: 4px; }
+.app-bar nav a { color: inherit; text-decoration: none; padding: 6px 10px; border-radius: var(--sb-radius-sm); font-size: 14px; }
+.app-bar nav a[aria-current] { background: var(--sb-muted); color: var(--sb-foreground); font-weight: 600; box-shadow: inset 0 -2px 0 var(--sb-foreground); }
+.app-bar .who { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--sb-primary); color: var(--sb-primary-foreground); font-weight: 700; font-size: 12px; }
+
+.axis { display: grid; grid-template-columns: 1fr 22px 1fr; padding: 14px; }
+.t-line { position: relative; }
+.t-line::before { content: ""; position: absolute; top: 6px; bottom: 6px; left: 50%; width: 8px; transform: translateX(-50%);
+  background: radial-gradient(circle at 4px 4px, var(--approach-lights-rope) 3px, transparent 3.5px) 0 0 / 8px 14px repeat-y; }
+.sheet { background: var(--sb-surface-card); color: var(--sb-surface-card-foreground); border: 1.5px solid var(--sb-border); border-radius: var(--sb-radius-lg); padding: 14px 16px; display: grid; gap: 12px; align-content: start; box-shadow: var(--sb-bevel); }
+.sheet h3 { margin: 2px 0 0; font: 600 18px/1.2 var(--sb-font-body); }
+.sheet .sub { color: var(--sb-muted-foreground); font-size: 13px; }
+.sheet .chain { margin: 0; }
+.sheet .bulbs { --n: 8; }
+.sheet .bulb .lamp { width: 30px; height: 30px; font-size: 16px; }
+.sheet .bulbs::before { top: 15px; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { min-height: 32px; padding: 0 12px; border-radius: 999px; border: 1.5px solid var(--sb-border); background: var(--sb-surface-card); display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; }
+.chip[aria-pressed="true"] { background: var(--sb-foreground); color: var(--sb-background); border-color: var(--sb-foreground); }
+.chip[aria-pressed="true"]::before { content: "✓"; font-weight: 700; }
+
+.field-lbl { display: flex; justify-content: space-between; align-items: baseline; font-weight: 600; font-size: 14px; }
+.rating { display: grid; grid-template-columns: repeat(5, var(--sb-rating-step-size)); gap: 6px; margin-top: 6px; }
+.rating button { height: var(--sb-rating-step-size); border-radius: var(--sb-radius-md); border: 1.5px solid var(--sb-border); background: var(--sb-surface-card); font: 700 20px/1 var(--sb-font-numeral); font-variant-numeric: tabular-nums; position: relative; }
+.rating button[aria-checked="true"] { background: var(--approach-lights-housing); color: var(--approach-lights-bulb-on); border-color: var(--approach-lights-housing); }
+.rating button[aria-checked="true"]::after { content: ""; position: absolute; left: 50%; bottom: 5px; width: 14px; height: 3px; margin-left: -7px; background: currentColor; border-radius: 2px; }
+.cue { margin: 6px 0 0; font-size: 13px; color: var(--sb-muted-foreground); }
+.cue b { color: var(--sb-surface-card-foreground); }
+
+.counts { width: 100%; border-collapse: collapse; font-size: 13px; }
+.counts th { text-align: left; font-weight: 500; color: var(--sb-muted-foreground); padding: 4px 4px; }
+.counts td { padding: 3px 4px; text-align: center; font: 600 17px/1 var(--sb-font-numeral); font-variant-numeric: tabular-nums; }
+.counts thead th { text-align: center; font: 500 10px/1 var(--sb-font-plate); }
+.counts thead th:first-child { text-align: left; }
+.counts tbody tr + tr { border-top: 1px solid color-mix(in srgb, var(--sb-border) 45%, transparent); }
+
+.fault { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; padding: 10px 12px; border: 1.5px solid var(--sb-fault); border-radius: var(--sb-radius-md); }
+.fault .flag { width: 30px; height: 30px; display: grid; place-items: center; background: var(--sb-fault); color: var(--sb-fault-foreground); clip-path: polygon(0 0, 100% 0, 78% 50%, 100% 100%, 0 100%); font: 700 14px/1 var(--sb-font-numeral); padding-right: 6px; }
+.fault p { margin: 0; font-size: 13.5px; }
+.fault .plate { color: var(--sb-fault); }
+.sheet-foot { display: flex; gap: 8px; justify-content: flex-end; }
+
+.trend .big-claim { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; padding: 10px 12px; border-radius: var(--sb-radius-md); border: 1.5px solid var(--sb-improvement); }
+.trend .delta { font: 700 40px/1 var(--sb-font-numeral); color: var(--sb-improvement); display: flex; align-items: center; gap: 4px; }
+.trend .delta::before { content: "▲"; font-size: 18px; }
+.trend .big-claim p { margin: 0; font-size: 14px; }
+.trend .big-claim .plate { color: var(--sb-improvement); }
+.chart { width: 100%; height: auto; display: block; }
+.chart .grid line { stroke: var(--sb-border); stroke-width: 1; stroke-dasharray: 2 5; opacity: .7; }
+.chart text { fill: var(--sb-muted-foreground); font: 500 10px var(--sb-font-plate); }
+.chart .line { fill: none; stroke: var(--sb-metric); stroke-width: 2.5; stroke-linejoin: round; }
+.chart .pt { fill: var(--sb-surface-card); stroke: var(--sb-metric); stroke-width: 2; }
+.chart .pt.last { fill: var(--sb-metric); }
+.chart .lastlbl { fill: var(--sb-metric-foreground); font: 700 13px var(--sb-font-numeral); }
+.chart .lastbg { fill: var(--sb-metric); }
+.explain { font-size: 13px; color: var(--sb-muted-foreground); margin: 0; }
+.mini { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding-top: 10px; border-top: 1px solid color-mix(in srgb, var(--sb-border) 45%, transparent); }
+.mini .k { font-weight: 600; font-size: 14px; }
+.mini .v { font: 700 24px/1 var(--sb-font-numeral); font-variant-numeric: tabular-nums; color: var(--sb-improvement); }
+.mini .v::before { content: "▲ "; font-size: 13px; }
+
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+  .btn:active, .walltap:active, .counter .key:active { transform: none; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="masthead">
+    <div>
+      <div class="plate">Splitbook · world 01 of 05 · theme <span lang="en">splitbook-approach-lights</span></div>
+      <h1>Approach Lights</h1>
+      <p><b>Idea.</b> The lane rope as a carrier deck-approach light chain: dividers and Set groups are runs of lights.</p>
+      <p class="sig"><b>Signature.</b> The Length counter lights bulb by bulb, each bulb carrying its Length number, never colour alone. Press <b>Wall tap</b> on the phone to try it. <span class="illus plate">Illustrative data</span></p>
+    </div>
+    <div class="switcher">
+      <span class="plate" id="pal-lbl">Colour option</span>
+      <div role="radiogroup" aria-labelledby="pal-lbl" id="palettes"></div>
+    </div>
+  </header>
+
+  <div class="light-run" aria-hidden="true"></div>
+
+  <main class="stage">
+    <section aria-labelledby="cap-h">
+      <div class="stage-label"><span class="plate" id="cap-h">Live Capture · phone 390 px</span><span class="plate">Tap Pad</span></div>
+      <div class="phone">
+        <div class="screen">
+          <div class="cap-top">
+            <div>
+              <div class="plate">Swim 3 · Set B · 25 m pool</div>
+              <h2>200 m Freestyle · Drill</h2>
+            </div>
+            <button class="btn" type="button">End Swim</button>
+          </div>
+
+          <div class="readout">
+            <div>
+              <span class="live-tag" id="live-tag">Recording · Length <span id="cur-len">4</span></span>
+              <div class="split-big" id="split" aria-live="off">0:07.4</div>
+            </div>
+            <div class="split-total">
+              <span class="plate">Swim total</span>
+              <span class="num" id="total">0:59.5</span>
+            </div>
+          </div>
+
+          <div class="chain" aria-labelledby="chain-lbl">
+            <div class="chain-head"><span class="plate" id="chain-lbl">Length strip · 8 Lengths</span><span class="plate" id="chain-count">3 of 8 lit</span></div>
+            <ol class="bulbs" id="bulbs" style="--n:8; list-style:none; margin:0; padding:0"></ol>
+          </div>
+
+          <div class="counters">
+            <div class="counter">
+              <div class="plate">Focus metric 1</div>
+              <div class="lbl">Underwater kicks</div>
+              <div class="val-row"><span class="val" id="kicks">0</span><span class="plate">off this wall</span></div>
+              <button class="key" type="button" id="kick-btn">+1 kick</button>
+            </div>
+            <div class="counter">
+              <div class="plate">Focus metric 2</div>
+              <div class="lbl">Stroke count</div>
+              <div class="val-row"><span class="val" id="strokes">0</span><span class="plate">this Length</span></div>
+              <button class="key" type="button" id="stroke-btn">+1 stroke</button>
+            </div>
+          </div>
+
+          <div class="thumb">
+            <button class="walltap" type="button" id="wall-btn"><b>Wall tap</b><span id="wall-sub">Ends Length 4 and lights its bulb</span></button>
+            <div class="undo-row">
+              <button class="btn" type="button" id="undo-btn" disabled><span id="undo-lbl">Nothing to undo</span></button>
+              <button class="btn" type="button" id="reset-btn">Reset demo</button>
+            </div>
+            <p class="sr" id="announce" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="desk-h">
+      <div class="stage-label"><span class="plate" id="desk-h">Desk · Review sheet ↔ Metric trend · 1440 px</span><span class="plate">Swimmer: Ava (illustrative)</span></div>
+      <div class="desk">
+        <div class="app-bar">
+          <span class="wordmark">Splitbook</span>
+          <nav aria-label="Main"><a href="#" aria-current="page">Sessions</a><a href="#">Trends</a><a href="#">Swimmers</a><a href="#">Templates</a></nav>
+          <span class="who"><span class="avatar" aria-hidden="true">AV</span>Ava</span>
+        </div>
+        <div class="axis">
+          <section class="sheet" aria-labelledby="rv-h">
+            <div>
+              <div class="plate">Review sheet · Swim 3 · Set B</div>
+              <h3 id="rv-h">200 m Freestyle · Drill · 2:31.6</h3>
+              <div class="sub">Tuesday session, 25 m pool. Fill in what the Tap Pad couldn't.</div>
+            </div>
+            <div class="chain">
+              <div class="chain-head"><span class="plate">Length strip · all 8 lit</span><span class="plate">split per Length</span></div>
+              <ol class="bulbs" id="rv-bulbs" style="list-style:none; margin:0; padding:0"></ol>
+            </div>
+            <table class="counts">
+              <caption class="sr">Counts per Length</caption>
+              <thead><tr><th scope="col">Length</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Kicks off the wall</th><td>5</td><td>6</td><td>5</td><td>6</td><td>5</td><td>6</td><td>5</td><td>5</td></tr>
+                <tr><th scope="row">Strokes</th><td>14</td><td>15</td><td>15</td><td>15</td><td>16</td><td>15</td><td>16</td><td>16</td></tr>
+              </tbody>
+            </table>
+            <div>
+              <div class="field-lbl"><span id="rate-lbl">Head position</span><span class="plate">Technique point · 1–5</span></div>
+              <div class="rating" role="radiogroup" aria-labelledby="rate-lbl" id="rating"></div>
+              <p class="cue" id="cue"></p>
+            </div>
+            <div class="fault">
+              <span class="flag" aria-hidden="true">!</span>
+              <div>
+                <div class="plate">Observer's note · fault · Length 6 turn</div>
+                <p>One-hand touch at the turn, noted for the coach. This is a note to look at together, not an official call.</p>
+              </div>
+            </div>
+            <div class="chip-row" aria-label="Training type">
+              <button class="chip" type="button" aria-pressed="false">Aerobic</button>
+              <button class="chip" type="button" aria-pressed="true">Drill</button>
+              <button class="chip" type="button" aria-pressed="false">Sprint</button>
+              <button class="chip" type="button" aria-pressed="false">Race pace</button>
+            </div>
+            <div class="sheet-foot">
+              <button class="btn" type="button">Back to Tap Pad</button>
+              <button class="btn" data-variant="primary" type="button">Save Swim</button>
+            </div>
+          </section>
+
+          <div class="t-line" aria-hidden="true"></div>
+
+          <section class="sheet trend" aria-labelledby="tr-h">
+            <div>
+              <div class="plate">Metric trend · Ava · Mar–Nov</div>
+              <h3 id="tr-h">Underwater kicks off each wall</h3>
+              <div class="sub">Dolphin kicks under water after each push-off, averaged per wall. More kicks usually means a stronger, faster start to each Length.</div>
+            </div>
+            <div class="big-claim">
+              <span class="delta num">3</span>
+              <div>
+                <div class="plate">Better than March</div>
+                <p>3 more kicks off every wall than in March, with fewer strokes per Length too.</p>
+              </div>
+            </div>
+            <svg class="chart" viewBox="0 0 440 210" role="img" aria-labelledby="chart-t">
+              <title id="chart-t">Average underwater kicks per wall by month, rising from 2.6 in March to 5.6 in November (illustrative).</title>
+              <g class="grid" id="grid"></g>
+              <polyline class="line" id="line" points=""></polyline>
+              <g id="pts"></g>
+            </svg>
+            <p class="explain">Each point is the monthly average across freestyle Swims. Illustrative data.</p>
+            <div class="mini">
+              <span class="k">Strokes per Length</span><span class="v">2 fewer</span>
+              <span class="explain">Down from 17 to 15: each stroke carries Ava further.</span><span class="plate">17 → 15</span>
+              <span class="k">Head position rating</span><span class="v">+1</span>
+              <span class="explain">Rated 3 in March, 4 now. Head stays still between breaths.</span><span class="plate">3 → 4</span>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  const PALETTES = {"daylight":{"label":"Deck Daylight","background":"#dcddd5","bulb-on":"#f2b33d","live":"#ad2e19"},"bluehour":{"label":"Blue Hour","background":"#111923","bulb-on":"#eaf2ff","live":"#ff7a59"},"fresnel":{"label":"Fresnel Sand","background":"#e3dbc7","bulb-on":"#f0a02e","live":"#b12f1b"},"original":{"label":"Sodium Night","background":"#16130f","bulb-on":"#f5b640","live":"#ff6f4d"}};
+  const root = document.documentElement;
+  const group = document.getElementById('palettes');
+  Object.entries(PALETTES).forEach(([id, p], i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'swatch-btn'; b.setAttribute('role', 'radio');
+    b.dataset.id = id; b.setAttribute('aria-checked', String(i === 0)); b.tabIndex = i === 0 ? 0 : -1;
+    b.innerHTML = `<span class="chips3" aria-hidden="true"><i style="background:${p.background}"></i><i style="background:${p['bulb-on']}"></i><i style="background:${p.live}"></i></span><span class="name">${p.label}<small>${i === 0 ? 'Recommended' : id === 'original' ? 'Original' : 'Alternative'}</small></span><span class="tick" aria-hidden="true">✓</span>`;
+    group.appendChild(b);
+  });
+  const radios = [...group.children];
+  const pick = (b, focus) => {
+    radios.forEach(r => { const on = r === b; r.setAttribute('aria-checked', String(on)); r.tabIndex = on ? 0 : -1; });
+    root.dataset.palette = b.dataset.id; if (focus) b.focus();
+  };
+  group.addEventListener('click', e => { const b = e.target.closest('.swatch-btn'); if (b) pick(b); });
+  group.addEventListener('keydown', e => {
+    const i = radios.indexOf(document.activeElement); if (i < 0) return;
+    const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (d) { e.preventDefault(); pick(radios[(i + d + radios.length) % radios.length], true); }
+  });
+
+  // ---- Capture: light chain signature ----
+  const N = 8;
+  const START = [{ s: 15.8, k: 5, st: 14 }, { s: 18.4, k: 6, st: 15 }, { s: 18.9, k: 5, st: 15 }];
+  const fmt = t => { const m = Math.floor(t / 60), s = t - m * 60; return `${m}:${s.toFixed(1).padStart(4, '0')}`; };
+  const $ = id => document.getElementById(id);
+  const bulbsEl = $('bulbs');
+  for (let i = 0; i < N; i++) {
+    const li = document.createElement('li'); li.className = 'bulb';
+    li.innerHTML = `<span class="lamp">${i + 1}</span><span class="sp"></span>`;
+    bulbsEl.appendChild(li);
+  }
+  const bulbs = [...bulbsEl.children];
+  let lengths, kicks, strokes, lenStart, undo;
+  const reset = () => {
+    lengths = START.map(x => ({ ...x })); kicks = 0; strokes = 0; undo = [];
+    lenStart = performance.now() - 7400; render();
+  };
+  const elapsed = () => (performance.now() - lenStart) / 1000;
+  const done = () => lengths.length >= N;
+  function render(ignite) {
+    bulbs.forEach((b, i) => {
+      const L = lengths[i];
+      const state = L ? 'lit' : (i === lengths.length ? 'live' : 'off');
+      b.dataset.state = state;
+      b.classList.toggle('igniting', ignite === i);
+      b.querySelector('.sp').textContent = L ? L.s.toFixed(1) : '';
+      b.setAttribute('aria-label', `Length ${i + 1}: ` + (L ? `lit, split ${L.s.toFixed(1)} seconds` : state === 'live' ? 'swimming now' : 'not yet swum'));
+    });
+    $('chain-count').textContent = `${lengths.length} of ${N} lit`;
+    $('kicks').textContent = kicks; $('strokes').textContent = strokes;
+    const cur = lengths.length + 1;
+    $('cur-len').textContent = done() ? N : cur;
+    $('wall-btn').disabled = done();
+    $('wall-sub').textContent = done() ? 'Swim complete · Review sheet next' : `Ends Length ${cur} and lights its bulb`;
+    $('kick-btn').disabled = $('stroke-btn').disabled = done();
+    $('live-tag').style.visibility = done() ? 'hidden' : 'visible';
+    const last = undo[undo.length - 1];
+    $('undo-btn').disabled = !last;
+    $('undo-lbl').textContent = last ? `Undo ${last.label}` : 'Nothing to undo';
+    tick();
+  }
+  function tick() {
+    const sum = lengths.reduce((a, x) => a + x.s, 0);
+    const cur = done() ? 0 : elapsed();
+    $('split').textContent = done() ? fmt(lengths[N - 1].s) : fmt(cur);
+    $('total').textContent = fmt(sum + cur);
+  }
+  setInterval(() => { if (!done()) tick(); }, 100);
+  $('wall-btn').addEventListener('click', () => {
+    if (done()) return;
+    const s = Math.round(elapsed() * 10) / 10;
+    const i = lengths.length;
+    undo.push({ label: `wall tap · Length ${i + 1}`, type: 'wall', prev: { kicks, strokes, lenStart } });
+    lengths.push({ s, k: kicks, st: strokes });
+    kicks = 0; strokes = 0; lenStart = performance.now();
+    render(i);
+    $('announce').textContent = `Length ${i + 1} lit, split ${s.toFixed(1)} seconds`;
+  });
+  const bump = (kind, label) => () => {
+    if (done()) return;
+    undo.push({ label, type: kind });
+    if (kind === 'kick') kicks++; else strokes++;
+    render();
+  };
+  $('kick-btn').addEventListener('click', bump('kick', 'kick +1'));
+  $('stroke-btn').addEventListener('click', bump('stroke', 'stroke +1'));
+  $('undo-btn').addEventListener('click', () => {
+    const u = undo.pop(); if (!u) return;
+    if (u.type === 'wall') { lengths.pop(); ({ kicks, strokes, lenStart } = u.prev); }
+    else if (u.type === 'kick') kicks = Math.max(0, kicks - 1);
+    else strokes = Math.max(0, strokes - 1);
+    render();
+    $('announce').textContent = `Undid ${u.label}`;
+  });
+  $('reset-btn').addEventListener('click', reset);
+  reset();
+
+  // ---- Review sheet: static, fully lit chain ----
+  const RV = [15.8, 18.4, 18.9, 19.3, 19.6, 19.8, 19.9, 19.9];
+  $('rv-bulbs').innerHTML = RV.map((s, i) => `<li class="bulb" data-state="lit" aria-label="Length ${i + 1}, split ${s} seconds"><span class="lamp">${i + 1}</span><span class="sp">${s.toFixed(1)}</span></li>`).join('');
+
+  const CUES = {
+    1: 'Head lifts forward on most strokes; hips sink.',
+    2: 'Head lifts to breathe on most Lengths.',
+    3: 'Head mostly still; lifts to breathe on some Lengths.',
+    4: 'Head still and in line; one eye stays in the water to breathe.',
+    5: 'Head still on every Length, including the last two.'
+  };
+  const rating = $('rating');
+  const setRate = (v, focus) => {
+    [...rating.children].forEach(b => { const on = +b.dataset.v === v; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
+    $('cue').innerHTML = `<b>${v} of 5.</b> ${CUES[v]}`;
+  };
+  for (let v = 1; v <= 5; v++) {
+    const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'radio'); b.dataset.v = v; b.textContent = v;
+    b.setAttribute('aria-label', `${v}: ${CUES[v]}`);
+    b.addEventListener('click', () => setRate(v));
+    rating.appendChild(b);
+  }
+  rating.addEventListener('keydown', e => {
+    const cur = +(rating.querySelector('[aria-checked="true"]')?.dataset.v || 4);
+    const d = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[e.key];
+    if (d) { e.preventDefault(); setRate(Math.min(5, Math.max(1, cur + d)), true); }
+  });
+  setRate(4);
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(o => o.setAttribute('aria-pressed', String(o === c)));
+  }));
+
+  // ---- Metric trend: plain line ----
+  const M = ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'];
+  const V = [2.6, 2.9, 3.1, 3.6, 3.9, 4.4, 4.8, 5.3, 5.6];
+  const x = i => 34 + i * 48, y = v => 186 - (v - 1) * 30;
+  $('grid').innerHTML = [2, 3, 4, 5, 6].map(v => `<line x1="30" x2="430" y1="${y(v)}" y2="${y(v)}"></line><text x="4" y="${y(v) + 3}">${v}</text>`).join('')
+    + M.map((m, i) => `<text x="${x(i) - 9}" y="205">${m}</text>`).join('');
+  $('line').setAttribute('points', V.map((v, i) => `${x(i)},${y(v)}`).join(' '));
+  const li = V.length - 1;
+  $('pts').innerHTML = V.map((v, i) => `<circle class="pt${i === li ? ' last' : ''}" cx="${x(i)}" cy="${y(v)}" r="${i === li ? 6 : 4}"></circle>`).join('')
+    + `<rect class="lastbg" x="${x(li) - 40}" y="${y(V[li]) - 30}" width="34" height="20" rx="3"></rect><text class="lastlbl" x="${x(li) - 34}" y="${y(V[li]) - 15}">${V[li].toFixed(1)}</text>`
+    + `<text x="${x(0) + 8}" y="${y(V[0]) + 16}">${V[0].toFixed(1)}</text>`;
+})();
+</script>
+</body>
+</html>

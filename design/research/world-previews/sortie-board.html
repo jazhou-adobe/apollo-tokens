@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en-GB" data-theme="splitbook-sortie-board" data-palette="ready-room">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Splitbook world preview: Sortie Board</title>
+<!--
+  Sortie Board: Phase 2 quick preview (world 03 of 05, theme value splitbook-sortie-board).
+  Fonts: Sofia Sans Extra Condensed (display, board headings), IBM Plex Sans Condensed (body and tabular numerals), IBM Plex Mono (callsign Swim IDs).
+
+  Measured WCAG contrast ratios per colour option (truncated to 2 dp, never rounded up).
+  Gates from design/brief.md: role/role-foreground >= 4.5; muted-foreground on background, every surface, muted and tap-pad >= 4.5;
+  border and ring on every surface, muted (input) and tap-pad >= 3; live, metric, improvement, fault on surface-card and tap-pad >= 3.
+  `input` equals `border` in every option. All four options pass every gate.
+
+  ready-room (recommended):
+    background/foreground 12.05 | surface-panel/fg 10.84 | surface-card/fg 10.23 | tap-pad/fg 11.33 | primary/fg 12.82 | accent/fg 10.05
+    live/fg 6.46 | metric/fg 8.09 | improvement/fg 8.60 | fault/fg 9.51 | muted/muted-fg 5.38
+    muted-fg on background 7.72 | surface-panel 6.95 | surface-card 6.26 | tap-pad 6.75 | muted 5.38
+    border on background 4.82 | surface-panel 4.33 | surface-card 3.91 | tap-pad 4.21 | muted 3.36
+    ring on background 9.13 | surface-panel 8.22 | surface-card 7.41 | tap-pad 7.99 | muted 6.37
+    live on card 4.25, tap-pad 4.58 | metric on card 5.72, tap-pad 6.16 | improvement on card 6.23, tap-pad 6.72 | fault on card 6.66, tap-pad 7.18
+  haze-gray (alternative, light):
+    background/foreground 12.31 | surface-panel/fg 13.58 | surface-card/fg 15.20 | tap-pad/fg 16.91 | primary/fg 14.57 | accent/fg 10.43
+    live/fg 6.65 | metric/fg 7.01 | improvement/fg 6.58 | fault/fg 6.48 | muted/muted-fg 6.00
+    muted-fg on background 6.77 | surface-panel 7.47 | surface-card 8.36 | tap-pad 8.92 | muted 6.00
+    border on background 3.95 | surface-panel 4.36 | surface-card 4.88 | tap-pad 5.20 | muted 3.50
+    ring on background 5.63 | surface-panel 6.21 | surface-card 6.95 | tap-pad 7.41 | muted 4.98
+    live on card 5.61, tap-pad 5.98 | metric on card 5.92, tap-pad 6.31 | improvement on card 5.55, tap-pad 5.92 | fault on card 5.47, tap-pad 5.83
+  grease-board (alternative, olive slate):
+    background/foreground 13.03 | surface-panel/fg 11.79 | surface-card/fg 10.97 | tap-pad/fg 11.87 | primary/fg 11.09 | accent/fg 11.54
+    live/fg 7.52 | metric/fg 9.36 | improvement/fg 9.93 | fault/fg 9.98 | muted/muted-fg 5.63
+    muted-fg on background 8.24 | surface-panel 7.45 | surface-card 6.69 | tap-pad 7.11 | muted 5.63
+    border on background 5.06 | surface-panel 4.58 | surface-card 4.11 | tap-pad 4.37 | muted 3.46
+    ring on background 10.53 | surface-panel 9.53 | surface-card 8.55 | tap-pad 9.08 | muted 7.19
+    live on card 5.25, tap-pad 5.58 | metric on card 6.90, tap-pad 7.34 | improvement on card 7.66, tap-pad 8.14 | fault on card 7.42, tap-pad 7.89
+  original (the literal reference: navy ready-room board, white letters, yellow grease pencil):
+    background/foreground 14.05 | surface-panel/fg 12.85 | surface-card/fg 11.81 | tap-pad/fg 12.90 | primary/fg 11.55 | accent/fg 14.05
+    live/fg 7.37 | metric/fg 9.71 | improvement/fg 9.40 | fault/fg 11.25 | muted/muted-fg 6.19
+    muted-fg on background 8.78 | surface-panel 8.03 | surface-card 7.18 | tap-pad 7.71 | muted 6.19
+    border on background 5.12 | surface-panel 4.68 | surface-card 4.19 | tap-pad 4.50 | muted 3.61
+    ring on background 11.10 | surface-panel 10.15 | surface-card 9.08 | tap-pad 9.75 | muted 7.83
+    live on card 5.07, tap-pad 5.44 | metric on card 7.16, tap-pad 7.69 | improvement on card 7.42, tap-pad 7.97 | fault on card 8.40, tap-pad 9.02
+
+  Usage note: live, metric, improvement and fault appear only as fills (with their -foreground text) or as boundaries,
+  never as small text on a surface, so the 3:1 boundary gate is the one that applies.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=Sofia+Sans+Extra+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ---------- World type, shape and depth (world-overridable tiers only) ---------- */
+  html[data-theme="splitbook-sortie-board"] {
+    --sb-font-display: "Sofia Sans Extra Condensed", "Arial Narrow", sans-serif;
+    --sb-font-body: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
+    --sb-font-mono: "IBM Plex Mono", ui-monospace, monospace;
+    --sb-radius-sm: 2px;
+    --sb-radius-md: 4px;
+    --sb-radius-lg: 6px;
+    --sb-depth-plate: inset 0 1px 0 color-mix(in srgb, var(--sb-foreground) 6%, transparent), 0 1px 0 var(--sb-shadow);
+    /* Deck sizing for Capture (core knob, not a world override) */
+    --sb-button-min-target: 3.5rem;
+    --sb-tap-key-size: 5.5rem;
+    --sb-length-cell-size: 4.75rem;
+    --sb-rating-step-size: 2.75rem;
+    --sb-focus-ring-width: 3px;
+    --sb-focus-ring-offset: 2px;
+    --sb-enter-scale: 1.06;
+  }
+
+  /* ---------- Colour options ---------- */
+  html[data-theme="splitbook-sortie-board"][data-palette="ready-room"] {
+    --sb-background: #22282E; --sb-foreground: #ECE7DA;
+    --sb-surface-panel: #283037; --sb-surface-panel-foreground: #ECE7DA;
+    --sb-surface-card: #2F373F; --sb-surface-card-foreground: #F1ECDF;
+    --sb-tap-pad: #2A3239; --sb-tap-pad-foreground: #F4EFE2;
+    --sb-muted: #38414A; --sb-muted-foreground: #B7BCB8;
+    --sb-border: #8A949D; --sb-input: #8A949D; --sb-ring: #F0C64F;
+    --sb-primary: #ECE7DA; --sb-primary-foreground: #1E2328;
+    --sb-accent: #E2D4A4; --sb-accent-foreground: #22282E;
+    --sb-live: #F27452; --sb-live-foreground: #1A1310;
+    --sb-metric: #82B8E6; --sb-metric-foreground: #0F1D2A;
+    --sb-improvement: #7ECB93; --sb-improvement-foreground: #0F2216;
+    --sb-fault: #E9BA4A; --sb-fault-foreground: #221A05;
+    --sb-shadow: rgb(0 0 0 / 0.35); --sb-rule: #3E4750;
+  }
+  html[data-theme="splitbook-sortie-board"][data-palette="haze-gray"] {
+    --sb-background: #D2D6D8; --sb-foreground: #12171C;
+    --sb-surface-panel: #DDE0E1; --sb-surface-panel-foreground: #12171C;
+    --sb-surface-card: #EBECEA; --sb-surface-card-foreground: #12171C;
+    --sb-tap-pad: #F3F3F0; --sb-tap-pad-foreground: #0E1216;
+    --sb-muted: #C5CACD; --sb-muted-foreground: #3B444C;
+    --sb-border: #5C6770; --sb-input: #5C6770; --sb-ring: #1C4F8C;
+    --sb-primary: #1B2129; --sb-primary-foreground: #F3F3F0;
+    --sb-accent: #2E3A46; --sb-accent-foreground: #F3F3F0;
+    --sb-live: #B0271D; --sb-live-foreground: #FFFFFF;
+    --sb-metric: #1C5A9C; --sb-metric-foreground: #FFFFFF;
+    --sb-improvement: #1F6A3D; --sb-improvement-foreground: #FFFFFF;
+    --sb-fault: #875200; --sb-fault-foreground: #FFFFFF;
+    --sb-shadow: rgb(20 28 36 / 0.18); --sb-rule: #C3C8CB;
+  }
+  html[data-theme="splitbook-sortie-board"][data-palette="grease-board"] {
+    --sb-background: #20241E; --sb-foreground: #EEEAD6;
+    --sb-surface-panel: #272C25; --sb-surface-panel-foreground: #EEEAD6;
+    --sb-surface-card: #2E342B; --sb-surface-card-foreground: #F2EEDB;
+    --sb-tap-pad: #293026; --sb-tap-pad-foreground: #F4F0DD;
+    --sb-muted: #384034; --sb-muted-foreground: #BCBDA9;
+    --sb-border: #8E957F; --sb-input: #8E957F; --sb-ring: #F2D15A;
+    --sb-primary: #F2D15A; --sb-primary-foreground: #1D200F;
+    --sb-accent: #D8E0C4; --sb-accent-foreground: #20241E;
+    --sb-live: #FF8357; --sb-live-foreground: #1E120C;
+    --sb-metric: #93C5E4; --sb-metric-foreground: #0F1C24;
+    --sb-improvement: #A9D58C; --sb-improvement-foreground: #15220C;
+    --sb-fault: #F0BE55; --sb-fault-foreground: #231A06;
+    --sb-shadow: rgb(0 0 0 / 0.35); --sb-rule: #3D4538;
+  }
+  html[data-theme="splitbook-sortie-board"][data-palette="original"] {
+    --sb-background: #152338; --sb-foreground: #F2F2EC;
+    --sb-surface-panel: #1A2A42; --sb-surface-panel-foreground: #F2F2EC;
+    --sb-surface-card: #20324D; --sb-surface-card-foreground: #F5F5EF;
+    --sb-tap-pad: #1C2D46; --sb-tap-pad-foreground: #F7F7F1;
+    --sb-muted: #293C59; --sb-muted-foreground: #B9C2CF;
+    --sb-border: #8494AC; --sb-input: #8494AC; --sb-ring: #FFD447;
+    --sb-primary: #FFD447; --sb-primary-foreground: #14202F;
+    --sb-accent: #F2F2EC; --sb-accent-foreground: #152338;
+    --sb-live: #FF7B5C; --sb-live-foreground: #1A0F0B;
+    --sb-metric: #8CC6FF; --sb-metric-foreground: #0C1A2B;
+    --sb-improvement: #83D69C; --sb-improvement-foreground: #0E2416;
+    --sb-fault: #FFC857; --sb-fault-foreground: #231906;
+    --sb-shadow: rgb(0 0 0 / 0.4); --sb-rule: #2C4263;
+  }
+
+  /* ---------- Page ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--sb-background); }
+  body {
+    margin: 0; color: var(--sb-foreground); background: var(--sb-background);
+    font: 400 14px/1.4 var(--sb-font-body);
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input { font: inherit; color: inherit; }
+  :focus-visible { outline: var(--sb-focus-ring-width) solid var(--sb-ring); outline-offset: var(--sb-focus-ring-offset); }
+  .sb-plate {
+    margin: 0; font: 600 11px/1 var(--sb-font-mono); letter-spacing: .08em; text-transform: uppercase;
+    color: var(--sb-muted-foreground);
+  }
+  .sb-callsign { font: 600 1em/1 var(--sb-font-mono); letter-spacing: .02em; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---------- Header ---------- */
+  .sb-world-head {
+    display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end;
+    padding: 14px 24px 12px; border-bottom: 1px solid var(--sb-border);
+  }
+  .sb-world-head h1 {
+    margin: 6px 0 4px; font: 800 44px/0.9 var(--sb-font-display); letter-spacing: .01em; text-transform: uppercase;
+  }
+  .sb-world-head .idea { margin: 0; max-width: 72ch; font-size: 15px; }
+  .sb-world-head .sig { margin: 6px 0 0; font-size: 14px; color: var(--sb-muted-foreground); }
+  .sb-world-head .sig b { color: var(--sb-foreground); font: 700 13px/1 var(--sb-font-display); letter-spacing: .12em; text-transform: uppercase; margin-right: 6px; }
+  .head-tools { display: grid; gap: 8px; justify-items: end; }
+  .sb-palette-switch { border: 0; margin: 0; padding: 0; display: flex; gap: 6px; }
+  .sb-palette-switch legend { float: left; margin-right: 10px; align-self: center; }
+  .sb-palette-switch label {
+    position: relative; display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: center;
+    min-height: 48px; padding: 6px 10px; border: 1px solid var(--sb-border); border-radius: var(--sb-radius-sm);
+    background: var(--sb-surface-panel); color: var(--sb-surface-panel-foreground); cursor: pointer;
+  }
+  .sb-palette-switch input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .sb-palette-switch label:has(input:checked) { background: var(--sb-primary); color: var(--sb-primary-foreground); border-color: var(--sb-primary); }
+  .sb-palette-switch label:has(input:focus-visible) { outline: var(--sb-focus-ring-width) solid var(--sb-ring); outline-offset: var(--sb-focus-ring-offset); }
+  .sw { display: flex; grid-row: span 2; }
+  .sw i { width: 12px; height: 26px; border: 1px solid color-mix(in srgb, currentColor 55%, transparent); }
+  .sw i + i { border-left: 0; }
+  .opt-name { font: 700 15px/1 var(--sb-font-display); letter-spacing: .06em; text-transform: uppercase; }
+  .opt-role { font: 500 10px/1 var(--sb-font-mono); letter-spacing: .06em; text-transform: uppercase; opacity: .85; }
+  .head-row { display: flex; gap: 8px; align-items: center; }
+  .sb-tag {
+    display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: var(--sb-radius-sm);
+    font: 600 11px/1 var(--sb-font-mono); letter-spacing: .06em; text-transform: uppercase;
+    border: 1px solid var(--sb-border); color: var(--sb-muted-foreground);
+  }
+  .sb-button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 16px;
+    border-radius: var(--sb-radius-sm); border: 1px solid var(--sb-border); background: var(--sb-surface-panel);
+    color: var(--sb-surface-panel-foreground); font: 700 15px/1 var(--sb-font-display); letter-spacing: .08em; text-transform: uppercase;
+    cursor: pointer; box-shadow: var(--sb-depth-plate);
+  }
+  .sb-button[data-variant="primary"] { background: var(--sb-primary); color: var(--sb-primary-foreground); border-color: var(--sb-primary); }
+  .sb-button:active { transform: scale(.98); }
+  .sb-button:disabled { opacity: .55; cursor: not-allowed; }
+
+  /* ---------- Stage ---------- */
+  .stage { display: grid; grid-template-columns: 406px 1fr; gap: 24px; padding: 12px 24px 16px; align-items: start; }
+  .frame-label { display: flex; justify-content: space-between; margin-bottom: 8px; }
+
+  /* ---------- Phone: Capture ---------- */
+  .sb-phone-frame { width: 406px; padding: 8px; border-radius: 34px; background: var(--sb-muted); border: 1px solid var(--sb-border); }
+  .sb-tap-pad {
+    width: 390px; height: 664px; border-radius: 26px; overflow: hidden;
+    background: var(--sb-tap-pad); color: var(--sb-tap-pad-foreground);
+    display: flex; flex-direction: column; padding: 14px 16px 16px; gap: 9px;
+  }
+  .cap-top { display: flex; align-items: center; gap: 10px; }
+  .cap-top .sb-callsign { font-size: 17px; }
+  .cap-top .who { margin-left: auto; font-size: 13px; color: var(--sb-muted-foreground); }
+  .sb-live-tag {
+    display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: var(--sb-radius-sm);
+    background: var(--sb-live); color: var(--sb-live-foreground);
+    font: 800 14px/1 var(--sb-font-display); letter-spacing: .14em;
+  }
+  .sb-live-tag .lamp { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .sb-live-tag[data-state="live"] { box-shadow: 0 0 0 3px color-mix(in srgb, var(--sb-live) 30%, transparent), 0 0 14px color-mix(in srgb, var(--sb-live) 55%, transparent); }
+  .sb-live-tag[data-state="done"] { background: var(--sb-muted); color: var(--sb-muted-foreground); box-shadow: none; }
+  .cap-event { margin: -4px 0 0; font: 700 15px/1.1 var(--sb-font-display); letter-spacing: .1em; text-transform: uppercase; color: var(--sb-muted-foreground); }
+
+  .sb-split-readout { border-top: 1px solid var(--sb-border); border-bottom: 1px solid var(--sb-border); padding: 6px 0 8px; }
+  .sb-split-readout .lbl { display: flex; justify-content: space-between; }
+  .sb-split-readout output {
+    display: block; font: 700 76px/0.95 var(--sb-font-body); letter-spacing: -.02em; font-variant-numeric: tabular-nums; margin: 4px 0 2px;
+  }
+  .sb-split-readout .sub { font-size: 14px; color: var(--sb-muted-foreground); }
+  .sb-split-readout .sub b { color: var(--sb-tap-pad-foreground); }
+
+  .strip-head { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .sb-length-strip { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .sb-length-strip li {
+    min-height: var(--sb-length-cell-size); padding: 6px 8px; border-radius: var(--sb-radius-sm);
+    border: 1px solid var(--sb-border); background: var(--sb-surface-card); color: var(--sb-surface-card-foreground);
+    display: grid; align-content: space-between;
+  }
+  .sb-length-strip .ln { font: 600 11px/1 var(--sb-font-mono); color: var(--sb-muted-foreground); }
+  .sb-length-strip .sp { font: 700 22px/1 var(--sb-font-body); }
+  .sb-length-strip .ct { font: 500 12px/1 var(--sb-font-mono); color: var(--sb-muted-foreground); }
+  .sb-length-strip li[data-state="live"] {
+    border: 2px solid var(--sb-live);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--sb-live) 40%, transparent);
+  }
+  .sb-length-strip li[data-state="pending"] { background: transparent; border-style: dashed; }
+  .sb-length-strip li[data-state="pending"] .sp { color: var(--sb-muted-foreground); }
+
+  .sb-focus { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sb-tap-key {
+    min-height: var(--sb-tap-key-size); padding: 8px 12px 10px; text-align: left; cursor: pointer;
+    border-radius: var(--sb-radius-md); border: 2px solid var(--sb-metric);
+    background: var(--sb-surface-card); color: var(--sb-surface-card-foreground);
+    display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr; gap: 0 6px;
+    box-shadow: var(--sb-depth-plate); touch-action: manipulation;
+  }
+  .sb-tap-key:active { transform: scale(.97); }
+  .sb-tap-key .k-lbl { font: 700 14px/1.1 var(--sb-font-display); letter-spacing: .08em; text-transform: uppercase; }
+  .sb-tap-key .k-code { justify-self: end; padding: 2px 5px; border-radius: var(--sb-radius-sm); background: var(--sb-metric); color: var(--sb-metric-foreground); font: 600 11px/1.2 var(--sb-font-mono); }
+  .sb-tap-key .k-num { grid-column: 1 / -1; align-self: end; font: 700 52px/0.9 var(--sb-font-body); }
+  .sb-tap-key .k-hint { grid-column: 1 / -1; font-size: 12px; color: var(--sb-muted-foreground); }
+  .sb-tap-key:disabled { opacity: .5; cursor: not-allowed; }
+
+  .undo-row { display: flex; align-items: center; gap: 10px; }
+  .undo-row .sb-button { min-height: var(--sb-button-min-target); }
+  .undo-row .last { font-size: 13px; color: var(--sb-muted-foreground); }
+  .undo-row .last b { color: var(--sb-tap-pad-foreground); font-weight: 600; }
+
+  .sb-wall-tap {
+    margin-top: auto; min-height: 84px; width: 100%; cursor: pointer; border-radius: var(--sb-radius-md);
+    border: 2px solid var(--sb-primary); background: var(--sb-primary); color: var(--sb-primary-foreground);
+    display: grid; place-content: center; gap: 4px; text-align: center; touch-action: manipulation;
+  }
+  .sb-wall-tap .big { font: 800 40px/0.9 var(--sb-font-display); letter-spacing: .1em; text-transform: uppercase; }
+  .sb-wall-tap .small { font: 500 14px/1 var(--sb-font-mono); letter-spacing: .04em; }
+  .sb-wall-tap:active { transform: scale(.985); }
+  .cap-foot { display: flex; justify-content: space-between; align-items: center; }
+  .cap-foot .sb-button { min-height: var(--sb-button-min-target); background: transparent; box-shadow: none; }
+  .cap-receipt {
+    display: none; padding: 10px 12px; border: 1px dashed var(--sb-border); border-radius: var(--sb-radius-sm);
+    font-size: 14px;
+  }
+  .sb-tap-pad[data-state="finished"] .cap-receipt { display: block; }
+  .sb-tap-pad[data-state="finished"] .sb-focus { display: none; }
+
+  /* ---------- Desk ---------- */
+  .desk { display: grid; grid-template-columns: 1fr 320px; gap: 18px; align-items: start; }
+  .sb-board {
+    background: var(--sb-surface-panel); color: var(--sb-surface-panel-foreground);
+    border: 1px solid var(--sb-border); border-radius: var(--sb-radius-md); box-shadow: var(--sb-depth-plate); overflow: hidden;
+  }
+  .board-head { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; padding: 12px 14px 10px; border-bottom: 1px solid var(--sb-border); }
+  .board-head h2 { margin: 4px 0 2px; font: 800 26px/1 var(--sb-font-display); letter-spacing: .04em; text-transform: uppercase; }
+  .board-head p.meta { margin: 0; font-size: 13px; color: var(--sb-muted-foreground); }
+  .board-head .boardno { text-align: right; align-self: start; }
+  .board-head .boardno b { display: block; margin-top: 4px; font: 800 30px/1 var(--sb-font-display); letter-spacing: .06em; }
+
+  table.sb-sortie-board { width: 100%; border-collapse: collapse; }
+  .sb-sortie-board th, .sb-sortie-board td { text-align: left; padding: 0 5px; white-space: nowrap; }
+  .sb-sortie-board thead th {
+    height: 28px; background: var(--sb-muted); color: var(--sb-muted-foreground);
+    font: 700 12px/1 var(--sb-font-display); letter-spacing: .12em; text-transform: uppercase;
+  }
+  .sb-sortie-board th:first-child, .sb-sortie-board td:first-child { padding-left: 12px; }
+  .sb-sortie-board .num { text-align: right; }
+  .sb-set-group th {
+    height: 28px; padding-top: 6px; border-top: 1px solid var(--sb-border);
+    font: 700 13px/1 var(--sb-font-display); letter-spacing: .12em; text-transform: uppercase; color: var(--sb-surface-panel-foreground);
+  }
+  .sb-set-group th span { font: 500 12px/1 var(--sb-font-body); letter-spacing: 0; text-transform: none; color: var(--sb-muted-foreground); margin-left: 8px; }
+  .sb-sortie-row { height: 40px; border-top: 1px solid var(--sb-rule); cursor: pointer; }
+  .sb-sortie-row td { font-size: 14px; }
+  .sb-sortie-row .seq { font: 500 12px/1 var(--sb-font-mono); color: var(--sb-muted-foreground); width: 28px; }
+  .sb-sortie-row .id button {
+    all: unset; cursor: pointer; font: 600 14px/1 var(--sb-font-mono); letter-spacing: .02em;
+    padding: 6px 4px; margin: 0 -4px; border-radius: var(--sb-radius-sm);
+  }
+  .sb-sortie-row .id button:focus-visible { outline: var(--sb-focus-ring-width) solid var(--sb-ring); outline-offset: 0; }
+  .sb-sortie-row .ev { font: 700 15px/1 var(--sb-font-display); letter-spacing: .08em; text-transform: uppercase; }
+  .sb-sortie-row .ty { color: var(--sb-muted-foreground); }
+  .counts { font: 500 13px/1 var(--sb-font-mono); }
+  .counts abbr { text-decoration: none; display: inline-block; padding: 2px 4px; margin-right: 6px; border-radius: var(--sb-radius-sm); background: var(--sb-metric); color: var(--sb-metric-foreground); font-size: 11px; }
+  .rating-cell { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+  .pips { display: inline-flex; gap: 2px; }
+  .pips i { width: 5px; height: 12px; border: 1px solid var(--sb-border); }
+  .pips i.on { background: var(--sb-surface-panel-foreground); border-color: var(--sb-surface-panel-foreground); }
+  .sb-fault-flag {
+    display: inline-flex; align-items: center; gap: 5px; padding: 3px 6px; border-radius: var(--sb-radius-sm);
+    background: var(--sb-fault); color: var(--sb-fault-foreground); font: 600 11px/1 var(--sb-font-mono); letter-spacing: .04em; text-transform: uppercase;
+  }
+  .nil { color: var(--sb-muted-foreground); }
+  .status { font: 700 13px/1 var(--sb-font-display); letter-spacing: .1em; text-transform: uppercase; }
+  .status[data-status="reviewed"]::before { content: "✓ "; }
+  .status[data-status="to-review"] { display: inline-block; padding: 3px 6px; border: 1px solid var(--sb-border); border-radius: var(--sb-radius-sm); }
+  .status[data-status="to-review"]::before { content: "○ "; }
+  .stamp { display: block; margin-top: 3px; font: 500 10px/1 var(--sb-font-mono); letter-spacing: .02em; color: var(--sb-muted-foreground); }
+  .sb-sortie-row[aria-selected="true"] { background: var(--sb-surface-card); color: var(--sb-surface-card-foreground); outline: 2px solid var(--sb-border); outline-offset: -2px; }
+  .sb-sortie-row:hover { background: var(--sb-surface-card); }
+  .board-foot { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; padding: 10px 14px 12px; border-top: 1px solid var(--sb-border); font-size: 12px; color: var(--sb-muted-foreground); }
+  .board-foot abbr { text-decoration: none; font: 600 11px/1 var(--sb-font-mono); color: var(--sb-surface-panel-foreground); }
+  .gain { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--sb-surface-panel-foreground); }
+  .gain .mark { padding: 3px 6px; border-radius: var(--sb-radius-sm); background: var(--sb-improvement); color: var(--sb-improvement-foreground); font: 700 11px/1 var(--sb-font-mono); }
+
+  /* ---------- Signature: a Swim prints in as a sortie row ---------- */
+  @keyframes sb-sortie-board-print { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes sb-sortie-board-feed {
+    0%, 65% { background-color: var(--sb-accent); color: var(--sb-accent-foreground); }
+    100% { background-color: var(--sb-surface-card); color: var(--sb-surface-card-foreground); }
+  }
+  @keyframes sb-sortie-board-stamp { from { opacity: 0; transform: scale(var(--sb-enter-scale)); } to { opacity: 1; transform: none; } }
+  .sb-sortie-row[data-state="printing"] { animation: sb-sortie-board-feed 2000ms ease-out both; }
+  .sb-sortie-row[data-state="printing"] td > .cell {
+    display: inline-block; animation: sb-sortie-board-print 360ms steps(12, end) both; animation-delay: calc(var(--i) * 90ms);
+  }
+  .sb-sortie-row[data-state="printing"] .stamp { animation: sb-sortie-board-stamp 220ms ease-out both; animation-delay: 1000ms; }
+  .sb-sortie-row[data-state="printing"] .seq,
+  .sb-sortie-row[data-state="printing"] .ty,
+  .sb-sortie-row[data-state="printing"] .stamp { color: inherit; }
+  .sb-sortie-row[data-state="printing"] .pips i { border-color: currentColor; }
+  .sb-sortie-row[data-state="printing"] .pips i.on { background: currentColor; }
+  @media (prefers-reduced-motion: reduce) {
+    .sb-sortie-row[data-state="printing"],
+    .sb-sortie-row[data-state="printing"] td > .cell,
+    .sb-sortie-row[data-state="printing"] .stamp { animation: none; }
+    .sb-button:active, .sb-tap-key:active, .sb-wall-tap:active { transform: none; }
+  }
+
+  /* ---------- Review sheet ---------- */
+  .sb-review-sheet {
+    background: var(--sb-surface-card); color: var(--sb-surface-card-foreground);
+    border: 1px solid var(--sb-border); border-radius: var(--sb-radius-md); box-shadow: var(--sb-depth-plate);
+    padding: 12px 14px 14px; display: grid; gap: 12px;
+  }
+  .sb-review-sheet h2 { margin: 4px 0 2px; font: 800 24px/1 var(--sb-font-display); letter-spacing: .04em; text-transform: uppercase; display: flex; gap: 10px; align-items: baseline; }
+  .sb-review-sheet h2 .sb-callsign { font-size: 17px; letter-spacing: 0; }
+  .sb-review-sheet .sub { margin: 0; font-size: 13px; color: var(--sb-muted-foreground); }
+  .rs-sec { border-top: 1px solid var(--sb-rule); padding-top: 10px; }
+  .rs-sec > .head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .rs-sec h3, .rs-sec legend { margin: 0; padding: 0; font: 700 14px/1.1 var(--sb-font-display); letter-spacing: .1em; text-transform: uppercase; }
+  .count-inputs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .count-inputs label { display: grid; gap: 3px; font: 600 11px/1 var(--sb-font-mono); color: var(--sb-muted-foreground); }
+  .count-inputs input {
+    width: 100%; height: 44px; padding: 0 8px; border-radius: var(--sb-radius-sm); border: 1px solid var(--sb-input);
+    background: var(--sb-tap-pad); color: var(--sb-tap-pad-foreground); font: 700 20px/1 var(--sb-font-body); text-align: center;
+  }
+  fieldset.sb-rating { border: 0; margin: 0; padding: 0; }
+  fieldset.sb-rating legend { float: left; width: 100%; margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .steps { clear: both; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .steps label { position: relative; }
+  .steps input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .steps span {
+    position: relative; display: grid; place-items: center; height: var(--sb-rating-step-size); border-radius: var(--sb-radius-sm);
+    border: 1px solid var(--sb-border); font: 700 18px/1 var(--sb-font-body); background: var(--sb-surface-card);
+  }
+  .steps input:checked + span { background: var(--sb-primary); color: var(--sb-primary-foreground); border-color: var(--sb-primary); }
+  .steps input:checked + span::after { content: ""; position: absolute; left: 50%; bottom: 4px; width: 14px; height: 3px; margin-left: -7px; background: currentColor; }
+  .steps input:focus-visible + span { outline: var(--sb-focus-ring-width) solid var(--sb-ring); outline-offset: var(--sb-focus-ring-offset); }
+  .cue { margin: 6px 0 0; font-size: 13px; min-height: 2.6em; }
+  .cue b { font-weight: 700; }
+  .fault-toggle {
+    width: 100%; min-height: 48px; display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; text-align: left;
+    padding: 8px 10px; border-radius: var(--sb-radius-sm); border: 1px dashed var(--sb-border); background: transparent; cursor: pointer;
+  }
+  .fault-toggle .shape { font-size: 16px; }
+  .fault-toggle .state { font: 700 12px/1 var(--sb-font-display); letter-spacing: .1em; text-transform: uppercase; }
+  .fault-toggle[aria-pressed="true"] { border: 2px solid var(--sb-fault); }
+  .fault-toggle[aria-pressed="true"] .state { padding: 3px 6px; border-radius: var(--sb-radius-sm); background: var(--sb-fault); color: var(--sb-fault-foreground); }
+  .fine { margin: 4px 0 0; font-size: 12px; color: var(--sb-muted-foreground); }
+  .rs-actions { display: flex; align-items: center; gap: 10px; }
+  .rs-actions .saved { font-size: 13px; color: var(--sb-muted-foreground); }
+  .live-region { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<header class="sb-world-head">
+  <div>
+    <p class="sb-plate">Splitbook · world 03 of 05 · splitbook-sortie-board · Phase 2 quick preview</p>
+    <h1>Sortie Board</h1>
+    <p class="idea">A briefing-room launch schedule: dense typeset sortie rows, callsign-style Swim IDs, condensed type on matte slate.</p>
+    <p class="sig"><b>Signature</b>A Swim prints in as a sortie row. Tap the wall to finish Length 4 on the phone, or press Replay print.</p>
+  </div>
+  <div class="head-tools">
+    <fieldset class="sb-palette-switch" id="palettes">
+      <legend class="sb-plate">Colour option</legend>
+      <label><input type="radio" name="palette" value="ready-room" checked><span class="sw"><i style="background:#22282E"></i><i style="background:#ECE7DA"></i><i style="background:#F27452"></i></span><span class="opt-name">Ready Room</span><span class="opt-role">Recommended</span></label>
+      <label><input type="radio" name="palette" value="haze-gray"><span class="sw"><i style="background:#D2D6D8"></i><i style="background:#1B2129"></i><i style="background:#B0271D"></i></span><span class="opt-name">Haze Gray</span><span class="opt-role">Alternative</span></label>
+      <label><input type="radio" name="palette" value="grease-board"><span class="sw"><i style="background:#20241E"></i><i style="background:#F2D15A"></i><i style="background:#FF8357"></i></span><span class="opt-name">Grease Board</span><span class="opt-role">Alternative</span></label>
+      <label><input type="radio" name="palette" value="original"><span class="sw"><i style="background:#152338"></i><i style="background:#FFD447"></i><i style="background:#FF7B5C"></i></span><span class="opt-name">Navy Board</span><span class="opt-role">Original</span></label>
+    </fieldset>
+    <div class="head-row">
+      <span class="sb-tag">Illustrative data · not a real Swimmer</span>
+      <button class="sb-button" id="replay" type="button">Replay print</button>
+    </div>
+  </div>
+</header>
+
+<main class="stage">
+  <!-- (a) Phone Capture -->
+  <section aria-labelledby="cap-label">
+    <div class="frame-label"><p class="sb-plate" id="cap-label">A · Live Capture · 390 px · Deck sizing</p><p class="sb-plate">Tap Pad</p></div>
+    <div class="sb-phone-frame">
+      <div class="sb-tap-pad" id="pad" data-state="live">
+        <div class="cap-top">
+          <span class="sb-live-tag" id="recTag" data-state="live"><span class="lamp" aria-hidden="true"></span><span id="recText">REC</span></span>
+          <span class="sb-callsign" id="capId">FR100-07</span>
+          <span class="who">Swimmer: Ellie (illustrative)</span>
+        </div>
+        <p class="cap-event">Free 100 · Swim · 25 m pool · Set A, 4 of 4</p>
+
+        <div class="sb-split-readout">
+          <div class="lbl"><span class="sb-plate">Running split</span><span class="sb-plate" id="lenOf">Length 3 of 4</span></div>
+          <output id="run" aria-live="off">0:58.4</output>
+          <div class="sub" id="runSub">This Length so far <b id="lenRun">6.5</b> s · last Length <b id="lastLen">26.1</b> s</div>
+        </div>
+
+        <div>
+          <div class="strip-head"><span class="sb-plate">Length strip</span><span class="sb-plate">split s · kicks off wall · strokes</span></div>
+          <ol class="sb-length-strip" id="strip" aria-label="Length strip"></ol>
+        </div>
+
+        <div class="cap-receipt" id="receipt" role="status"></div>
+
+        <div class="sb-focus" aria-label="Focus metrics">
+          <button class="sb-tap-key" type="button" data-metric="kicks">
+            <span class="k-lbl">Kicks off wall</span><span class="k-code">KOW</span>
+            <span class="k-num" id="kicksNum">5</span>
+            <span class="k-hint">Underwater kicks after the push-off. Tap per kick.</span>
+          </button>
+          <button class="sb-tap-key" type="button" data-metric="strokes">
+            <span class="k-lbl">Strokes</span><span class="k-code">SPL</span>
+            <span class="k-num" id="strokesNum">3</span>
+            <span class="k-hint">Arm strokes on this Length. Tap per stroke.</span>
+          </button>
+        </div>
+
+        <div class="undo-row">
+          <button class="sb-button" id="undo" type="button">Undo last tap</button>
+          <span class="last">Last tap: <b id="lastTap">stroke +1</b></span>
+        </div>
+
+        <button class="sb-wall-tap" id="wall" type="button"><span class="big" id="wallBig">Wall tap</span><span class="small" id="wallSmall">ends Length 3 · records the split</span></button>
+        <div class="cap-foot">
+          <span class="sb-plate">Times are the result, counts lead</span>
+          <button class="sb-button" id="endSwim" type="button">End Swim</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- (b) Desktop Session history + Review sheet -->
+  <section aria-labelledby="desk-label">
+    <div class="frame-label"><p class="sb-plate" id="desk-label">B · Session history + Review sheet · desktop</p><p class="sb-plate">Swims as sortie rows</p></div>
+    <div class="desk">
+      <div class="sb-board">
+        <div class="board-head">
+          <div>
+            <p class="sb-plate">Session board · illustrative data</p>
+            <h2>Thu 19 Nov · Riverside · 25 m</h2>
+            <p class="meta">Swimmer Ellie · 17:30 start · <span id="swimCount">6</span> Swims · Warm-up and Set A</p>
+          </div>
+          <div class="boardno"><p class="sb-plate">Board</p><b>02</b></div>
+        </div>
+        <table class="sb-sortie-board" aria-label="Swims in this Session">
+          <thead>
+            <tr><th scope="col">#</th><th scope="col">Swim ID</th><th scope="col">Event</th><th scope="col">Type</th><th scope="col">Focus by Length</th><th scope="col">Tech</th><th scope="col">Notes</th><th scope="col" class="num">Time</th><th scope="col">Status</th></tr>
+          </thead>
+          <tbody id="board"></tbody>
+        </table>
+        <div class="board-foot">
+          <span><abbr>KOW</abbr> kicks off wall: underwater kicks after each push-off</span>
+          <span><abbr>SPL</abbr> strokes per Length: arm strokes wall to wall</span>
+          <span class="gain"><span class="mark">▲ +1</span>1 more kick off every wall than Set A on 5 Nov (illustrative)</span>
+        </div>
+      </div>
+
+      <aside class="sb-review-sheet" aria-labelledby="rs-title" id="sheet">
+        <div>
+          <p class="sb-plate">Review sheet</p>
+          <h2 id="rs-title"><span class="sb-callsign" id="rsId">FR100-06</span><span id="rsEvent">Free 100</span></h2>
+          <p class="sub" id="rsSub">Set A, 3 of 4 · fill in straight after the Swim</p>
+        </div>
+        <div class="rs-sec">
+          <div class="head"><h3 id="rsCountsH">Kicks off wall, by Length</h3><span class="sb-plate">Correct if needed</span></div>
+          <div class="count-inputs" id="rsCounts"></div>
+        </div>
+        <div class="rs-sec">
+          <fieldset class="sb-rating" data-point="head">
+            <legend><span>Head position</span><span class="sb-plate">Technique point · 1–5</span></legend>
+            <div class="steps" id="stepsHead"></div>
+            <p class="cue" id="cueHead"></p>
+          </fieldset>
+        </div>
+        <div class="rs-sec">
+          <div class="head"><h3>Fault</h3><span class="sb-plate">Observer's note</span></div>
+          <button class="fault-toggle" id="faultBtn" type="button" aria-pressed="false">
+            <span class="shape" aria-hidden="true">◇</span>
+            <span id="faultName">No wall touch at a turn</span>
+            <span class="state" id="faultState">Not noted</span>
+          </button>
+          <p class="fine">Your note of what you saw, not an official call.</p>
+        </div>
+        <div class="rs-actions">
+          <button class="sb-button" data-variant="primary" id="saveSheet" type="button">Save Review sheet</button>
+          <span class="saved" id="savedMsg" role="status"></span>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+<div class="live-region" id="announce" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const root = document.documentElement;
+
+  /* Palette switcher */
+  $('palettes').addEventListener('change', (e) => { if (e.target.name === 'palette') root.dataset.palette = e.target.value; });
+
+  /* ---------- Session data (illustrative) ---------- */
+  const swims = [
+    { id: 'KK50-01', ev: 'Kick 50', ty: 'Kick', set: null, code: 'KOW', counts: [7, 6], tech: 3, fault: false, time: 62.8, status: 'reviewed' },
+    { id: 'BK50-02', ev: 'Back 50', ty: 'Swim', set: null, code: 'SPL', counts: [21, 22], tech: 2, fault: false, time: 44.9, status: 'reviewed' },
+    { id: 'BR50-03', ev: 'Breast 50', ty: 'Drill', set: null, code: 'SPL', counts: [9, 10], tech: 3, fault: true, time: 51.2, status: 'reviewed' },
+    { id: 'FR100-04', ev: 'Free 100', ty: 'Swim', set: 'A', code: 'KOW', counts: [6, 5, 5, 4], tech: 3, fault: false, time: 84.6, status: 'reviewed' },
+    { id: 'FR100-05', ev: 'Free 100', ty: 'Swim', set: 'A', code: 'KOW', counts: [6, 6, 5, 5], tech: 4, fault: false, time: 84.1, status: 'reviewed' },
+    { id: 'FR100-06', ev: 'Free 100', ty: 'Swim', set: 'A', code: 'KOW', counts: [6, 6, 6, 5], tech: 4, fault: true, time: 83.8, status: 'to-review' },
+  ];
+  let selected = 'FR100-06';
+
+  const fmt = (s) => { const m = Math.floor(s / 60); const r = (s - m * 60).toFixed(1).padStart(4, '0'); return `${m}:${r}`; };
+  const pips = (n) => [1, 2, 3, 4, 5].map((i) => `<i class="${i <= n ? 'on' : ''}"></i>`).join('');
+  const codeTitle = { KOW: 'Kicks off wall', SPL: 'Strokes per Length' };
+
+  function rowHTML(s, seq, printing) {
+    const stamp = printing ? `<span class="stamp">printed ${s.printedAt}</span>` : '';
+    const statusLabel = s.status === 'reviewed' ? 'Reviewed' : 'To review';
+    const cells = [
+      `<span class="cell" style="--i:0">${String(seq).padStart(2, '0')}</span>`,
+      `<span class="cell" style="--i:1"><button type="button" aria-label="Open Review sheet for Swim ${s.id}">${s.id}</button></span>`,
+      `<span class="cell" style="--i:2">${s.ev}</span>`,
+      `<span class="cell" style="--i:3">${s.ty}</span>`,
+      `<span class="cell counts" style="--i:4"><abbr title="${codeTitle[s.code]}">${s.code}</abbr>${s.counts.join(' ')}</span>`,
+      `<span class="cell rating-cell" style="--i:5">${s.tech ? s.tech + ' <span class="pips" aria-hidden="true">' + pips(s.tech) + '</span>' : '<span class="nil">–</span>'}</span>`,
+      `<span class="cell" style="--i:6">${s.fault ? '<span class="sb-fault-flag">◆ 1 note</span>' : '<span class="nil">None</span>'}</span>`,
+      `<span class="cell" style="--i:7">${fmt(s.time)}</span>`,
+      `<span class="cell" style="--i:8"><span class="status" data-status="${s.status}">${statusLabel}</span>${stamp}</span>`,
+    ];
+    const cls = ['seq', 'id', 'ev', 'ty', '', '', '', 'num', ''];
+    return `<tr class="sb-sortie-row" data-id="${s.id}" aria-selected="${s.id === selected}"${printing ? ' data-state="printing"' : ''}>${cells.map((c, i) => `<td class="${cls[i]}">${c}</td>`).join('')}</tr>`;
+  }
+
+  function renderBoard(printId) {
+    let html = ''; let lastSet;
+    swims.forEach((s, i) => {
+      if (s.set !== lastSet) {
+        html += s.set
+          ? `<tr class="sb-set-group"><th colspan="9" scope="rowgroup">Set A<span>4 × 100 free on 1:45 · Focus: kicks off wall</span></th></tr>`
+          : `<tr class="sb-set-group"><th colspan="9" scope="rowgroup">Warm-up<span>Kick, back and breast drill · Focus varies</span></th></tr>`;
+        lastSet = s.set;
+      }
+      html += rowHTML(s, i + 1, s.id === printId);
+    });
+    $('board').innerHTML = html;
+    $('swimCount').textContent = swims.length;
+  }
+
+  $('board').addEventListener('click', (e) => {
+    const tr = e.target.closest('tr.sb-sortie-row'); if (!tr) return;
+    selected = tr.dataset.id; renderSheet();
+    document.querySelectorAll('.sb-sortie-row').forEach((r) => r.setAttribute('aria-selected', String(r.dataset.id === selected)));
+  });
+
+  /* ---------- Review sheet ---------- */
+  const cues = {
+    1: 'Head lifts high on every breath, and the hips drop.',
+    2: 'Head lifts on most breaths.',
+    3: 'Steady on most Lengths; lifts on some breaths.',
+    4: 'Steady; one goggle stays in the water on breaths.',
+    5: 'Still and in line on every Length.',
+  };
+  function renderSheet() {
+    const s = swims.find((x) => x.id === selected); if (!s) return;
+    $('rsId').textContent = s.id; $('rsEvent').textContent = s.ev;
+    const setIdx = s.set ? swims.filter((x) => x.set === s.set).indexOf(s) + 1 : 0;
+    $('rsSub').textContent = s.set ? `Set ${s.set}, ${setIdx} of 4 · fill in straight after the Swim` : 'Warm-up · fill in straight after the Swim';
+    $('rsCountsH').textContent = s.code === 'KOW' ? 'Kicks off wall, by Length' : 'Strokes, by Length';
+    $('rsCounts').innerHTML = s.counts.map((c, i) => `<label>L${i + 1}<input type="number" inputmode="numeric" min="0" value="${c}" data-i="${i}" aria-label="${codeTitle[s.code]}, Length ${i + 1}"></label>`).join('');
+    $('stepsHead').innerHTML = [1, 2, 3, 4, 5].map((n) => `<label><input type="radio" name="head" value="${n}"${s.tech === n ? ' checked' : ''} aria-label="${n} of 5: ${cues[n]}"><span>${n}</span></label>`).join('');
+    setCue(s.tech);
+    $('faultName').textContent = s.ev.startsWith('Breast') ? 'One-hand touch at a turn' : 'No wall touch at a turn';
+    setFault(s.fault);
+    $('savedMsg').textContent = s.status === 'reviewed' ? 'Saved' : '';
+  }
+  function setCue(n) { $('cueHead').innerHTML = n ? `<b>${n} of 5.</b> ${cues[n]}` : 'Not rated yet. Pick the level that matches what you saw.'; }
+  function setFault(on) {
+    const b = $('faultBtn'); b.setAttribute('aria-pressed', String(on));
+    b.querySelector('.shape').textContent = on ? '◆' : '◇';
+    $('faultState').textContent = on ? 'Noted' : 'Not noted';
+  }
+  $('stepsHead').addEventListener('change', (e) => { const s = swims.find((x) => x.id === selected); s.tech = +e.target.value; setCue(s.tech); $('savedMsg').textContent = ''; });
+  $('rsCounts').addEventListener('input', (e) => { const s = swims.find((x) => x.id === selected); const v = parseInt(e.target.value, 10); if (!Number.isNaN(v)) s.counts[+e.target.dataset.i] = v; $('savedMsg').textContent = ''; });
+  $('faultBtn').addEventListener('click', () => { const s = swims.find((x) => x.id === selected); s.fault = !s.fault; setFault(s.fault); $('savedMsg').textContent = ''; });
+  $('saveSheet').addEventListener('click', () => {
+    const s = swims.find((x) => x.id === selected); s.status = 'reviewed'; renderBoard(); $('savedMsg').textContent = 'Saved';
+    $('announce').textContent = `Review sheet for Swim ${s.id} saved.`;
+  });
+
+  /* ---------- Tap Pad ---------- */
+  const TOTAL = 4;
+  const cap = {
+    id: 'FR100-07', nextNo: 8,
+    lengths: [{ split: 25.8, kicks: 6, strokes: 15 }, { split: 26.1, kicks: 5, strokes: 16 }],
+    kicks: 5, strokes: 3, start: performance.now() - 58400, finished: false, history: [{ t: 'stroke' }],
+  };
+  const elapsed = () => (performance.now() - cap.start) / 1000;
+  const done = () => cap.lengths.reduce((a, l) => a + l.split, 0);
+
+  function renderStrip() {
+    $('strip').innerHTML = Array.from({ length: TOTAL }, (_, i) => {
+      const l = cap.lengths[i];
+      if (l) return `<li data-state="done"><span class="ln">L${i + 1}</span><span class="sp">${l.split.toFixed(1)}</span><span class="ct">${l.kicks} · ${l.strokes}</span></li>`;
+      if (i === cap.lengths.length && !cap.finished) return `<li data-state="live" aria-current="step"><span class="ln">L${i + 1} · live</span><span class="sp" id="cellRun">–</span><span class="ct">${cap.kicks} · ${cap.strokes}</span></li>`;
+      return `<li data-state="pending"><span class="ln">L${i + 1}</span><span class="sp">–</span><span class="ct">– · –</span></li>`;
+    }).join('');
+  }
+  function renderPad() {
+    const n = cap.lengths.length;
+    $('pad').dataset.state = cap.finished ? 'finished' : 'live';
+    $('capId').textContent = cap.id;
+    $('kicksNum').textContent = cap.kicks; $('strokesNum').textContent = cap.strokes;
+    $('recTag').dataset.state = cap.finished ? 'done' : 'live';
+    $('recText').textContent = cap.finished ? 'DONE' : 'REC';
+    $('lenOf').textContent = cap.finished ? `${TOTAL} of ${TOTAL} Lengths` : `Length ${n + 1} of ${TOTAL}`;
+    $('wallBig').textContent = cap.finished ? 'Next Swim' : 'Wall tap';
+    $('wallSmall').textContent = cap.finished ? `start ${cap.id.replace(/\d+$/, String(cap.nextNo).padStart(2, '0'))}` : (n + 1 === TOTAL ? 'finish · prints the Swim to the board' : `ends Length ${n + 1} · records the split`);
+    $('endSwim').disabled = cap.finished;
+    renderStrip(); tick();
+  }
+  function tick() {
+    if (cap.finished) { $('run').textContent = fmt(done()); $('runSub').innerHTML = `Swim time <b>${fmt(done())}</b> · the result, shown after the counts`; return; }
+    const t = elapsed(); const lenT = t - done();
+    $('run').textContent = fmt(t);
+    $('runSub').innerHTML = `This Length so far <b id="lenRun">${lenT.toFixed(1)}</b> s · last Length <b id="lastLen">${cap.lengths.length ? cap.lengths[cap.lengths.length - 1].split.toFixed(1) : '–'}</b> s`;
+    const c = $('cellRun'); if (c) c.textContent = lenT.toFixed(1);
+  }
+  setInterval(tick, 100);
+
+  const lastLabel = { kick: 'kick +1', stroke: 'stroke +1', wall: 'wall tap', finish: 'finish' };
+  function setLast() { const h = cap.history[cap.history.length - 1]; $('lastTap').textContent = h ? lastLabel[h.t] : 'none'; $('undo').disabled = !h; }
+
+  document.querySelectorAll('.sb-tap-key').forEach((b) => b.addEventListener('click', () => {
+    if (cap.finished) return;
+    if (b.dataset.metric === 'kicks') { cap.kicks++; cap.history.push({ t: 'kick' }); } else { cap.strokes++; cap.history.push({ t: 'stroke' }); }
+    renderPad(); setLast();
+  }));
+
+  function wallTap() {
+    if (cap.finished) { nextSwim(); return; }
+    const split = +(elapsed() - done()).toFixed(1);
+    cap.history.push({ t: cap.lengths.length + 1 === TOTAL ? 'finish' : 'wall', prev: { kicks: cap.kicks, strokes: cap.strokes } });
+    cap.lengths.push({ split, kicks: cap.kicks, strokes: cap.strokes });
+    cap.kicks = 0; cap.strokes = 0;
+    if (cap.lengths.length === TOTAL) finish(); else { renderPad(); setLast(); }
+  }
+  $('wall').addEventListener('click', wallTap);
+  $('endSwim').addEventListener('click', () => {
+    if (cap.finished) return;
+    while (cap.lengths.length < TOTAL) wallTap();
+  });
+
+  function clock() { const d = new Date(2026, 10, 19, 17, 58); return `${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`; }
+  function finish() {
+    cap.finished = true;
+    const s = { id: cap.id, ev: 'Free 100', ty: 'Swim', set: 'A', code: 'KOW', counts: cap.lengths.map((l) => l.kicks), tech: 0, fault: false, time: +done().toFixed(1), status: 'to-review', printedAt: clock() };
+    swims.push(s);
+    printRow(s.id);
+    $('receipt').innerHTML = `<b>Printed to the board</b> as <span class="sb-callsign">${s.id}</span>, row ${String(swims.length).padStart(2, '0')}. Rate it on the Review sheet when you are ready. Undo removes it.`;
+    renderPad(); setLast();
+  }
+  function printRow(id) {
+    selected = id; renderBoard(id); renderSheet();
+    $('announce').textContent = `Swim ${id} printed to the Session board.`;
+  }
+  function nextSwim() {
+    const no = cap.nextNo++;
+    Object.assign(cap, { id: cap.id.replace(/\d+$/, String(no).padStart(2, '0')), lengths: [], kicks: 0, strokes: 0, start: performance.now(), finished: false, history: [] });
+    $('receipt').textContent = '';
+    renderPad(); setLast();
+  }
+  $('undo').addEventListener('click', () => {
+    const h = cap.history.pop(); if (!h) return;
+    if (h.t === 'kick') cap.kicks = Math.max(0, cap.kicks - 1);
+    else if (h.t === 'stroke') cap.strokes = Math.max(0, cap.strokes - 1);
+    else {
+      if (h.t === 'finish') {
+        const i = swims.findIndex((s) => s.id === cap.id); if (i > -1) swims.splice(i, 1);
+        cap.finished = false; selected = swims[swims.length - 1].id; renderBoard(); renderSheet();
+        $('announce').textContent = `Swim ${cap.id} taken off the board. Length ${TOTAL} is live again.`;
+      }
+      cap.lengths.pop(); cap.kicks = h.prev.kicks; cap.strokes = h.prev.strokes;
+    }
+    renderPad(); setLast();
+  });
+
+  /* Replay the signature on the latest printed row */
+  $('replay').addEventListener('click', () => {
+    const last = swims[swims.length - 1];
+    if (!last.printedAt) last.printedAt = clock();
+    printRow(last.id);
+  });
+
+  renderBoard(); renderSheet(); renderPad(); setLast();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,893 @@
+/*
+ * Seeded world: Approach Lights (splitbook-approach-lights). Definition and documentation: approach-lights.json.
+ * The lane rope as a carrier deck-approach light chain. Signature: the Length strip lights bulb by bulb as wall taps land.
+ * Colour options: Deck Daylight (default, recommended), Blue Hour, Fresnel Sand, and Sodium Night (original).
+ * World helpers (--approach-lights-*): housing (the light bar), bulb-on/-foreground (a lit bulb and its number),
+ * bulb-off-ring/-foreground (an unlit bulb), bulb-live/-foreground (the bulb of the Length being swum), rope (runs of
+ * lights). Measured: bulb numbers >= 4.5:1 on their bulb, lit and live bulbs >= 4.5:1 and rings >= 3:1 on the housing.
+ */
+
+/* Deck Daylight: weathered deck-grey plates, ink, navy keys, amber approach bulbs. */
+html[data-theme="splitbook-approach-lights"] {
+  color-scheme: light;
+  --sb-background: #dcddd5;
+  --sb-foreground: #14181d;
+  --sb-surface-card: #f5f4ef;
+  --sb-surface-card-foreground: #14181d;
+  --sb-surface-panel: #e9e8e1;
+  --sb-surface-panel-foreground: #14181d;
+  --sb-surface-shelf: #e2e4e1;
+  --sb-surface-shelf-foreground: #14181d;
+  --sb-surface-tray: #f0efe9;
+  --sb-surface-tray-foreground: #14181d;
+  --sb-primary: #1f3a5c;
+  --sb-primary-foreground: #ffffff;
+  --sb-secondary: #f5f4ef;
+  --sb-secondary-foreground: #14181d;
+  --sb-muted: #e2e1d9;
+  --sb-muted-foreground: #474d55;
+  --sb-accent: #d3dae2;
+  --sb-accent-foreground: #14181d;
+  --sb-destructive: #9b1c14;
+  --sb-destructive-foreground: #ffffff;
+  --sb-border: #6c727a;
+  --sb-input: #fbfaf6;
+  --sb-ring: #1d58b5;
+  --sb-success: #1d5e52;
+  --sb-success-foreground: #ffffff;
+  --sb-warning: #f2b33d;
+  --sb-warning-foreground: #14181d;
+  --sb-info: #2b4864;
+  --sb-info-foreground: #ffffff;
+  --sb-live: #ad2e19;
+  --sb-live-foreground: #ffffff;
+  --sb-metric: #1c5596;
+  --sb-metric-foreground: #ffffff;
+  --sb-improvement: #2b6636;
+  --sb-improvement-foreground: #ffffff;
+  --sb-fault: #7d4a00;
+  --sb-fault-foreground: #ffffff;
+  --sb-tap-pad: #ecebe4;
+  --sb-tap-pad-foreground: #14181d;
+  --sb-shadow: #14181d40;
+  --sb-scrim: #14181da6;
+  --sb-chart-1: #1c5596;
+  --sb-chart-2: #2b6636;
+  --sb-chart-3: #7d4a00;
+  --sb-chart-4: #6b3c9c;
+  --sb-chart-5: #474d55;
+  --sb-font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --sb-font-display: var(--font-barlow-condensed), 'Arial Narrow', Arial, sans-serif;
+  --sb-font-mono: var(--font-martian-mono), ui-monospace, monospace;
+  --sb-type-display-size: 3rem;
+  --sb-type-heading-lg-size: 2rem;
+  --sb-type-heading-md-size: 1.375rem;
+  --sb-type-numeral-xl-size: 5rem;
+  --sb-type-numeral-lg-size: 2.75rem;
+  --sb-type-numeral-md-size: 1.625rem;
+  --sb-radius-sm: 0.125rem;
+  --sb-radius-md: 0.25rem;
+  --sb-radius-lg: 0.5rem;
+  --sb-elevation-raised: 0 2px 0 0 var(--sb-shadow), 0 6px 14px -10px var(--sb-shadow);
+  --sb-elevation-overlay: 0 2px 0 0 var(--sb-shadow), 0 20px 40px -14px var(--sb-shadow);
+  --approach-lights-housing: #262b31;
+  --approach-lights-bulb-on: #f2b33d;
+  --approach-lights-bulb-on-foreground: #14181d;
+  --approach-lights-bulb-off-ring: #858d97;
+  --approach-lights-bulb-off-foreground: #c3c8ce;
+  --approach-lights-bulb-live: #ff7656;
+  --approach-lights-bulb-live-foreground: #14181d;
+  --approach-lights-rope: #6c727a;
+}
+
+/* Blue Hour: dusk recovery, slate-navy plates with white approach bulbs. */
+html[data-theme="splitbook-approach-lights"][data-palette="blue-hour"] {
+  color-scheme: dark;
+  --sb-background: #111923;
+  --sb-foreground: #e6edf5;
+  --sb-surface-card: #1a2431;
+  --sb-surface-card-foreground: #e6edf5;
+  --sb-surface-panel: #202c3b;
+  --sb-surface-panel-foreground: #e6edf5;
+  --sb-surface-shelf: #1d2836;
+  --sb-surface-shelf-foreground: #e6edf5;
+  --sb-surface-tray: #16202b;
+  --sb-surface-tray-foreground: #e6edf5;
+  --sb-primary: #a7c8ff;
+  --sb-primary-foreground: #0b1522;
+  --sb-secondary: #1a2431;
+  --sb-secondary-foreground: #e6edf5;
+  --sb-muted: #26323f;
+  --sb-muted-foreground: #aebccb;
+  --sb-accent: #2b3b4f;
+  --sb-accent-foreground: #e6edf5;
+  --sb-destructive: #ff8a7a;
+  --sb-destructive-foreground: #1a0b06;
+  --sb-border: #7b8a9c;
+  --sb-input: #141d28;
+  --sb-ring: #ffd36b;
+  --sb-success: #6fcfb8;
+  --sb-success-foreground: #08190f;
+  --sb-warning: #ffd36b;
+  --sb-warning-foreground: #1a1400;
+  --sb-info: #8fb4d9;
+  --sb-info-foreground: #0b1522;
+  --sb-live: #ff7a59;
+  --sb-live-foreground: #1a0b06;
+  --sb-metric: #8fc1ff;
+  --sb-metric-foreground: #0b1522;
+  --sb-improvement: #6fd39a;
+  --sb-improvement-foreground: #08190f;
+  --sb-fault: #e9b8ff;
+  --sb-fault-foreground: #1e0b29;
+  --sb-tap-pad: #16202b;
+  --sb-tap-pad-foreground: #e6edf5;
+  --sb-shadow: #00000099;
+  --sb-scrim: #05080cbf;
+  --sb-chart-1: #8fc1ff;
+  --sb-chart-2: #6fd39a;
+  --sb-chart-3: #ffd36b;
+  --sb-chart-4: #e9b8ff;
+  --sb-chart-5: #aebccb;
+  --approach-lights-housing: #0a1018;
+  --approach-lights-bulb-on: #eaf2ff;
+  --approach-lights-bulb-on-foreground: #0b1522;
+  --approach-lights-bulb-off-ring: #6f7f92;
+  --approach-lights-bulb-off-foreground: #a2b1c2;
+  --approach-lights-bulb-live: #ff7a59;
+  --approach-lights-bulb-live-foreground: #1a0b06;
+  --approach-lights-rope: #7b8a9c;
+}
+
+/* Fresnel Sand: sand plates, olive keys, the landing-lens amber. */
+html[data-theme="splitbook-approach-lights"][data-palette="fresnel-sand"] {
+  color-scheme: light;
+  --sb-background: #e3dbc7;
+  --sb-foreground: #1e1c16;
+  --sb-surface-card: #f6f1e4;
+  --sb-surface-card-foreground: #1e1c16;
+  --sb-surface-panel: #ece5d3;
+  --sb-surface-panel-foreground: #1e1c16;
+  --sb-surface-shelf: #e8e2d0;
+  --sb-surface-shelf-foreground: #1e1c16;
+  --sb-surface-tray: #f2ecdd;
+  --sb-surface-tray-foreground: #1e1c16;
+  --sb-primary: #3d4829;
+  --sb-primary-foreground: #ffffff;
+  --sb-secondary: #f6f1e4;
+  --sb-secondary-foreground: #1e1c16;
+  --sb-muted: #e6dfcc;
+  --sb-muted-foreground: #4f4a3c;
+  --sb-accent: #dcd4bd;
+  --sb-accent-foreground: #1e1c16;
+  --sb-destructive: #9a2416;
+  --sb-destructive-foreground: #ffffff;
+  --sb-border: #756e5c;
+  --sb-input: #fbf8f0;
+  --sb-ring: #2f5a8a;
+  --sb-success: #2f5e3a;
+  --sb-success-foreground: #ffffff;
+  --sb-warning: #f0a02e;
+  --sb-warning-foreground: #1e1c16;
+  --sb-info: #34506b;
+  --sb-info-foreground: #ffffff;
+  --sb-live: #b12f1b;
+  --sb-live-foreground: #ffffff;
+  --sb-metric: #28527f;
+  --sb-metric-foreground: #ffffff;
+  --sb-improvement: #376628;
+  --sb-improvement-foreground: #ffffff;
+  --sb-fault: #74418a;
+  --sb-fault-foreground: #ffffff;
+  --sb-tap-pad: #efe8d6;
+  --sb-tap-pad-foreground: #1e1c16;
+  --sb-shadow: #1e1c1640;
+  --sb-scrim: #1e1c16a6;
+  --sb-chart-1: #28527f;
+  --sb-chart-2: #376628;
+  --sb-chart-3: #8a4f12;
+  --sb-chart-4: #74418a;
+  --sb-chart-5: #4f4a3c;
+  --approach-lights-housing: #2c3022;
+  --approach-lights-bulb-on: #f0a02e;
+  --approach-lights-bulb-on-foreground: #1e1c16;
+  --approach-lights-bulb-off-ring: #878d72;
+  --approach-lights-bulb-off-foreground: #c6caae;
+  --approach-lights-bulb-live: #ff7350;
+  --approach-lights-bulb-live-foreground: #1e1c16;
+  --approach-lights-rope: #756e5c;
+}
+
+/* Sodium Night (original): warm charcoal plates under sodium-amber bulbs. */
+html[data-theme="splitbook-approach-lights"][data-palette="original"] {
+  color-scheme: dark;
+  --sb-background: #16130f;
+  --sb-foreground: #efe7da;
+  --sb-surface-card: #221e18;
+  --sb-surface-card-foreground: #efe7da;
+  --sb-surface-panel: #2a251e;
+  --sb-surface-panel-foreground: #efe7da;
+  --sb-surface-shelf: #26221b;
+  --sb-surface-shelf-foreground: #efe7da;
+  --sb-surface-tray: #1d1a15;
+  --sb-surface-tray-foreground: #efe7da;
+  --sb-primary: #f0a531;
+  --sb-primary-foreground: #1a1408;
+  --sb-secondary: #221e18;
+  --sb-secondary-foreground: #efe7da;
+  --sb-muted: #302a22;
+  --sb-muted-foreground: #bcb19e;
+  --sb-accent: #3a3229;
+  --sb-accent-foreground: #efe7da;
+  --sb-destructive: #ff8f7a;
+  --sb-destructive-foreground: #1a0b06;
+  --sb-border: #8e8370;
+  --sb-input: #1b1814;
+  --sb-ring: #9cc7ff;
+  --sb-success: #8fd1b9;
+  --sb-success-foreground: #0b1d11;
+  --sb-warning: #f5b640;
+  --sb-warning-foreground: #1a1408;
+  --sb-info: #a8c4e6;
+  --sb-info-foreground: #0d1a2a;
+  --sb-live: #ff6f4d;
+  --sb-live-foreground: #1a0b06;
+  --sb-metric: #86b8ff;
+  --sb-metric-foreground: #0d1a2a;
+  --sb-improvement: #86d6a0;
+  --sb-improvement-foreground: #0b1d11;
+  --sb-fault: #d6b0ff;
+  --sb-fault-foreground: #1e0b29;
+  --sb-tap-pad: #1d1a15;
+  --sb-tap-pad-foreground: #efe7da;
+  --sb-shadow: #000000a6;
+  --sb-scrim: #0a0806c7;
+  --sb-chart-1: #86b8ff;
+  --sb-chart-2: #86d6a0;
+  --sb-chart-3: #f5b640;
+  --sb-chart-4: #d6b0ff;
+  --sb-chart-5: #bcb19e;
+  --approach-lights-housing: #0d0b08;
+  --approach-lights-bulb-on: #f5b640;
+  --approach-lights-bulb-on-foreground: #1a1408;
+  --approach-lights-bulb-off-ring: #75695a;
+  --approach-lights-bulb-off-foreground: #ab9f8b;
+  --approach-lights-bulb-live: #ff6f4d;
+  --approach-lights-bulb-live-foreground: #1a0b06;
+  --approach-lights-rope: #8e8370;
+}
+
+/* =====================================================================================================================
+ * Skin. Intensity budget:
+ *   identity  - the light chain (Length strip), lane-rope runs of lights on page edges, dividers, Set groups and the
+ *               T-line, the Tap Pad console, the wordmark and hero: full material.
+ *   function  - buttons, fields, chips, tabs, nav, menus, overlays, progress, tables: the world's plate shape, type and
+ *               worn-in bevels, restrained.
+ *   reading   - Review sheet, prose, form values and numerals being read: quiet, opaque, no texture behind text.
+ * Glow appears only on live state: the recording Tap Pad, the live mark, and the bulb of the Length being swum now.
+ * ================================================================================================================== */
+
+/* ---------- Page, selection, scrollbars ---------- */
+html[data-theme="splitbook-approach-lights"]:root {
+  scrollbar-color: var(--sb-border) var(--sb-surface-panel);
+}
+html[data-theme="splitbook-approach-lights"] ::selection {
+  background: var(--approach-lights-bulb-on);
+  color: var(--approach-lights-bulb-on-foreground);
+}
+
+/* ---------- Type: condensed instrument display, mono data plates ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-display {
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+html[data-theme="splitbook-approach-lights"] .sb-heading-lg,
+html[data-theme="splitbook-approach-lights"] .sb-heading-md {
+  letter-spacing: 0.01em;
+}
+html[data-theme="splitbook-approach-lights"] .sb-kicker,
+html[data-theme="splitbook-approach-lights"] .sb-split-readout-caption,
+html[data-theme="splitbook-approach-lights"] .sb-live-mark,
+html[data-theme="splitbook-approach-lights"] .sb-badge,
+html[data-theme="splitbook-approach-lights"] .sb-table thead th,
+html[data-theme="splitbook-approach-lights"] .sb-figure-label,
+html[data-theme="splitbook-approach-lights"] .sb-frame-caption {
+  font-family: var(--sb-font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-approach-lights"] .sb-kicker,
+html[data-theme="splitbook-approach-lights"] .sb-badge,
+html[data-theme="splitbook-approach-lights"] .sb-live-mark,
+html[data-theme="splitbook-approach-lights"] .sb-table thead th,
+html[data-theme="splitbook-approach-lights"] .sb-figure-label,
+html[data-theme="splitbook-approach-lights"] .sb-split-readout-caption {
+  font-size: 0.75rem;
+}
+html[data-theme="splitbook-approach-lights"] .sb-numeral,
+html[data-theme="splitbook-approach-lights"] .sb-trend-value-label,
+html[data-theme="splitbook-approach-lights"] .sb-length-cell-value,
+html[data-theme="splitbook-approach-lights"] .sb-session-date {
+  letter-spacing: 0;
+}
+
+/* ---------- Runs of lights: the lane rope as an approach light chain (identity) ---------- */
+/* One shared dot pattern, drawn from the rope helper so every palette recolours it. */
+html[data-theme="splitbook-approach-lights"] .sb-divider,
+html[data-theme="splitbook-approach-lights"] .sb-section-head,
+html[data-theme="splitbook-approach-lights"] .sb-app-bar::after {
+  --approach-lights-run: radial-gradient(circle at 0.25rem 50%, var(--approach-lights-rope) 0.1875rem, transparent 0.21rem);
+}
+html[data-theme="splitbook-approach-lights"] .sb-divider {
+  block-size: 0.5rem;
+  border: 0;
+  background: var(--approach-lights-run) 0 50% / 0.875rem 0.5rem repeat-x;
+}
+html[data-theme="splitbook-approach-lights"] .sb-divider[data-variant='axis'] {
+  block-size: 0.75rem;
+  background:
+    radial-gradient(circle at 0.375rem 50%, var(--approach-lights-bulb-on) 0.25rem, transparent 0.28rem) 0 50% / 1.25rem 0.75rem repeat-x,
+    var(--approach-lights-housing);
+  border-radius: var(--sb-radius-pill);
+}
+html[data-theme="splitbook-approach-lights"] .sb-section-head {
+  border-block-start: 0;
+  padding-block-start: var(--sb-space-6);
+  background: var(--approach-lights-run) 0 0 / 0.875rem 0.5rem repeat-x;
+}
+html[data-theme="splitbook-approach-lights"] .sb-app-bar {
+  border-block-end: 0;
+  padding-block-end: calc(var(--sb-space-2) + 0.5rem);
+  box-shadow: var(--sb-elevation-raised);
+}
+html[data-theme="splitbook-approach-lights"] .sb-app-bar[data-static='true'] {
+  position: relative;
+}
+html[data-theme="splitbook-approach-lights"] .sb-app-bar::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 0.5rem;
+  background: var(--approach-lights-run) var(--sb-space-2) 50% / 0.875rem 0.5rem repeat-x;
+}
+
+/* The T-line between paired panels: a vertical chain of lights with a lit lamp as its cap. */
+html[data-theme="splitbook-approach-lights"] .sb-pair-axis {
+  background: radial-gradient(circle at 0.25rem 50%, var(--approach-lights-rope) 0.1875rem, transparent 0.21rem) 0 50% / 0.875rem 0.5rem repeat-x;
+  block-size: 0.5rem;
+  border-radius: 0;
+}
+html[data-theme="splitbook-approach-lights"] .sb-pair-axis::before {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  border: var(--sb-border-width-thick) solid var(--approach-lights-housing);
+  border-radius: var(--sb-radius-pill);
+  background: var(--approach-lights-bulb-on);
+}
+@media (min-width: 48rem) {
+  html[data-theme="splitbook-approach-lights"] .sb-pair-axis {
+    inline-size: 0.5rem;
+    block-size: auto;
+    background: radial-gradient(circle at 50% 0.25rem, var(--approach-lights-rope) 0.1875rem, transparent 0.21rem) 50% 1.25rem / 0.5rem 0.875rem repeat-y;
+  }
+  html[data-theme="splitbook-approach-lights"] .sb-pair-axis::before {
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+  }
+}
+
+/* A Set is a run of lights: a vertical chain at the start of the group, with a lit lamp at its head. */
+html[data-theme="splitbook-approach-lights"] .sb-set-group {
+  position: relative;
+  border-inline-start: 0;
+  padding-inline-start: var(--sb-space-6);
+  background: radial-gradient(circle at 0.375rem 0.25rem, var(--approach-lights-rope) 0.1875rem, transparent 0.21rem) 0 1.25rem / 0.75rem 0.875rem repeat-y;
+}
+html[data-theme="splitbook-approach-lights"] .sb-set-group::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.125rem;
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  box-sizing: border-box;
+  border: var(--sb-border-width-thick) solid var(--approach-lights-housing);
+  border-radius: var(--sb-radius-pill);
+  background: var(--approach-lights-bulb-on);
+}
+
+/* ---------- Containers: worn-in plates set proud of the deck ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-card,
+html[data-theme="splitbook-approach-lights"] .sb-panel,
+html[data-theme="splitbook-approach-lights"] .sb-shelf,
+html[data-theme="splitbook-approach-lights"] .sb-tray {
+  border-width: var(--sb-border-width-thin);
+}
+html[data-theme="splitbook-approach-lights"] .sb-panel,
+html[data-theme="splitbook-approach-lights"] .sb-shelf {
+  box-shadow: inset 0 var(--sb-border-width-thin) 0 0 var(--sb-surface-card);
+}
+html[data-theme="splitbook-approach-lights"] .sb-tray {
+  border-block-start-width: var(--sb-border-width-thick);
+  box-shadow: var(--sb-elevation-raised);
+}
+html[data-theme="splitbook-approach-lights"] .sb-sidebar {
+  background-image: radial-gradient(circle at 50% 0.25rem, var(--approach-lights-rope) 0.1875rem, transparent 0.21rem);
+  background-position: 100% 0;
+  background-size: 0.5rem 0.875rem;
+  background-repeat: repeat-y;
+}
+
+/* ---------- Links ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-link {
+  text-decoration-thickness: var(--sb-border-width-thick);
+  text-underline-offset: 0.2em;
+}
+
+/* ---------- Buttons: tactile keys with a worn bottom bevel; pressing sinks the bevel ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-button,
+html[data-theme="splitbook-approach-lights"] .sb-icon-button {
+  letter-spacing: 0.01em;
+  box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-approach-lights"] .sb-button:active,
+html[data-theme="splitbook-approach-lights"] .sb-icon-button:active {
+  box-shadow: inset 0 var(--sb-border-width-thin) 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-approach-lights"] .sb-button[data-variant='ghost'] {
+  box-shadow: none;
+  text-decoration-thickness: var(--sb-border-width-thin);
+}
+html[data-theme="splitbook-approach-lights"] .sb-button[data-size='lg'] {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+html[data-theme="splitbook-approach-lights"] .sb-button:disabled,
+html[data-theme="splitbook-approach-lights"] .sb-icon-button:disabled {
+  box-shadow: none;
+}
+html[data-theme="splitbook-approach-lights"] .sb-skip-link {
+  border-radius: var(--sb-radius-sm);
+  text-transform: uppercase;
+}
+
+/* ---------- Fields: recessed wells; values stay a quiet opaque plane ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-input,
+html[data-theme="splitbook-approach-lights"] .sb-textarea,
+html[data-theme="splitbook-approach-lights"] .sb-select {
+  border-radius: var(--sb-radius-sm);
+  box-shadow: inset 0 var(--sb-border-width-thick) 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-approach-lights"] .sb-input:focus-visible,
+html[data-theme="splitbook-approach-lights"] .sb-textarea:focus-visible,
+html[data-theme="splitbook-approach-lights"] .sb-select:focus-visible {
+  border-color: var(--sb-ring);
+}
+html[data-theme="splitbook-approach-lights"] .sb-field-error {
+  font-family: var(--sb-font-sans);
+}
+html[data-theme="splitbook-approach-lights"] .sb-checkbox input,
+html[data-theme="splitbook-approach-lights"] .sb-radio input {
+  accent-color: var(--sb-primary);
+}
+
+/* Switch: a cockpit toggle. The thumb is a lamp that lights when on, and always carries its word. */
+html[data-theme="splitbook-approach-lights"] .sb-switch-track {
+  border-radius: var(--sb-radius-md);
+  background: var(--sb-muted);
+  box-shadow: inset 0 var(--sb-border-width-thick) 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-approach-lights"] .sb-switch-thumb {
+  border-radius: var(--sb-radius-sm);
+  box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-shadow);
+  text-transform: uppercase;
+  font-family: var(--sb-font-mono);
+  font-size: 0.6875rem;
+}
+html[data-theme="splitbook-approach-lights"] .sb-switch[aria-checked='true'] .sb-switch-track {
+  border-color: var(--sb-border);
+  background: var(--approach-lights-housing);
+}
+html[data-theme="splitbook-approach-lights"] .sb-switch[aria-checked='true'] .sb-switch-thumb {
+  background: var(--approach-lights-bulb-on);
+  color: var(--approach-lights-bulb-on-foreground);
+}
+
+/* ---------- Chips: plate tabs; the chosen one gets an ink frame, its check, and a lit lamp ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-chip {
+  box-shadow: inset 0 calc(var(--sb-border-width-thin) * -2) 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-approach-lights"] .sb-chip::before {
+  content: '';
+  flex: none;
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+  box-sizing: border-box;
+  border: var(--sb-border-width-thin) dashed var(--sb-border);
+  border-radius: var(--sb-radius-pill);
+}
+html[data-theme="splitbook-approach-lights"] .sb-chip:has(input:checked)::before,
+html[data-theme="splitbook-approach-lights"] .sb-chip[aria-pressed='true']::before,
+html[data-theme="splitbook-approach-lights"] .sb-chip[aria-checked='true']::before {
+  border: var(--sb-border-width-thin) solid var(--approach-lights-housing);
+  background: var(--approach-lights-bulb-on);
+}
+
+/* ---------- Badges: stamped data plates ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-badge {
+  border-radius: var(--sb-radius-sm);
+  padding-inline: var(--sb-space-2);
+}
+
+/* ---------- Alerts and toasts: full frame, the mark is a round signal lamp ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-alert,
+html[data-theme="splitbook-approach-lights"] .sb-toast {
+  border-radius: var(--sb-radius-md);
+  box-shadow: var(--sb-elevation-raised);
+}
+html[data-theme="splitbook-approach-lights"] .sb-toast {
+  box-shadow: var(--sb-elevation-overlay);
+}
+html[data-theme="splitbook-approach-lights"] .sb-alert-mark {
+  border-radius: var(--sb-radius-pill);
+  outline: var(--sb-border-width-thin) solid var(--sb-border);
+  outline-offset: var(--sb-border-width-thick);
+}
+
+/* ---------- Navigation: the current page is a lit lamp; the rest are unlit rings ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-wordmark {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+html[data-theme="splitbook-approach-lights"] .sb-side-nav a::before,
+html[data-theme="splitbook-approach-lights"] .sb-bottom-nav a::before {
+  content: '';
+  flex: none;
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+  box-sizing: border-box;
+  border: var(--sb-border-width-thin) dashed var(--sb-border);
+  border-radius: var(--sb-radius-pill);
+}
+html[data-theme="splitbook-approach-lights"] .sb-side-nav a[aria-current='page']::before,
+html[data-theme="splitbook-approach-lights"] .sb-bottom-nav a[aria-current='page']::before {
+  border: var(--sb-border-width-thin) solid var(--sb-foreground);
+  background: var(--approach-lights-bulb-on);
+}
+html[data-theme="splitbook-approach-lights"] .sb-side-nav a[aria-current='page'],
+html[data-theme="splitbook-approach-lights"] .sb-bottom-nav a[aria-current='page'] {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-approach-lights"] .sb-breadcrumbs li + li::before {
+  content: '';
+  inline-size: 0.375rem;
+  block-size: 0.375rem;
+  margin-inline: var(--sb-space-1);
+  border-radius: var(--sb-radius-pill);
+  background: var(--sb-muted-foreground);
+}
+
+/* Tabs: plate labels; the selected tab carries an ink rule and a lit lamp. */
+html[data-theme="splitbook-approach-lights"] .sb-tabs [role='tab'] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sb-space-2);
+  font-family: var(--sb-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-approach-lights"] .sb-tabs [role='tab']::before {
+  content: '';
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  box-sizing: border-box;
+  border: var(--sb-border-width-thin) dashed currentColor;
+  border-radius: var(--sb-radius-pill);
+}
+html[data-theme="splitbook-approach-lights"] .sb-tabs [role='tab'][aria-selected='true']::before {
+  border: var(--sb-border-width-thin) solid var(--sb-foreground);
+  background: var(--approach-lights-bulb-on);
+}
+
+/* ---------- Overlays: heavy plates with a header rule ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-dialog,
+html[data-theme="splitbook-approach-lights"] .sb-sheet {
+  border-width: var(--sb-border-width-thick);
+  border-block-start-width: var(--sb-border-width-heavy);
+  border-block-start-color: var(--sb-foreground);
+}
+html[data-theme="splitbook-approach-lights"] .sb-popover,
+html[data-theme="splitbook-approach-lights"] .sb-menu {
+  border-width: var(--sb-border-width-thick);
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-approach-lights"] .sb-menu [role^='menuitem'] {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-approach-lights"] .sb-menu [role='menuitemradio'][aria-checked='true'] {
+  font-weight: var(--sb-font-weight-bold);
+  box-shadow: inset 0 0 0 var(--sb-border-width-thin) var(--sb-foreground);
+}
+html[data-theme="splitbook-approach-lights"] .sb-tooltip {
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-font-sans);
+}
+
+/* ---------- Progress: a run of lights filling bulb by bulb ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-progress-track {
+  block-size: calc(var(--sb-progress-track-height) + var(--sb-space-1));
+  border-radius: var(--sb-radius-sm);
+  background: var(--approach-lights-housing);
+  outline-color: var(--sb-border);
+}
+html[data-theme="splitbook-approach-lights"] .sb-progress-fill {
+  background: radial-gradient(circle at 0.4375rem 50%, var(--approach-lights-bulb-on) 0.25rem, transparent 0.28rem) 0 50% / 0.875rem 100% repeat-x;
+}
+html[data-theme="splitbook-approach-lights"] .sb-skeleton {
+  border-radius: var(--sb-radius-sm);
+}
+
+/* ---------- Data display ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-table-wrap,
+html[data-theme="splitbook-approach-lights"] .sb-list {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-approach-lights"] .sb-table thead th {
+  border-block-end: var(--sb-border-width-thick) solid var(--sb-border);
+}
+html[data-theme="splitbook-approach-lights"] .sb-table td[data-numeric='true'] {
+  font-family: var(--sb-type-numeral-md-family);
+  font-weight: var(--sb-type-numeral-md-weight);
+  font-size: 1.125em;
+}
+html[data-theme="splitbook-approach-lights"] .sb-empty-state {
+  border-style: dotted;
+  border-width: var(--sb-border-width-heavy);
+}
+html[data-theme="splitbook-approach-lights"] .sb-avatar {
+  font-family: var(--sb-font-display);
+}
+html[data-theme="splitbook-approach-lights"] .sb-kbd {
+  border-radius: var(--sb-radius-sm);
+  border-block-end-width: var(--sb-border-width-heavy);
+}
+
+/* =====================================================================================================================
+ * Domain widgets
+ * ================================================================================================================== */
+
+/* ---------- Tap Pad: the capture console ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-tap-pad {
+  border-radius: var(--sb-radius-lg);
+  box-shadow: var(--sb-elevation-raised);
+}
+/* Recording: the live frame, and the only glow outside a live bulb. */
+html[data-theme="splitbook-approach-lights"] .sb-tap-pad[data-state='live'] {
+  box-shadow:
+    var(--sb-elevation-raised),
+    0 0 1.25rem -0.25rem var(--sb-live);
+}
+html[data-theme="splitbook-approach-lights"] .sb-split-readout[data-state='live'] .sb-split-readout-value {
+  box-shadow: 0 0 1rem -0.25rem var(--sb-live);
+}
+html[data-theme="splitbook-approach-lights"] .sb-tap-pad-head {
+  padding-block-end: var(--sb-space-3);
+  background: radial-gradient(circle at 0.25rem 50%, var(--approach-lights-rope) 0.1875rem, transparent 0.21rem) 0 100% / 0.875rem 0.5rem repeat-x;
+}
+html[data-theme="splitbook-approach-lights"] .sb-live-mark {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-approach-lights"] .sb-live-mark[data-state='live']::before {
+  border-color: var(--sb-live-foreground);
+  box-shadow: 0 0 0.5rem var(--sb-live-foreground);
+}
+html[data-theme="splitbook-approach-lights"] .sb-tap-key {
+  border-radius: var(--sb-radius-md);
+  box-shadow: inset 0 calc(var(--sb-border-width-heavy) * -1) 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-approach-lights"] .sb-tap-key:active {
+  box-shadow: inset 0 var(--sb-border-width-thick) 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-approach-lights"] .sb-tap-key[data-kind='wall'] .sb-tap-key-label {
+  font-family: var(--sb-font-display);
+  font-size: var(--sb-type-heading-lg-size);
+  line-height: var(--sb-type-heading-lg-line-height);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+html[data-theme="splitbook-approach-lights"] .sb-tap-log li {
+  border-block-end-style: dashed;
+}
+
+/* ---------- Split read-out ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-split-readout-value {
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Signature: the Length strip is an approach light chain ----------
+ * The strip is the light housing. Each Length is a bulb carrying its number; the split sits under it.
+ *   upcoming: unlit bulb, dashed ring, number in the unlit tone.
+ *   current:  the live bulb, filled in the live-bulb tone with the only glow in the chain.
+ *   done:     lit bulb with a filament ring. In the Tap Pad it ignites once as the wall tap lands.
+ * State is carried by fill, ring style and the number, never colour alone; screen readers get "now" and "not swum yet". */
+html[data-theme="splitbook-approach-lights"] .sb-length-strip {
+  gap: 0;
+  padding: var(--sb-space-2) var(--sb-space-3);
+  border-radius: var(--sb-radius-md);
+  background: var(--approach-lights-housing);
+  box-shadow: inset 0 var(--sb-border-width-thick) 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell {
+  position: relative;
+  gap: var(--sb-space-1);
+  align-content: start;
+  min-block-size: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--approach-lights-bulb-off-foreground);
+}
+/* The wire between bulbs, drawn through each bulb's centre so wrapped rows keep it. */
+html[data-theme="splitbook-approach-lights"] .sb-length-cell::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(var(--sb-space-1) + var(--sb-length-cell-size) * 0.375);
+  block-size: var(--sb-border-width-thick);
+  background: var(--approach-lights-bulb-off-ring);
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell-number {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: calc(var(--sb-length-cell-size) * 0.75);
+  block-size: calc(var(--sb-length-cell-size) * 0.75);
+  box-sizing: border-box;
+  border: var(--sb-border-width-thick) dashed var(--approach-lights-bulb-off-ring);
+  border-radius: var(--sb-radius-pill);
+  background: var(--approach-lights-housing);
+  color: var(--approach-lights-bulb-off-foreground);
+  font-family: var(--sb-font-display);
+  font-size: var(--sb-type-body-size);
+  font-weight: var(--sb-font-weight-heavy);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell-value {
+  font-size: var(--sb-type-body-sm-size);
+  color: var(--approach-lights-bulb-off-foreground);
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell[data-state='upcoming'] {
+  border: 0;
+  background: transparent;
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell[data-state='done'] .sb-length-cell-number {
+  border: var(--sb-border-width-thick) solid var(--approach-lights-bulb-on);
+  background: var(--approach-lights-bulb-on);
+  color: var(--approach-lights-bulb-on-foreground);
+  box-shadow: inset 0 0 0 var(--sb-border-width-thick) var(--approach-lights-housing);
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell[data-state='done'] .sb-length-cell-value {
+  color: var(--approach-lights-bulb-on);
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell[data-state='done']::before {
+  background: var(--approach-lights-bulb-on);
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell[data-state='current'] {
+  border: 0;
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell[data-state='current'] .sb-length-cell-number {
+  border: var(--sb-border-width-thick) solid var(--approach-lights-bulb-live);
+  background: var(--approach-lights-bulb-live);
+  color: var(--approach-lights-bulb-live-foreground);
+  box-shadow:
+    0 0 0 var(--sb-border-width-thick) var(--approach-lights-housing),
+    0 0 0 var(--sb-border-width-heavy) var(--approach-lights-bulb-live),
+    0 0 1rem 0.125rem var(--approach-lights-bulb-live);
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell[data-state='current'] .sb-length-cell-value {
+  color: var(--approach-lights-bulb-live);
+}
+html[data-theme="splitbook-approach-lights"] .sb-length-cell[aria-pressed='true'],
+html[data-theme="splitbook-approach-lights"] .sb-length-cell[aria-current='true'] {
+  outline-color: var(--approach-lights-bulb-on);
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-approach-lights"] button.sb-length-cell:focus-visible {
+  outline-color: var(--approach-lights-bulb-on);
+}
+/* The ignition: one bounded flash when a wall tap lights the bulb. Reduced motion collapses --sb-motion-flash to 1ms. */
+html[data-theme="splitbook-approach-lights"] .sb-tap-pad .sb-length-cell[data-state='done'] .sb-length-cell-number {
+  animation: approach-lights-ignite var(--sb-motion-flash) var(--sb-easing-enter) 1 both;
+}
+
+/* ---------- Rating: numbered lamps; the chosen one is lit inside its housing with a filament bar ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-rating-step {
+  border-radius: var(--sb-radius-md);
+  font-family: var(--sb-font-display);
+  font-size: var(--sb-type-heading-md-size);
+  box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-approach-lights"] .sb-rating-step:has(input:checked) {
+  border-color: var(--approach-lights-housing);
+  background: var(--approach-lights-housing);
+  color: var(--approach-lights-bulb-on);
+  box-shadow: inset 0 calc(var(--sb-border-width-heavy) * -1) 0 0 var(--approach-lights-bulb-on);
+}
+
+/* ---------- Fault flag: an observer's note, pressed in like a toggled plate once noted ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-fault-flag {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-approach-lights"] .sb-fault-flag[aria-pressed='true'],
+html[data-theme="splitbook-approach-lights"] .sb-fault-flag[data-state='noted'] {
+  box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-shadow);
+}
+
+/* ---------- Review sheet: a quiet, opaque reading plane; sections split by a plain dashed rule, no texture ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-review-sheet {
+  border-radius: var(--sb-radius-md);
+  box-shadow: var(--sb-elevation-raised);
+}
+html[data-theme="splitbook-approach-lights"] .sb-review-section {
+  border-block-start-style: dashed;
+}
+
+/* ---------- Rows ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-session-date {
+  border-color: var(--approach-lights-housing);
+  background: var(--approach-lights-housing);
+  color: var(--approach-lights-bulb-on);
+  font-family: var(--sb-font-display);
+}
+
+/* ---------- Trends: plain line and a dial ringed with lights ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-trend-path {
+  stroke-width: var(--sb-border-width-thick);
+}
+html[data-theme="splitbook-approach-lights"] .sb-trend-axis-label {
+  font-family: var(--sb-font-mono);
+}
+html[data-theme="splitbook-approach-lights"] .sb-dial-face {
+  stroke: var(--sb-border);
+  stroke-width: var(--sb-border-width-heavy);
+  stroke-dasharray: 0 9.6;
+  stroke-linecap: round;
+}
+html[data-theme="splitbook-approach-lights"] .sb-dial-tick[data-major='true'] {
+  stroke-linecap: round;
+}
+html[data-theme="splitbook-approach-lights"] .sb-dial-hub {
+  fill: var(--approach-lights-housing);
+  stroke: var(--sb-foreground);
+  stroke-width: var(--sb-border-width-thick);
+}
+
+/* ---------- Profile switcher, Admin console ---------- */
+html[data-theme="splitbook-approach-lights"] .sb-profile-switcher button[aria-haspopup='menu'] {
+  border-radius: var(--sb-radius-md);
+  box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-approach-lights"] .sb-publish-bar {
+  border-radius: var(--sb-radius-sm);
+  border-block-start-width: var(--sb-border-width-heavy);
+  box-shadow: var(--sb-elevation-overlay);
+}
+html[data-theme="splitbook-approach-lights"] .sb-formula-preview {
+  border-radius: var(--sb-radius-sm);
+  box-shadow: inset 0 var(--sb-border-width-thick) 0 0 var(--sb-shadow);
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes approach-lights-ignite {
+  from {
+    background: var(--approach-lights-housing);
+    color: var(--approach-lights-bulb-off-foreground);
+    scale: 0.86;
+  }
+  55% {
+    scale: 1.08;
+  }
+}

@@ -1,0 +1,876 @@
+/*
+ * Seeded world: Sortie Board (splitbook-sortie-board).
+ * Idea: a briefing-room launch schedule. Dense typeset sortie rows, callsign-style Swim IDs, condensed type on matte
+ * slate, plates screwed to the board, double typeset rules at the board's edges.
+ * Signature: a Swim prints in as a sortie row. On the Tap Pad every Length cell prints into the Length strip as its
+ * wall tap lands (.sb-tap-pad .sb-length-cell[data-state='done']), each tap prints a line into the tap log, and the
+ * finish touch feeds the whole strip through on a manila paper band and stamps it Printed (the strip has every cell
+ * done while the Tap Pad is no longer live). Undo of the finish reopens the Swim and takes the stamp off.
+ * Intensity budget: identity (app bar, sidebar, hero, section heads, Tap Pad, Length strip) carries the double rules,
+ * plates and the print; function (buttons, fields, chips, tabs, menus, overlays, tables, nav) keeps the condensed caps,
+ * squared plates and hard contact shadows; reading planes (Review sheet, field text, prose, numerals) stay opaque and
+ * plain. Glow appears on live state only. Faces load in app/fonts.ts.
+ */
+
+html[data-theme="splitbook-sortie-board"] {
+  color-scheme: dark;
+  scrollbar-color: var(--sb-border) var(--sb-background);
+  --sb-background: #22282e;
+  --sb-foreground: #ece7da;
+  --sb-surface-card: #2f373f;
+  --sb-surface-card-foreground: #f1ecdf;
+  --sb-surface-panel: #283037;
+  --sb-surface-panel-foreground: #ece7da;
+  --sb-surface-shelf: #252b32;
+  --sb-surface-shelf-foreground: #ece7da;
+  --sb-surface-tray: #313a43;
+  --sb-surface-tray-foreground: #f1ecdf;
+  --sb-primary: #ece7da;
+  --sb-primary-foreground: #1e2328;
+  --sb-secondary: #343d46;
+  --sb-secondary-foreground: #ece7da;
+  --sb-muted: #38414a;
+  --sb-muted-foreground: #b7bcb8;
+  --sb-accent: #3f4952;
+  --sb-accent-foreground: #f1ecdf;
+  --sb-destructive: #ff9c8f;
+  --sb-destructive-foreground: #1e2328;
+  --sb-border: #8a949d;
+  --sb-input: #262d34;
+  --sb-ring: #f0c64f;
+  --sb-success: #86cfc0;
+  --sb-success-foreground: #0e2220;
+  --sb-warning: #dcd49c;
+  --sb-warning-foreground: #22201a;
+  --sb-info: #9db8d3;
+  --sb-info-foreground: #111c27;
+  --sb-live: #f27452;
+  --sb-live-foreground: #1a1310;
+  --sb-metric: #82b8e6;
+  --sb-metric-foreground: #0f1d2a;
+  --sb-improvement: #7ecb93;
+  --sb-improvement-foreground: #0f2216;
+  --sb-fault: #e9ba4a;
+  --sb-fault-foreground: #221a05;
+  --sb-tap-pad: #2a3239;
+  --sb-tap-pad-foreground: #f4efe2;
+  --sb-shadow: #0b0e1166;
+  --sb-scrim: #0b0e11b3;
+  --sb-chart-1: #82b8e6;
+  --sb-chart-2: #7ecb93;
+  --sb-chart-3: #e9ba4a;
+  --sb-chart-4: #c7a6e8;
+  --sb-chart-5: #b7bcb8;
+  --sb-font-sans: var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif;
+  --sb-font-display: var(--font-sofia-sans-extra-condensed), 'Arial Narrow', sans-serif;
+  --sb-font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  --sb-type-display-size: 3rem;
+  --sb-type-display-line-height: 0.95;
+  --sb-type-heading-lg-size: 2.125rem;
+  --sb-type-heading-lg-line-height: 1;
+  --sb-type-heading-md-size: 1.5rem;
+  --sb-type-heading-md-line-height: 1.1;
+  --sb-type-body-size: 1.0625rem;
+  --sb-type-body-sm-size: 0.9375rem;
+  --sb-type-label-size: 0.9375rem;
+  --sb-type-numeral-xl-family: var(--sb-font-sans);
+  --sb-type-numeral-xl-size: 5rem;
+  --sb-type-numeral-xl-weight: 700;
+  --sb-type-numeral-lg-family: var(--sb-font-sans);
+  --sb-type-numeral-lg-weight: 700;
+  --sb-type-numeral-md-family: var(--sb-font-sans);
+  --sb-radius-sm: 0.125rem;
+  --sb-radius-md: 0.1875rem;
+  --sb-radius-lg: 0.3125rem;
+  --sb-radius-pill: 0.25rem;
+  --sb-elevation-raised: 0 1px 0 0 var(--sb-shadow), 0 2px 0 0 var(--sb-shadow);
+  --sb-elevation-overlay: 0 2px 0 0 var(--sb-shadow), 0 18px 32px -14px var(--sb-shadow);
+  /* World helpers: the manila paper band a printed row feeds through on (ink on it reads at 10:1 or better in every
+     colour option) and the hairline ruled between board rows (decorative; real boundaries use the border role). */
+  --sortie-board-strip: #e2d4a4;
+  --sortie-board-strip-ink: #22282e;
+  --sortie-board-rule: #3e4750;
+}
+
+html[data-theme="splitbook-sortie-board"][data-palette="haze-gray"] {
+  color-scheme: light;
+  --sb-background: #d2d6d8;
+  --sb-foreground: #12171c;
+  --sb-surface-card: #ebecea;
+  --sb-surface-card-foreground: #12171c;
+  --sb-surface-panel: #dde0e1;
+  --sb-surface-panel-foreground: #12171c;
+  --sb-surface-shelf: #c9ced1;
+  --sb-surface-shelf-foreground: #12171c;
+  --sb-surface-tray: #e4e6e5;
+  --sb-surface-tray-foreground: #12171c;
+  --sb-primary: #1b2129;
+  --sb-primary-foreground: #f3f3f0;
+  --sb-secondary: #f3f3f0;
+  --sb-secondary-foreground: #12171c;
+  --sb-muted: #c5cacd;
+  --sb-muted-foreground: #3b444c;
+  --sb-accent: #bfc8cf;
+  --sb-accent-foreground: #12171c;
+  --sb-destructive: #9e1f1a;
+  --sb-destructive-foreground: #ffffff;
+  --sb-border: #5c6770;
+  --sb-input: #f7f7f4;
+  --sb-ring: #1c4f8c;
+  --sb-success: #1d5e58;
+  --sb-success-foreground: #ffffff;
+  --sb-warning: #e3be3b;
+  --sb-warning-foreground: #1d1600;
+  --sb-info: #2e4d6b;
+  --sb-info-foreground: #ffffff;
+  --sb-live: #b0271d;
+  --sb-live-foreground: #ffffff;
+  --sb-metric: #1c5a9c;
+  --sb-metric-foreground: #ffffff;
+  --sb-improvement: #1f6a3d;
+  --sb-improvement-foreground: #ffffff;
+  --sb-fault: #875200;
+  --sb-fault-foreground: #ffffff;
+  --sb-tap-pad: #f3f3f0;
+  --sb-tap-pad-foreground: #0e1216;
+  --sb-shadow: #12171c2e;
+  --sb-scrim: #12171ca6;
+  --sb-chart-1: #1c5a9c;
+  --sb-chart-2: #1f6a3d;
+  --sb-chart-3: #875200;
+  --sb-chart-4: #6a3e98;
+  --sb-chart-5: #4a535b;
+  --sortie-board-strip: #2e3a46;
+  --sortie-board-strip-ink: #f3f3f0;
+  --sortie-board-rule: #c3c8cb;
+}
+
+html[data-theme="splitbook-sortie-board"][data-palette="grease-board"] {
+  color-scheme: dark;
+  --sb-background: #20241e;
+  --sb-foreground: #eeead6;
+  --sb-surface-card: #2e342b;
+  --sb-surface-card-foreground: #f2eedb;
+  --sb-surface-panel: #272c25;
+  --sb-surface-panel-foreground: #eeead6;
+  --sb-surface-shelf: #242920;
+  --sb-surface-shelf-foreground: #eeead6;
+  --sb-surface-tray: #31372d;
+  --sb-surface-tray-foreground: #f2eedb;
+  --sb-primary: #f2d15a;
+  --sb-primary-foreground: #1d200f;
+  --sb-secondary: #333a2f;
+  --sb-secondary-foreground: #eeead6;
+  --sb-muted: #384034;
+  --sb-muted-foreground: #bcbda9;
+  --sb-accent: #424b3c;
+  --sb-accent-foreground: #f2eedb;
+  --sb-destructive: #ff9a8a;
+  --sb-destructive-foreground: #1e120c;
+  --sb-border: #8e957f;
+  --sb-input: #242920;
+  --sb-ring: #f2d15a;
+  --sb-success: #8dd3c0;
+  --sb-success-foreground: #0e211c;
+  --sb-warning: #e2dda0;
+  --sb-warning-foreground: #201d08;
+  --sb-info: #a3c1d6;
+  --sb-info-foreground: #101c24;
+  --sb-live: #ff8357;
+  --sb-live-foreground: #1e120c;
+  --sb-metric: #93c5e4;
+  --sb-metric-foreground: #0f1c24;
+  --sb-improvement: #a9d58c;
+  --sb-improvement-foreground: #15220c;
+  --sb-fault: #f0be55;
+  --sb-fault-foreground: #231a06;
+  --sb-tap-pad: #293026;
+  --sb-tap-pad-foreground: #f4f0dd;
+  --sb-shadow: #0a0c0866;
+  --sb-scrim: #0a0c08b3;
+  --sb-chart-1: #93c5e4;
+  --sb-chart-2: #a9d58c;
+  --sb-chart-3: #f0be55;
+  --sb-chart-4: #d0b0e8;
+  --sb-chart-5: #bcbda9;
+  --sortie-board-strip: #d8e0c4;
+  --sortie-board-strip-ink: #20241e;
+  --sortie-board-rule: #3d4538;
+}
+
+html[data-theme="splitbook-sortie-board"][data-palette="original"] {
+  color-scheme: dark;
+  --sb-background: #152338;
+  --sb-foreground: #f2f2ec;
+  --sb-surface-card: #20324d;
+  --sb-surface-card-foreground: #f5f5ef;
+  --sb-surface-panel: #1a2a42;
+  --sb-surface-panel-foreground: #f2f2ec;
+  --sb-surface-shelf: #172740;
+  --sb-surface-shelf-foreground: #f2f2ec;
+  --sb-surface-tray: #233652;
+  --sb-surface-tray-foreground: #f5f5ef;
+  --sb-primary: #ffd447;
+  --sb-primary-foreground: #14202f;
+  --sb-secondary: #263a57;
+  --sb-secondary-foreground: #f2f2ec;
+  --sb-muted: #293c59;
+  --sb-muted-foreground: #b9c2cf;
+  --sb-accent: #2e4566;
+  --sb-accent-foreground: #f5f5ef;
+  --sb-destructive: #ff9c8c;
+  --sb-destructive-foreground: #14202f;
+  --sb-border: #8494ac;
+  --sb-input: #182840;
+  --sb-ring: #ffd447;
+  --sb-success: #7fd4c4;
+  --sb-success-foreground: #0c1f1c;
+  --sb-warning: #ede6b0;
+  --sb-warning-foreground: #14202f;
+  --sb-info: #a8c4e6;
+  --sb-info-foreground: #0c1a2b;
+  --sb-live: #ff7b5c;
+  --sb-live-foreground: #1a0f0b;
+  --sb-metric: #8cc6ff;
+  --sb-metric-foreground: #0c1a2b;
+  --sb-improvement: #83d69c;
+  --sb-improvement-foreground: #0e2416;
+  --sb-fault: #ffc857;
+  --sb-fault-foreground: #231906;
+  --sb-tap-pad: #1c2d46;
+  --sb-tap-pad-foreground: #f7f7f1;
+  --sb-shadow: #070d1773;
+  --sb-scrim: #070d17b8;
+  --sb-chart-1: #8cc6ff;
+  --sb-chart-2: #83d69c;
+  --sb-chart-3: #ffc857;
+  --sb-chart-4: #d6b4f5;
+  --sb-chart-5: #b9c2cf;
+  --sortie-board-strip: #f2f2ec;
+  --sortie-board-strip-ink: #152338;
+  --sortie-board-rule: #2c4263;
+}
+
+/* =====================================================================================================================
+ * Identity: the board's edges, the hero, section heads. Double typeset rules, condensed capitals, plate labels.
+ * ================================================================================================================== */
+html[data-theme="splitbook-sortie-board"] ::selection {
+  background: var(--sb-primary);
+  color: var(--sb-primary-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-display,
+html[data-theme="splitbook-sortie-board"] .sb-heading-lg,
+html[data-theme="splitbook-sortie-board"] .sb-heading-md,
+html[data-theme="splitbook-sortie-board"] .sb-wordmark {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+html[data-theme="splitbook-sortie-board"] .sb-wordmark {
+  font-family: var(--sb-type-display-family);
+  letter-spacing: 0.06em;
+}
+html[data-theme="splitbook-sortie-board"] .sb-kicker,
+html[data-theme="splitbook-sortie-board"] .sb-breadcrumbs,
+html[data-theme="splitbook-sortie-board"] .sb-split-readout-caption,
+html[data-theme="splitbook-sortie-board"] .sb-length-cell-number,
+html[data-theme="splitbook-sortie-board"] .sb-figure-label,
+html[data-theme="splitbook-sortie-board"] .sb-trend-axis-label,
+html[data-theme="splitbook-sortie-board"] .sb-legend {
+  font-family: var(--sb-type-code-family);
+  font-weight: var(--sb-font-weight-regular);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-kicker {
+  font-size: var(--sb-type-code-size);
+  letter-spacing: 0.1em;
+}
+html[data-theme="splitbook-sortie-board"] .sb-label,
+html[data-theme="splitbook-sortie-board"] .sb-tap-key-label,
+html[data-theme="splitbook-sortie-board"] .sb-swim-row-title,
+html[data-theme="splitbook-sortie-board"] .sb-session-row-title {
+  letter-spacing: 0.01em;
+}
+html[data-theme="splitbook-sortie-board"] .sb-label {
+  font-family: var(--sb-type-display-family);
+  font-size: var(--sb-type-body-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+/* The board header: a double typeset rule under the app bar and beside the sidebar, the way a schedule is ruled off. */
+html[data-theme="splitbook-sortie-board"] .sb-app-bar {
+  border-block-end: var(--sb-border-width-heavy) double var(--sb-border);
+  background: var(--sb-surface-panel);
+  color: var(--sb-surface-panel-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-sidebar {
+  border-block-end: var(--sb-border-width-heavy) double var(--sb-border);
+}
+html[data-theme="splitbook-sortie-board"] .sb-brand strong {
+  font-family: var(--sb-type-display-family);
+  font-weight: var(--sb-font-weight-heavy);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+@media (min-width: 64rem) {
+  html[data-theme="splitbook-sortie-board"] .sb-sidebar {
+    border-block-end: 0;
+    border-inline-end: var(--sb-border-width-heavy) double var(--sb-border);
+  }
+}
+html[data-theme="splitbook-sortie-board"] .sb-hero {
+  padding-block: var(--sb-space-4);
+  border-block: var(--sb-border-width-heavy) double var(--sb-border);
+}
+html[data-theme="splitbook-sortie-board"] .sb-section-head {
+  border-block-start: var(--sb-border-width-heavy) double var(--sb-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-divider[data-variant='axis'],
+html[data-theme="splitbook-sortie-board"] .sb-pair-axis {
+  border-color: var(--sb-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-divider {
+  border-block-start-color: var(--sb-border);
+}
+
+/* =====================================================================================================================
+ * Function: plates on the board. Squared corners, hard contact shadows, condensed capital legends.
+ * ================================================================================================================== */
+html[data-theme="splitbook-sortie-board"] .sb-card,
+html[data-theme="splitbook-sortie-board"] .sb-panel,
+html[data-theme="splitbook-sortie-board"] .sb-shelf,
+html[data-theme="splitbook-sortie-board"] .sb-tray {
+  border-color: var(--sb-border);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tray {
+  border-block-start-width: var(--sb-border-width-thick);
+}
+
+html[data-theme="splitbook-sortie-board"] .sb-button,
+html[data-theme="splitbook-sortie-board"] .sb-icon-button {
+  border-width: var(--sb-border-width-thick);
+  border-radius: var(--sb-radius-sm);
+  box-shadow: var(--sb-elevation-raised);
+}
+html[data-theme="splitbook-sortie-board"] .sb-button {
+  font-family: var(--sb-type-display-family);
+  font-size: var(--sb-type-body-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-button[data-size='lg'] {
+  letter-spacing: 0.06em;
+}
+html[data-theme="splitbook-sortie-board"] .sb-button[data-size='sm'] {
+  font-size: var(--sb-type-label-size);
+  letter-spacing: 0.06em;
+}
+html[data-theme="splitbook-sortie-board"] .sb-button:active,
+html[data-theme="splitbook-sortie-board"] .sb-icon-button:active {
+  box-shadow: none;
+}
+html[data-theme="splitbook-sortie-board"] .sb-button[data-variant='ghost'] {
+  box-shadow: none;
+  text-decoration-thickness: var(--sb-border-width-thin);
+}
+html[data-theme="splitbook-sortie-board"] .sb-button[data-variant='secondary']:hover,
+html[data-theme="splitbook-sortie-board"] .sb-icon-button:hover {
+  border-color: var(--sb-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-link {
+  text-decoration-thickness: var(--sb-border-width-thin);
+  text-underline-offset: var(--sb-space-1);
+}
+html[data-theme="splitbook-sortie-board"] .sb-skip-link {
+  font-family: var(--sb-type-display-family);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Fields: recessed wells in the board. The field text stays the plain reading face. */
+html[data-theme="splitbook-sortie-board"] .sb-input,
+html[data-theme="splitbook-sortie-board"] .sb-textarea,
+html[data-theme="splitbook-sortie-board"] .sb-select {
+  border-radius: var(--sb-radius-sm);
+  box-shadow: inset 0 2px 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-sortie-board"] .sb-input[data-numeric='true'] {
+  font-family: var(--sb-type-numeral-md-family);
+}
+html[data-theme="splitbook-sortie-board"] .sb-field-hint {
+  letter-spacing: 0.01em;
+}
+html[data-theme="splitbook-sortie-board"] .sb-fieldset > legend {
+  font-family: var(--sb-type-display-family);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-checkbox input,
+html[data-theme="splitbook-sortie-board"] .sb-radio input {
+  accent-color: var(--sb-primary);
+}
+html[data-theme="splitbook-sortie-board"] .sb-switch-track {
+  border-radius: var(--sb-radius-sm);
+  background: var(--sb-input);
+}
+html[data-theme="splitbook-sortie-board"] .sb-switch-thumb {
+  border-radius: var(--sb-radius-sm);
+  box-shadow: var(--sb-elevation-raised);
+  font-family: var(--sb-type-code-family);
+  text-transform: uppercase;
+}
+
+/* Chips: typeset tags pinned to the board. Selected takes the primary plate and keeps its check mark. */
+html[data-theme="splitbook-sortie-board"] .sb-chip {
+  border-width: var(--sb-border-width-thick);
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-type-display-family);
+  font-size: var(--sb-type-body-size);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-chip:has(input:checked),
+html[data-theme="splitbook-sortie-board"] .sb-chip[aria-pressed='true'],
+html[data-theme="splitbook-sortie-board"] .sb-chip[aria-checked='true'] {
+  border-color: var(--sb-primary);
+  background: var(--sb-primary);
+  color: var(--sb-primary-foreground);
+  box-shadow: var(--sb-elevation-raised);
+}
+
+/* Badges: teleprinter tags in mono capitals. */
+html[data-theme="splitbook-sortie-board"] .sb-badge {
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-type-code-family);
+  font-size: var(--sb-type-code-size);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-kbd,
+html[data-theme="splitbook-sortie-board"] .sb-code {
+  letter-spacing: 0;
+}
+html[data-theme="splitbook-sortie-board"] .sb-kbd {
+  box-shadow: var(--sb-elevation-raised);
+}
+
+/* Alerts and toasts: a full-frame briefing slip with a squared mark; never a side stripe. */
+html[data-theme="splitbook-sortie-board"] .sb-alert,
+html[data-theme="splitbook-sortie-board"] .sb-toast {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-alert-mark {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-toast {
+  border-style: double;
+  border-width: var(--sb-border-width-heavy);
+}
+
+/* Navigation: board column heads. The current page is a framed plate with a printed cue mark, not a side stripe. */
+html[data-theme="splitbook-sortie-board"] .sb-side-nav a,
+html[data-theme="splitbook-sortie-board"] .sb-bottom-nav a {
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-type-display-family);
+  font-size: var(--sb-type-body-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-side-nav a[aria-current='page'],
+html[data-theme="splitbook-sortie-board"] .sb-bottom-nav a[aria-current='page'] {
+  border-width: var(--sb-border-width-thick);
+  border-color: var(--sb-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-side-nav a[aria-current='page']::after {
+  content: '◂' / '';
+  margin-inline-start: auto;
+  font-family: var(--sb-type-code-family);
+}
+html[data-theme="splitbook-sortie-board"] .sb-bottom-nav {
+  border-block-start: var(--sb-border-width-heavy) double var(--sb-border);
+}
+html[data-theme="splitbook-sortie-board"] .sb-breadcrumbs li + li::before {
+  content: '›' / '';
+}
+html[data-theme="splitbook-sortie-board"] .sb-tabs [role='tablist'] {
+  border-block-end-width: var(--sb-border-width-thick);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tabs [role='tab'] {
+  font-family: var(--sb-type-display-family);
+  font-size: var(--sb-type-body-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-tabs [role='tab'][aria-selected='true'] {
+  background: var(--sb-surface-panel);
+  color: var(--sb-surface-panel-foreground);
+}
+
+/* Overlays: briefing cards lifted off the board. Opaque, squared, double-ruled edges. */
+html[data-theme="splitbook-sortie-board"] .sb-dialog,
+html[data-theme="splitbook-sortie-board"] .sb-sheet {
+  border: var(--sb-border-width-heavy) double var(--sb-border);
+  border-radius: var(--sb-radius-md);
+}
+html[data-theme="splitbook-sortie-board"] .sb-popover,
+html[data-theme="splitbook-sortie-board"] .sb-menu {
+  border-width: var(--sb-border-width-thick);
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-menu [role^='menuitem'] {
+  border-radius: 0;
+}
+html[data-theme="splitbook-sortie-board"] .sb-menu [role^='menuitem'] + [role^='menuitem'],
+html[data-theme="splitbook-sortie-board"] .sb-menu li + li {
+  border-block-start: var(--sb-border-width-thin) solid var(--sortie-board-rule);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tooltip {
+  border: var(--sb-border-width-thin) solid var(--sb-background);
+  border-radius: var(--sb-radius-sm);
+  box-shadow: var(--sb-elevation-raised);
+}
+
+/* Feedback: the progress track is a schedule ruler with a tick every tenth; the fill is chalk. */
+html[data-theme="splitbook-sortie-board"] .sb-progress-track {
+  border-radius: var(--sb-radius-sm);
+  background-color: var(--sb-input);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 calc(10% - var(--sb-border-width-thin)),
+    var(--sb-border) calc(10% - var(--sb-border-width-thin)) 10%
+  );
+}
+html[data-theme="splitbook-sortie-board"] .sb-progress-fill {
+  border-inline-end: var(--sb-border-width-thick) solid var(--sb-background);
+}
+html[data-theme="splitbook-sortie-board"] .sb-spinner {
+  border-radius: 50%;
+}
+html[data-theme="splitbook-sortie-board"] .sb-skeleton {
+  border-radius: var(--sb-radius-sm);
+}
+
+/* Data display: the board itself. Column heads on a muted band in condensed capitals, ruled rows, tabular figures. */
+html[data-theme="splitbook-sortie-board"] .sb-table-wrap,
+html[data-theme="splitbook-sortie-board"] .sb-list {
+  border-radius: var(--sb-radius-sm);
+  border-width: var(--sb-border-width-thick);
+}
+html[data-theme="splitbook-sortie-board"] .sb-table thead th {
+  background: var(--sb-muted);
+  color: var(--sb-surface-card-foreground);
+  font-family: var(--sb-type-display-family);
+  font-size: var(--sb-type-body-size);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-table tbody th,
+html[data-theme="splitbook-sortie-board"] .sb-table tbody td {
+  border-block-start-color: var(--sortie-board-rule);
+  font-variant-numeric: tabular-nums;
+}
+html[data-theme="splitbook-sortie-board"] .sb-table tbody tr:hover {
+  background: var(--sb-surface-panel);
+  color: var(--sb-surface-panel-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-table caption {
+  font-family: var(--sb-type-code-family);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-list > li + li {
+  border-block-start-color: var(--sortie-board-rule);
+}
+html[data-theme="splitbook-sortie-board"] .sb-empty-state {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-avatar {
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-type-code-family);
+  letter-spacing: 0;
+}
+
+/* =====================================================================================================================
+ * Domain widgets
+ * ================================================================================================================== */
+
+/* Tap Pad: a mounted board panel. Live keeps the core frame and adds the only glow in the world. */
+html[data-theme="splitbook-sortie-board"] .sb-tap-pad {
+  border-radius: var(--sb-radius-md);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-state='live'] {
+  box-shadow:
+    var(--sb-elevation-raised),
+    0 0 var(--sb-space-6) color-mix(in srgb, var(--sb-live) 32%, transparent);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-pad-head {
+  padding-block-end: var(--sb-space-2);
+  border-block-end: var(--sb-border-width-heavy) double var(--sb-border);
+}
+html[data-theme="splitbook-sortie-board"] .sb-live-mark {
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-type-code-family);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-live-mark::before {
+  border-radius: 50%;
+}
+html[data-theme="splitbook-sortie-board"] .sb-live-mark[data-state='live'] {
+  box-shadow: 0 0 var(--sb-space-3) color-mix(in srgb, var(--sb-live) 55%, transparent);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-key {
+  border-radius: var(--sb-radius-md);
+  box-shadow: var(--sb-elevation-raised);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-key:active {
+  box-shadow: none;
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-key-label {
+  font-family: var(--sb-type-display-family);
+  font-size: var(--sb-type-body-lg-size);
+  letter-spacing: 0.02em;
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-key[data-kind='wall'] .sb-tap-key-label {
+  font-size: var(--sb-type-heading-md-size);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-log li {
+  border-block-end-color: var(--sortie-board-rule);
+  font-family: var(--sb-type-code-family);
+  font-size: var(--sb-type-code-size);
+}
+
+/* Split read-out: the time column of the board in condensed tabular figures; the caption is a teleprinter line. */
+html[data-theme="splitbook-sortie-board"] .sb-split-readout-value {
+  letter-spacing: -0.01em;
+}
+
+/* Length strip: one sortie row. The cells share their rules like columns on the board. */
+html[data-theme="splitbook-sortie-board"] .sb-length-strip {
+  gap: 0;
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell {
+  position: relative;
+  border-radius: 0;
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell + .sb-length-cell {
+  margin-inline-start: calc(var(--sb-border-width-thick) * -1);
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell:first-child {
+  border-start-start-radius: var(--sb-radius-sm);
+  border-end-start-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell:last-child {
+  border-start-end-radius: var(--sb-radius-sm);
+  border-end-end-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell[data-state='current'] {
+  z-index: 1;
+  box-shadow: 0 0 var(--sb-space-3) color-mix(in srgb, var(--sb-live) 40%, transparent);
+}
+
+/* Rating: squared numbered plates; the chosen step keeps the metric fill and its number. */
+html[data-theme="splitbook-sortie-board"] .sb-rating-step {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-rating-step:has(input:checked) {
+  box-shadow: var(--sb-elevation-raised);
+}
+
+/* Fault flag: a torn note pinned to the row. Dashed when open, a filled slip with its flag when noted. */
+html[data-theme="splitbook-sortie-board"] .sb-fault-flag {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-fault-flag[aria-pressed='true'],
+html[data-theme="splitbook-sortie-board"] .sb-fault-flag[data-state='noted'] {
+  box-shadow: var(--sb-elevation-raised);
+}
+
+/* Review sheet: a quiet, opaque writing plane. Only the section rules change. */
+html[data-theme="splitbook-sortie-board"] .sb-review-sheet {
+  border-radius: var(--sb-radius-md);
+}
+html[data-theme="splitbook-sortie-board"] .sb-review-section {
+  border-block-start-color: var(--sb-border);
+}
+
+/* Swim and Session rows: sortie lines. The Swim reads as a callsign in mono capitals, figures in tabular columns. */
+html[data-theme="splitbook-sortie-board"] .sb-swim-row-title {
+  font-family: var(--sb-type-code-family);
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-session-row-title {
+  font-family: var(--sb-type-display-family);
+  font-size: var(--sb-type-body-lg-size);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-swim-row-figures .sb-numeral {
+  font-variant-numeric: tabular-nums;
+}
+html[data-theme="splitbook-sortie-board"] .sb-session-date {
+  border-radius: var(--sb-radius-sm);
+  background: var(--sb-surface-panel);
+  color: var(--sb-surface-panel-foreground);
+  font-family: var(--sb-type-code-family);
+  text-transform: uppercase;
+}
+/* A Set is a section of the board: framed, with its prescription on a header band. No side rule. */
+html[data-theme="splitbook-sortie-board"] .sb-set-group {
+  gap: 0;
+  padding: 0;
+  border: var(--sb-border-width-thick) solid var(--sb-border);
+  border-radius: var(--sb-radius-sm);
+  background: var(--sb-surface-card);
+  color: var(--sb-surface-card-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-set-group-head {
+  padding: var(--sb-space-2) var(--sb-density-inset);
+  border-block-end: var(--sb-border-width-heavy) double var(--sb-border);
+  background: var(--sb-muted);
+  color: var(--sb-surface-card-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-set-group-head .sb-muted {
+  color: var(--sb-muted-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-set-group > .sb-list {
+  border: 0;
+  border-radius: 0;
+}
+
+/* Trends: plotted on the board's ruled grid; values and axes in teleprinter capitals. */
+html[data-theme="splitbook-sortie-board"] .sb-trend-grid {
+  stroke: var(--sb-border);
+  stroke-dasharray: 1 3;
+}
+html[data-theme="splitbook-sortie-board"] .sb-trend-path {
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+}
+html[data-theme="splitbook-sortie-board"] .sb-dial-number {
+  font-family: var(--sb-type-code-family);
+  font-weight: var(--sb-font-weight-bold);
+}
+html[data-theme="splitbook-sortie-board"] .sb-dial-hand {
+  stroke-linecap: square;
+}
+html[data-theme="splitbook-sortie-board"] .sb-legend-key {
+  border-block-start-width: var(--sb-border-width-heavy);
+}
+
+/* Profile switcher: a squared callsign plate. */
+html[data-theme="splitbook-sortie-board"] .sb-profile-switcher button[aria-haspopup='menu'] {
+  border-width: var(--sb-border-width-thick);
+  border-radius: var(--sb-radius-sm);
+  box-shadow: var(--sb-elevation-raised);
+}
+
+/* Admin console: the Configuration list is a board; the publish bar is the double-ruled foot of the schedule. */
+html[data-theme="splitbook-sortie-board"] .sb-publish-bar {
+  border: var(--sb-border-width-heavy) double var(--sb-foreground);
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-formula-preview {
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-type-code-family);
+}
+
+/* =====================================================================================================================
+ * Signature: a Swim prints in as a sortie row.
+ * 1. Each Length prints into the strip as its wall tap lands: the cell types in left to right in stepped columns on a
+ *    paper band, then the band settles back to the board. Hook: .sb-tap-pad .sb-length-cell[data-state='done'].
+ * 2. Each tap prints a line into the tap log (new list items only; React keeps earlier lines mounted).
+ * 3. The finish touch feeds the whole strip and stamps it Printed. Hook: the Tap Pad is no longer live and every cell
+ *    in its strip is done. Undo of the finish turns the last cell back to current, so the stamp comes off.
+ * Bounded (one run each, never infinite), on --sb-motion-* durations, and only under no-preference: with reduced
+ * motion the row simply appears printed. The stamp's word is decorative (empty alt text); the Tap Pad's own status
+ * word ("Finished") carries the meaning.
+ * ================================================================================================================== */
+html[data-theme="splitbook-sortie-board"] .sb-tap-pad:not([data-state='live']) .sb-length-strip:has(.sb-length-cell[data-state='done']):not(:has(.sb-length-cell:not([data-state='done']))) {
+  align-items: center;
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-pad:not([data-state='live']) .sb-length-strip:has(.sb-length-cell[data-state='done']):not(:has(.sb-length-cell:not([data-state='done'])))::after {
+  content: 'Printed' / '';
+  margin-inline-start: var(--sb-space-3);
+  padding: var(--sb-space-1) var(--sb-space-2);
+  border: var(--sb-border-width-thick) solid currentColor;
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-type-code-family);
+  font-size: var(--sb-type-code-size);
+  font-weight: var(--sb-font-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  rotate: -4deg;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad .sb-length-cell[data-state='done'] {
+    animation:
+      sortie-board-print var(--sb-motion-flash) steps(8, end) both,
+      sortie-board-feed var(--sb-motion-pulse) var(--sb-easing-standard) both;
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad .sb-length-cell[data-state='done'] .sb-length-cell-number {
+    animation: sortie-board-feed-ink var(--sb-motion-pulse) var(--sb-easing-standard) both;
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad .sb-tap-log li {
+    animation: sortie-board-print var(--sb-motion-flash) steps(12, end) both;
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad:not([data-state='live']) .sb-length-strip:has(.sb-length-cell[data-state='done']):not(:has(.sb-length-cell:not([data-state='done']))) {
+    animation: sortie-board-feed-row var(--sb-motion-pulse) var(--sb-easing-standard) both;
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad:not([data-state='live']) .sb-length-strip:has(.sb-length-cell[data-state='done']):not(:has(.sb-length-cell:not([data-state='done'])))::after {
+    animation: sortie-board-stamp var(--sb-motion-panel) var(--sb-easing-enter) var(--sb-motion-flash) both;
+  }
+}
+
+@keyframes sortie-board-print {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes sortie-board-feed {
+  0%,
+  55% {
+    background-color: var(--sortie-board-strip);
+    color: var(--sortie-board-strip-ink);
+  }
+  100% {
+    background-color: var(--sb-surface-card);
+    color: var(--sb-surface-card-foreground);
+  }
+}
+@keyframes sortie-board-feed-ink {
+  0%,
+  55% {
+    color: var(--sortie-board-strip-ink);
+  }
+  100% {
+    color: var(--sb-muted-foreground);
+  }
+}
+@keyframes sortie-board-feed-row {
+  0%,
+  55% {
+    outline: var(--sb-border-width-heavy) solid var(--sortie-board-strip);
+    outline-offset: var(--sb-border-width-thick);
+  }
+  100% {
+    outline: var(--sb-border-width-heavy) solid transparent;
+    outline-offset: var(--sb-border-width-thick);
+  }
+}
+@keyframes sortie-board-stamp {
+  from {
+    opacity: 0;
+    scale: var(--sb-enter-scale);
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}

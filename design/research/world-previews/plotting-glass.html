@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en" data-theme="splitbook-plotting-glass" data-palette="day-plot">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Splitbook · World preview · Plotting Glass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@500;600;700&family=Barlow:wght@400;500;600&family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+<!--
+  Plotting Glass — colour options. WCAG ratios checked with a script (sRGB relative luminance),
+  truncated to 2 decimals, never rounded up. Gates from design/brief.md:
+  role/role-foreground >= 4.5; muted-foreground on plate (surface-card) and tap-pad >= 4.5;
+  border and ring vs plate and tap-pad >= 3; live/metric/improvement/fault vs plate and tap-pad >= 3.
+  Extra (this preview uses live/metric/improvement/fault as text on the plate): >= 4.5.
+
+  day-plot (recommended)  plate #E7EEEC  ink #12181C  live #B42318  metric #1B4F9C  improvement #1D6B3A  fault #8A4B00
+    ink/plate 15.20 · tap-fg/tap-pad 14.04 · room-fg/room 13.10 · room-muted/room 7.38
+    live-fg/live 6.57 · metric-fg/metric 7.93 · improvement-fg 6.52 · fault-fg 6.80 · primary-fg 15.20
+    muted/plate 6.42 · muted/tap-pad 5.93 · border/plate 3.66 · border/tap-pad 3.38 · ring/plate 6.74 · ring/tap-pad 6.23
+    live/plate 5.58 · metric/plate 6.74 · improvement/plate 5.54 · fault/plate 5.77
+    live/tap-pad 5.15 · metric/tap-pad 6.23 · improvement/tap-pad 5.12 · fault/tap-pad 5.33
+
+  red-watch (alternative: dark-adapted CIC lamp)  plate #EFE6DC  ink #1A1210  live #A3161A  metric #23468C  improvement #2B6431  fault #7A4A00
+    ink/plate 14.95 · tap-fg/tap-pad 13.42 · room-fg/room 14.07 · room-muted/room 8.08
+    live-fg/live 7.81 · metric-fg/metric 9.02 · improvement-fg 7.07 · fault-fg 7.48 · primary-fg 14.95
+    muted/plate 6.78 · muted/tap-pad 6.09 · border/plate 4.29 · border/tap-pad 3.85 · ring/plate 7.31 · ring/tap-pad 6.56
+    live/plate 6.33 · metric/plate 7.31 · improvement/plate 5.73 · fault/plate 6.06
+    live/tap-pad 5.68 · metric/tap-pad 6.56 · improvement/tap-pad 5.14 · fault/tap-pad 5.44
+
+  blackout (alternative: matte slate plate, chalk grease)  plate #1E272C  ink #EDEAE0  live #FFD23F  metric #8EC3FF  improvement #7FD39A  fault #FFA25C
+    ink/plate 12.62 · tap-fg/tap-pad 11.19 · room-fg/room 15.15 · room-muted/room 7.39
+    live-fg/live 12.05 · metric-fg/metric 10.06 · improvement-fg 10.31 · fault-fg 8.76 · primary-fg 12.62
+    muted/plate 7.06 · muted/tap-pad 6.25 · border/plate 3.45 · border/tap-pad 3.06 · ring/plate 8.25 · ring/tap-pad 7.31
+    live/plate 10.52 · metric/plate 8.25 · improvement/plate 8.45 · fault/plate 7.65
+    live/tap-pad 9.33 · metric/tap-pad 7.31 · improvement/tap-pad 7.49 · fault/tap-pad 6.78
+
+  original (Pace Clock hands on chalk-tile)  plate #FBFBF8  ink #111315  live #C62828  metric #1F5FBF  improvement #2E7D32  fault #8D5300
+    ink/plate 17.96 · tap-fg/tap-pad 16.27 · room-fg/room 14.47 · room-muted/room 6.52
+    live-fg/live 5.62 · metric-fg/metric 6.09 · improvement-fg 5.12 · fault-fg 6.23 · primary-fg 17.96
+    muted/plate 6.82 · muted/tap-pad 6.18 · border/plate 3.90 · border/tap-pad 3.54 · ring/plate 5.87 · ring/tap-pad 5.32
+    live/plate 5.42 · metric/plate 5.87 · improvement/plate 4.94 · fault/plate 6.01
+    live/tap-pad 4.91 · metric/tap-pad 5.32 · improvement/tap-pad 4.48 (boundary use only on tap-pad) · fault/tap-pad 5.44
+-->
+<style>
+  /* ---------- colour options (CSS custom-property sets) ---------- */
+  html[data-theme="splitbook-plotting-glass"][data-palette="day-plot"] {
+    --sb-room: #1E262B; --sb-room-foreground: #E8EEF0; --sb-room-muted: #A9B6BC;
+    --sb-surface-card: #E7EEEC; --sb-surface-card-foreground: #12181C;
+    --sb-muted-foreground: #4A565C; --sb-border: #6E7C82; --sb-ring: #1B4F9C;
+    --sb-edge: #8FD3E0;
+    --sb-tap-pad: #DCE6E4; --sb-tap-pad-foreground: #12181C;
+    --sb-live: #B42318; --sb-live-foreground: #FFFFFF;
+    --sb-metric: #1B4F9C; --sb-metric-foreground: #FFFFFF;
+    --sb-improvement: #1D6B3A; --sb-improvement-foreground: #FFFFFF;
+    --sb-fault: #8A4B00; --sb-fault-foreground: #FFFFFF;
+    --sb-primary: #12181C; --sb-primary-foreground: #E7EEEC;
+  }
+  html[data-theme="splitbook-plotting-glass"][data-palette="red-watch"] {
+    --sb-room: #241615; --sb-room-foreground: #F1E4DF; --sb-room-muted: #C4ABA4;
+    --sb-surface-card: #EFE6DC; --sb-surface-card-foreground: #1A1210;
+    --sb-muted-foreground: #5B4A44; --sb-border: #7C675F; --sb-ring: #23468C;
+    --sb-edge: #FF8A6B;
+    --sb-tap-pad: #E6DACD; --sb-tap-pad-foreground: #1A1210;
+    --sb-live: #A3161A; --sb-live-foreground: #FFFFFF;
+    --sb-metric: #23468C; --sb-metric-foreground: #FFFFFF;
+    --sb-improvement: #2B6431; --sb-improvement-foreground: #FFFFFF;
+    --sb-fault: #7A4A00; --sb-fault-foreground: #FFFFFF;
+    --sb-primary: #1A1210; --sb-primary-foreground: #EFE6DC;
+  }
+  html[data-theme="splitbook-plotting-glass"][data-palette="blackout"] {
+    --sb-room: #0F1417; --sb-room-foreground: #E6E9E6; --sb-room-muted: #9AA6A6;
+    --sb-surface-card: #1E272C; --sb-surface-card-foreground: #EDEAE0;
+    --sb-muted-foreground: #A8B3B2; --sb-border: #6B7B80; --sb-ring: #8EC3FF;
+    --sb-edge: #D9B54A;
+    --sb-tap-pad: #253038; --sb-tap-pad-foreground: #EDEAE0;
+    --sb-live: #FFD23F; --sb-live-foreground: #1A1A1A;
+    --sb-metric: #8EC3FF; --sb-metric-foreground: #0F1417;
+    --sb-improvement: #7FD39A; --sb-improvement-foreground: #0F1417;
+    --sb-fault: #FFA25C; --sb-fault-foreground: #1A1A1A;
+    --sb-primary: #EDEAE0; --sb-primary-foreground: #1E272C;
+  }
+  html[data-theme="splitbook-plotting-glass"][data-palette="original"] {
+    --sb-room: #E4E3DC; --sb-room-foreground: #111315; --sb-room-muted: #4A4E51;
+    --sb-surface-card: #FBFBF8; --sb-surface-card-foreground: #111315;
+    --sb-muted-foreground: #55595C; --sb-border: #7A7F82; --sb-ring: #1F5FBF;
+    --sb-edge: #6FA8D8;
+    --sb-tap-pad: #F0F0EA; --sb-tap-pad-foreground: #111315;
+    --sb-live: #C62828; --sb-live-foreground: #FFFFFF;
+    --sb-metric: #1F5FBF; --sb-metric-foreground: #FFFFFF;
+    --sb-improvement: #2E7D32; --sb-improvement-foreground: #FFFFFF;
+    --sb-fault: #8D5300; --sb-fault-foreground: #FFFFFF;
+    --sb-primary: #111315; --sb-primary-foreground: #FBFBF8;
+  }
+
+  /* ---------- world type / shape / depth ---------- */
+  html[data-theme="splitbook-plotting-glass"] {
+    --sb-font-display: "Chakra Petch", "Barlow", system-ui, sans-serif;
+    --sb-font-sans: "Barlow", system-ui, sans-serif;
+    --sb-font-numeral: "Azeret Mono", ui-monospace, monospace;
+    --sb-radius-plate: 6px;
+    --sb-radius-control: 4px;
+    /* edge-lit acrylic: light enters at the plate's top edge only */
+    --sb-plate-edge: inset 0 2px 0 0 var(--sb-edge), 0 -1px 10px -4px var(--sb-edge);
+    --sb-plate-depth: 0 1px 0 rgba(0,0,0,.25), 0 10px 24px -14px rgba(0,0,0,.55);
+    --sb-mark-width: 2.6;
+    --sb-tap-key-size: 5rem;
+    --sb-button-min-target: 3.5rem;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--sb-room); color: var(--sb-room-foreground);
+    font: 400 15px/1.4 var(--sb-font-sans);
+    min-height: 100vh;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--sb-ring); outline-offset: 2px; }
+  .num { font-family: var(--sb-font-numeral); font-variant-numeric: tabular-nums; }
+  .stencil { font-family: var(--sb-font-display); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; font-size: 11px; }
+
+  /* ---------- header ---------- */
+  .hdr { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding: 12px 28px 10px; border-bottom: 1px solid color-mix(in srgb, var(--sb-room-muted) 35%, transparent); }
+  .hdr .kicker { color: var(--sb-room-muted); }
+  .hdr h1 { margin: 2px 0 4px; font: 700 30px/1 var(--sb-font-display); letter-spacing: .02em; }
+  .hdr p { margin: 2px 0; max-width: 900px; color: var(--sb-room-foreground); }
+  .hdr p b { font-family: var(--sb-font-display); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-size: 12px; color: var(--sb-room-muted); margin-right: 6px; }
+  .switcher { border: 0; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .switcher legend { padding: 0; margin-bottom: 6px; color: var(--sb-room-muted); }
+  .swatches { display: flex; gap: 6px; }
+  .swatch { position: relative; }
+  .swatch input { position: absolute; opacity: 0; inset: 0; }
+  .swatch label { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: center; min-height: 48px; padding: 6px 20px 6px 10px; border: 1px solid color-mix(in srgb, var(--sb-room-muted) 50%, transparent); border-radius: 4px; cursor: pointer; font-size: 13px; }
+  .swatch label small { grid-column: 2; color: var(--sb-room-muted); font-size: 11px; }
+  .swatch .chips { grid-row: span 2; display: grid; grid-template-columns: repeat(2, 10px); gap: 2px; }
+  .swatch .chips i { width: 10px; height: 10px; border-radius: 2px; outline: 1px solid rgba(127,127,127,.6); }
+  .swatch input:checked + label { border-color: var(--sb-edge); box-shadow: inset 0 -2px 0 var(--sb-edge); }
+  .swatch input:checked + label::after { content: "✓"; position: absolute; top: 3px; right: 6px; font-size: 11px; }
+  .swatch input:focus-visible + label { outline: 3px solid var(--sb-edge); outline-offset: 2px; }
+
+  /* ---------- stage ---------- */
+  .stage { display: grid; grid-template-columns: 402px 1fr; gap: 28px; padding: 10px 28px 12px; align-items: start; }
+  .frame-label { display: flex; justify-content: space-between; color: var(--sb-room-muted); margin: 0 2px 6px; }
+
+  /* plate = opaque edge-lit acrylic reading plane */
+  .plate {
+    position: relative;
+    background-color: var(--sb-surface-card); color: var(--sb-surface-card-foreground);
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--sb-border) 14%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--sb-border) 14%, transparent) 1px, transparent 1px);
+    background-size: 24px 24px;
+    border: 1px solid var(--sb-border);
+    border-radius: var(--sb-radius-plate);
+    box-shadow: var(--sb-plate-edge), var(--sb-plate-depth);
+  }
+  .plate-tag { position: absolute; top: 8px; right: 10px; color: var(--sb-muted-foreground); }
+  .muted { color: var(--sb-muted-foreground); }
+
+  /* ---------- phone / Capture (Deck sizing) ---------- */
+  .phone { width: 402px; padding: 6px; border-radius: 30px; background: color-mix(in srgb, var(--sb-room) 70%, #000); border: 1px solid color-mix(in srgb, var(--sb-room-muted) 40%, transparent); }
+  .capture { width: 390px; border-radius: 24px; padding: 14px 14px 16px; display: grid; gap: 10px; overflow: hidden; }
+  .cap-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .cap-top h2 { margin: 0; font: 600 15px/1.2 var(--sb-font-display); letter-spacing: .03em; }
+  .cap-top .muted { font-size: 13px; }
+  .live-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 3px; background: var(--sb-live); color: var(--sb-live-foreground); font: 700 12px/1 var(--sb-font-display); letter-spacing: .1em; text-transform: uppercase; box-shadow: 0 0 0 1px var(--sb-live), 0 0 12px -2px var(--sb-live); }
+  .live-pill svg { width: 10px; height: 10px; }
+
+  .split { display: grid; grid-template-columns: 1fr auto; align-items: end; border-bottom: 2px solid var(--sb-live); padding-bottom: 6px; }
+  .split .val { font: 700 60px/1 var(--sb-font-numeral); color: var(--sb-live); font-variant-numeric: tabular-nums; letter-spacing: -.02em; text-shadow: 0 0 14px color-mix(in srgb, var(--sb-live) 35%, transparent); }
+  .split .side { text-align: right; font-size: 13px; }
+  .split .side .num { font-size: 16px; font-weight: 600; color: var(--sb-surface-card-foreground); }
+
+  .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .cell { min-height: 58px; border: 1.5px dashed var(--sb-border); border-radius: var(--sb-radius-control); padding: 4px 6px; display: grid; grid-template-rows: auto 1fr; background: var(--sb-surface-card); }
+  .cell .lbl { display: flex; justify-content: space-between; font-size: 11px; }
+  .cell .lbl .num { font-weight: 700; font-size: 13px; color: var(--sb-surface-card-foreground); }
+  .cell svg { width: 100%; height: 24px; }
+  .cell[data-state="done"] { border-style: solid; border-color: var(--sb-surface-card-foreground); }
+  .cell[data-state="live"] { border-style: solid; border-color: var(--sb-live); box-shadow: 0 0 0 1px var(--sb-live), 0 0 10px -3px var(--sb-live); }
+  .cell .sp { font: 600 13px/1 var(--sb-font-numeral); align-self: end; }
+
+  .pad { background: var(--sb-tap-pad); color: var(--sb-tap-pad-foreground); border: 1px solid var(--sb-border); border-radius: var(--sb-radius-plate); padding: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .pad-title { grid-column: 1 / -1; display: flex; justify-content: space-between; color: var(--sb-muted-foreground); }
+  .key { min-height: calc(var(--sb-tap-key-size) * 2); border: 1.5px solid var(--sb-surface-card-foreground); border-radius: var(--sb-radius-control); background: var(--sb-surface-card); color: var(--sb-surface-card-foreground); padding: 8px 10px; display: grid; grid-template-rows: auto auto 1fr; text-align: left; gap: 4px; transition: transform .08s ease-out; }
+  .key:active { transform: scale(.98); }
+  .key .k-name { font: 600 14px/1.15 var(--sb-font-display); }
+  .key .k-sub { font-size: 12px; color: var(--sb-muted-foreground); }
+  .key .k-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 6px; align-self: end; }
+  .key .tally { height: 44px; }
+  .key .k-num { font: 700 44px/1 var(--sb-font-numeral); color: var(--sb-metric); font-variant-numeric: tabular-nums; }
+  .key .k-plus { font: 700 12px/1 var(--sb-font-display); letter-spacing: .08em; color: var(--sb-muted-foreground); }
+  .tally { display: block; height: 30px; max-width: 100%; overflow: visible; }
+  .tally path { fill: none; stroke: var(--sb-metric); stroke-width: var(--sb-mark-width); stroke-linecap: round; stroke-linejoin: round; }
+
+  .row2 { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .btn { min-height: var(--sb-button-min-target); border-radius: var(--sb-radius-control); border: 1.5px solid var(--sb-surface-card-foreground); background: var(--sb-surface-card); color: var(--sb-surface-card-foreground); font: 600 15px/1.1 var(--sb-font-display); letter-spacing: .03em; padding: 8px 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn[data-variant="primary"] { background: var(--sb-primary); color: var(--sb-primary-foreground); border-color: var(--sb-primary); }
+  .btn[disabled] { opacity: .55; cursor: not-allowed; }
+  .undo { justify-content: space-between; }
+  .undo .what { font: 500 13px/1.2 var(--sb-font-sans); color: var(--sb-muted-foreground); }
+  .wall { min-height: 88px; font-size: 22px; flex-direction: column; gap: 2px; box-shadow: inset 0 2px 0 var(--sb-edge); }
+  .wall small { font: 500 13px/1.2 var(--sb-font-sans); letter-spacing: 0; opacity: .9; }
+  .illus { font-size: 11px; color: var(--sb-muted-foreground); text-align: center; }
+
+  /* ---------- desktop ---------- */
+  .desk { border: 1px solid color-mix(in srgb, var(--sb-room-muted) 40%, transparent); border-radius: 10px; overflow: hidden; background: color-mix(in srgb, var(--sb-room) 82%, #000); }
+  .desk-bar { display: flex; gap: 10px; align-items: center; padding: 8px 14px; color: var(--sb-room-muted); border-bottom: 1px solid color-mix(in srgb, var(--sb-room-muted) 30%, transparent); }
+  .desk-bar .crumbs { font-size: 13px; color: var(--sb-room-foreground); }
+  .desk-body { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; padding: 16px; align-items: start; }
+  .sheet, .trend { padding: 16px 18px; }
+  h3 { margin: 0 0 2px; font: 700 19px/1.2 var(--sb-font-display); letter-spacing: .02em; }
+  h4 { margin: 14px 0 6px; font: 600 12px/1 var(--sb-font-display); letter-spacing: .1em; text-transform: uppercase; color: var(--sb-muted-foreground); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font: 600 11px/1.2 var(--sb-font-display); letter-spacing: .08em; text-transform: uppercase; color: var(--sb-muted-foreground); padding: 4px 6px; border-bottom: 1.5px solid var(--sb-surface-card-foreground); }
+  td { padding: 3px 6px; border-bottom: 1px solid color-mix(in srgb, var(--sb-border) 55%, transparent); vertical-align: middle; }
+  td .cnt { display: flex; align-items: center; gap: 8px; }
+  td .cnt .num { font-weight: 700; min-width: 2ch; color: var(--sb-metric); font-size: 16px; }
+  td .tally { height: 22px; }
+  td.splitc { font-family: var(--sb-font-numeral); font-variant-numeric: tabular-nums; font-weight: 600; }
+  .result { display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px; font-size: 13px; }
+  .result .num { font-weight: 600; }
+
+  .tp { display: grid; grid-template-columns: 150px 1fr; gap: 4px 12px; align-items: center; margin-bottom: 8px; }
+  .tp .tp-name { font-weight: 600; font-size: 14px; }
+  .rating { display: flex; gap: 4px; }
+  .rating button { position: relative; width: 48px; height: 48px; border: 1.5px solid var(--sb-border); border-radius: var(--sb-radius-control); background: var(--sb-surface-card); font: 700 17px/1 var(--sb-font-numeral); color: var(--sb-surface-card-foreground); }
+  .rating button[aria-checked="true"] { border-color: var(--sb-surface-card-foreground); }
+  .rating button svg { position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); pointer-events: none; overflow: visible; }
+  .rating button svg path { fill: none; stroke: var(--sb-metric); stroke-width: 2.6; stroke-linecap: round; }
+  .cue { grid-column: 2; font-size: 13px; color: var(--sb-muted-foreground); min-height: 1.4em; }
+
+  .fault { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; border: 1.5px solid var(--sb-fault); border-radius: var(--sb-radius-control); padding: 6px 10px; background: var(--sb-surface-card); }
+  .fault svg { width: 26px; height: 24px; }
+  .fault svg path { fill: none; stroke: var(--sb-fault); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+  .fault .ft { font-size: 13.5px; }
+  .fault .ft b { color: var(--sb-fault); font-family: var(--sb-font-display); letter-spacing: .06em; text-transform: uppercase; font-size: 11px; display: block; }
+  .actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+  .trend-head { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
+  .chart { width: 100%; height: 230px; display: block; margin-top: 6px; }
+  .chart .axis { stroke: var(--sb-surface-card-foreground); stroke-width: 1.5; }
+  .chart .gl { stroke: var(--sb-border); stroke-width: 1; stroke-dasharray: 2 4; }
+  .chart .ln { fill: none; stroke: var(--sb-metric); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .chart .pt { fill: none; stroke: var(--sb-metric); stroke-width: 2.6; stroke-linecap: round; }
+  .chart .lab { font: 600 12px var(--sb-font-numeral); fill: var(--sb-surface-card-foreground); }
+  .chart .ax { font: 500 11px var(--sb-font-sans); fill: var(--sb-muted-foreground); }
+  .chart .gain { stroke: var(--sb-improvement); stroke-width: 2.6; fill: none; stroke-linecap: round; }
+  .note-gain { display: flex; gap: 8px; align-items: baseline; padding: 8px 10px; border: 1.5px solid var(--sb-improvement); border-radius: var(--sb-radius-control); margin-top: 6px; font-size: 14px; }
+  .note-gain b { color: var(--sb-improvement); font: 700 11px/1 var(--sb-font-display); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+  .dial-row { display: grid; grid-template-columns: 120px 1fr; gap: 14px; align-items: center; margin-top: 12px; }
+  .dial { width: 120px; height: 120px; }
+  .dial .rim { fill: none; stroke: var(--sb-surface-card-foreground); stroke-width: 1.5; }
+  .dial .tk { stroke: var(--sb-surface-card-foreground); stroke-width: 2; stroke-linecap: round; }
+  .dial .t { font: 600 11px var(--sb-font-numeral); fill: var(--sb-surface-card-foreground); text-anchor: middle; dominant-baseline: middle; }
+  .dial .hand { stroke: var(--sb-metric); stroke-width: 3; stroke-linecap: round; }
+  .dial .ghost { stroke: var(--sb-muted-foreground); stroke-width: 2; stroke-dasharray: 3 4; stroke-linecap: round; }
+  .dial-txt { font-size: 13.5px; }
+  .dial-txt .num { font-size: 22px; font-weight: 700; color: var(--sb-metric); }
+
+  /* ---------- signature: grease-pencil plot marks ---------- */
+  .fresh { stroke-dasharray: 1; stroke-dashoffset: 1; animation: sb-plotting-glass-draw 200ms cubic-bezier(.3,.7,.2,1) forwards; }
+  .erasing { animation: sb-plotting-glass-erase 160ms ease-in forwards; }
+  @keyframes sb-plotting-glass-draw { to { stroke-dashoffset: 0; } }
+  @keyframes sb-plotting-glass-erase { to { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .fresh { animation: none; stroke-dashoffset: 0; }
+    .erasing { animation: none; opacity: 0; }
+    .key { transition: none; }
+  }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div>
+    <div class="stencil kicker">Splitbook · World preview · splitbook-plotting-glass</div>
+    <h1>Plotting Glass</h1>
+    <p><b>Idea</b>A carrier CIC's edge-lit acrylic plot board, marked in grease pencil. Light enters at the edges; reading planes stay opaque.</p>
+    <p><b>Signature</b>Tallies and ticks are drawn as plot marks in five-bar gates. Tap a key, Wall or a rating to draw; Undo wipes the last mark.</p>
+  </div>
+  <fieldset class="switcher">
+    <legend class="stencil">Colour option</legend>
+    <div class="swatches" role="radiogroup">
+      <div class="swatch"><input type="radio" name="pal" id="p1" value="day-plot" checked><label for="p1"><span class="chips"><i style="background:#E7EEEC"></i><i style="background:#B42318"></i><i style="background:#1B4F9C"></i><i style="background:#8FD3E0"></i></span>Day plot<small>Recommended</small></label></div>
+      <div class="swatch"><input type="radio" name="pal" id="p2" value="red-watch"><label for="p2"><span class="chips"><i style="background:#EFE6DC"></i><i style="background:#A3161A"></i><i style="background:#23468C"></i><i style="background:#FF8A6B"></i></span>Red watch<small>Alternative</small></label></div>
+      <div class="swatch"><input type="radio" name="pal" id="p3" value="blackout"><label for="p3"><span class="chips"><i style="background:#1E272C"></i><i style="background:#FFD23F"></i><i style="background:#8EC3FF"></i><i style="background:#D9B54A"></i></span>Blackout<small>Alternative</small></label></div>
+      <div class="swatch"><input type="radio" name="pal" id="p4" value="original"><label for="p4"><span class="chips"><i style="background:#FBFBF8"></i><i style="background:#C62828"></i><i style="background:#1F5FBF"></i><i style="background:#2E7D32"></i></span>Original<small>Pace Clock hands</small></label></div>
+    </div>
+  </fieldset>
+</header>
+
+<main class="stage">
+  <!-- (a) phone: live Capture -->
+  <section aria-label="Live Capture on a phone, 390 px">
+    <div class="frame-label stencil"><span>Capture · Tap Pad · 390 px · Deck sizing</span><span>Illustrative data</span></div>
+    <div class="phone">
+      <div class="plate capture" data-density="glance">
+        <div class="cap-top">
+          <div>
+            <h2>Swim 4 · 100 m Freestyle</h2>
+            <div class="muted">Drill set · Ava · 25 m pool</div>
+          </div>
+          <span class="live-pill" role="status"><svg viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="3.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="5" cy="5" r="1.2" fill="currentColor"/></svg>Recording</span>
+        </div>
+
+        <div class="split">
+          <div>
+            <div class="stencil muted">Running split · length <span id="curLenTxt">2</span></div>
+            <div class="val" id="split" aria-live="off">0:00.0</div>
+          </div>
+          <div class="side muted">Last length<br><span class="num" id="lastSplit">0:22.8</span></div>
+        </div>
+
+        <div>
+          <div class="stencil muted" style="margin-bottom:4px">Length strip · ticked at each wall</div>
+          <div class="strip" id="strip"></div>
+        </div>
+
+        <div class="pad" role="group" aria-label="Tap Pad">
+          <div class="pad-title stencil"><span>Tap Pad · Focus metrics</span><span>Tap = 1 mark</span></div>
+          <button class="key" id="kKicks" data-metric="kicks" aria-describedby="kKicksN">
+            <span class="k-name">Kicks off the wall</span>
+            <span class="k-sub">Underwater kicks before the first stroke</span>
+            <span class="k-row"><svg class="tally" aria-hidden="true"></svg><span class="k-num num" id="kKicksN">0</span></span>
+          </button>
+          <button class="key" id="kStrokes" data-metric="strokes" aria-describedby="kStrokesN">
+            <span class="k-name">Strokes this length</span>
+            <span class="k-sub">Each hand entry counts as one</span>
+            <span class="k-row"><svg class="tally" aria-hidden="true"></svg><span class="k-num num" id="kStrokesN">0</span></span>
+          </button>
+        </div>
+
+        <div class="row2">
+          <button class="btn undo" id="undo"><span>Undo last tap</span><span class="what" id="undoWhat">Nothing to undo</span></button>
+          <button class="btn wall" data-variant="primary" id="wall">Wall<small>Tap as the hand touches at each turn</small></button>
+        </div>
+        <div class="illus">Illustrative data. Times shown as the result, counts first.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- (b) desktop: Review sheet + Metric trend -->
+  <section aria-label="Desktop: Review sheet and Metric trend">
+    <div class="frame-label stencil"><span>Desk · Review sheet ↔ Metric trend</span><span>Illustrative data</span></div>
+    <div class="desk">
+      <div class="desk-bar"><span class="stencil">Splitbook</span><span class="crumbs">Ava · Session 19 Nov · Swim 4</span></div>
+      <div class="desk-body">
+        <article class="plate sheet" aria-labelledby="rsTitle">
+          <span class="plate-tag stencil">Plot 01</span>
+          <h3 id="rsTitle">Review sheet</h3>
+          <div class="muted" style="font-size:13px">Swim 4 · 100 m Freestyle · Drill · 4 Lengths</div>
+
+          <h4>Counts per Length</h4>
+          <table>
+            <thead><tr><th>Length</th><th>Kicks off the wall</th><th>Strokes</th><th>Split</th></tr></thead>
+            <tbody id="rsRows"></tbody>
+          </table>
+          <div class="result muted"><span>Time, shown as the result</span><span class="num" style="color:var(--sb-surface-card-foreground)">1:31.4</span></div>
+
+          <h4>Technique points · rate 1 to 5</h4>
+          <div class="tp" data-tp="head">
+            <span class="tp-name">Head position</span>
+            <div class="rating" role="radiogroup" aria-label="Head position rating"></div>
+            <div class="cue"></div>
+          </div>
+          <div class="tp" data-tp="streamline">
+            <span class="tp-name">Streamline off the wall</span>
+            <div class="rating" role="radiogroup" aria-label="Streamline rating"></div>
+            <div class="cue"></div>
+          </div>
+
+          <h4>Faults · observer's notes</h4>
+          <div class="fault">
+            <svg viewBox="0 0 26 24" aria-hidden="true"><path d="M13 2.5 L24 21.5 L2.2 21 Z M13 9 L13.2 14.6 M13.1 18 L13.1 18.2"/></svg>
+            <div class="ft"><b>Noted · Length 3</b>Breathed every stroke on the way back. A note for practice, not a call.</div>
+            <button class="btn" style="min-height:48px;font-size:13px">Edit note</button>
+          </div>
+          <div class="actions"><button class="btn">Back to Tap Pad</button><button class="btn" data-variant="primary">Save Swim</button></div>
+        </article>
+
+        <article class="plate trend" aria-labelledby="mtTitle">
+          <span class="plate-tag stencil">Plot 02</span>
+          <div class="trend-head">
+            <div>
+              <h3 id="mtTitle">Metric trend</h3>
+              <div class="muted" style="font-size:13px">Kicks off each wall, average per Swim · Mar–Nov</div>
+            </div>
+          </div>
+          <svg class="chart" id="chart" viewBox="0 0 400 230" role="img" aria-label="Line chart: average kicks off each wall rose from 4 in March to 7 in November"></svg>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <span class="muted" style="font-size:12.5px">Each cross is one month, numbered on the plot.</span>
+            <button class="btn" id="replot" style="min-height:48px;font-size:13px">Replot marks</button>
+          </div>
+          <div class="note-gain"><b>Better</b><span>3 more kicks off every wall than in March.</span></div>
+
+          <div class="dial-row">
+            <svg class="dial" viewBox="0 0 120 120" role="img" aria-label="Technique trend dial: 3.6 of 5 now, 2.8 in March"></svg>
+            <div class="dial-txt">
+              <div class="stencil muted">Technique trend</div>
+              <div><span class="num">3.6</span> <span class="muted">of 5 now</span></div>
+              <div class="muted">Dashed hand: 2.8 in March. Head position and streamline both up.</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  // deterministic wobble so marks look hand-drawn but never shimmer between renders
+  const wob = (i, k) => { const x = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453; return (x - Math.floor(x)) - .5; };
+
+  // one grease-pencil mark: verticals 0-3 of each gate, index 4 is the diagonal gate bar
+  function markPath(i, h) {
+    const gate = Math.floor(i / 5), pos = i % 5, gx = gate * (h * 1.1);
+    if (pos < 4) {
+      const x = gx + 3 + pos * (h * .19) + wob(i, 1) * 1.2;
+      const y1 = 2 + wob(i, 2) * 1.6, y2 = h - 2 + wob(i, 3) * 1.6;
+      return `M${x.toFixed(1)} ${y1.toFixed(1)} Q${(x + wob(i, 4) * 2).toFixed(1)} ${(h / 2).toFixed(1)} ${(x + wob(i, 5) * 1.2).toFixed(1)} ${y2.toFixed(1)}`;
+    }
+    return `M${(gx - 1).toFixed(1)} ${(h - 5 + wob(i, 6)).toFixed(1)} Q${(gx + h * .36).toFixed(1)} ${(h / 2 + wob(i, 7) * 3).toFixed(1)} ${(gx + h * .8).toFixed(1)} ${(4 + wob(i, 8)).toFixed(1)}`;
+  }
+  function drawTally(svg, n, h, freshIdx) {
+    svg.replaceChildren();
+    const gates = Math.max(1, Math.ceil(n / 5));
+    svg.setAttribute('viewBox', `-2 0 ${gates * h * 1.1} ${h}`);
+    svg.style.width = (gates * h * 1.1) + 'px';
+    for (let i = 0; i < n; i++) {
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', markPath(i, h));
+      p.setAttribute('pathLength', '1');
+      if (i === freshIdx) p.classList.add('fresh');
+      svg.appendChild(p);
+    }
+  }
+
+  // ---------- palette switcher ----------
+  document.querySelectorAll('input[name=pal]').forEach(r => r.addEventListener('change', e => {
+    document.documentElement.dataset.palette = e.target.value;
+  }));
+
+  // ---------- Capture state (illustrative) ----------
+  const lengths = [{ kicks: 6, strokes: 14, split: 22.8 }]; // length 1 done
+  const cur = { kicks: 7, strokes: 9 };
+  const hist = []; // undo stack
+  let t0 = performance.now() - 24.5 * 1000; // running split started 24.5 s ago (illustrative)
+  const POOL_LENGTHS = 4;
+
+  const fmt = s => `${Math.floor(s / 60)}:${(s % 60).toFixed(1).padStart(4, '0')}`;
+  const splitEl = document.getElementById('split');
+  function tick() { splitEl.textContent = fmt((performance.now() - t0) / 1000); }
+  tick(); setInterval(tick, 100);
+
+  const keys = { kicks: document.getElementById('kKicks'), strokes: document.getElementById('kStrokes') };
+  function renderKey(m, fresh) {
+    const k = keys[m];
+    drawTally(k.querySelector('svg'), cur[m], 44, fresh ? cur[m] - 1 : -1);
+    k.querySelector('.k-num').textContent = cur[m];
+    k.setAttribute('aria-label', `${k.querySelector('.k-name').textContent}: ${cur[m]}. Tap to add one.`);
+  }
+
+  const strip = document.getElementById('strip');
+  function renderStrip(freshDone) {
+    strip.replaceChildren();
+    for (let i = 0; i < POOL_LENGTHS; i++) {
+      const done = i < lengths.length, live = i === lengths.length;
+      const c = document.createElement('div');
+      c.className = 'cell';
+      c.dataset.state = done ? 'done' : live ? 'live' : 'todo';
+      c.innerHTML = `<div class="lbl"><span class="num">${i + 1}</span><span class="muted">${done ? 'ticked' : live ? 'swimming' : '25 m'}</span></div>`;
+      if (done) {
+        const svg = document.createElementNS(NS, 'svg');
+        svg.setAttribute('viewBox', '0 0 80 26'); svg.setAttribute('aria-hidden', 'true');
+        const p = document.createElementNS(NS, 'path');
+        // plot tick: a grease check-stroke through the cell, then the split beside it
+        p.setAttribute('d', `M3 ${13 + wob(i, 9) * 2} L9 20 L19 ${5 + wob(i, 10) * 2}`);
+        p.setAttribute('pathLength', '1');
+        p.setAttribute('style', 'fill:none;stroke:var(--sb-surface-card-foreground);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round');
+        if (i === freshDone) p.classList.add('fresh');
+        const tx = document.createElementNS(NS, 'text');
+        tx.setAttribute('x', '24'); tx.setAttribute('y', '19');
+        tx.setAttribute('style', 'font:600 13px var(--sb-font-numeral);fill:var(--sb-surface-card-foreground)');
+        tx.textContent = fmt(lengths[i].split);
+        svg.append(p, tx); c.appendChild(svg);
+      }
+      strip.appendChild(c);
+    }
+    document.getElementById('curLenTxt').textContent = Math.min(lengths.length + 1, POOL_LENGTHS);
+  }
+
+  const undoBtn = document.getElementById('undo'), undoWhat = document.getElementById('undoWhat');
+  const labels = { kicks: 'Kick', strokes: 'Stroke' };
+  function renderUndo() {
+    const last = hist[hist.length - 1];
+    undoBtn.disabled = !last;
+    undoWhat.textContent = !last ? 'Nothing to undo'
+      : last.type === 'wall' ? `Wall tap · Length ${last.len}` : `${labels[last.type]} +1 · now ${cur[last.type]}`;
+  }
+
+  Object.entries(keys).forEach(([m, k]) => k.addEventListener('click', () => {
+    if (lengths.length >= POOL_LENGTHS) return;
+    cur[m]++; hist.push({ type: m }); renderKey(m, true); renderUndo();
+  }));
+
+  document.getElementById('wall').addEventListener('click', () => {
+    if (lengths.length >= POOL_LENGTHS) return;
+    const s = (performance.now() - t0) / 1000;
+    const prev = { ...cur, t0 };
+    lengths.push({ kicks: cur.kicks, strokes: cur.strokes, split: s });
+    document.getElementById('lastSplit').textContent = fmt(s);
+    hist.push({ type: 'wall', len: lengths.length, prev });
+    cur.kicks = 0; cur.strokes = 0; t0 = performance.now();
+    renderStrip(lengths.length - 1); renderKey('kicks'); renderKey('strokes'); renderUndo();
+  });
+
+  undoBtn.addEventListener('click', () => {
+    const last = hist.pop(); if (!last) return;
+    if (last.type === 'wall') {
+      lengths.pop(); cur.kicks = last.prev.kicks; cur.strokes = last.prev.strokes; t0 = last.prev.t0;
+      document.getElementById('lastSplit').textContent = lengths.length ? fmt(lengths[lengths.length - 1].split) : '—';
+      renderStrip(-1); renderKey('kicks'); renderKey('strokes'); renderUndo();
+      return;
+    }
+    const m = last.type, svg = keys[m].querySelector('svg'), lastMark = svg.lastElementChild;
+    cur[m]--; keys[m].querySelector('.k-num').textContent = cur[m]; renderUndo();
+    const done = () => renderKey(m, false);
+    if (lastMark && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      lastMark.classList.remove('fresh'); lastMark.classList.add('erasing');
+      lastMark.addEventListener('animationend', done, { once: true });
+    } else done();
+  });
+
+  renderStrip(-1); renderKey('kicks'); renderKey('strokes'); renderUndo();
+
+  // ---------- Review sheet rows (illustrative) ----------
+  const rows = [[6, 14, 22.8], [7, 15, 22.6], [5, 17, 23.4], [7, 15, 22.6]];
+  const tb = document.getElementById('rsRows');
+  rows.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="num">${i + 1}</td><td><span class="cnt"><svg class="tally" aria-hidden="true"></svg><span class="num">${r[0]}</span></span></td><td><span class="cnt"><svg class="tally" aria-hidden="true"></svg><span class="num">${r[1]}</span></span></td><td class="splitc">${fmt(r[2])}</td>`;
+    tb.appendChild(tr);
+    const [a, b] = tr.querySelectorAll('svg');
+    drawTally(a, r[0], 22, -1); drawTally(b, r[1], 22, -1);
+  });
+
+  // ---------- ratings: the chosen step is ringed in grease pencil ----------
+  const cues = {
+    head: ['Head lifts to look forward every stroke.', 'Head lifts on most strokes.', 'Eyes forward-down, lifts on breaths.', 'Eyes down; a small lift on some breaths.', 'Eyes on the pool floor, head still while breathing.'],
+    streamline: ['Arms apart off the wall.', 'Hands together, elbows bent.', 'Arms locked, head between them sometimes.', 'Tight streamline, slight early break-out.', 'Tight streamline held until the first kick slows.']
+  };
+  const initial = { head: 4, streamline: 3 };
+  document.querySelectorAll('.tp').forEach(tp => {
+    const key = tp.dataset.tp, box = tp.querySelector('.rating'), cue = tp.querySelector('.cue');
+    function set(v, fresh) {
+      box.querySelectorAll('button').forEach((b, i) => {
+        const on = i + 1 === v;
+        b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1;
+        b.querySelector('svg')?.remove();
+        if (on) {
+          const s = document.createElementNS(NS, 'svg'); s.setAttribute('viewBox', '0 0 56 56'); s.setAttribute('aria-hidden', 'true');
+          const p = document.createElementNS(NS, 'path');
+          p.setAttribute('d', 'M30 4 C47 3 54 16 52 30 C50 45 38 53 25 52 C11 51 3 41 4 27 C5 14 14 5 33 7');
+          p.setAttribute('pathLength', '1'); if (fresh) p.classList.add('fresh');
+          s.appendChild(p); b.appendChild(s);
+        }
+      });
+      cue.textContent = `${v} · ${cues[key][v - 1]}`;
+    }
+    for (let v = 1; v <= 5; v++) {
+      const b = document.createElement('button');
+      b.setAttribute('role', 'radio'); b.textContent = v;
+      b.setAttribute('aria-label', `${v} of 5: ${cues[key][v - 1]}`);
+      b.addEventListener('click', () => set(v, true));
+      b.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const n = Math.min(5, Math.max(1, v + (e.key === 'ArrowRight' ? 1 : -1)));
+          set(n, true); box.children[n - 1].focus();
+        }
+      });
+      box.appendChild(b);
+    }
+    set(initial[key], false);
+  });
+
+  // ---------- Metric trend: crosses + grease line, replotted mark by mark ----------
+  const data = [['Mar', 4], ['Apr', 4], ['May', 5], ['Jun', 5], ['Jul', 6], ['Sep', 6], ['Oct', 7], ['Nov', 7]];
+  const chart = document.getElementById('chart');
+  const X = i => 40 + i * 48, Y = v => 200 - (v - 2) * 30;
+  function el(tag, attrs, cls) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (cls) e.setAttribute('class', cls); return e; }
+  let plotTimers = [];
+  function plot(animate) {
+    plotTimers.forEach(clearTimeout); plotTimers = [];
+    chart.replaceChildren();
+    for (let v = 2; v <= 8; v += 1) {
+      chart.appendChild(el('line', { x1: 34, x2: 392, y1: Y(v), y2: Y(v) }, v === 2 ? 'axis' : 'gl'));
+      chart.appendChild(el('text', { x: 24, y: Y(v) + 4, 'text-anchor': 'end' }, 'ax')).textContent = v;
+    }
+    data.forEach(([m], i) => { chart.appendChild(el('text', { x: X(i), y: 220, 'text-anchor': 'middle' }, 'ax')).textContent = m; });
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    data.forEach(([, v], i) => {
+      const step = () => {
+        const x = X(i), y = Y(v), w1 = wob(i, 11) * 1.5, w2 = wob(i, 12) * 1.5;
+        if (i > 0) {
+          const px = X(i - 1), py = Y(data[i - 1][1]);
+          chart.appendChild(el('path', { d: `M${px + 7} ${py + (y - py) * 7 / 48} Q${(px + x) / 2 + w1} ${(py + y) / 2 + w2} ${x - 7} ${y - (y - py) * 7 / 48}`, pathLength: 1 }, 'ln' + (animate && !reduce ? ' fresh' : '')));
+        }
+        chart.appendChild(el('path', { d: `M${x - 6 + w1} ${y - 6} L${x + 6} ${y + 6 + w2} M${x + 6 + w2} ${y - 6} L${x - 6} ${y + 6 + w1}`, pathLength: 1 }, 'pt' + (animate && !reduce ? ' fresh' : '')));
+        chart.appendChild(el('text', { x: x, y: y - 12, 'text-anchor': 'middle' }, 'lab')).textContent = v;
+        if (i === data.length - 1) {
+          // improvement bracket: March → now, drawn after the last mark
+          const y0 = Y(data[0][1]);
+          chart.appendChild(el('path', { d: `M386 ${y0} L392 ${y0} L392 ${y} L386 ${y}`, pathLength: 1 }, 'gain' + (animate && !reduce ? ' fresh' : '')));
+          const t = el('text', { x: 388, y: (y0 + y) / 2 + 4, 'text-anchor': 'end' }, 'lab');
+          t.setAttribute('style', 'fill:var(--sb-improvement)'); t.textContent = '+3';
+          chart.appendChild(t);
+        }
+      };
+      if (animate && !reduce) plotTimers.push(setTimeout(step, i * 160)); else step();
+    });
+  }
+  plot(false);
+  document.getElementById('replot').addEventListener('click', () => plot(true));
+
+  // ---------- Technique trend dial ----------
+  const dial = document.querySelector('.dial');
+  const C = 60, R = 50, ang = v => (-225 + (v - 1) / 4 * 270) * Math.PI / 180;
+  dial.appendChild(el('path', { d: `M${C + R * Math.cos(ang(1))} ${C + R * Math.sin(ang(1))} A${R} ${R} 0 1 1 ${C + R * Math.cos(ang(5))} ${C + R * Math.sin(ang(5))}` }, 'rim'));
+  for (let v = 1; v <= 5; v++) {
+    const a = ang(v);
+    dial.appendChild(el('line', { x1: C + (R - 8) * Math.cos(a), y1: C + (R - 8) * Math.sin(a), x2: C + R * Math.cos(a), y2: C + R * Math.sin(a) }, 'tk'));
+    dial.appendChild(el('text', { x: C + (R - 18) * Math.cos(a), y: C + (R - 18) * Math.sin(a) }, 't')).textContent = v;
+  }
+  const hand = (v, cls, len) => dial.appendChild(el('line', { x1: C, y1: C, x2: C + len * Math.cos(ang(v)), y2: C + len * Math.sin(ang(v)) }, cls));
+  hand(2.8, 'ghost', 34); hand(3.6, 'hand', 38);
+  dial.appendChild(el('circle', { cx: C, cy: C, r: 4, style: 'fill:var(--sb-surface-card-foreground)' }));
+})();
+</script>
+</body>
+</html>
