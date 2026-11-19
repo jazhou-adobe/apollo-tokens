@@ -8,7 +8,11 @@
     "build": "next build",
     "start": "next start --port 3200",
     "validate": "node validation/validate-design-system.mjs",
-    "test:validator": "node --test validation/*.test.mjs"
+    "test:validator": "node --test validation/*.test.mjs",
+    "typecheck": "tsc --noEmit",
+    "check:fast": "npm run validate && npm run test:validator && npm run typecheck",
+    "check": "npm run check:fast && next build",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "next": "16.4.6",

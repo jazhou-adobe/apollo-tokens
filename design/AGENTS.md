@@ -4,7 +4,7 @@ Read [brief.md](brief.md) first; it outranks everything else. The full screen-bu
 
 ## Building a screen
 
-1. Pick the blueprint (watcher, Admin console, or system state) from `patterns/` and the theme: `splitbook-light` for desk pages, `splitbook-deck` for Capture at the pool.
+1. Pick the blueprint (watcher, Admin console, or system state) from `patterns/` and the theme: the owner's chosen design is the `splitbook-approach-lights` world; the core themes are `splitbook-light` for desk pages and `splitbook-deck` for Capture at the pool.
 2. Set `data-theme` (and `data-palette` for a world) on `<html>` only. Put `data-density="compact"` on the Admin console region only, never on Capture or watcher pages.
 3. Compose from `.sb-*` components and domain widgets (`components/*.md`, live at `/design`). Do not fork anatomy or invent new classes for existing parts.
 4. Use semantic tokens (`--sb-*` or the Tailwind bridge's semantic utilities) only. No hex, colour functions, px/rem/ms literals, Tailwind arbitrary values, or palette utilities outside `tokens/`.
@@ -15,9 +15,13 @@ Read [brief.md](brief.md) first; it outranks everything else. The full screen-bu
 9. Copy: the coach's clipboard. Calm, precise, plain words, no exclamation marks, glossary terms (Session, Swim, Length, Set, Focus metric, Tap Pad, Review sheet, Metric trend, Technique trend, Technique point, Fault, Capture template, Admin console, Configuration). Explain jargon. Never write "DQ" or "disqualified". Label fixture data as illustrative.
 10. No gradient text, decorative glass, glow outside live state, scanlines, grain, or neon-on-black reading surfaces. No streaks, badges-as-rewards, confetti, leaderboards, or ring dashboards.
 
+## Worlds
+
+A new or retired world touches `tokens/worlds/<slug>.{json,css}`, `WORLD_FILES` in `preview/themes.ts`, its `@import` in `app/globals.css`, and its faces in `app/fonts.ts`; the validator fails on any registry or font mismatch. Retired worlds move to `archive/worlds/<slug>/`.
+
 ## Checks before you hand off
 
-Run `npm run validate`, `npm run test:validator`, `npx tsc --noEmit`, and `npm run build`; then check the page at 1440 and 390 CSS px wide in both themes with no console errors and no sideways scroll, by keyboard, and with reduced motion.
+Run `npm run check` (validator, its tests, type check, build; the pre-commit hook runs all but the build). Then, from `../../apollo-tokens`, run `npm run smoke -- splitbook` against the hub (`npm run preview`), and check changed pages by keyboard and with reduced motion. Dev-server errors: `../../apollo-tokens/preview-hub/logs/splitbook.log`.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

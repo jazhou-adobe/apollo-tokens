@@ -14,6 +14,7 @@ function freshPackage() {
     ...pkg,
     tokens: structuredClone(pkg.tokens),
     sources: new Map(pkg.sources),
+    codeFiles: new Map(pkg.codeFiles),
     artifacts: new Set(pkg.artifacts),
     worlds: pkg.worlds.map((world) => ({ ...world, json: structuredClone(world.json) })),
   };
@@ -21,9 +22,10 @@ function freshPackage() {
 
 const DEFAULT_PALETTES = [{ id: 'alt-a' }, { id: 'alt-b' }, { id: 'original' }];
 
-// A fixture world built from the core Light palette, so world tests never depend on a shipped world's design.
+// A fixture world built from the core Light palette, so world tests never depend on a shipped world's design. It is
+// registered in preview/themes.ts WORLD_FILES and app/globals.css unless `register` is false.
 // Each palette starts from the same colours; `color` replaces roles and `extra` adds raw declarations to its block.
-function withFixtureWorld(pkg, { color = {}, overrides = {}, css = '', palettes = DEFAULT_PALETTES } = {}) {
+function withFixtureWorld(pkg, { color = {}, overrides = {}, css = '', palettes = DEFAULT_PALETTES, register = true } = {}) {
   const theme = 'splitbook-fixture';
   const light = pkg.tokens.themes['splitbook-light'].color;
   const colourSet = (changes) => {
@@ -44,6 +46,10 @@ function withFixtureWorld(pkg, { color = {}, overrides = {}, css = '', palettes 
     json: { label: 'Fixture', order: 999, $description: 'Test world.', signature: 'None.', colorScheme: 'light', color: roles, overrides, palette: { label: 'Default' }, palettes: paletteJson },
     css: `html[data-theme="${theme}"] {\n  color-scheme: light;\n${declarations.join('\n')}\n}\n${paletteCss.join('')}${css}`,
   });
+  if (register) {
+    pkg.sources.set('preview/themes.ts', pkg.sources.get('preview/themes.ts').replace(/WORLD_FILES([^=]*)=\s*\[/, "WORLD_FILES$1= [\n  ['fixture', fixture],"));
+    pkg.sources.set('app/globals.css', `${pkg.sources.get('app/globals.css')}@import '../tokens/worlds/fixture.css';\n`);
+  }
   return pkg;
 }
 
@@ -352,4 +358,60 @@ test('a world may not load faces, import, or open a cascade layer itself', () =>
 test('a world stylesheet with gradient text fails', () => {
   const css = 'html[data-theme="splitbook-fixture"] .sb-display { background-clip: text; }\n';
   assert.ok(failuresMatching(withFixtureWorld(freshPackage(), { css }), /splitbook-fixture: tokens\/worlds\/fixture\.css: gradient text/).length > 0);
+});
+
+// ---------- fonts and world registry ----------
+
+test('a next/font call whose variable no theme or registered world uses fails, naming the call', () => {
+  const pkg = freshPackage();
+  const unused = "const unusedFace = Archivo({ subsets: ['latin'], weight: ['400'], display: 'swap', preload: false, variable: '--font-unused-face' });\n";
+  pkg.sources.set('app/fonts.ts', `${pkg.sources.get('app/fonts.ts')}${unused}`);
+  assert.equal(failuresMatching(pkg, /^app\/fonts\.ts: next\/font call unusedFace \(--font-unused-face\) is not used by tokens\/themes\.css or any registered world$/).length, 1, all(pkg));
+});
+
+test('a world face is unused once its world is no longer registered', () => {
+  const pkg = freshPackage();
+  pkg.sources.set('preview/themes.ts', pkg.sources.get('preview/themes.ts').replace(/^ {2}\['approach-lights', approachLights\],\n/m, ''));
+  assert.equal(failuresMatching(pkg, /^app\/fonts\.ts: next\/font call archivo \(--font-archivo\) is not used/).length, 1, all(pkg));
+});
+
+test('every self-hosted font file is loaded by a src, and every src exists', () => {
+  const orphan = freshPackage();
+  orphan.artifacts.add('app/fonts/Orphan-latin.woff2');
+  assert.equal(failuresMatching(orphan, /^app\/fonts\/Orphan-latin\.woff2 is not referenced by a src in app\/fonts\.ts$/).length, 1, all(orphan));
+  const missing = freshPackage();
+  missing.sources.set('app/fonts.ts', missing.sources.get('app/fonts.ts').replace('./fonts/AtkinsonHyperlegibleMono-Variable-latin.woff2', './fonts/Missing.woff2'));
+  assert.equal(failuresMatching(missing, /^app\/fonts\.ts: src \.\/fonts\/Missing\.woff2 does not exist$/).length, 1, all(missing));
+  assert.equal(failuresMatching(missing, /^app\/fonts\/AtkinsonHyperlegibleMono-Variable-latin\.woff2 is not referenced/).length, 1, all(missing));
+});
+
+test('a world must be registered in WORLD_FILES and imported in globals.css, and neither may name a missing world', () => {
+  const unregistered = withFixtureWorld(freshPackage(), { register: false });
+  assert.equal(failuresMatching(unregistered, /^splitbook-fixture: tokens\/worlds\/fixture\.json exists but is not registered in preview\/themes\.ts WORLD_FILES$/).length, 1, all(unregistered));
+  assert.equal(failuresMatching(unregistered, /^splitbook-fixture: tokens\/worlds\/fixture\.css is not imported in app\/globals\.css$/).length, 1, all(unregistered));
+  const ghost = freshPackage();
+  ghost.sources.set('preview/themes.ts', ghost.sources.get('preview/themes.ts').replace(/WORLD_FILES([^=]*)=\s*\[/, "WORLD_FILES$1= [\n  ['ghost', ghost],"));
+  ghost.sources.set('app/globals.css', `${ghost.sources.get('app/globals.css')}@import '../tokens/worlds/ghost.css';\n`);
+  assert.equal(failuresMatching(ghost, /^preview\/themes\.ts registers "ghost" but tokens\/worlds\/ghost\.json does not exist$/).length, 1, all(ghost));
+  assert.equal(failuresMatching(ghost, /^app\/globals\.css imports tokens\/worlds\/ghost\.css but tokens\/worlds\/ghost\.json does not exist$/).length, 1, all(ghost));
+  const unstyled = freshPackage();
+  unstyled.worlds[0].css = null;
+  assert.equal(failuresMatching(unstyled, /^splitbook-approach-lights: tokens\/worlds\/approach-lights\.css is missing$/).length, 1, all(unstyled));
+});
+
+test('a world face that no next/font call loads fails', () => {
+  const css = 'html[data-theme="splitbook-fixture"] .sb-display { font-family: var(--font-nowhere), sans-serif; }\n';
+  const pkg = withFixtureWorld(freshPackage(), { css });
+  assert.equal(failuresMatching(pkg, /^splitbook-fixture: tokens\/worlds\/fixture\.css uses var\(--font-nowhere\) but app\/fonts\.ts has no next\/font call with that variable$/).length, 1, all(pkg));
+});
+
+test('live code that names an archived world fails; prose and docs do not', () => {
+  const pkg = freshPackage();
+  pkg.artifacts.add('archive/worlds/retired-fixture/retired-fixture.json');
+  pkg.sources.set('preview/legacy.ts', "export const LEGACY = 'retired-fixture';\n");
+  pkg.codeFiles.set('tokens/legacy.json', '{ "theme": "splitbook-retired-fixture" }\n');
+  pkg.sources.set('app/prose.tsx', 'export const Copy = () => <p>The retired-fixture idea lives on.</p>;\n');
+  pkg.sources.set('foundations/prose.md', 'The `retired-fixture` world is archived.\n');
+  const failures = failuresMatching(pkg, /names archived world "retired-fixture"/);
+  assert.deepEqual(failures.map((failure) => failure.split(':')[0]).sort(), ['preview/legacy.ts', 'tokens/legacy.json'], failures.join('\n'));
 });

@@ -10,9 +10,13 @@ skills:
     - ../../../.agents/skills/design/emilkowalski
     - ../../../.agents/skills/workflow
     - ../../../.agents/skills/ppt
+    # Apollo playbook and apply-theme skills live once, in the sibling apollo-tokens repo.
+    - ../apollo-tokens/.skills
 extensions:
   # omp has no agentPaths setting; agent profiles are discovered from <extension-root>/agents.
   # Pointing an extension root at cyber-avatar's .omp loads .omp/agents/*.md (e.g.
   # openai-code-reviewer) even when the clone has its own .omp/agents. Note: this array
   # replaces (not merges with) any user-level `extensions:` list.
   - ../../../.omp
+  # Apollo agents (design-reviewer, world-previewer) live once, in apollo-tokens/.omp/agents.
+  - ../apollo-tokens/.omp
