@@ -50,10 +50,7 @@ Versioned by repository history. If a package is published, keep a changelog wit
 
 ## Adoption
 
-**Placeholder — Phase 9 (adoption and handoff) has not been run.** This run covers Phases 1–4 (frame, brainstorm, core system, critique). The adoption guide, the handoff skill for the Hub repository, and the copy-list of files a consuming app needs will be written in Phase 9.
+**Adoption skill available; first adoption not yet done.** Sub-apps adopt this system by copying, through the `apply-apollo-theme` skill in the `apollo-tokens` repo (`.skills/apply-apollo-theme/`). Its manifest script reads this folder and lists the `<html>` attributes, files to copy and `next/font` calls for any theme, world and colour option; the default for new apps is `hermes-flight-director`. Until the Hub adopts it:
 
-Until then:
-
-- Do not copy files into `hermes-hub` piecemeal.
-- Treat `tokens/themes.css`, `tokens/tailwind-theme.css`, `tokens/tokens.json` and `preview/hermes-components.css` as the candidate runtime set; the list is not final.
+- Do not copy files into `hermes-hub` piecemeal; copy only what the manifest lists, never `preview/hermes-preview.css`, `app/`, `research/`, `archive/` or `validation/`.
 - Record any gap found while building the Hub UI as a contribution here, not a one-off exception in the Hub.
