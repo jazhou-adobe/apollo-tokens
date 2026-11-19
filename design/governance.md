@@ -55,8 +55,8 @@ Artifacts are versioned by repository history. Record changes as Added, Changed,
 
 ## Adoption
 
-**Not yet done.** Handoff to the product repo (Phase 9 of the build playbook) has not started. Until it does:
+**Adoption skill available; first adoption not yet done.** Sub-apps adopt this system by copying, through the `apply-apollo-theme` skill in the `apollo-tokens` repo (`.skills/apply-apollo-theme/`). Its manifest script reads this folder and lists the `<html>` attributes, files to copy and `next/font` calls for any theme, world and colour option; the default for new apps is `splitbook-approach-lights`. Until the product adopts it:
 
 - Nothing here is consumed by the Splitbook product yet.
-- There is no copy list, install order or adoption skill. Those will be written in Phase 9 and recorded in this section.
+- Copy only what the manifest lists; never `preview/splitbook-preview.css`, `app/`, `research/`, `archive/` or `validation/`.
 - Product work that needs a design decision now should cite the file and section it follows here, and raise any gap as a contribution to this repository rather than a one-off in the product.
