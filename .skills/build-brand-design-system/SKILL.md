@@ -1,6 +1,6 @@
 ---
 name: build-brand-design-system
-description: Use when creating a brand-wide design system "master repo" for a family of web apps, starting from similar app designs or a given design file (DESIGN.md), brainstorming the creative direction from a random seed, and building tokens, themes, seeded visual worlds, component/page/controller/motion specs, a live preview server, validators, and an apply-theme skill for sub-apps; or when handing that design system over to a new sub-application. Replays the journey used to build the MathGo design system in this repo, with the prompts that drove each phase.
+description: Use when creating a brand-wide design system "master repo" for a family of web apps, starting from similar app designs or a given design file (DESIGN.md), brainstorming the creative direction from a random seed, generating a quick preview image or HTML page of every candidate world before building any, letting the owner pick 1-2 worlds, building them with medium-effort subagents, and kicking off the design review; plus tokens, themes, component/page/controller/motion specs, a live preview server, validators, and an apply-theme skill for sub-apps; or when handing that design system over to a new sub-application. Replays the journey used to build the MathGo design system in this repo, with the prompts that drove each phase.
 tags: [design-system, brand, tokens, themes, agents, handoff, mathgo]
 ---
 
@@ -8,7 +8,7 @@ tags: [design-system, brand, tokens, themes, agents, handoff, mathgo]
 
 Repository-local playbook. It turns "I have a few apps under one brand and want every new one to look and behave the same" into a **brand master repo**: one design system that people browse and agents read, plus a skill that hands it to each new sub-app.
 
-It records how the MathGo design system in this repo was built, from 14 Oct to 19 Nov 2026, so another brand can follow the same route. Each phase has a goal, the steps, what it produces, a gate before moving on, and the **prompts the MathGo owner actually typed**. The prompts are quoted as typed: they were voice-dictated, so "MaxCo" and "Netplane girl" mean MathGo and NaplanGo, and "math goal" and "Mesco" mean MathGo. Swap in your own brand, apps, and audience.
+It records how the MathGo design system in this repo was built, from 14 Oct to 19 Nov 2026, so another brand can follow the same route, with the preview-first world flow learned building Splitbook and Hermes Hub on 19-20 Nov 2026. Each phase has a goal, the steps, what it produces, a gate before moving on, and the **prompts the owners actually typed**. The prompts are quoted as typed: they were voice-dictated, so "MaxCo" and "Netplane girl" mean MathGo and NaplanGo, and "math goal" and "Mesco" mean MathGo. Swap in your own brand, apps, and audience.
 
 ## What you end up with
 
@@ -17,13 +17,14 @@ It records how the MathGo design system in this repo was built, from 14 Oct to 1
 | Tech-stack baseline | `tech-stack-cadence.md`, `.skills/ask-mathgo-master/` | Shared framework choices for new apps, and a skill agents query for them |
 | As-built inventory | `implemented-components.md`, `implemented-page-structures.md` | What the existing apps already use; the spec must cover it |
 | Tokens and themes | `design/tokens/tokens.json` (DTCG), `themes.css`, `tailwind-theme.css`, `token-taxonomy.md` | 4 core themes (light, dark, high-contrast, junior age knob), compact density, reduced motion |
-| Seeded worlds | `design/tokens/worlds/<slug>.{json,css}` | 8 bold alternative skins, each with 4 colour options |
+| World previews | `design/research/world-previews/<slug>.{html,png}`; options not taken move to `design/archive/worlds/<slug>/` | A quick image and standalone HTML page of every candidate world, made before any world is built; the preview hub lists them all on its root page |
+| Seeded worlds | `design/tokens/worlds/<slug>.{json,css}` | Only the 1-2 worlds the owner picked from the previews, each with 4 colour options (MathGo built 20 and deleted 12, the cost this order avoids) |
 | Foundations | `design/foundations/*.md` | Design language, typography and maths, accessibility, imagery, motion |
 | Component specs | `components/component-specs.json` (97 components) and family docs | Anatomy, attributes, token bindings, and states for each component |
 | Page structures | `patterns/page-structures.json` (13 archetypes, 16 variants, 18 conventions) and blueprints | What every page shares, and each page type |
 | Controller logic | `components/controllers.json` (41 state machines) and `preview/controllers/*.ts` | What clicking, typing, validation, focus moves, and timers do |
 | Motion | `components/motion.json` (29 patterns), `preview/mathgo-motion.css`, `useMotion.ts` | How elements enter, leave, and respond |
-| Live preview | `design/app` (Next.js): `/design`, `/design/specs`, `/design/pages`, `/design/behavior`, `/design/motion`, `/worlds`, `/overview`, `/examples/*` | People see every token, component, page, and interaction |
+| Live preview | `design/app` (Next.js): `/design`, `/design/specs`, `/design/pages`, `/design/behavior`, `/design/motion`, `/worlds`, `/overview`, `/examples/*`; the preview hub (`preview-hub/` in the tokens repo) serves every brand on one port | People see every token, component, page, and interaction |
 | Agent contract | `agent-contract/screen-generation-rules.md`, `design/AGENTS.md` | The steps an agent must follow to build a screen |
 | Guardrails | `validation/validate-design-system.mjs` and tests, `smoke-report.md` | Contrast, token use, raw-value bans, spec references, motion budget |
 | Critique | `.omp/agents/design-reviewer.md`, `research/*-review.md` | An independent reviewer with scored reports |
@@ -33,9 +34,11 @@ It records how the MathGo design system in this repo was built, from 14 Oct to 1
 
 ```mermaid
 flowchart LR
-  A[1 Start from a similar app design or a design file, and frame it] --> B[2 Brainstorm the creative direction from a random seed]
-  B --> C[3 Build tokens, docs, preview server, validator]
-  C --> D[4 Critique and refine]
+  A[1 Start from a similar app design or a design file, and frame it] --> B[2 Brainstorm from a random seed]
+  B --> P[2 Quick preview of every candidate world]
+  P --> K{Owner picks 1-2 worlds}
+  K --> C[3 Build core and picked worlds with medium-effort subagents]
+  C --> D[4 Review starts automatically, then refine]
   D --> E[5 Machine-readable specs]
   E --> F[6 Coverage against the starting input]
   F --> G[7 Interaction and motion]
@@ -72,17 +75,18 @@ Example prompts:
 
 Starting from a design file instead, a prompt in the same spirit: *"Read @DESIGN.md. It is the brief for the <Brand> design system. Build a design system for all <Brand> sub-applications that keeps every rule in it […]"*, followed by the same interview request.
 
-### Phase 2: Brainstorm the creative direction from a random seed
+### Phase 2: Brainstorm from a random seed, preview every world, let the owner pick
 
-**Goal:** choose a distinctive direction before building, so the system doesn't settle into a generic look. MathGo's first build looked "very normal"; seeding the brainstorm up front avoids that round trip.
+**Goal:** choose a distinctive direction, and pick worlds from what the owner can see, before building anything. MathGo's first build looked "very normal"; seeding the brainstorm up front avoids that round trip. MathGo also built 20 worlds and deleted 12; previewing first avoids that one.
 
 1. Have the agent generate a long random alphanumeric string with a shell script, read creative direction from it (colour, layout, type, sub-patterns, special numbers), and never show the string in the design.
-2. Ask for a broad list of bold directions, not a deep one. Each idea is a candidate **world**: a complete alternative skin over the same structure, which may change palette, faces, shape, depth, texture, and one signature interaction, but never spacing, density, target sizes, or motion.
-3. Pick the direction for the core themes and the worlds worth building. Prune hard. MathGo built 20 worlds, deleted 12 after review and hands-on checks, and kept 8.
-4. Plan 4 colour options per world, each held to the same contrast rules as the core themes.
-5. Before building a world in full, have a `world-previewer` subagent (`.omp/agents/world-previewer.md`, effort medium) build a quick standalone preview of it, one agent per world, so the owner picks from what they can see.
+2. Ask for a broad list of bold directions, not a deep one. Each idea is a candidate **world**: a complete alternative skin over the same structure, which may change palette, faces, shape, depth, texture, and one signature interaction, but never spacing, density, target sizes, or motion. Plan 4 colour options per world, each held to the same contrast rules as the core themes.
+3. Pick the direction for the core themes.
+4. **Generate a quick image or preview HTML before building any world.** No world gets tokens, CSS, or components until the owner has seen it. Spawn one `world-previewer` subagent (`.omp/agents/world-previewer.md`, effort medium) per candidate, all in parallel. Each writes one standalone page and a 1440x900 screenshot to `design/research/world-previews/<slug>.{html,png}`: desktop and phone screens, the working signature, and the 4 colour options.
+5. **Show the previews on the preview hub's root page.** The hub lists every `research/world-previews/*.html` and `archive/worlds/*/*.html` of each brand in `brands.json`, with its screenshot, and serves it at `/_previews/<brand>/<path>`. Nothing to register; reload `http://localhost:3000/`. Show the owner the screenshots too.
+6. **Ask the owner to pick 1-2 worlds per brand.** Move every other candidate to `design/archive/worlds/<slug>/` (the hub shows it as Archived), so nothing is lost and nothing unchosen gets built.
 
-**Gate:** the owner has chosen the core direction and the list of worlds to build.
+**Gate:** the owner has chosen the core direction and picked 1-2 worlds from their previews.
 
 Example prompts:
 
@@ -90,9 +94,13 @@ Example prompts:
 
 > Follow this procedure: Generate a long, random alphanumeric string using a shell script. Define the creative direction (color scheme, layout, typography, etc.) based on the string. Look beyond the surface for subpatterns, special numbers, anything that inspires you. Use your judgment to bring this direction to life and make it look great. Don't reveal the string in the design. It's only for your inspiration. Give me something totally unique. Make every design decision completely at random. for the design and theme of mathgo.
 
-> give me a list of ideas of theme, don't go deep, go broad. I want bold and unique design. → implement this ideas.
+> give me a list of ideas of theme, don't go deep, go broad. I want bold and unique design.
 
-> delete world rubber stamp office, split-flap station, diagonal poster, cube 27, nine inks, marbled endpapers. topo terrain, graph-paper brutalist. if there are subagent related to these worlds, abort them as well.
+> generate a quick image or preview html before building any world. add the preview html to the root map of the preview server.
+
+> splitbook use approach lights, hermes hub use flight director → move the rest of options into archive folder in each brand.
+
+> let me pick 1-2 designs/worlds, then spawn subagents in medium effort to build them, then kick off the review process.
 
 ### Phase 3: Build tokens, docs, preview server, and validator
 
@@ -100,14 +108,14 @@ Example prompts:
 
 1. **Research first.** Save sources as notes the docs cite: mature systems (Spectrum, Atlassian, Carbon, GOV.UK, Open UI, WAI-ARIA APG), DTCG tokens, WCAG 2.2, Tailwind v4 theming, and the choice of preview tool (MathGo used a custom Next.js route instead of Storybook).
 2. **Tokens:** typed DTCG JSON in primitive → semantic → component tiers. Generate CSS variables (`--<brand>-*`) for each core theme. Add a Tailwind 4 bridge that exposes only semantic utilities.
-3. **Worlds:** one JSON definition and one scoped stylesheet per chosen world, with its colour options.
+3. **Worlds:** build only the worlds the owner picked. Spawn one builder subagent per picked world at **effort medium**, each owning its own `tokens/worlds/<slug>.{json,css}` and font entry, with its preview page as the visual target. One JSON definition and one scoped stylesheet per world, with its colour options.
 4. **Foundations and components:** design language, type scale, accessibility, containers, primitives, and domain widgets (MathGo: answer slots, number pad, equation rows, manipulatives).
 5. **Blueprints:** learner, adult/admin, and system-state pages.
 6. **Agent contract:** a numbered flow agents follow to build a screen, the tokens allowed, the patterns forbidden, and a worked example.
-7. **Preview server:** a Next.js app with `/design` (one section per area), a theme switcher, a worlds gallery, and an overview page with every theme on one screen.
+7. **Preview server:** a Next.js app with `/design` (one section per area), a theme switcher, a worlds gallery, and an overview page with every theme on one screen. Serve it under basePath `/<brand>` and add the brand to the preview hub's `brands.json`, so it shares one port with every other brand.
 8. **Validator:** contrast for every foreground/background pair (4.5:1 for text, 3:1 for borders, focus rings, and state boundaries), every role defined in every theme and world colour option, a target-size floor, reduced motion collapsing every duration, world rules scoped to their theme with limited overrides, and no raw values outside `tokens/`. Pair it with a test file that proves each rule fails on a broken fixture.
 
-**Gate:** the validator passes, `tsc` is clean, the build succeeds, and a browser check at 1440 px and 390 px shows no console errors and no sideways scroll.
+**Gate:** the validator passes, `tsc` is clean, the build succeeds, and a browser check at 1440 px and 390 px shows no console errors and no sideways scroll. **Then start Phase 4 straight away; don't wait to be asked.**
 
 Example prompt: *"show me how to preview this design system"*. MathGo's answer: `cd design && npm install && npm run dev`, then open http://localhost:3100/design.
 
@@ -116,10 +124,10 @@ Example prompt: *"show me how to preview this design system"*. MathGo's answer: 
 **Goal:** get an outside view of taste and quality. The agent that built the design should not be the one that grades it.
 
 1. Create a read-only reviewer subagent for the repo, on a different model from the builder, at effort medium (`design-reviewer`, GitHub Copilot `gpt-6.1-sol`; MathGo first ran it at effort max). It reports findings and never edits.
-2. **Taste review:** give it only the URLs, with no context, so it judges what it sees. Ask for tweaks and at least 3 colour options per design.
-3. Apply the tweaks and add the colour options. Add an overview page that shows every theme on one screen.
+2. **Kick off the review as soon as Phase 3's gate passes**, one reviewer run per brand, focused on the picked worlds (all 4 colour options) plus the core themes they sit on.
+3. **Taste review:** give it only the URLs, with no context, so it judges what it sees. Ask for tweaks and at least 3 colour options per design.
 4. **Studio review:** ask it to name the aesthetic the design is aiming for, describe how a top studio would execute it, rank the biggest gaps, and score the design out of 10. Save the report under `research/` with an action table (MathGo scored 5.8/10, with actions ST-01 to ST-11).
-5. Work through the action table and record each item's status in the report.
+5. Apply the action table with one subagent per brand at effort medium, never the reviewer. It records each item's status in a Resolution table in the report, runs the gates, and checks the fixes in the browser. Add an overview page that shows every theme on one screen if there isn't one.
 
 **Gate:** every review item is done or has a written reason for skipping it.
 
@@ -226,9 +234,11 @@ Example prompts:
 - **The JSON specs are the source of truth.** The docs, the preview, and the agent contract are all generated from or checked against them.
 - **The validator gates every phase.** Each new kind of artifact (worlds, specs, motion) came with new validator rules and a test that proves each rule fails on bad input.
 - **Review with fresh eyes.** The reviewer gets URLs and the rubric only, uses a different model, and never edits.
+- **Preview before you build.** Every candidate world gets a quick image or HTML preview first; only the 1-2 the owner picks are built.
+- **Subagents run at effort medium.** Previewers, builders, fixers, and the reviewer all run at medium unless the owner asks otherwise.
 - **Run parallel subagents on separate files.** Each subagent owns its own CSS and TSX files and writes each CSS file in one complete write. A half-written stylesheet broke the whole dev server twice; when that happens, re-save `globals.css` to clear the cached error.
 - **Check browser behaviour by measuring it.** Chrome ignores `var(--easing)` inside `@keyframes`, so easing goes on the element's `animation` or `transition`.
-- **Prune instead of polishing.** MathGo kept 8 strong worlds rather than 20 mediocre ones.
+- **Prune instead of polishing.** MathGo kept 8 strong worlds rather than 20 mediocre ones; previewing first lets you prune before building.
 - **The owner decides what's committed, deleted, or shared.** The agent proposes; the user says "proceed", "commit and push", or "delete".
 
 ## Adapting to your brand
