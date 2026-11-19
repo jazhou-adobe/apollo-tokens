@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { withBase } from '../paths';
 import { THEMES } from '../themes';
 import { SidebarIndex } from './SidebarIndex';
 import { ThemeSwitcher } from './ThemeSwitcher';
@@ -33,7 +34,7 @@ export function PreviewShell({ current, sections, children }: { current: Referen
           pages={
             <nav className="hh-side-nav" aria-label="Design system pages">
               {REFERENCE_PAGES.map((page) => (
-                <a key={page.href} href={page.href} aria-current={page.href === current ? 'page' : undefined}>
+                <a key={page.href} href={withBase(page.href)} aria-current={page.href === current ? 'page' : undefined}>
                   {page.label}
                 </a>
               ))}

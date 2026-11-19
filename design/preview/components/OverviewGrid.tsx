@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { withBase } from '../paths';
 import type { WorldPalette } from '../themes';
 
 export type OverviewItem = { value: string; label: string; core: boolean; palettes: WorldPalette[] };
@@ -49,10 +50,10 @@ export function OverviewGrid({ items }: { items: OverviewItem[] }) {
           </fieldset>
         ) : null}
         <nav className="hh-row" aria-label="Other previews">
-          <a className="hh-link" href="/worlds">
+          <a className="hh-link" href={withBase('/worlds')}>
             Worlds
           </a>
-          <a className="hh-link" href="/design">
+          <a className="hh-link" href={withBase('/design')}>
             Design system
           </a>
         </nav>
@@ -93,8 +94,8 @@ export function ThumbFrame({ query, href, title }: { query: URLSearchParams; hre
   }, []);
 
   return (
-    <a ref={frameRef} className="hh-overview-frame" href={href} tabIndex={-1} aria-hidden="true">
-      <iframe ref={iframeRef} className="hh-overview-iframe" src={`/tile?${query}`} title={title} loading="lazy" inert style={{ '--overview-scale': scale } as CSSProperties} />
+    <a ref={frameRef} className="hh-overview-frame" href={withBase(href)} tabIndex={-1} aria-hidden="true">
+      <iframe ref={iframeRef} className="hh-overview-iframe" src={withBase(`/tile?${query}`)} title={title} loading="lazy" inert style={{ '--overview-scale': scale } as CSSProperties} />
     </a>
   );
 }
@@ -109,7 +110,7 @@ function Tile({ item, position, onPick }: { item: OverviewItem; position: number
     <li className="hh-overview-tile">
       <ThumbFrame query={query} href={`/design?${query}`} title={`${name} thumbnail`} />
       <div className="hh-overview-caption">
-        <a className="hh-link hh-label" href={`/design?${query}`}>
+        <a className="hh-link hh-label" href={withBase(`/design?${query}`)}>
           {item.label}
           <span className="hh-visually-hidden">{palette ? `, ${palette.label} colours` : ', core theme'}: open the design system</span>
         </a>

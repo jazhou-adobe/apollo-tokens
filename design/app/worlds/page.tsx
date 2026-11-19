@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Icon } from '../../preview/components/Icon';
 import { WorldCard } from '../../preview/components/WorldCard';
+import { withBase } from '../../preview/paths';
 import { WORLDS } from '../../preview/themes';
 
 export const metadata: Metadata = { title: 'Hermes worlds' };
@@ -21,10 +22,10 @@ export default function WorldsPage() {
           default, two alternatives, and the original.
         </p>
         <div className="hh-row">
-          <a className="hh-button" data-variant="primary" href="/overview">
+          <a className="hh-button" data-variant="primary" href={withBase('/overview')}>
             Every theme on one screen
           </a>
-          <a className="hh-button" href="/design">
+          <a className="hh-button" href={withBase('/design')}>
             Open the design system
           </a>
         </div>

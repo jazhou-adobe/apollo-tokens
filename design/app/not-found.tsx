@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Icon } from '../preview/components/Icon';
+import { withBase } from '../preview/paths';
 
 export const metadata: Metadata = { title: 'Not found: Hermes Hub' };
 
@@ -11,7 +12,7 @@ export default function NotFound() {
         <Icon name="alert" />
         <h1 className="hh-heading-lg">Not found</h1>
         <p className="hh-body">No page at this address. The link may be old, or the route was renamed.</p>
-        <a className="hh-button" data-variant="primary" href="/design">
+        <a className="hh-button" data-variant="primary" href={withBase('/design')}>
           Open the design system
         </a>
       </div>

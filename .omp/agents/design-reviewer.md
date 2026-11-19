@@ -23,9 +23,9 @@ The documents are the contract. When the rendered UI and a contract disagree, th
 ## Procedure
 
 1. **Mechanical gates.** In `design/`, run `npm run validate` and `npm run test:validator`. Quote failures verbatim. A red gate is a critical finding.
-2. **Render.** Use the running dev server at http://localhost:3300 if `curl -s -o /dev/null -w "%{http_code}" http://localhost:3300/design` returns 200. Otherwise start `npx next dev --port 3302` as a named background service and stop it when you finish. Never stop a server you did not start.
+2. **Render.** Use the running dev server at http://localhost:3300/hermes if `curl -s -o /dev/null -w "%{http_code}" http://localhost:3300/hermes/design` returns 200. Otherwise start `npx next dev --port 3302` as a named background service (routes live under `/hermes`) and stop it when you finish. Never stop a server you did not start.
 3. **Inspect visually**, in at most two batched screenshot rounds, with the Eval tool's `browser`. Open tabs with `app: { tern: false }`; any route accepts `?theme=<value>`.
-   - Cover the routes the change touches: `/design`, `/worlds`, `/overview`, `/specimen`.
+   - Cover the routes the change touches: `/hermes/design`, `/hermes/worlds`, `/hermes/overview`, `/hermes/specimen` (all under the `/hermes` basePath).
    - Cover the themes it touches: the core themes (`hermes-dark`, `hermes-light`) and every changed `hermes-<slug>` world.
    - Capture at 1440 and 390 wide. Settle one-shot animations before you capture, and open every capture to confirm it shows what its name claims.
 4. **Audit accessibility.** Run `tab.a11y()` (axe-core) on the same pages. Exercise keyboard paths, focus visibility, and the live demos (Round strips: open, answer each Question type, approve/reject, submit the Round; keyboard triage j/k, 1–9, a/r, Cmd+Enter; density switch to glance).

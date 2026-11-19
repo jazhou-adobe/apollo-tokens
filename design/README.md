@@ -8,8 +8,10 @@ Direction: **Flight Strips, carrier ops-room edition**, in a used-future style. 
 
 ```sh
 npm install
-npm run dev          # http://localhost:3300/design
+npm run dev          # http://localhost:3300/hermes/design
 ```
+
+The app runs under the Next.js basePath `/hermes` (set once in `next.config.mjs`), so the apollo-tokens hub can serve both brand previews from one server: standalone at `http://localhost:3300/hermes/design`, through the hub at `http://localhost:3000/hermes/design`. Routes below are relative to `/hermes`. Internal links go through `withBase()` in `preview/paths.ts`.
 
 | Route | What it shows |
 |---|---|

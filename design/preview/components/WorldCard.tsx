@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { World } from '../themes';
+import { withBase } from '../paths';
 import { ThumbFrame } from './OverviewGrid';
 
 // One /worlds card. It leads with the live specimen, then a one-line identity and a button that plays the world's
@@ -24,7 +25,7 @@ export function WorldCard({ world }: { world: World }) {
 
   return (
     <li className="hh-world-card">
-      <iframe className="hh-world-frame" src={`/specimen?${frameQuery}`} title={`${world.label}, ${palette.label}: live triage specimen`} loading="lazy" />
+      <iframe className="hh-world-frame" src={withBase(`/specimen?${frameQuery}`)} title={`${world.label}, ${palette.label}: live triage specimen`} loading="lazy" />
       <div className="hh-stack">
         <h2 className="hh-heading-lg">{world.label}</h2>
         <p className="hh-body-sm">{identity}</p>
@@ -32,7 +33,7 @@ export function WorldCard({ world }: { world: World }) {
           <button type="button" className="hh-button" data-variant="primary" aria-describedby={signatureId} onClick={() => setRun(run + 1)}>
             Play signature
           </button>
-          <a className="hh-button" href={`/design?${query}`}>
+          <a className="hh-button" href={withBase(`/design?${query}`)}>
             Open full system
           </a>
         </div>
@@ -68,7 +69,7 @@ export function WorldCard({ world }: { world: World }) {
               return (
                 <li key={option.id || 'default'} className="hh-overview-tile">
                   <ThumbFrame query={optionQuery} href={`/design?${optionQuery}`} title={`${world.label}, ${option.label} thumbnail`} />
-                  <a className="hh-link hh-body-sm" href={`/design?${optionQuery}`}>
+                  <a className="hh-link hh-body-sm" href={withBase(`/design?${optionQuery}`)}>
                     {option.label}
                   </a>
                 </li>

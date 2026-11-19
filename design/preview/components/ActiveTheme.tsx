@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, type ReactNode } from 'react';
+import { withBase } from '../paths';
 import type { ThemeOption } from '../theme-constants';
 
 // Names the theme and colour option painted on <html>, which the layout script sets from ?theme= and ?palette= or the
@@ -37,7 +38,7 @@ export function ThemeLink({ href, className, variant, children }: { href: string
   }, [href]);
 
   return (
-    <a className={className} data-variant={variant} href={target}>
+    <a className={className} data-variant={variant} href={withBase(target)}>
       {children}
     </a>
   );
