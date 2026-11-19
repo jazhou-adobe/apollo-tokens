@@ -1,8 +1,8 @@
 {
   "label": "Sortie Board",
   "order": 3,
-  "$description": "A briefing-room launch schedule: dense typeset sortie rows, callsign-style Swim IDs, condensed type on matte slate. Every Swim, Length and Set reads like a line on the ready-room board.",
-  "signature": "A Swim prints in as a sortie row. On the Tap Pad each Length prints into the Length strip cell by cell as its wall tap lands, and the finish touch feeds the whole strip through on a manila paper band and stamps it Printed. Undo takes the line back off the board.",
+  "$description": "A briefing-room launch schedule: Swims, Sessions and Sets set as aligned, ruled board rows with callsign-style Swim IDs and figures in fixed columns, on matte slate. The board is the structure, not a costume: extra-condensed type is kept for headings, everything read or typed stays open and in sentence case.",
+  "signature": "A Swim prints in as a sortie row. Each wall tap types its Length into the Length strip in one short flash; the finish touch feeds the whole strip through on a paper band, column by column, and stamps it Printed as a completed record. Undo takes the line back off the board.",
   "colorScheme": "dark",
   "color": {
     "background": { "$type": "color", "$value": "#22282e" },
@@ -55,18 +55,18 @@
   "overrides": {
     "font-sans": {
       "$type": "fontFamily",
-      "$value": "var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif",
-      "$description": "IBM Plex Sans Condensed (400, 700): the typeset body of a briefing schedule. Reading text, labels and controls; ships tabular figures, so it also sets every numeral read-out."
+      "$value": "var(--font-ibm-plex-sans), ui-sans-serif, system-ui, sans-serif",
+      "$description": "IBM Plex Sans (400, 700): the open reading face for body text, labels, controls and every form field, so the board's width contrast comes from its headings and figures, not from squeezing what people read."
     },
     "font-display": {
       "$type": "fontFamily",
       "$value": "var(--font-sofia-sans-extra-condensed), 'Arial Narrow', sans-serif",
-      "$description": "Sofia Sans Extra Condensed (700, 800): the board's stencil-free condensed headline face for display, headings, board column heads and button legends."
+      "$description": "Sofia Sans Extra Condensed (700, 800): board titles only (display and headings), in sentence case."
     },
     "font-mono": {
       "$type": "fontFamily",
       "$value": "var(--font-ibm-plex-mono), ui-monospace, monospace",
-      "$description": "IBM Plex Mono (400, 700): callsign-style Swim IDs, plate labels, metric keys and formulas, like a teleprinter line."
+      "$description": "IBM Plex Mono (400, 700): short identifiers only: callsign-style Swim IDs, Length numbers, the recording and Printed marks, metric keys and formulas."
     },
     "type-display-size": {
       "$type": "dimension",
@@ -75,8 +75,8 @@
     },
     "type-display-line-height": {
       "$type": "number",
-      "$value": 0.95,
-      "$description": "Tight schedule-board leading for capital headlines."
+      "$value": 1,
+      "$description": "Tight schedule-board leading for the board title; 1 leaves room for sentence-case descenders."
     },
     "type-heading-lg-size": {
       "$type": "dimension",
@@ -98,25 +98,10 @@
       "$value": 1.1,
       "$description": "Tight leading for condensed heads."
     },
-    "type-body-size": {
-      "$type": "dimension",
-      "$value": "1.0625rem",
-      "$description": "Condensed body text set a sixteenth larger so a line holds the core's legibility."
-    },
-    "type-body-sm-size": {
-      "$type": "dimension",
-      "$value": "0.9375rem",
-      "$description": "Small text in the condensed face, a step above the core so captions stay readable poolside."
-    },
-    "type-label-size": {
-      "$type": "dimension",
-      "$value": "0.9375rem",
-      "$description": "Labels in the condensed face, a step above the core."
-    },
     "type-numeral-xl-family": {
       "$type": "fontFamily",
-      "$value": "var(--sb-font-sans)",
-      "$description": "The running split in IBM Plex Sans Condensed tabular figures, like the time column of a launch schedule."
+      "$value": "var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif",
+      "$description": "The running split in IBM Plex Sans Condensed tabular figures (400, 700), like the time column of a launch schedule."
     },
     "type-numeral-xl-size": {
       "$type": "dimension",
@@ -130,7 +115,7 @@
     },
     "type-numeral-lg-family": {
       "$type": "fontFamily",
-      "$value": "var(--sb-font-sans)",
+      "$value": "var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif",
       "$description": "Counts on Tap Pad keys and read-outs in Plex Sans Condensed tabular figures."
     },
     "type-numeral-lg-weight": {
@@ -140,8 +125,8 @@
     },
     "type-numeral-md-family": {
       "$type": "fontFamily",
-      "$value": "var(--sb-font-sans)",
-      "$description": "Length splits, rating steps and figures in Plex Sans Condensed tabular figures."
+      "$value": "var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif",
+      "$description": "Length splits, rating numbers and the board's figure columns in Plex Sans Condensed tabular figures."
     },
     "radius-sm": {
       "$type": "dimension",

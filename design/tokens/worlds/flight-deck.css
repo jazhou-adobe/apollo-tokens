@@ -1,19 +1,26 @@
 /*
  * Seeded world: Flight Deck (theme value splitbook-flight-deck). Definition and descriptions: flight-deck.json.
- * Carrier deck markings pushed forward in time: non-skid plates, stencilled placards, black-and-yellow hazard chevrons on
- * edges only (app bar, hero, the wall key, warning alerts). Deck-crew jerseys colour the metric families and always sit
- * beside a word. Faces: B612 (body, labels, every numeral) and Big Shoulders Stencil (display and placards), loaded in
- * app/fonts.ts.
+ * Carrier deck markings pushed forward in time: non-skid plates, cockpit type, and one black-and-yellow hazard band.
+ * Deck-crew jerseys colour the metric families and always sit beside a word. Faces: B612 (the operational face: body,
+ * labels, buttons, numerals) and Big Shoulders Stencil (punctuation only: the display line, the wordmark, short panel
+ * titles), loaded in app/fonts.ts.
  *
- * Intensity budget: identity (app bar, hero, Tap Pad, wall key, split read-out) carries chevrons, stencil and the
- * signature; function (buttons, fields, menus, nav, overlays, charts) keeps the stamped-plate shape and placard type with
- * no texture; reading planes (Review sheet, tables, prose, fields) stay quiet, opaque and flat.
+ * One carrier convention per region, each at its own intensity:
+ * - Chevrons: the Wall action only (one band on its top edge). Nowhere else.
+ * - Stencil: the display line, the wordmark and short panel titles, in sentence case. Reading and form content stays in
+ *   B612, sentence case; capitals only for short status and identity marks (the live mark, the Counts jersey tag).
+ * - Live effects: the split read-out's catapult track. The Tap Pad frame and current Length keep the live colour as a
+ *   boundary, without glow.
+ * Function (buttons, fields, menus, nav, overlays, charts) keeps the stamped-plate shape with no texture; the Review
+ * sheet is a quiet, opaque, flat plane with as few internal boxes as the anatomy allows.
  *
  * Signature: a wall tap fires a catapult-style split flash. Hook: .sb-tap-pad with its wall key at
- * [data-kind='wall'][data-flash='true']; the shuttle (.sb-split-readout::after) runs the track and a live plate
- * (.sb-split-readout::before) sweeps across the read-out. The animation name alternates with the parity of the current
- * Length cell (and a third name for the finish touch), so every wall tap restarts it, while Undo (which clears
- * data-flash) never fires it. Bounded, once per tap, and only under prefers-reduced-motion: no-preference.
+ * [data-kind='wall'][data-flash='true']. In one --sb-motion-flash the shuttle (.sb-split-readout::after) runs the track
+ * and a live streak (.sb-split-readout::before) lights behind it, then clears; no text changes colour and nothing
+ * covers the numerals. The animation name alternates with the parity of the current Length cell so every wall tap
+ * restarts it, while Undo (which clears data-flash) never fires it. The finish touch (no current Length) gets the one
+ * longer treatment: the lit track holds for three flash intervals before it clears. Bounded, once per tap, and only
+ * under prefers-reduced-motion: no-preference.
  */
 
 html[data-theme="splitbook-flight-deck"] {
@@ -66,6 +73,7 @@ html[data-theme="splitbook-flight-deck"] {
   --sb-chart-5: #FF6B5E;
   --sb-font-sans: var(--font-b612), ui-sans-serif, system-ui, sans-serif;
   --sb-font-display: var(--font-big-shoulders-stencil), 'Arial Narrow', Arial, sans-serif;
+  --sb-type-heading-lg-family: var(--sb-font-sans);
   --sb-type-numeral-xl-family: var(--sb-font-sans);
   --sb-type-numeral-xl-weight: var(--sb-font-weight-bold);
   --sb-type-numeral-lg-family: var(--sb-font-sans);
@@ -81,7 +89,7 @@ html[data-theme="splitbook-flight-deck"] {
   --flight-deck-hazard-ink: #101213;
   --flight-deck-edge: var(--sb-space-2);
   --flight-deck-chevrons: repeating-linear-gradient(-45deg, var(--flight-deck-hazard-paint) 0 0.5625rem, var(--flight-deck-hazard-ink) 0.5625rem 1.125rem);
-  --flight-deck-chevrons-fine: repeating-linear-gradient(-45deg, var(--flight-deck-hazard-paint) 0 0.25rem, var(--flight-deck-hazard-ink) 0.25rem 0.5rem);
+  --flight-deck-shuttle-size: var(--sb-space-6);
   --flight-deck-placard-tracking: 0.08em;
   scrollbar-color: var(--sb-border) var(--sb-background);
   accent-color: var(--sb-primary);
@@ -119,8 +127,8 @@ html[data-theme="splitbook-flight-deck"][data-palette="primer"] {
   --sb-warning-foreground: #15171A;
   --sb-info: #2F5D86;
   --sb-info-foreground: #FFFFFF;
-  --sb-live: #8A6100;
-  --sb-live-foreground: #FFFFFF;
+  --sb-live: #23282C;
+  --sb-live-foreground: #FFD21F;
   --sb-metric: #1F7A4A;
   --sb-metric-foreground: #FFFFFF;
   --sb-improvement: #1D5FA8;
@@ -251,110 +259,79 @@ html[data-theme="splitbook-flight-deck"] ::selection {
   color: var(--sb-primary-foreground);
 }
 
-/* Stencil placards: display, headings, wordmark, kickers. Numerals never stencil. */
-html[data-theme="splitbook-flight-deck"] .sb-display,
-html[data-theme="splitbook-flight-deck"] .sb-heading-lg,
-html[data-theme="splitbook-flight-deck"] .sb-wordmark,
-html[data-theme="splitbook-flight-deck"] .sb-kicker {
-  text-transform: uppercase;
-  letter-spacing: var(--flight-deck-placard-tracking);
-}
-html[data-theme="splitbook-flight-deck"] .sb-heading-md {
+/* Stencil is punctuation: the display line, the wordmark (an identity mark, so capitals) and short panel titles. */
+html[data-theme="splitbook-flight-deck"] .sb-wordmark {
   letter-spacing: var(--flight-deck-placard-tracking);
   text-transform: uppercase;
 }
-html[data-theme="splitbook-flight-deck"] .sb-kicker {
-  font-family: var(--sb-font-display);
-  font-weight: var(--sb-font-weight-heavy);
-}
-
-/* Page edges: the app bar and the /design hero end on a hazard band, like the deck edge. Text never sits on it. */
-html[data-theme="splitbook-flight-deck"] .sb-app-bar {
-  padding-block-end: calc(var(--sb-space-2) + var(--flight-deck-edge));
-  border-block-end: 0;
-  background:
-    var(--flight-deck-chevrons) bottom / 100% var(--flight-deck-edge) no-repeat,
-    var(--sb-surface-card);
-}
-html[data-theme="splitbook-flight-deck"] .sb-hero {
-  padding-block-end: calc(var(--sb-space-6) + var(--flight-deck-edge));
-  background: var(--flight-deck-chevrons) bottom / 100% var(--flight-deck-edge) no-repeat;
+html[data-theme="splitbook-flight-deck"] .sb-display {
+  letter-spacing: calc(var(--flight-deck-placard-tracking) / 2);
 }
 html[data-theme="splitbook-flight-deck"] .sb-section-head {
   border-block-start-color: var(--sb-foreground);
 }
 
-/* The Tap Pad: a deck plate. Recording frames it in the live colour with the only standing glow in the world. */
+/* The Tap Pad: a deck plate. Recording frames it in the live colour; the glow is kept for the catapult streak. */
 html[data-theme="splitbook-flight-deck"] .sb-tap-pad {
   border-color: var(--sb-border);
 }
-html[data-theme="splitbook-flight-deck"] .sb-tap-pad[data-state='live'] {
-  box-shadow: 0 0 var(--sb-space-6) calc(var(--sb-space-2) * -1) var(--sb-live);
-}
 html[data-theme="splitbook-flight-deck"] .sb-live-mark {
   border-radius: var(--sb-radius-sm);
-  font-family: var(--sb-font-display);
-  font-weight: var(--sb-font-weight-heavy);
-  letter-spacing: var(--flight-deck-placard-tracking);
+  letter-spacing: calc(var(--flight-deck-placard-tracking) / 2);
   text-transform: uppercase;
 }
 html[data-theme="splitbook-flight-deck"] .sb-live-mark::before {
   border-radius: var(--sb-radius-sm);
 }
-html[data-theme="splitbook-flight-deck"] .sb-live-mark[data-state='live']::before {
-  box-shadow: 0 0 var(--sb-space-2) var(--sb-live-foreground);
-}
 
-/* Split read-out: the running split over a catapult track with its shuttle parked at the hold-back. */
+/* Split read-out: the running split over a catapult track (the read-out's bottom edge) with its shuttle parked at the
+   hold-back. No frame of its own, so the Tap Pad stays short enough to keep the Wall key on the first phone screen. */
 html[data-theme="splitbook-flight-deck"] .sb-split-readout {
   position: relative;
-  isolation: isolate;
-  padding: var(--sb-space-3) var(--sb-space-3) calc(var(--sb-space-6) + var(--sb-space-1));
-  border: var(--sb-border-width-thin) solid var(--sb-border);
-  border-radius: var(--sb-radius-md);
-  background: linear-gradient(var(--sb-border), var(--sb-border)) center bottom var(--sb-space-3) / calc(100% - var(--sb-space-6)) var(--sb-border-width-thick) no-repeat;
+  padding-block-end: var(--sb-space-4);
+  background: linear-gradient(var(--sb-border), var(--sb-border)) center bottom var(--sb-space-2) / 100% var(--sb-border-width-thick) no-repeat;
 }
+/* The streak: a live line along the track, hidden at rest. */
 html[data-theme="splitbook-flight-deck"] .sb-split-readout::before {
   content: '';
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
+  inset-inline: 0;
+  inset-block-end: calc(var(--sb-space-2) - var(--sb-border-width-thin));
+  block-size: var(--sb-border-width-heavy);
+  border-radius: var(--sb-radius-sm);
   background: var(--sb-live);
   opacity: 0;
+  transform-origin: left center;
   pointer-events: none;
 }
+/* The shuttle: a small ink block at the start of the track. */
 html[data-theme="splitbook-flight-deck"] .sb-split-readout::after {
   content: '';
   position: absolute;
-  inset-inline-start: var(--sb-space-3);
-  inset-block-end: calc(var(--sb-space-2) + var(--sb-border-width-thin));
-  inline-size: var(--sb-space-6);
+  inset-inline-start: 0;
+  inset-block-end: calc(var(--sb-space-1) - var(--sb-border-width-thin));
+  inline-size: var(--flight-deck-shuttle-size);
   block-size: var(--sb-space-3);
   box-sizing: border-box;
   border: var(--sb-border-width-thin) solid var(--sb-border);
   border-radius: var(--sb-radius-sm);
-  background: var(--flight-deck-chevrons-fine);
+  background: var(--sb-tap-pad-foreground);
   pointer-events: none;
-}
-html[data-theme="splitbook-flight-deck"] .sb-split-readout-value {
-  letter-spacing: calc(var(--flight-deck-placard-tracking) * -0.25);
 }
 html[data-theme="splitbook-flight-deck"] .sb-split-readout[data-state='live'] .sb-split-readout-value {
   border-radius: var(--sb-radius-sm);
 }
 
-/* Wall key: the launch button. Hazard bands on its top and bottom edges; live colour while the pad records. */
+/* Wall key: the launch button and the world's only hazard band, on its top edge. Live colour while recording. */
 html[data-theme="splitbook-flight-deck"] .sb-tap-key {
   border-radius: var(--sb-radius-md);
   background: var(--sb-surface-card);
 }
 html[data-theme="splitbook-flight-deck"] .sb-tap-key[data-kind='wall'] {
-  padding-block: calc(var(--sb-space-2) + var(--flight-deck-edge));
+  padding-block-start: var(--flight-deck-edge);
   border-color: var(--sb-primary);
   background:
     var(--flight-deck-chevrons) top / 100% var(--flight-deck-edge) no-repeat,
-    var(--flight-deck-chevrons) bottom / 100% var(--flight-deck-edge) no-repeat,
     var(--sb-primary);
   color: var(--sb-primary-foreground);
 }
@@ -362,94 +339,62 @@ html[data-theme="splitbook-flight-deck"] .sb-tap-pad[data-state='live'] .sb-tap-
   border-color: var(--sb-live);
   background:
     var(--flight-deck-chevrons) top / 100% var(--flight-deck-edge) no-repeat,
-    var(--flight-deck-chevrons) bottom / 100% var(--flight-deck-edge) no-repeat,
     var(--sb-live);
   color: var(--sb-live-foreground);
 }
 html[data-theme="splitbook-flight-deck"] .sb-tap-key[data-kind='wall'] .sb-tap-key-label {
-  font-family: var(--sb-font-display);
-  font-size: var(--sb-type-heading-lg-size);
-  line-height: var(--sb-type-heading-lg-line-height);
-  font-weight: var(--sb-font-weight-heavy);
-  letter-spacing: var(--flight-deck-placard-tracking);
-  text-transform: uppercase;
+  font-size: var(--sb-type-heading-md-size);
+  line-height: var(--sb-type-heading-md-line-height);
 }
-/* Counters carry the green Counts jersey: a stencilled tag with the family word, beside the metric's own label. */
-html[data-theme="splitbook-flight-deck"] .sb-tap-key[data-kind='counter'] {
-  padding-block-start: calc(var(--sb-space-6) + var(--sb-space-2));
-}
+/* Counters carry the green Counts jersey: a short tag riveted across the key's top edge, beside the metric's label. */
 html[data-theme="splitbook-flight-deck"] .sb-tap-key[data-kind='counter']::before {
   content: 'Counts' / '';
   position: absolute;
-  inset-block-start: var(--sb-space-2);
+  inset-block-start: 0;
   inset-inline-start: var(--sb-space-2);
+  translate: 0 -50%;
   padding: 0 var(--sb-space-1);
   border-radius: var(--sb-radius-sm);
   background: var(--sb-metric);
   color: var(--sb-metric-foreground);
-  font-family: var(--sb-font-display);
+  font-family: var(--sb-type-label-family);
   font-size: var(--sb-type-body-sm-size);
   line-height: var(--sb-type-body-sm-line-height);
-  font-weight: var(--sb-font-weight-heavy);
-  letter-spacing: var(--flight-deck-placard-tracking);
+  font-weight: var(--sb-type-label-weight);
+  letter-spacing: calc(var(--flight-deck-placard-tracking) / 2);
   text-transform: uppercase;
 }
-
 html[data-theme="splitbook-flight-deck"] .sb-tap-key[data-kind='counter'] .sb-tap-key-label {
   hyphens: auto;
   overflow-wrap: anywhere;
 }
 
-/* Length strip: stencilled Length numbers; the current Length is lit in the live colour. */
 html[data-theme="splitbook-flight-deck"] .sb-length-cell {
   border-radius: var(--sb-radius-sm);
 }
-html[data-theme="splitbook-flight-deck"] .sb-length-cell-number {
-  font-family: var(--sb-font-display);
-  font-weight: var(--sb-font-weight-heavy);
-  letter-spacing: var(--flight-deck-placard-tracking);
-  text-transform: uppercase;
-}
-html[data-theme="splitbook-flight-deck"] .sb-length-cell[data-state='current'] {
-  box-shadow: 0 0 var(--sb-space-3) calc(var(--sb-space-1) * -1) var(--sb-live);
-}
 
-/* ---------- Signature: the catapult split flash ---------- */
+/* ---------- Signature: the catapult split flash, one --sb-motion-flash per wall tap ---------- */
 @media (prefers-reduced-motion: no-preference) {
   html[data-theme="splitbook-flight-deck"] .sb-tap-pad:has(.sb-tap-key[data-kind='wall'][data-flash='true']):has(.sb-length-cell:nth-child(even)[data-state='current']) .sb-split-readout::after {
     animation: flight-deck-launch-a var(--sb-motion-flash) var(--sb-easing-exit) 1;
   }
   html[data-theme="splitbook-flight-deck"] .sb-tap-pad:has(.sb-tap-key[data-kind='wall'][data-flash='true']):has(.sb-length-cell:nth-child(even)[data-state='current']) .sb-split-readout::before {
-    animation: flight-deck-flash-a calc(var(--sb-motion-flash) * 4) var(--sb-easing-linear) 1 both;
-  }
-  html[data-theme="splitbook-flight-deck"] .sb-tap-pad:has(.sb-tap-key[data-kind='wall'][data-flash='true']):has(.sb-length-cell:nth-child(even)[data-state='current']) :is(.sb-split-readout-value, .sb-split-readout-caption) {
-    animation: flight-deck-ink-a calc(var(--sb-motion-flash) * 4) var(--sb-easing-linear) 1;
+    animation: flight-deck-streak-a var(--sb-motion-flash) var(--sb-easing-exit) 1;
   }
 
   html[data-theme="splitbook-flight-deck"] .sb-tap-pad:has(.sb-tap-key[data-kind='wall'][data-flash='true']):has(.sb-length-cell:nth-child(2n + 3)[data-state='current']) .sb-split-readout::after {
     animation: flight-deck-launch-b var(--sb-motion-flash) var(--sb-easing-exit) 1;
   }
   html[data-theme="splitbook-flight-deck"] .sb-tap-pad:has(.sb-tap-key[data-kind='wall'][data-flash='true']):has(.sb-length-cell:nth-child(2n + 3)[data-state='current']) .sb-split-readout::before {
-    animation: flight-deck-flash-b calc(var(--sb-motion-flash) * 4) var(--sb-easing-linear) 1 both;
-  }
-  html[data-theme="splitbook-flight-deck"] .sb-tap-pad:has(.sb-tap-key[data-kind='wall'][data-flash='true']):has(.sb-length-cell:nth-child(2n + 3)[data-state='current']) :is(.sb-split-readout-value, .sb-split-readout-caption) {
-    animation: flight-deck-ink-b calc(var(--sb-motion-flash) * 4) var(--sb-easing-linear) 1;
+    animation: flight-deck-streak-b var(--sb-motion-flash) var(--sb-easing-exit) 1;
   }
 
-  /* The finish touch: no Length is current any more. */
+  /* The finish touch (no Length is current any more): the same launch; the lit track holds for three flash intervals. */
   html[data-theme="splitbook-flight-deck"] .sb-tap-pad:has(.sb-tap-key[data-kind='wall'][data-flash='true']):not(:has(.sb-length-cell[data-state='current'])) .sb-split-readout::after {
     animation: flight-deck-launch-c var(--sb-motion-flash) var(--sb-easing-exit) 1;
   }
   html[data-theme="splitbook-flight-deck"] .sb-tap-pad:has(.sb-tap-key[data-kind='wall'][data-flash='true']):not(:has(.sb-length-cell[data-state='current'])) .sb-split-readout::before {
-    animation: flight-deck-flash-c calc(var(--sb-motion-flash) * 4) var(--sb-easing-linear) 1 both;
-  }
-  html[data-theme="splitbook-flight-deck"] .sb-tap-pad:has(.sb-tap-key[data-kind='wall'][data-flash='true']):not(:has(.sb-length-cell[data-state='current'])) :is(.sb-split-readout-value, .sb-split-readout-caption) {
-    animation: flight-deck-ink-c calc(var(--sb-motion-flash) * 4) var(--sb-easing-linear) 1;
-  }
-
-  /* A Length that has just been split stamps into place, once. */
-  html[data-theme="splitbook-flight-deck"] .sb-length-cell[data-state='done'] {
-    animation: flight-deck-stamp var(--sb-motion-flash) var(--sb-easing-enter) 1;
+    animation: flight-deck-streak-c calc(var(--sb-motion-flash) * 3) var(--sb-easing-standard) 1;
   }
 }
 
@@ -462,9 +407,9 @@ html[data-theme="splitbook-flight-deck"] .sb-icon-button {
   border-block-end-width: var(--sb-border-width-thick);
   border-radius: var(--sb-radius-md);
 }
-html[data-theme="splitbook-flight-deck"] .sb-button {
-  letter-spacing: calc(var(--flight-deck-placard-tracking) / 2);
-  text-transform: uppercase;
+html[data-theme="splitbook-flight-deck"] .sb-button[data-size='lg'] {
+  font-family: var(--sb-type-label-family);
+  font-weight: var(--sb-type-label-weight);
 }
 html[data-theme="splitbook-flight-deck"] .sb-button:not([data-variant]),
 html[data-theme="splitbook-flight-deck"] .sb-button[data-variant='primary'] {
@@ -475,7 +420,6 @@ html[data-theme="splitbook-flight-deck"] .sb-button[data-variant='ghost'] {
 }
 html[data-theme="splitbook-flight-deck"] .sb-skip-link {
   border-radius: var(--sb-radius-sm);
-  text-transform: uppercase;
 }
 html[data-theme="splitbook-flight-deck"] .sb-link {
   text-decoration-thickness: var(--sb-border-width-thick);
@@ -492,10 +436,6 @@ html[data-theme="splitbook-flight-deck"] .sb-input:focus-visible,
 html[data-theme="splitbook-flight-deck"] .sb-textarea:focus-visible,
 html[data-theme="splitbook-flight-deck"] .sb-select:focus-visible {
   border-color: var(--sb-ring);
-}
-html[data-theme="splitbook-flight-deck"] .sb-fieldset > legend,
-html[data-theme="splitbook-flight-deck"] .sb-label {
-  letter-spacing: calc(var(--flight-deck-placard-tracking) / 4);
 }
 
 /* Switch: a square toggle plate; the thumb keeps its on/off word. */
@@ -516,29 +456,18 @@ html[data-theme="splitbook-flight-deck"] .sb-chip[aria-checked='true'] {
   color: var(--sb-background);
 }
 
-/* Badges: stencilled jersey tags. Each tone keeps its word. */
+/* Badges: jersey tags in the operational face, sentence case. Each tone keeps its word. */
 html[data-theme="splitbook-flight-deck"] .sb-badge {
   border-radius: var(--sb-radius-sm);
-  font-family: var(--sb-font-display);
-  font-weight: var(--sb-font-weight-heavy);
-  letter-spacing: var(--flight-deck-placard-tracking);
-  text-transform: uppercase;
 }
 
-/* Alerts and toasts: full frame and square mark; warnings carry a hazard band on their top edge. */
+/* Alerts and toasts: full frame and square mark. */
 html[data-theme="splitbook-flight-deck"] .sb-alert,
 html[data-theme="splitbook-flight-deck"] .sb-toast {
   border-radius: var(--sb-radius-md);
 }
 html[data-theme="splitbook-flight-deck"] .sb-alert-mark {
   border-radius: var(--sb-radius-sm);
-}
-html[data-theme="splitbook-flight-deck"] .sb-alert[data-tone='warning'],
-html[data-theme="splitbook-flight-deck"] .sb-toast[data-tone='warning'] {
-  padding-block-start: calc(var(--sb-density-inset) + var(--flight-deck-edge));
-  background:
-    var(--flight-deck-chevrons) top / 100% var(--flight-deck-edge) no-repeat,
-    var(--sb-surface-card);
 }
 
 /* Navigation: the current page is a painted-in placard, never a side stripe. */
@@ -557,10 +486,6 @@ html[data-theme="splitbook-flight-deck"] .sb-bottom-nav {
 }
 html[data-theme="splitbook-flight-deck"] .sb-breadcrumbs li + li::before {
   content: '›';
-}
-html[data-theme="splitbook-flight-deck"] .sb-tabs [role='tab'] {
-  letter-spacing: calc(var(--flight-deck-placard-tracking) / 2);
-  text-transform: uppercase;
 }
 html[data-theme="splitbook-flight-deck"] .sb-tabs [role='tab'][aria-selected='true'] {
   background: var(--sb-muted);
@@ -594,11 +519,6 @@ html[data-theme="splitbook-flight-deck"] .sb-skeleton {
   border-radius: var(--sb-radius-sm);
 }
 
-/* Data display */
-html[data-theme="splitbook-flight-deck"] .sb-table thead th {
-  letter-spacing: calc(var(--flight-deck-placard-tracking) / 2);
-  text-transform: uppercase;
-}
 html[data-theme="splitbook-flight-deck"] .sb-kbd {
   border-block-end-width: var(--sb-border-width-heavy);
   border-radius: var(--sb-radius-sm);
@@ -608,10 +528,6 @@ html[data-theme="splitbook-flight-deck"] .sb-empty-state {
 }
 html[data-theme="splitbook-flight-deck"] .sb-session-date {
   border-radius: var(--sb-radius-sm);
-  font-family: var(--sb-font-display);
-  font-weight: var(--sb-font-weight-heavy);
-  letter-spacing: var(--flight-deck-placard-tracking);
-  text-transform: uppercase;
 }
 
 /* Charts keep jersey colours per series; dial and grid are thin deck paint. */
@@ -651,120 +567,85 @@ html[data-theme="splitbook-flight-deck"] .sb-shelf,
 html[data-theme="splitbook-flight-deck"] .sb-tray {
   border-radius: var(--sb-radius-md);
 }
-html[data-theme="splitbook-flight-deck"] .sb-review-section {
-  border-block-start-style: dashed;
+/* The Review sheet: one flat opaque plane; its action row already sits on the sheet without a box. */
+html[data-theme="splitbook-flight-deck"] .sb-review-sheet {
+  box-shadow: none;
 }
 
-/* ---------- Keyframes: three copies of each so a new wall tap always restarts the signature ---------- */
+/* ---------- Keyframes: copies of each so a new wall tap always restarts the signature ---------- */
 @keyframes flight-deck-launch-a {
   from {
-    inset-inline-start: var(--sb-space-3);
+    inset-inline-start: 0;
   }
   to {
-    inset-inline-start: calc(100% - var(--sb-space-3) - var(--sb-space-6));
+    inset-inline-start: calc(100% - var(--flight-deck-shuttle-size));
   }
 }
 @keyframes flight-deck-launch-b {
   from {
-    inset-inline-start: var(--sb-space-3);
+    inset-inline-start: 0;
   }
   to {
-    inset-inline-start: calc(100% - var(--sb-space-3) - var(--sb-space-6));
+    inset-inline-start: calc(100% - var(--flight-deck-shuttle-size));
   }
 }
 @keyframes flight-deck-launch-c {
   from {
-    inset-inline-start: var(--sb-space-3);
+    inset-inline-start: 0;
   }
   to {
-    inset-inline-start: calc(100% - var(--sb-space-3) - var(--sb-space-6));
+    inset-inline-start: calc(100% - var(--flight-deck-shuttle-size));
   }
 }
-@keyframes flight-deck-flash-a {
-  0%,
-  20% {
+/* The streak follows the shuttle, glows at the end of the stroke (live state only), then clears. */
+@keyframes flight-deck-streak-a {
+  0% {
+    opacity: 1;
+    transform: scaleX(0);
+  }
+  80% {
+    opacity: 1;
+    transform: scaleX(1);
+    box-shadow: 0 0 var(--sb-space-3) var(--sb-live);
+  }
+  100% {
     opacity: 0;
-    clip-path: inset(0 100% 0 0);
+    transform: scaleX(1);
+  }
+}
+@keyframes flight-deck-streak-b {
+  0% {
+    opacity: 1;
+    transform: scaleX(0);
+  }
+  80% {
+    opacity: 1;
+    transform: scaleX(1);
+    box-shadow: 0 0 var(--sb-space-3) var(--sb-live);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+/* Swim completion only: the streak runs in the first third, holds lit, then clears. */
+@keyframes flight-deck-streak-c {
+  0% {
+    opacity: 1;
+    transform: scaleX(0);
   }
   30% {
     opacity: 1;
-    clip-path: inset(0 0 0 0);
-    box-shadow: 0 0 var(--sb-space-6) var(--sb-live);
+    transform: scaleX(1);
+    box-shadow: 0 0 var(--sb-space-3) var(--sb-live);
   }
-  75% {
+  80% {
     opacity: 1;
-    clip-path: inset(0 0 0 0);
+    transform: scaleX(1);
     box-shadow: none;
   }
   100% {
     opacity: 0;
-    clip-path: inset(0 0 0 0);
-  }
-}
-@keyframes flight-deck-flash-b {
-  0%,
-  20% {
-    opacity: 0;
-    clip-path: inset(0 100% 0 0);
-  }
-  30% {
-    opacity: 1;
-    clip-path: inset(0 0 0 0);
-    box-shadow: 0 0 var(--sb-space-6) var(--sb-live);
-  }
-  75% {
-    opacity: 1;
-    clip-path: inset(0 0 0 0);
-    box-shadow: none;
-  }
-  100% {
-    opacity: 0;
-    clip-path: inset(0 0 0 0);
-  }
-}
-@keyframes flight-deck-flash-c {
-  0%,
-  20% {
-    opacity: 0;
-    clip-path: inset(0 100% 0 0);
-  }
-  30% {
-    opacity: 1;
-    clip-path: inset(0 0 0 0);
-    box-shadow: 0 0 var(--sb-space-6) var(--sb-live);
-  }
-  75% {
-    opacity: 1;
-    clip-path: inset(0 0 0 0);
-    box-shadow: none;
-  }
-  100% {
-    opacity: 0;
-    clip-path: inset(0 0 0 0);
-  }
-}
-/* Text on the flash plate switches to the live foreground while the plate is up, so it never loses contrast. */
-@keyframes flight-deck-ink-a {
-  28%,
-  75% {
-    color: var(--sb-live-foreground);
-  }
-}
-@keyframes flight-deck-ink-b {
-  28%,
-  75% {
-    color: var(--sb-live-foreground);
-  }
-}
-@keyframes flight-deck-ink-c {
-  28%,
-  75% {
-    color: var(--sb-live-foreground);
-  }
-}
-@keyframes flight-deck-stamp {
-  from {
-    opacity: 0;
-    translate: 0 calc(var(--sb-space-1) * -1);
+    transform: scaleX(1);
   }
 }

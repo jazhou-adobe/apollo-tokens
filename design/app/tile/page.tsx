@@ -36,15 +36,15 @@ export default function TilePage() {
             cells={[...LENGTHS.slice(0, 2).map((length) => ({ number: length.number, value: length.split, state: 'done' as const })), { number: 3, state: 'current' }, { number: 4, state: 'upcoming' }]}
           />
           <div className="sb-tap-keys">
-            <span className="sb-tap-key" data-kind="wall">
-              <Icon name="wall" />
-              <span className="sb-tap-key-label">Wall tap</span>
-            </span>
             <span className="sb-tap-key" data-kind="counter">
               <span className="sb-numeral" data-size="lg">
                 5
               </span>
               <span className="sb-tap-key-label">Underwater kicks</span>
+            </span>
+            <span className="sb-tap-key" data-kind="wall">
+              <Icon name="wall" />
+              <span className="sb-tap-key-label">Wall tap</span>
             </span>
           </div>
         </div>

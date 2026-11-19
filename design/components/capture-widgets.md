@@ -1,6 +1,6 @@
 # Capture widgets
 
-The widgets used at the pool: the **Tap Pad** during a Swim and the **Review sheet** straight after, with the Length strip, split read-out, rating and fault flag they are built from. Every Capture screen sets `data-theme="splitbook-deck"`; sizes below grow with the Deck knob. Read [accessibility.md](../foundations/accessibility.md#poolside-conditions) first: these widgets exist to satisfy those rules.
+The widgets used at the pool: the **Tap Pad** during a Swim and the **Review sheet** straight after, with the Length strip, split read-out, rating and fault flag they are built from. Every Capture screen uses the Deck size knob: `data-theme="splitbook-deck"`, or `data-density="deck"` on the root when a world (or Light colours) is in use; sizes below grow with it. Read [accessibility.md](../foundations/accessibility.md#poolside-conditions) first: these widgets exist to satisfy those rules.
 
 Shared poolside rules:
 
@@ -22,7 +22,7 @@ The live capture surface: wall taps for splits and counters for one or two Focus
 4. **Keys** (`.sb-tap-keys`), in thumb reach at the bottom. Each is a `.sb-tap-key` at least `--sb-tap-key-size` square with its words in `.sb-tap-key-label`:
    - Focus-metric counters (1 or 2), `data-kind="counter"`: the metric's name in words and the current count in `numeral-lg`, both in `metric`.
    - The Wall key, `data-kind="wall"`: the widest key, "Wall". While recording it is the one key filled with `live` / `live-foreground`.
-5. **Undo tray** (`.sb-tray`): "Undo wall tap" and one "Undo" per counter, each naming what it will undo ("Undo stroke, back to 13").
+5. **Undo cluster** (`.sb-action-row`, no frame of its own): "Undo wall tap" and one "Undo" per counter, each naming what it will undo ("Undo stroke, back to 13"). Below it, the status line (`.sb-tap-status`, `role="status"`) announces each completed Length and each undo.
 6. **Tap log** (`.sb-tap-log`): the last few taps in words ("Length 3 · wall · 32.4 s"), so a missed or doubled tap is visible before it is undone.
 
 End Swim lives in the slim app bar at the top, away from the thumb, so a reach for the Wall key cannot end the Swim. It needs no dialog: ending switches the Tap Pad to **Ended** with "Resume" (undoes the end) and "Review this Swim".

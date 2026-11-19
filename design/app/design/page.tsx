@@ -4,9 +4,10 @@ import { CoreComponentsSection } from '../../preview/components/CoreComponentsSe
 import { DomainWidgetsSection } from '../../preview/components/DomainWidgetsSection';
 import { ColourRoles, DeckKnob, SpacingShape, TypeAndNumerals } from '../../preview/components/FoundationSections';
 import { Icon } from '../../preview/components/Icon';
-import { Section } from '../../preview/components/primitives';
+import { Illustrative, Section } from '../../preview/components/primitives';
 import { PreviewShell } from '../../preview/components/PreviewShell';
-import { SECTIONS } from '../../preview/fixtures';
+import { LengthStrip, SplitReadout } from '../../preview/components/readouts';
+import { LENGTHS, SECTIONS } from '../../preview/fixtures';
 
 export const metadata: Metadata = { title: 'Splitbook Design System' };
 
@@ -21,6 +22,24 @@ export default function DesignPreviewPage() {
         <h1 id="page-title" className="sb-display">
           Better before faster.
         </h1>
+        {/* A real component first, so the opening screen shows the system rather than describing it. */}
+        <div className="sb-card sb-hero-specimen">
+          <div className="sb-row" data-justify="between">
+            <span className="sb-live-mark" data-state="live">
+              Recording
+            </span>
+            <Illustrative />
+          </div>
+          <SplitReadout value="47.12" live caption={['Length 3 of 4', 'running split']} />
+          <LengthStrip
+            label="Lengths so far"
+            unit="seconds"
+            cells={[...LENGTHS.slice(0, 2).map((length) => ({ number: length.number, value: length.split, state: 'done' as const })), { number: 3, state: 'current' }, { number: 4, state: 'upcoming' }]}
+          />
+          <a className="sb-link sb-body-sm" href="/specimen?demo=midswim">
+            Open the live Capture specimen
+          </a>
+        </div>
         <p className="sb-body-lg sb-measure">
           Chalk-tile white, ink, and the four hands of the pool&apos;s pace clock, each with one job. Big tabular numerals carry the story; counts and technique lead and
           times follow. Switch theme in the sidebar to see every example re-render from the same tokens.

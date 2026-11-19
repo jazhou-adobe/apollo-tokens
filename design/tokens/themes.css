@@ -265,6 +265,28 @@ html[data-theme="splitbook-deck"] {
   --sb-type-body-line-height: 1.45;
 }
 
+/* The Deck size knob on its own, for Capture in any theme or world. Same values as splitbook-deck. The :root form outranks
+   a world's theme block, so a world's type overrides cannot undo Deck sizing on the root. */
+:root[data-density="deck"],
+[data-density="deck"] {
+  --sb-button-min-target: 3.5rem;
+  /* Redeclared so the calc resolves against the Deck target in a nested region. */
+  --sb-control-size-sm: calc(var(--sb-button-min-target) * 0.75);
+  --sb-control-size-lg: calc(var(--sb-button-min-target) * 1.25);
+  --sb-tap-key-size: 6rem;
+  --sb-rating-step-size: 3.75rem;
+  --sb-length-cell-size: 3.75rem;
+  --sb-density-inset: 1.75rem;
+  --sb-density-gap: 1.25rem;
+  --sb-density-control-padding-block: 0.875rem;
+  --sb-density-row-height: 3.75rem;
+  --sb-type-body-size: 1.125rem;
+  --sb-type-label-size: 1rem;
+  --sb-type-numeral-xl-size: 6rem;
+  --sb-type-numeral-lg-size: 3rem;
+  --sb-type-numeral-md-size: 1.75rem;
+}
+
 /* Reduced motion: every duration collapses, so state changes stay instant and visible without movement. */
 @media (prefers-reduced-motion: reduce) {
   :root {

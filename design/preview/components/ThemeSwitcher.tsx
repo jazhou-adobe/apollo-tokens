@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { DEFAULT_THEME, DENSITIES, DENSITY_STORAGE_KEY, PALETTE_STORAGE_KEY, THEME_STORAGE_KEY, readSavedPalettes, type ThemeOption } from '../theme-constants';
+import { DEFAULT_THEME, DENSITIES, DENSITY_STORAGE_KEY, DENSITY_VALUES, PALETTE_STORAGE_KEY, THEME_STORAGE_KEY, readSavedPalettes, type ThemeOption } from '../theme-constants';
 
 function store(key: string, value: string | null) {
   try {
@@ -12,19 +12,17 @@ function store(key: string, value: string | null) {
   }
 }
 
-// Theme menu, colour menu (worlds only), and density switch. The root attributes are set before paint by the inline
-// script in app/layout.tsx; this component syncs to them after mount and writes them back on change.
+// Theme menu and colour menu (worlds only). The root attributes are set before paint by the inline script in
+// app/layout.tsx; this component syncs to them after mount and writes them back on change.
 export function ThemeSwitcher({ options }: { options: ThemeOption[] }) {
   const [theme, setTheme] = useState(DEFAULT_THEME);
   const [palette, setPalette] = useState('');
-  const [density, setDensity] = useState('');
   const isTheme = (value: string | null | undefined): value is string => options.some((option) => option.value === value);
 
   useEffect(() => {
     const root = document.documentElement;
     if (isTheme(root.dataset.theme)) setTheme(root.dataset.theme);
     setPalette(root.dataset.palette ?? '');
-    setDensity(root.dataset.density ?? '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options]);
 
@@ -57,18 +55,10 @@ export function ThemeSwitcher({ options }: { options: ThemeOption[] }) {
     store(PALETTE_STORAGE_KEY, JSON.stringify(saved));
   }
 
-  function applyDensity(next: string) {
-    const root = document.documentElement;
-    if (next === 'compact') root.dataset.density = next;
-    else delete root.dataset.density;
-    setDensity(next === 'compact' ? next : '');
-    store(DENSITY_STORAGE_KEY, next === 'compact' ? next : null);
-  }
-
   const groups = [...new Set(options.map((option) => option.group))];
 
   return (
-    <div className="sb-stack" data-gap="tight">
+    <div className="sb-theme-switcher">
       <div className="sb-field">
         <label htmlFor="theme-select" className="sb-label">
           Theme
@@ -86,9 +76,6 @@ export function ThemeSwitcher({ options }: { options: ThemeOption[] }) {
             </optgroup>
           ))}
         </select>
-        <p id="theme-idea" className="sb-field-hint">
-          {active?.idea}
-        </p>
       </div>
       {palettes.length > 1 && (
         <div className="sb-field">
@@ -104,21 +91,45 @@ export function ThemeSwitcher({ options }: { options: ThemeOption[] }) {
           </select>
         </div>
       )}
-      <div className="sb-field">
-        <label htmlFor="density-select" className="sb-label">
-          Density
-        </label>
-        <select id="density-select" className="sb-select" value={density} aria-describedby="density-hint" onChange={(event) => applyDensity(event.target.value)}>
-          {DENSITIES.map((option) => (
-            <option key={option.value || 'default'} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <p id="density-hint" className="sb-field-hint">
-          Compact belongs to the Admin console only. Switch it here to inspect it across the page.
-        </p>
-      </div>
+      <p id="theme-idea" className="sb-field-hint sb-theme-idea">
+        {active?.idea}
+      </p>
+    </div>
+  );
+}
+
+// Density switch: Default, Deck sizing (the Deck size knob with any theme or world), or Compact (Admin console).
+export function DensitySwitch() {
+  const [density, setDensity] = useState('');
+
+  useEffect(() => {
+    setDensity(document.documentElement.dataset.density ?? '');
+  }, []);
+
+  function applyDensity(next: string) {
+    const root = document.documentElement;
+    const safe = DENSITY_VALUES.includes(next) ? next : '';
+    if (safe) root.dataset.density = safe;
+    else delete root.dataset.density;
+    setDensity(safe);
+    store(DENSITY_STORAGE_KEY, safe || null);
+  }
+
+  return (
+    <div className="sb-field">
+      <label htmlFor="density-select" className="sb-label">
+        Density
+      </label>
+      <select id="density-select" className="sb-select" value={density} aria-describedby="density-hint" onChange={(event) => applyDensity(event.target.value)}>
+        {DENSITIES.map((option) => (
+          <option key={option.value || 'default'} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <p id="density-hint" className="sb-field-hint">
+        Deck sizing applies the Capture size knob with any theme or world. Compact belongs to the Admin console only.
+      </p>
     </div>
   );
 }

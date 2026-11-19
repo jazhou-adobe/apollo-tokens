@@ -48,6 +48,22 @@
   display: grid;
   gap: var(--sb-space-1);
 }
+/* Theme and Colour stay in the first viewport on phones; the theme's long description waits for the desk layout. */
+.sb-theme-switcher {
+  display: grid;
+  gap: var(--sb-space-2);
+}
+.sb-theme-idea {
+  display: none;
+}
+@media (min-width: 64rem) {
+  .sb-theme-idea {
+    display: block;
+  }
+}
+.sb-hero-specimen {
+  max-inline-size: var(--sb-layout-capture-max);
+}
 .sb-toc-toggle {
   inline-size: 100%;
 }
@@ -302,11 +318,56 @@
 }
 
 /* ---------- /specimen: one compact Capture + Review screen, the frame world previews render ---------- */
-.sb-specimen {
+/* One Capture screen. On phones the Review sheet appears only once the Swim has ended, so recording shows Capture alone. */
+.sb-capture {
   display: grid;
   align-content: start;
   gap: var(--sb-density-gap);
   min-height: 100vh;
+}
+.sb-capture:not([data-phase='ended']) .sb-capture-review,
+.sb-capture:not([data-phase='ended']) .sb-capture-pair > .sb-pair-axis {
+  display: none;
+}
+@media (min-width: 48rem) {
+  .sb-capture:not([data-phase='ended']) .sb-capture-review {
+    display: block;
+  }
+  .sb-capture:not([data-phase='ended']) .sb-capture-pair > .sb-pair-axis {
+    display: block;
+  }
+}
+.sb-capture-intro {
+  display: grid;
+  gap: var(--sb-space-2);
+}
+/*
+ * Phone Capture as a stable instrument: the slim app bar keeps only the Swimmer and End Swim, on one row; the title
+ * shrinks, and while recording the theme note and system link step aside, so the Tap Pad starts high on the first screen.
+ * The undo cluster is two rows directly under the Wall key: wall tap across, then one per counter.
+ */
+@media not (min-width: 48rem) {
+  .sb-capture .sb-wordmark {
+    display: none;
+  }
+  .sb-capture .sb-app-bar,
+  .sb-capture .sb-app-bar > .sb-row {
+    flex-wrap: nowrap;
+  }
+  .sb-capture-intro h1 {
+    font-size: var(--sb-type-heading-md-size);
+    line-height: var(--sb-type-heading-md-line-height);
+  }
+  .sb-capture[data-phase='live'] .sb-capture-aside {
+    display: none;
+  }
+  .sb-capture .sb-tap-pad .sb-action-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sb-capture .sb-tap-pad[data-phase='live'] .sb-action-row > :first-child {
+    grid-column: 1 / -1;
+  }
 }
 .sb-specimen-body {
   display: grid;
@@ -461,13 +522,9 @@
   background: var(--sb-surface-card);
   color: var(--sb-surface-card-foreground);
 }
-@media (min-width: 64rem) {
-  .sb-world-card {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  }
-  .sb-world-card > .sb-row {
-    grid-column: 1 / -1;
-  }
+.sb-world-card-lead {
+  display: grid;
+  gap: var(--sb-space-1);
 }
 .sb-world-frame {
   inline-size: 100%;

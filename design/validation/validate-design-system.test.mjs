@@ -180,6 +180,26 @@ test('Deck targets below 56 CSS px fail even when larger than Light', () => {
   assert.ok(failuresMatching(pkg, /splitbook-deck: --sb-button-min-target \(3\.25rem\) is below the Deck floor of 56/).length > 0, all(pkg));
 });
 
+test('the deck density mode must carry every Deck knob, match splitbook-deck, and meet the Deck floors', () => {
+  const missing = freshPackage();
+  delete missing.tokens.densityModes.deck.overrides['tap-key-size'];
+  assert.ok(failuresMatching(missing, /density deck: tokens\.json must override Deck knob --sb-tap-key-size/).length > 0, all(missing));
+
+  const drifted = freshPackage();
+  drifted.tokens.densityModes.deck.overrides['rating-step-size'].$value = '3.5rem';
+  drifted.themesCss = drifted.themesCss.replace(/(\[data-density="deck"\] \{[^}]*--sb-rating-step-size: )[^;]+;/, '$13.5rem;');
+  assert.ok(failuresMatching(drifted, /density deck: --sb-rating-step-size \(3\.5rem\) must match splitbook-deck/).length > 0, all(drifted));
+
+  const small = freshPackage();
+  small.tokens.densityModes.deck.overrides['tap-key-size'].$value = '4.75rem';
+  small.themesCss = small.themesCss.replace(/(\[data-density="deck"\] \{[^}]*--sb-tap-key-size: )[^;]+;/, '$14.75rem;');
+  assert.ok(failuresMatching(small, /density deck: --sb-tap-key-size \(4\.75rem\) is below the Deck floor of 80/).length > 0, all(small));
+
+  const absent = freshPackage();
+  delete absent.tokens.densityModes.deck;
+  assert.ok(failuresMatching(absent, /densityModes must include "deck"/).length > 0, all(absent));
+});
+
 test('compact density that drops a target below 24 CSS px fails', () => {
   const pkg = freshPackage();
   pkg.tokens.densityModes.compact.overrides['button-min-target'].$value = '1.25rem';

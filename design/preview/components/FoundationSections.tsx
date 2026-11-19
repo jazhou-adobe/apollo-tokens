@@ -86,7 +86,7 @@ export function TypeAndNumerals() {
         Numerals are the hero. Splits and counts set in a grotesque display face with tabular figures, so digits hold their column as a split runs. Reading text uses
         Atkinson Hyperlegible Next, drawn so 1, l and I, and 0 and O never blur, which helps in glare.
       </p>
-      <div className="sb-table-wrap">
+      <div className="sb-table-wrap" role="region" aria-label="Typography tokens table" tabIndex={0}>
         <table className="sb-table">
           <caption className="sb-body-sm sb-muted">Every typography token, rendered with its own variables</caption>
           <thead>
@@ -267,7 +267,7 @@ export function DeckKnob() {
           </div>
         ))}
       </div>
-      <div className="sb-table-wrap">
+      <div className="sb-table-wrap" role="region" aria-label="Deck knob comparison table" tabIndex={0}>
         <table className="sb-table sb-knob-table">
           <caption className="sb-body-sm sb-muted">Values from tokens.json; the validator fails if a brief-listed Deck knob is missing or not larger than Light</caption>
           <thead>

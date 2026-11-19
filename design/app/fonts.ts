@@ -1,4 +1,4 @@
-import { Archivo, B612, Barlow_Condensed, IBM_Plex_Mono, IBM_Plex_Sans_Condensed, Martian_Mono, Schibsted_Grotesk, Sofia_Sans_Extra_Condensed } from 'next/font/google';
+import { Archivo, B612, Barlow_Condensed, IBM_Plex_Mono, IBM_Plex_Sans, IBM_Plex_Sans_Condensed, Martian_Mono, Schibsted_Grotesk, Sofia_Sans_Extra_Condensed } from 'next/font/google';
 import localFont from 'next/font/local';
 
 /*
@@ -55,12 +55,14 @@ const bigShouldersStencil = localFont({
   adjustFontFallback: 'Arial',
   variable: '--font-big-shoulders-stencil',
 });
-// Sortie Board: IBM Plex Sans Condensed (body, labels and every numeral, tnum; 400, 700), Sofia Sans Extra Condensed
-// (display, headings and board legends; 700, 800), IBM Plex Mono (callsigns, plate labels, code; 400, 700).
+// Sortie Board: IBM Plex Sans (reading text, labels and controls; 400, 700), IBM Plex Sans Condensed (every numeral and
+// figure column, tnum; 400, 700), Sofia Sans Extra Condensed (board titles only; 700, 800), IBM Plex Mono (short
+// identifiers: Swim IDs, Length numbers, status marks, code; 400, 700).
+const ibmPlexSans = IBM_Plex_Sans({ subsets: ['latin'], weight: ['400', '700'], display: 'swap', preload: false, variable: '--font-ibm-plex-sans' });
 const ibmPlexSansCondensed = IBM_Plex_Sans_Condensed({ subsets: ['latin'], weight: ['400', '700'], display: 'swap', preload: false, variable: '--font-ibm-plex-sans-condensed' });
 const sofiaSansExtraCondensed = Sofia_Sans_Extra_Condensed({ subsets: ['latin'], weight: ['700', '800'], display: 'swap', preload: false, variable: '--font-sofia-sans-extra-condensed' });
 const ibmPlexMono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '700'], display: 'swap', preload: false, variable: '--font-ibm-plex-mono' });
 
-const worldFonts: { variable: string }[] = [barlowCondensed, archivo, martianMono, b612, bigShouldersStencil, ibmPlexSansCondensed, sofiaSansExtraCondensed, ibmPlexMono];
+const worldFonts: { variable: string }[] = [barlowCondensed, archivo, martianMono, b612, bigShouldersStencil, ibmPlexSans, ibmPlexSansCondensed, sofiaSansExtraCondensed, ibmPlexMono];
 
 export const worldFontVariables = worldFonts.map((font) => font.variable).join(' ');

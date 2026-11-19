@@ -68,9 +68,12 @@ Each role's `$description` in `tokens.json` says what it is for and which contra
 
 Deck keeps positive polarity because dark text on a light face reads better in bright light (Dobres et al. 2017, in [poolside-conditions.md](../research/poolside-conditions.md)). Safety yellow cannot hold a 3:1 boundary on white, so it is never a fill or a line on a reading plane: it is the figure colour on the black LED plate, which itself holds far more than 3:1 against every white surface.
 
-**Reach zone:** on Capture screens the primary action sits in the bottom tray (`.sb-tray`, `data-sticky="true"` on phones), within one thumb's reach, in both themes.
+**Reach zone:** on Capture screens the Tap Pad's keys and its undo cluster (`.sb-action-row`) sit low, within one thumb's reach: counters, then the full-width Wall key, then undo. End Swim lives in the slim app bar, away from the thumb.
 
-**Density:** `densityModes.compact` applies with `[data-density="compact"]` on the **Admin console** region only. It lowers padding, gaps, row height, body size, and `button-min-target` (2rem, so `control-size-sm` is 24 CSS px, exactly the floor). It is never used on Capture or watcher pages.
+**Density:** two modes in `densityModes`, each a `[data-density]` attribute.
+
+- `deck` (`[data-density="deck"]`) is the Deck size knob on its own: exactly the sizes `splitbook-deck` sets (targets, Tap Pad keys, rating steps, Length cells, density, body and numeral sizes). Put it on the root of a Capture screen that uses another theme, so Capture keeps Deck sizing in Light colours or in any world. Its `:root[data-density="deck"]` form outranks a world's theme block, so a world's type overrides cannot undo it. The validator holds it to the same knob list, floors, and values as the Deck theme.
+- `compact` (`[data-density="compact"]`) belongs to the **Admin console** region only. It lowers padding, gaps, row height, body size, and `button-min-target` (2rem, so `control-size-sm` is 24 CSS px, exactly the floor). It is never used on Capture or watcher pages.
 
 Themes must not:
 

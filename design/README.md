@@ -27,12 +27,12 @@ npm run dev          # http://localhost:3200/design
 
 ## Routes
 
-Every route accepts `?theme=<value>` and, for worlds, `?palette=<id>` (applied before first paint, not saved). `?density=compact` previews compact density.
+Every route accepts `?theme=<value>` and, for worlds, `?palette=<id>` (applied before first paint, not saved). `?density=deck` previews the Deck size knob with any theme or world; `?density=compact` previews compact density. `/specimen?demo=midswim` opens the Capture specimen mid-Swim.
 
 | Route | Shows |
 |---|---|
 | `/design` | The system: foundations (colour roles with live contrast read-outs, type and numerals, spacing, radius and elevation, the Deck knob), core components, domain widgets (a working Tap Pad, Length strip, split read-out, rating, fault flag, chips, Review sheet, Swim/Session/Set rows, Metric and Technique trends, Profile switcher, Configuration list and publish bar), watcher, admin, and system blueprints, and the agent recipe. The sidebar holds the theme, colour, and density switches and an index. |
-| `/specimen` | One compact Capture + Review screen. World gallery frames and the Deck Capture blueprint render it. |
+| `/specimen` | One Capture screen: a Tap Pad and a Review sheet sharing one preview Swim (Capture alone on phones while recording; Review once the Swim ends). World gallery frames open it mid-Swim at Deck sizing. |
 | `/overview` | Every theme on one screen as live `/tile` thumbnails. |
 | `/tile` | The thumbnail composition `/overview` frames. |
 | `/worlds` | The seeded-world gallery. Empty until worlds are registered. |
@@ -43,7 +43,7 @@ Every route accepts `?theme=<value>` and, for worlds, `?palette=<id>` (applied b
 |---|---|---|
 | `data-theme` | `splitbook-light` (default, also `:root`), `splitbook-deck`, `splitbook-<slug>` for a world | `<html>` only |
 | `data-palette` | a world's colour option id | `<html>`, beside a world theme |
-| `data-density` | `compact` | the Admin console region only |
+| `data-density` | `deck` (the Deck size knob, for Capture in any theme or world), `compact` | `deck` on the root of a Capture screen; `compact` on the Admin console region only |
 
 - Variables are `--sb-*`. Components are `.sb-<component>`; variants use `data-variant`, sizes `data-size`, state ARIA attributes or `data-state`.
 - **Light** is for desk pages. **Deck** is a palette and a size knob for Capture at the pool: positive polarity (dark ink on light planes) at glare-grade 7:1 contrast, the live state on a black LED plate with safety-yellow figures, 56 CSS px targets, larger Tap Pad keys and numerals, roomier density.

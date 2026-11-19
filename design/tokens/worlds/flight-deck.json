@@ -1,8 +1,8 @@
 {
   "label": "Flight Deck",
   "order": 2,
-  "$description": "Carrier deck markings pushed forward in time: non-skid deck plates, stencilled placards, and black-and-yellow hazard chevrons on edges only. Deck-crew jersey colours give each metric family a role colour (green counts, yellow timing, purple rates, white technique, red fault notes), always beside a label.",
-  "signature": "A wall tap fires a catapult-style split flash: the shuttle runs the track under the running split and a live plate sweeps across the read-out, once per wall tap.",
+  "$description": "Carrier deck markings pushed forward in time: non-skid deck plates and cockpit type, with a single black-and-yellow hazard band on the Wall action and stencil kept for short titles. Deck-crew jersey colours give each metric family a role colour (green counts, yellow timing, purple rates, white technique, red fault notes), always beside a label.",
+  "signature": "A wall tap fires a catapult-style split flash: in one flash interval the shuttle runs the track under the running split and a live streak lights behind it. Only the finish touch holds the live frame a little longer.",
   "colorScheme": "dark",
   "color": {
     "background": {
@@ -199,7 +199,12 @@
     "font-display": {
       "$type": "fontFamily",
       "$value": "var(--font-big-shoulders-stencil), 'Arial Narrow', Arial, sans-serif",
-      "$description": "Big Shoulders Stencil (700, 800): deck-marking stencil for display, headings, the wordmark, and short placards. Never for numerals or reading text."
+      "$description": "Big Shoulders Stencil (700, 800): punctuation only, for the display line, the wordmark and short panel titles, in sentence case. Never for numerals, buttons, labels or reading text."
+    },
+    "type-heading-lg-family": {
+      "$type": "fontFamily",
+      "$value": "var(--sb-font-sans)",
+      "$description": "Page headings stay in B612, the operational face; stencil is kept for short panel titles (heading-md) and the display line."
     },
     "type-numeral-xl-family": {
       "$type": "fontFamily",
@@ -379,11 +384,11 @@
         },
         "live": {
           "$type": "color",
-          "$value": "#8A6100"
+          "$value": "#23282C"
         },
         "live-foreground": {
           "$type": "color",
-          "$value": "#FFFFFF"
+          "$value": "#FFD21F"
         },
         "metric": {
           "$type": "color",

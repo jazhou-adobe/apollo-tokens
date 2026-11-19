@@ -120,7 +120,10 @@ export function TrendDial({ label, then, now, thenLabel, nowLabel }: { label: st
 
 type SwimRowData = { title: string; detail: string; time: string; strokes: string; kicks: string; rating: number; fault?: string };
 
-/** A Swim in a list: counts lead, the time is shown as the result, a Fault is flagged with its words. */
+/**
+ * A Swim in a list: identity, then the figures (counts lead, time is the result), then any noted Fault on its own line.
+ * Below md the figures sit in a three-column grid under the identity; from md they align in fixed columns at the end.
+ */
 export function SwimRow({ swim, href }: { swim: SwimRowData; href?: string }) {
   const content = (
     <>
@@ -129,11 +132,6 @@ export function SwimRow({ swim, href }: { swim: SwimRowData; href?: string }) {
         <span className="sb-list-row-meta">
           <span>{swim.detail}</span>
           <span>Head position {swim.rating} of 5</span>
-          {swim.fault ? (
-            <span className="sb-badge" data-tone="fault">
-              <Icon name="flag" /> Noted: {swim.fault}
-            </span>
-          ) : null}
         </span>
       </span>
       <span className="sb-swim-row-figures">
@@ -141,6 +139,11 @@ export function SwimRow({ swim, href }: { swim: SwimRowData; href?: string }) {
         <Figure value={swim.strokes} label="strokes per Length" />
         <Figure value={swim.time} label="time" />
       </span>
+      {swim.fault ? (
+        <span className="sb-badge sb-swim-row-fault" data-tone="fault">
+          <Icon name="flag" /> Noted: {swim.fault}
+        </span>
+      ) : null}
     </>
   );
   return href ? (
@@ -174,7 +177,7 @@ export function SessionRow({ session, href }: { session: { day: string; month: s
 /** A Set: Swims done as one block, bracketed by an ink rule with the prescription and a summary above. */
 export function SetGroup({ title, summary, swims }: { title: string; summary: string; swims: SwimRowData[] }) {
   return (
-    <section className="sb-set-group" aria-label={`Set: ${title}`}>
+    <div className="sb-set-group" role="group" aria-label={`Set: ${title}`}>
       <div className="sb-set-group-head">
         <strong className="sb-label">Set · {title}</strong>
         <span className="sb-body-sm sb-muted">{summary}</span>
@@ -186,6 +189,6 @@ export function SetGroup({ title, summary, swims }: { title: string; summary: st
           </li>
         ))}
       </ul>
-    </section>
+    </div>
   );
 }

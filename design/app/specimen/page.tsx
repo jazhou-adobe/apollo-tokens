@@ -1,47 +1,30 @@
 import type { Metadata } from 'next';
 import { ActiveTheme } from '../../preview/components/ActiveTheme';
-import { Icon } from '../../preview/components/Icon';
+import { CaptureSpecimen } from '../../preview/components/capture';
 import { Illustrative } from '../../preview/components/primitives';
 import { ThemeLink } from '../../preview/components/ThemeLink';
-import { ProfileSwitcher, ReviewSheet, TapPad } from '../../preview/components/widgets';
 import { THEMES } from '../../preview/themes';
 
 export const metadata: Metadata = { title: 'Splitbook Capture specimen' };
 
-// Static route: one compact Capture + Review screen. The theme comes from ?theme= and ?palette= (see app/layout.tsx), so
-// world gallery frames and the Deck Capture blueprint render this same page in any theme.
+// Static route: one Capture screen whose Tap Pad and Review sheet share a single preview Swim. The theme comes from
+// ?theme= and ?palette=, sizing from ?density=deck (see app/layout.tsx); ?demo=midswim opens it mid-Swim (gallery frames).
 export const dynamic = 'force-static';
 
 export default function SpecimenPage() {
   return (
-    <main className="sb-specimen" id="top" aria-labelledby="specimen-title">
-      <header className="sb-app-bar">
-        <span className="sb-wordmark">
-          <Icon name="clock" /> Splitbook
-        </span>
-        <ProfileSwitcher />
-      </header>
-      <div className="sb-specimen-body">
-        <div className="sb-row" data-justify="between">
-          <div className="sb-stack" data-gap="tight">
-            <h1 id="specimen-title" className="sb-heading-lg">
-              Tuesday squad · Capture
-            </h1>
+    <CaptureSpecimen
+      meta={
+        <div className="sb-row">
+          <Illustrative />
+          <div className="sb-capture-aside">
             <ActiveTheme options={THEMES} lead="Capture specimen" />
           </div>
-          <div className="sb-row">
-            <Illustrative />
-            <ThemeLink href="/design" className="sb-button" variant="ghost">
-              Open the system
-            </ThemeLink>
-          </div>
+          <ThemeLink href="/design" className="sb-link sb-body-sm sb-capture-aside">
+            Open the system
+          </ThemeLink>
         </div>
-        <div className="sb-pair">
-          <TapPad />
-          <div className="sb-pair-axis" aria-hidden="true" />
-          <ReviewSheet compact />
-        </div>
-      </div>
-    </main>
+      }
+    />
   );
 }

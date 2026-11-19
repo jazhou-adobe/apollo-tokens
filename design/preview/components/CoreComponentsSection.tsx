@@ -271,7 +271,7 @@ export function CoreComponentsSection() {
         <div className="sb-row">
           <Illustrative />
         </div>
-        <div className="sb-table-wrap">
+        <div className="sb-table-wrap" role="region" aria-label="Data table example: Lengths of a 100 m freestyle Swim" tabIndex={0}>
           <table className="sb-table">
             <caption className="sb-body-sm sb-muted">Lengths of a 100 m freestyle Swim</caption>
             <thead>

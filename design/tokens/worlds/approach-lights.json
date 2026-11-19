@@ -1,7 +1,7 @@
 {
   "label": "Approach Lights",
   "order": 1,
-  "$description": "The lane rope as a carrier deck-approach light chain: dividers, the T-line and Set groups are runs of lights, and the Length strip is the light bar itself.",
+  "$description": "The lane rope as a carrier deck-approach light chain: the Length strip is the light bar, and its numbered bulbs are the only lights on screen. Everything else sits on worn deck plates with unlit painted rules.",
   "signature": "The Length counter lights bulb by bulb: each wall tap ignites the next bulb, and every bulb carries its Length number, never colour alone.",
   "colorScheme": "light",
   "color": {

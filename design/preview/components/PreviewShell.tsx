@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { THEMES } from '../themes';
 import { SidebarIndex } from './SidebarIndex';
-import { ThemeSwitcher } from './ThemeSwitcher';
+import { DensitySwitch, ThemeSwitcher } from './ThemeSwitcher';
 
 // Plain anchors on purpose: a full load lets the layout script apply ?theme= previews.
 export const REFERENCE_PAGES = [
@@ -30,13 +30,16 @@ export function PreviewShell({ current, sections, children }: { current: Referen
         <SidebarIndex
           sections={sections}
           pages={
-            <nav className="sb-side-nav" aria-label="Design system pages">
-              {REFERENCE_PAGES.map((page) => (
-                <a key={page.href} href={page.href} aria-current={page.href === current ? 'page' : undefined}>
-                  {page.label}
-                </a>
-              ))}
-            </nav>
+            <>
+              <DensitySwitch />
+              <nav className="sb-side-nav" aria-label="Design system pages">
+                {REFERENCE_PAGES.map((page) => (
+                  <a key={page.href} href={page.href} aria-current={page.href === current ? 'page' : undefined}>
+                    {page.label}
+                  </a>
+                ))}
+              </nav>
+            </>
           }
         />
       </aside>

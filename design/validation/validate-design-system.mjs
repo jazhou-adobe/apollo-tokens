@@ -65,6 +65,8 @@ const REQUIRED_PREVIEW_SECTIONS = [
 // Deck is a palette and a size knob: each of these must be overridden by splitbook-deck and be larger than the base.
 const DECK_KNOBS = ['button-min-target', 'tap-key-size', 'rating-step-size', 'length-cell-size', 'density-inset', 'density-gap', 'type-body-size', 'type-numeral-xl-size'];
 const DECK_THEME = `${BRAND}-deck`;
+// The same knob as a density mode ([data-density="deck"]), so Capture keeps Deck sizing in any world.
+const DECK_DENSITY = 'deck';
 const TARGET_FLOOR_PX = 24;
 // The brief's Deck floors: 56 CSS px targets and Tap Pad keys of at least 5rem.
 const DECK_FLOORS = { 'button-min-target': 56, 'tap-key-size': 80 };
@@ -598,6 +600,28 @@ export function validateDesignSystem({ tokens: coreTokens, themesCss: coreCss, s
   for (const [knob, floor] of Object.entries(DECK_FLOORS)) {
     const value = deckOverrides[knob]?.$value;
     if (value !== undefined && !(toPx(value) >= floor)) fail(`${DECK_THEME}: --${PREFIX}-${knob} (${value}) is below the Deck floor of ${floor} CSS px`);
+  }
+
+  // The Deck size knob as a density mode, so it composes with any theme or world: every knob overridden, larger than the
+  // base, at the Deck floors, and equal to what splitbook-deck sets (one knob, two ways to switch it on).
+  const deckDensity = tokens.densityModes?.[DECK_DENSITY]?.overrides;
+  if (!deckDensity) fail(`tokens.json densityModes must include "${DECK_DENSITY}" (the Deck size knob for any theme or world)`);
+  else {
+    for (const knob of DECK_KNOBS) {
+      const value = deckDensity[knob]?.$value;
+      if (value === undefined) {
+        fail(`density ${DECK_DENSITY}: tokens.json must override Deck knob --${PREFIX}-${knob}`);
+        continue;
+      }
+      const base = baseDecls.get(`--${PREFIX}-${knob}`);
+      if (base !== undefined && !(toPx(value) > toPx(base))) fail(`density ${DECK_DENSITY}: --${PREFIX}-${knob} (${value}) must be larger than the base (${base})`);
+      const themeValue = deckOverrides[knob]?.$value;
+      if (themeValue !== undefined && cssValue(themeValue) !== cssValue(value)) fail(`density ${DECK_DENSITY}: --${PREFIX}-${knob} (${value}) must match ${DECK_THEME} (${themeValue})`);
+    }
+    for (const [knob, floor] of Object.entries(DECK_FLOORS)) {
+      const value = deckDensity[knob]?.$value;
+      if (value !== undefined && !(toPx(value) >= floor)) fail(`density ${DECK_DENSITY}: --${PREFIX}-${knob} (${value}) is below the Deck floor of ${floor} CSS px`);
+    }
   }
 
   // Density modes.

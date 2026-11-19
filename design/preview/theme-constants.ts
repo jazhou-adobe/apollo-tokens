@@ -12,12 +12,17 @@ export const DEFAULT_THEME = 'splitbook-light';
 export const THEME_STORAGE_KEY = 'splitbook-preview-theme';
 /** JSON map of theme value → chosen palette id, so each world remembers its own colour option. */
 export const PALETTE_STORAGE_KEY = 'splitbook-preview-palettes';
-/** Preview-only density choice; compact belongs to the Admin console, so the switch exists to inspect it. */
+/**
+ * Preview density choice, applied as data-density on <html>. Compact belongs to the Admin console; Deck sizing is the Deck
+ * size knob on its own, so any theme or world can be seen at Capture sizes.
+ */
 export const DENSITY_STORAGE_KEY = 'splitbook-preview-density';
 export const DENSITIES = [
   { value: '', label: 'Default' },
+  { value: 'deck', label: 'Deck sizing (Capture)' },
   { value: 'compact', label: 'Compact (Admin console)' },
 ] as const;
+export const DENSITY_VALUES: string[] = DENSITIES.map((density) => density.value).filter(Boolean);
 
 export function readSavedPalettes(): Record<string, string> {
   try {

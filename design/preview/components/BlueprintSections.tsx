@@ -1,10 +1,11 @@
-import { CONFIG_VERSIONS, DISTANCES, KICK_TREND, LENGTHS, SESSIONS, STROKE_TREND, STROKES, SWIMS, TRAINING_TYPES } from '../fixtures';
+import { CONFIG_VERSIONS, DISTANCES, KICK_TREND, LENGTHS, REVIEW_SWIM, SESSIONS, STROKE_TREND, STROKES, SWIMS, TRAINING_TYPES } from '../fixtures';
+import { ReviewSheet } from './capture';
 import { SessionRow, SetGroup, SwimRow, TrendDial, TrendLine } from './charts';
 import { ConfigList } from './DomainWidgetsSection';
 import { Icon } from './Icon';
 import { Alert, Field, Figure, Frame, Illustrative, Section } from './primitives';
 import { ChipPicker, LengthStrip, SplitReadout } from './readouts';
-import { ProfileSwitcher, PublishBar, ReviewSheet } from './widgets';
+import { ProfileSwitcher, PublishBar } from './widgets';
 
 // The brief's pages, composed from the components above. Watcher pages are Light (Capture opts into Deck), Admin pages
 // are compact, system states cover sign-in, empty, loading, offline, error, and not found.
@@ -107,12 +108,12 @@ export function WatcherBlueprintsSection() {
       </Frame>
 
       <Frame id="bp-capture" title="Live Capture (Tap Pad, Deck)" note="Pace Clock Deck · live /specimen frame" flush>
-        <iframe className="sb-frame-iframe" src="/specimen?theme=splitbook-deck" title="Live Capture in the Deck theme: Tap Pad and Review sheet" loading="lazy" />
+        <iframe className="sb-frame-iframe" src="/specimen?theme=splitbook-deck&demo=midswim" title="Live Capture in the Deck theme, mid-Swim example" loading="lazy" />
       </Frame>
 
       <Frame id="bp-review" title="Review sheet" note="Deck at the pool, Light when finished later">
         <div className="sb-phone">
-          <ReviewSheet compact />
+          <ReviewSheet swim={REVIEW_SWIM} headingLevel={4} label="Review sheet blueprint, illustrative 100 m freestyle" compact />
         </div>
       </Frame>
 
@@ -252,8 +253,8 @@ export function AdminBlueprintsSection() {
                 <a href="#bp-versions">Versions</a>
               </nav>
               <div className="sb-stack">
-                <ConfigList />
-                <PublishBar />
+                <ConfigList label="Metric definitions table (Configuration list blueprint)" />
+                <PublishBar label="Draft and publish (Configuration list blueprint)" />
               </div>
             </div>
           </div>
@@ -278,7 +279,7 @@ export function AdminBlueprintsSection() {
             </form>
             <div className="sb-formula-preview" role="region" aria-label="Formula preview">
               <strong className="sb-label">Preview on a recorded Swim</strong>
-              <div className="sb-table-wrap">
+              <div className="sb-table-wrap" role="region" aria-label="Formula preview table" tabIndex={0}>
                 <table className="sb-table">
                   <thead>
                     <tr>
@@ -318,13 +319,13 @@ export function AdminBlueprintsSection() {
             <Alert tone="warning" title="SWOLF formula changed">
               Choose where it applies. Recorded Values are kept either way; recalculating adds new derived Values beside them.
             </Alert>
-            <PublishBar />
+            <PublishBar label="Draft and publish (publish blueprint)" />
           </div>
         </Frame>
 
         <Frame id="bp-versions" title="Configuration version history" note="Compact" flush>
           <div className="sb-frame-body">
-            <div className="sb-table-wrap">
+            <div className="sb-table-wrap" role="region" aria-label="Configuration version history table" tabIndex={0}>
               <table className="sb-table">
                 <caption className="sb-body-sm sb-muted">Swimming Configuration versions, newest first</caption>
                 <thead>
@@ -441,13 +442,21 @@ export function AgentRecipeSection() {
         <li>Write in the coach&apos;s clipboard voice with glossary terms. Explain jargon. Label fixture data as illustrative.</li>
         <li>Check: npm run validate, keyboard path, 390 and 1440 wide, reduced motion, both themes.</li>
       </ol>
-      <pre className="sb-pre">
+      <pre className="sb-pre" role="region" aria-label="Example markup: a live Capture screen" tabIndex={0}>
         {`<html data-theme="splitbook-deck">
-  <main class="sb-stack">
-    <section class="sb-tap-pad" data-state="live">…</section>
-    <div class="sb-tray" data-sticky="true">
-      <button class="sb-button" data-size="lg">Save Swim</button>
-    </div>
+  <header class="sb-app-bar">… <button class="sb-button" data-variant="secondary">End Swim</button></header>
+  <main id="main">
+    <section class="sb-tap-pad" data-state="live" aria-labelledby="pad-title">
+      … read-outs …
+      <div class="sb-tap-keys" role="group" aria-label="Tap keys">
+        <button class="sb-tap-key" data-kind="counter">…</button>
+        <button class="sb-tap-key" data-kind="wall">Wall tap</button>
+      </div>
+      <div class="sb-action-row">
+        <button class="sb-button" data-variant="secondary">Undo wall tap</button>
+      </div>
+      <p class="sb-tap-status" role="status">Length 2: 19.9 seconds, 17 strokes.</p>
+    </section>
   </main>
 </html>`}
       </pre>

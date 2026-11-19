@@ -100,10 +100,31 @@
   border: 0;
 }
 
-/* A compact region (Admin console) re-applies body type, so its smaller size and line height take effect there. */
-[data-density='compact'] {
+/* A density region (Deck sizing on Capture, compact on the Admin console) re-applies body type, so its size and line
+   height take effect there. */
+[data-density='compact'],
+[data-density='deck'] {
   font-size: var(--sb-type-body-size);
   line-height: var(--sb-type-body-line-height);
+}
+
+/* A row of actions inside a component (the Tap Pad's undo cluster, the Review sheet's save): no frame of its own, so
+   containers never nest a box around their buttons. Buttons grow to share the row and keep the full target height. */
+.sb-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sb-space-2) var(--sb-density-gap);
+}
+.sb-action-row > .sb-button {
+  flex: 1 1 auto;
+}
+
+/* Scroll regions (tables, code) are focusable so keyboard users can scroll them; they show the shared focus ring. */
+.sb-table-wrap:focus-visible,
+.sb-pre:focus-visible {
+  outline: var(--sb-focus-ring-width) solid var(--sb-ring);
+  outline-offset: var(--sb-focus-ring-offset);
 }
 
 /* ---------- Layout helpers ---------- */
@@ -1281,6 +1302,24 @@ a.sb-list-row:hover {
   padding: 0;
   list-style: none;
 }
+/* The status line announces each completed Length and each undo; it keeps two lines of room so the layout never jumps. */
+.sb-tap-status {
+  min-block-size: calc(var(--sb-type-body-size) * var(--sb-type-body-line-height) * 2);
+  font-weight: var(--sb-type-label-weight);
+}
+/* Keyboard shortcuts are a desk feature: the hint and key caps show from md. */
+.sb-tap-key .sb-kbd,
+.sb-tap-hint {
+  display: none;
+}
+@media (min-width: 48rem) {
+  .sb-tap-key .sb-kbd {
+    display: inline-block;
+  }
+  .sb-tap-hint {
+    display: block;
+  }
+}
 .sb-tap-log li {
   display: flex;
   align-items: center;
@@ -1375,7 +1414,11 @@ button.sb-length-cell {
   outline-offset: var(--sb-border-width-thin);
 }
 
-/* ---------- Rating 1–5 with cue text: numbered steps, the chosen one filled, cue text spelled out ---------- */
+/*
+ * Rating 1–5 with cue text. Below md each level is a full-width row: number, its cue, and a check on the chosen one, so
+ * the cue is read before choosing. From md the levels are numbered steps in a row; the chosen one is filled and carries
+ * a check badge, and the chosen cue is spelled out underneath.
+ */
 .sb-rating {
   display: grid;
   gap: var(--sb-space-2);
@@ -1385,24 +1428,43 @@ button.sb-length-cell {
   min-width: 0;
 }
 .sb-rating-steps {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--sb-space-2);
 }
 .sb-rating-step {
   position: relative;
   display: grid;
-  place-items: center;
-  inline-size: var(--sb-rating-step-size);
-  block-size: var(--sb-rating-step-size);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sb-space-3);
+  min-block-size: var(--sb-rating-step-size);
+  padding: var(--sb-space-1) var(--sb-space-3);
+  box-sizing: border-box;
   border: var(--sb-border-width-thick) solid var(--sb-border);
-  border-radius: var(--sb-radius-pill);
+  border-radius: var(--sb-radius-md);
   background: var(--sb-surface-card);
   color: var(--sb-surface-card-foreground);
+  cursor: pointer;
+}
+.sb-rating-step-number {
+  min-inline-size: var(--sb-space-6);
   font-family: var(--sb-type-numeral-md-family);
+  font-size: var(--sb-type-numeral-md-size);
+  line-height: var(--sb-type-numeral-md-line-height);
   font-weight: var(--sb-type-numeral-md-weight);
   font-variant-numeric: tabular-nums;
-  cursor: pointer;
+  text-align: center;
+}
+.sb-rating-step-cue {
+  font-family: var(--sb-type-body-sm-family);
+  font-size: var(--sb-type-body-sm-size);
+  line-height: var(--sb-type-body-sm-line-height);
+  font-weight: var(--sb-type-body-sm-weight);
+  text-align: start;
+}
+.sb-rating-step-check {
+  display: none;
 }
 .sb-rating-step input {
   position: absolute;
@@ -1411,17 +1473,69 @@ button.sb-length-cell {
   opacity: 0;
   cursor: pointer;
 }
+/* Selected: ink fill with background figures and a check. `metric` stays on captured values only. */
 .sb-rating-step:has(input:checked) {
-  border-color: var(--sb-metric);
-  background: var(--sb-metric);
-  color: var(--sb-metric-foreground);
+  border-color: var(--sb-foreground);
+  background: var(--sb-foreground);
+  color: var(--sb-background);
+}
+.sb-rating-step:has(input:checked) .sb-rating-step-check {
+  display: inline-flex;
 }
 .sb-rating-step:has(input:focus-visible) {
   outline: var(--sb-focus-ring-width) solid var(--sb-ring);
   outline-offset: var(--sb-focus-ring-offset);
 }
+/* The rows already show every cue, so the chosen-cue line stays for screen readers only below md. */
 .sb-rating-cue {
-  min-block-size: calc(var(--sb-type-body-size) * var(--sb-type-body-line-height) * 2);
+  position: absolute;
+  inline-size: var(--sb-border-width-thin);
+  block-size: var(--sb-border-width-thin);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (min-width: 48rem) {
+  .sb-rating-steps {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .sb-rating-step {
+    grid-template-columns: none;
+    place-items: center;
+    inline-size: var(--sb-rating-step-size);
+    block-size: var(--sb-rating-step-size);
+    padding: 0;
+    border-radius: var(--sb-radius-pill);
+  }
+  .sb-rating-step-cue {
+    position: absolute;
+    inline-size: var(--sb-border-width-thin);
+    block-size: var(--sb-border-width-thin);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  /* A check badge on the chosen step's rim: a shape cue beside the filled numeral. */
+  .sb-rating-step-check {
+    position: absolute;
+    inset-block-start: calc(var(--sb-space-2) * -1);
+    inset-inline-end: calc(var(--sb-space-2) * -1);
+    padding: var(--sb-space-1);
+    border: var(--sb-border-width-thin) solid var(--sb-foreground);
+    border-radius: var(--sb-radius-pill);
+    background: var(--sb-background);
+    color: var(--sb-foreground);
+  }
+  .sb-rating-cue {
+    position: static;
+    inline-size: auto;
+    block-size: auto;
+    min-block-size: calc(var(--sb-type-body-size) * var(--sb-type-body-line-height) * 2);
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
 }
 
 /* ---------- Fault flag: an observer's note. A flag shape and a label, never colour alone ---------- */
@@ -1477,10 +1591,15 @@ button.sb-length-cell {
 }
 
 /* ---------- Swim row, Session row, Set group ---------- */
+/*
+ * A Swim row. Below md: the Swim's identity full width, then its figures in a three-column grid (value over label, kept
+ * together; labels wrap), then any Fault summary on its own full-width line. From md: identity and figures side by side,
+ * the Fault summary still on its own line underneath.
+ */
 .sb-swim-row,
 .sb-session-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: var(--sb-space-2) var(--sb-space-4);
   min-block-size: var(--sb-density-row-height);
@@ -1497,21 +1616,48 @@ a.sb-session-row:hover {
 .sb-session-row-title {
   font-weight: var(--sb-type-label-weight);
 }
+/* Below md the figures wrap as whole units (value over label), each at least as wide as its value, so a long time such as
+   1:18.42 moves to the next line instead of spilling out of the row. */
 .sb-swim-row-figures {
   display: flex;
   flex-wrap: wrap;
-  justify-content: end;
-  gap: var(--sb-space-1) var(--sb-space-4);
-  text-align: end;
+  align-items: start;
+  gap: var(--sb-space-2) var(--sb-space-4);
+}
+.sb-swim-row-figures > .sb-figure {
+  flex: 1 0 auto;
+}
+.sb-swim-row-fault {
+  grid-column: 1 / -1;
+  justify-self: start;
+  max-inline-size: 100%;
+  white-space: normal;
 }
 .sb-figure {
   display: grid;
-  justify-items: end;
+  justify-items: start;
+  min-width: 0;
 }
 .sb-figure-label {
   color: var(--sb-muted-foreground);
   font-size: var(--sb-type-body-sm-size);
   line-height: var(--sb-type-body-sm-line-height);
+  overflow-wrap: break-word;
+}
+@media (min-width: 48rem) {
+  .sb-swim-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  /* A numeric alignment grid: every row's figures sit in the same fixed columns, values and labels right-aligned. */
+  .sb-swim-row-figures {
+    display: grid;
+    grid-template-columns: repeat(3, calc(var(--sb-space-16) * 1.75));
+    justify-content: end;
+  }
+  .sb-swim-row-figures .sb-figure {
+    justify-items: end;
+    text-align: end;
+  }
 }
 .sb-session-row {
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -1689,6 +1835,17 @@ a.sb-session-row:hover {
   cursor: pointer;
 }
 .sb-profile-switcher [role='menuitemradio'][aria-checked='true'] {
+  font-weight: var(--sb-type-label-weight);
+}
+/* While recording the Swimmer is shown, not offered: no menu, a lock, and words for screen readers. */
+.sb-profile-switcher-locked {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sb-space-2);
+  min-block-size: var(--sb-button-min-target);
+  padding: var(--sb-space-1) var(--sb-space-3) var(--sb-space-1) var(--sb-space-1);
+  border: var(--sb-border-width-thin) dashed var(--sb-border);
+  border-radius: var(--sb-radius-pill);
   font-weight: var(--sb-type-label-weight);
 }
 

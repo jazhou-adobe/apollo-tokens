@@ -121,6 +121,9 @@ export const LENGTHS: LengthFixture[] = [
   { number: 4, split: '20.35', strokes: 18, kicks: 4 },
 ];
 
+/** The illustrative Swim the stand-alone Review sheet examples show (not the one captured on a Tap Pad). */
+export const REVIEW_SWIM = { title: '100 m freestyle (illustrative)', time: '1:18.42', lengths: LENGTHS };
+
 export type SwimFixture = {
   id: string;
   title: string;

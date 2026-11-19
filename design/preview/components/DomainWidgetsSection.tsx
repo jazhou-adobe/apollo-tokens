@@ -1,13 +1,15 @@
-import { CONFIG_METRICS, DISTANCES, KICK_TREND, LENGTHS, SESSIONS, STROKE_TREND, STROKES, SWIMS, TRAINING_TYPES } from '../fixtures';
+import { CONFIG_METRICS, DISTANCES, KICK_TREND, LENGTHS, REVIEW_SWIM, SESSIONS, STROKE_TREND, STROKES, SWIMS, TRAINING_TYPES } from '../fixtures';
+import { ReviewSheet, TapPadDemo } from './capture';
 import { SessionRow, SetGroup, SwimRow, TrendDial, TrendLine } from './charts';
 import { Illustrative, Section, SubSection } from './primitives';
 import { ChipPicker, LengthStrip, SplitReadout } from './readouts';
-import { FaultFlag, ProfileSwitcher, PublishBar, Rating, ReviewSheet, TapPad } from './widgets';
+import { FaultFlag, ProfileSwitcher, PublishBar, Rating } from './widgets';
 
-export function ConfigList() {
+/** The Admin console's Metric definitions table. `label` names its scroll region, unique on the page. */
+export function ConfigList({ label }: { label: string }) {
   return (
     <div className="sb-config-list">
-      <div className="sb-table-wrap">
+      <div className="sb-table-wrap" role="region" aria-label={label} tabIndex={0}>
         <table className="sb-table">
           <caption className="sb-body-sm sb-muted">Swimming · Metric definitions in the Draft</caption>
           <thead>
@@ -58,12 +60,12 @@ export function DomainWidgetsSection() {
       title="Domain widgets"
       lead="What a stopwatch can't capture, captured in seconds. Counts and technique lead; times are shown as the result. Every number is a tabular numeral; every state carries a word, number, or shape."
     >
-      <SubSection id="dw-tap-pad" title="Tap Pad" note="Try it: Start Swim, tap the counters, tap the wall, undo any tap">
+      <SubSection id="dw-tap-pad" title="Tap Pad" note="Try it: Start Swim, tap the counters, tap the wall, undo any tap, or use the keys shown">
         <div className="sb-row">
           <Illustrative />
         </div>
         <div className="sb-phone">
-          <TapPad />
+          <TapPadDemo headingLevel={4} reviewHref="#dw-review" />
         </div>
       </SubSection>
 
@@ -107,7 +109,7 @@ export function DomainWidgetsSection() {
 
       <SubSection id="dw-review" title="Review sheet" note="Completed straight after a Swim">
         <div className="sb-phone">
-          <ReviewSheet />
+          <ReviewSheet swim={REVIEW_SWIM} headingLevel={4} label="Review sheet example, illustrative 100 m freestyle" />
         </div>
       </SubSection>
 
@@ -169,8 +171,8 @@ export function DomainWidgetsSection() {
 
       <SubSection id="dw-admin" title="Configuration list and publish bar" note="Admin console, compact density">
         <div className="sb-stack" data-density="compact">
-          <ConfigList />
-          <PublishBar />
+          <ConfigList label="Metric definitions table (component example)" />
+          <PublishBar label="Draft and publish (component example)" />
         </div>
       </SubSection>
     </Section>
