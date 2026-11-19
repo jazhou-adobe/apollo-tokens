@@ -2,15 +2,19 @@
   {
     "slug": "splitbook",
     "label": "Splitbook",
-    "summary": "Swim-observation tracker. Pace Clock core (light, deck) and seeded worlds.",
+    "summary": "Swim-observation tracker. Pace Clock core (light, deck) and the Approach Lights world.",
     "dir": "../splitbook-master/design",
-    "port": 3200
+    "port": 3200,
+    "tokenPrefix": "sb",
+    "defaultTheme": "splitbook-approach-lights"
   },
   {
     "slug": "hermes",
     "label": "Hermes Hub",
-    "summary": "Human-in-the-loop command center. Flight Strips ops-room core (dark, light) and seeded worlds.",
+    "summary": "Human-in-the-loop command center. Flight Strips ops-room core (dark, light) and the Flight Director 2169 world.",
     "dir": "../hermes-master/design",
-    "port": 3300
+    "port": 3300,
+    "tokenPrefix": "hh",
+    "defaultTheme": "hermes-flight-director"
   }
 ]

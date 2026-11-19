@@ -34,7 +34,8 @@ const MIME = {
   '.woff2': 'font/woff2',
 };
 
-/** @type {{ slug: string; label: string; summary: string; dir: string; port: number }[]} */
+/** tokenPrefix and defaultTheme are read by .skills/apply-apollo-theme, not by the hub. */
+/** @type {{ slug: string; label: string; summary: string; dir: string; port: number; tokenPrefix: string; defaultTheme: string }[]} */
 const brands = JSON.parse(readFileSync(resolve(hubDir, 'brands.json'), 'utf8'));
 const children = new Set();
 
