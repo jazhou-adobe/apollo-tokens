@@ -1,0 +1,9 @@
+{
+  "name": "apollo-preview-hub",
+  "private": true,
+  "type": "module",
+  "description": "One server for every brand's design-system preview, mapped by path (/splitbook, /hermes).",
+  "scripts": {
+    "preview": "node preview-hub/server.mjs"
+  }
+}

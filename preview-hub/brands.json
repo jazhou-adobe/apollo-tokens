@@ -1,0 +1,16 @@
+[
+  {
+    "slug": "splitbook",
+    "label": "Splitbook",
+    "summary": "Swim-observation tracker. Pace Clock core (light, deck) and seeded worlds.",
+    "dir": "../splitbook-master/design",
+    "port": 3200
+  },
+  {
+    "slug": "hermes",
+    "label": "Hermes Hub",
+    "summary": "Human-in-the-loop command center. Flight Strips ops-room core (dark, light) and seeded worlds.",
+    "dir": "../hermes-master/design",
+    "port": 3300
+  }
+]
