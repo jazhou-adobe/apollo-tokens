@@ -13,6 +13,8 @@ const nextConfig = {
   // Pin the root so Next does not adopt a lockfile from a parent directory.
   turbopack: { root: appRoot },
   outputFileTracingRoot: appRoot,
+  // Next.js nudges coding agents when the installed version has a security advisory (set by `next upgrade --agent=security`).
+  experimental: { agentUpgrade: 'security' },
 };
 
 export default nextConfig;
