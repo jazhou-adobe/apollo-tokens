@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en" data-theme="hermes-telemetry-ribbon" data-palette="hull-grey" data-density="compact">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telemetry Ribbon · Hermes world preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<!--
+  Phase 2 quick preview · Hermes world `telemetry-ribbon` (theme value hermes-telemetry-ribbon).
+  Idea: scrolling telemetry tape from a cockpit recorder: banded rows and sprocket margins in hull grey.
+  Signature: the Round log feeds up line by line (stepped feed, bounded to 3 lines per Answer; instant under reduced motion).
+
+  Contrast check (WCAG 2.x relative luminance, ratios truncated to 2 dp, never rounded up).
+  Gates from design/brief.md: every role/role-foreground pair >= 4.5; code-foreground on diff-add and diff-remove >= 4.5;
+  muted-foreground on background, every surface and muted >= 4.5; border and ring on every surface, strip, input, background >= 3;
+  pending/answered/expired/recommended on strip and background >= 3; agent-1..6 and chart-1..5 on surface-card, surface-panel, background >= 3.
+  Page extras also checked: strip-foreground on the tape band (strip 93% + strip-foreground) >= 4.5; holders, border, ring on the band >= 3;
+  foreground on input >= 4.5.
+  hull-grey: 91 pairs checked, 0 fails. Lowest text pair expired-foreground on expired 4.92:1; lowest boundary border on surface-shelf 3.06:1. fg/bg 13.75, strip-fg/strip 14.78, pending/strip 4.15, pending/bg 3.56, code-fg/diff-add 9.94, code-fg/diff-remove 11.02, muted-fg/bg 7.64.
+  oxide-tape: 91 pairs checked, 0 fails. Lowest text pair pending-foreground on pending 4.82:1; lowest boundary border on surface-shelf 3.07:1. fg/bg 14.24, strip-fg/strip 14.98, pending/strip 4.03, pending/bg 3.75, code-fg/diff-add 9.67, code-fg/diff-remove 10.33, muted-fg/bg 7.74.
+  day-recorder: 91 pairs checked, 0 fails. Lowest text pair muted-foreground on muted 5.87:1; lowest boundary border on surface-shelf 3.82:1. fg/bg 12.29, strip-fg/strip 16.91, pending/strip 5.61, pending/bg 4.08, code-fg/diff-add 9.58, code-fg/diff-remove 10.93, muted-fg/bg 6.63.
+  original: 91 pairs checked, 0 fails. Lowest text pair pending-foreground on pending 4.98:1; lowest boundary ring on surface-shelf 3.02:1. fg/bg 13.62, strip-fg/strip 15.56, pending/strip 4.49, pending/bg 3.32, code-fg/diff-add 10.06, code-fg/diff-remove 10.97, muted-fg/bg 8.14.
+-->
+<style>
+/* ── Colour options: 58 roles each ─────────────────────────────── */
+html[data-theme="hermes-telemetry-ribbon"][data-palette="hull-grey"] {
+  color-scheme: dark;
+  --hh-background: #16191c; --hh-foreground: #e6e3da;
+  --hh-surface-card: #1e2226; --hh-surface-card-foreground: #e6e3da;
+  --hh-surface-panel: #1a1d20; --hh-surface-panel-foreground: #e6e3da;
+  --hh-surface-shelf: #23272b; --hh-surface-shelf-foreground: #e6e3da;
+  --hh-surface-tray: #121417; --hh-surface-tray-foreground: #e6e3da;
+  --hh-primary: #ece5cf; --hh-primary-foreground: #16181a;
+  --hh-secondary: #2c3135; --hh-secondary-foreground: #e6e3da;
+  --hh-muted: #24292d; --hh-muted-foreground: #a7aca6;
+  --hh-accent: #33424a; --hh-accent-foreground: #eef2f3;
+  --hh-destructive: #e7836a; --hh-destructive-foreground: #160b08;
+  --hh-border: #68727a; --hh-input: #101214; --hh-ring: #3f80a8;
+  --hh-success: #6fbf78; --hh-success-foreground: #08120a;
+  --hh-warning: #e3a740; --hh-warning-foreground: #171005;
+  --hh-info: #86b8d1; --hh-info-foreground: #0a1318;
+  --hh-strip: #efebdf; --hh-strip-foreground: #17191b;
+  --hh-pending: #9a6512; --hh-pending-foreground: #ffffff;
+  --hh-answered: #2f7590; --hh-answered-foreground: #ffffff;
+  --hh-expired: #6c7176; --hh-expired-foreground: #ffffff;
+  --hh-recommended: #2f7f3c; --hh-recommended-foreground: #ffffff;
+  --hh-live: #63cf86; --hh-live-foreground: #05110a;
+  --hh-code: #0f1113; --hh-code-foreground: #d9ddd3;
+  --hh-diff-add: #173321; --hh-diff-remove: #3d1c1c;
+  --hh-agent-1: #e09a6a; --hh-agent-2: #8fb8de; --hh-agent-3: #c4a5e0;
+  --hh-agent-4: #a3cf7e; --hh-agent-5: #e2c76a; --hh-agent-6: #6fc9c1;
+  --hh-shadow: rgb(0 0 0 / 0.55); --hh-scrim: rgb(8 9 10 / 0.72);
+  --hh-chart-1: #e3a740; --hh-chart-2: #6fa9c4; --hh-chart-3: #6fbf78; --hh-chart-4: #c4a5e0; --hh-chart-5: #e7836a;
+}
+html[data-theme="hermes-telemetry-ribbon"][data-palette="oxide-tape"] {
+  color-scheme: dark;
+  --hh-background: #1a1512; --hh-foreground: #ede3d2;
+  --hh-surface-card: #231c18; --hh-surface-card-foreground: #ede3d2;
+  --hh-surface-panel: #1e1814; --hh-surface-panel-foreground: #ede3d2;
+  --hh-surface-shelf: #29211c; --hh-surface-shelf-foreground: #ede3d2;
+  --hh-surface-tray: #140f0d; --hh-surface-tray-foreground: #ede3d2;
+  --hh-primary: #f0dfb8; --hh-primary-foreground: #1c140d;
+  --hh-secondary: #33291f; --hh-secondary-foreground: #ede3d2;
+  --hh-muted: #2a221c; --hh-muted-foreground: #b4a896;
+  --hh-accent: #4a3626; --hh-accent-foreground: #f6ece0;
+  --hh-destructive: #ec8a6c; --hh-destructive-foreground: #180a06;
+  --hh-border: #7a6b5d; --hh-input: #120e0b; --hh-ring: #b0562a;
+  --hh-success: #89c27a; --hh-success-foreground: #0b1208;
+  --hh-warning: #e8b04e; --hh-warning-foreground: #1a1205;
+  --hh-info: #93bccf; --hh-info-foreground: #0b1418;
+  --hh-strip: #f3ead6; --hh-strip-foreground: #1c1610;
+  --hh-pending: #a5620f; --hh-pending-foreground: #ffffff;
+  --hh-answered: #2d7287; --hh-answered-foreground: #ffffff;
+  --hh-expired: #736a62; --hh-expired-foreground: #ffffff;
+  --hh-recommended: #3b7a35; --hh-recommended-foreground: #ffffff;
+  --hh-live: #7fd08a; --hh-live-foreground: #07120a;
+  --hh-code: #110d0a; --hh-code-foreground: #e3d9c8;
+  --hh-diff-add: #1f3320; --hh-diff-remove: #42201a;
+  --hh-agent-1: #e6a070; --hh-agent-2: #93bbe0; --hh-agent-3: #cfa9dc;
+  --hh-agent-4: #b2d07f; --hh-agent-5: #e8cc72; --hh-agent-6: #79cbbf;
+  --hh-shadow: rgb(0 0 0 / 0.6); --hh-scrim: rgb(10 7 5 / 0.74);
+  --hh-chart-1: #e8b04e; --hh-chart-2: #93bccf; --hh-chart-3: #89c27a; --hh-chart-4: #cfa9dc; --hh-chart-5: #ec8a6c;
+}
+html[data-theme="hermes-telemetry-ribbon"][data-palette="day-recorder"] {
+  color-scheme: light;
+  --hh-background: #d3d7d9; --hh-foreground: #15181b;
+  --hh-surface-card: #e4e7e8; --hh-surface-card-foreground: #15181b;
+  --hh-surface-panel: #dcdfe1; --hh-surface-panel-foreground: #15181b;
+  --hh-surface-shelf: #cbd0d2; --hh-surface-shelf-foreground: #15181b;
+  --hh-surface-tray: #eceeef; --hh-surface-tray-foreground: #15181b;
+  --hh-primary: #1f2933; --hh-primary-foreground: #f4f1e8;
+  --hh-secondary: #bfc5c8; --hh-secondary-foreground: #15181b;
+  --hh-muted: #c6cbce; --hh-muted-foreground: #3e464c;
+  --hh-accent: #24485a; --hh-accent-foreground: #f3f6f7;
+  --hh-destructive: #9e2f1e; --hh-destructive-foreground: #ffffff;
+  --hh-border: #5c656b; --hh-input: #fbfbf9; --hh-ring: #1e5f82;
+  --hh-success: #2b6b33; --hh-success-foreground: #ffffff;
+  --hh-warning: #7f520a; --hh-warning-foreground: #ffffff;
+  --hh-info: #1f5c7a; --hh-info-foreground: #ffffff;
+  --hh-strip: #fbf9f2; --hh-strip-foreground: #15181b;
+  --hh-pending: #8a5a0c; --hh-pending-foreground: #ffffff;
+  --hh-answered: #22657e; --hh-answered-foreground: #ffffff;
+  --hh-expired: #5f656a; --hh-expired-foreground: #ffffff;
+  --hh-recommended: #256b30; --hh-recommended-foreground: #ffffff;
+  --hh-live: #1d6e3a; --hh-live-foreground: #ffffff;
+  --hh-code: #1b1f22; --hh-code-foreground: #dfe3dc;
+  --hh-diff-add: #1d3a26; --hh-diff-remove: #45201d;
+  --hh-agent-1: #9a4a1c; --hh-agent-2: #2a5f8f; --hh-agent-3: #6e4596;
+  --hh-agent-4: #45692a; --hh-agent-5: #7a5d0e; --hh-agent-6: #1e6b64;
+  --hh-shadow: rgb(20 26 30 / 0.22); --hh-scrim: rgb(20 24 27 / 0.55);
+  --hh-chart-1: #8a5a0c; --hh-chart-2: #22657e; --hh-chart-3: #2b6b33; --hh-chart-4: #6e4596; --hh-chart-5: #9e2f1e;
+}
+html[data-theme="hermes-telemetry-ribbon"][data-palette="original"] {
+  color-scheme: dark;
+  --hh-background: #1c1f22; --hh-foreground: #ebe9e2;
+  --hh-surface-card: #262a2e; --hh-surface-card-foreground: #ebe9e2;
+  --hh-surface-panel: #212528; --hh-surface-panel-foreground: #ebe9e2;
+  --hh-surface-shelf: #2b3034; --hh-surface-shelf-foreground: #ebe9e2;
+  --hh-surface-tray: #181b1d; --hh-surface-tray-foreground: #ebe9e2;
+  --hh-primary: #e8661f; --hh-primary-foreground: #140803;
+  --hh-secondary: #353b40; --hh-secondary-foreground: #ebe9e2;
+  --hh-muted: #2b3034; --hh-muted-foreground: #b3b7b2;
+  --hh-accent: #4a3a2c; --hh-accent-foreground: #f5efe6;
+  --hh-destructive: #f08a74; --hh-destructive-foreground: #170906;
+  --hh-border: #727b81; --hh-input: #141618; --hh-ring: #c9541a;
+  --hh-success: #79c482; --hh-success-foreground: #08120a;
+  --hh-warning: #ebb14c; --hh-warning-foreground: #171005;
+  --hh-info: #8fc0d8; --hh-info-foreground: #0a1318;
+  --hh-strip: #f6f3ea; --hh-strip-foreground: #191b1d;
+  --hh-pending: #a2600c; --hh-pending-foreground: #ffffff;
+  --hh-answered: #2c7390; --hh-answered-foreground: #ffffff;
+  --hh-expired: #6b7075; --hh-expired-foreground: #ffffff;
+  --hh-recommended: #2e7b3a; --hh-recommended-foreground: #ffffff;
+  --hh-live: #6fd08e; --hh-live-foreground: #05110a;
+  --hh-code: #16191b; --hh-code-foreground: #dde1d8;
+  --hh-diff-add: #193522; --hh-diff-remove: #40201e;
+  --hh-agent-1: #ef9a62; --hh-agent-2: #94bfe4; --hh-agent-3: #cbadea;
+  --hh-agent-4: #a9d483; --hh-agent-5: #e8cd70; --hh-agent-6: #77cfc6;
+  --hh-shadow: rgb(0 0 0 / 0.5); --hh-scrim: rgb(12 13 14 / 0.7);
+  --hh-chart-1: #ebb14c; --hh-chart-2: #8fc0d8; --hh-chart-3: #79c482; --hh-chart-4: #cbadea; --hh-chart-5: #f08a74;
+}
+
+/* ── Type, shape, motion ───────────────────────────────────────── */
+html[data-theme="hermes-telemetry-ribbon"] {
+  --hh-font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --hh-font-mono: "Martian Mono", ui-monospace, "SF Mono", monospace;
+  --hh-font-strip-header: "Saira Condensed", "Arial Narrow", sans-serif;
+  --hh-type-body-size: 0.875rem;
+  --hh-type-mono: 0.75rem;
+  --hh-type-mono-sm: 0.6875rem;
+  --hh-radius: 2px;
+  --hh-strip-holder-width: 3px;
+  --hh-strip-min-height: 2.75rem;
+  --hh-timer-track-height: 4px;
+  --hh-callsign-chip-height: 1.375rem;
+  --hh-option-row-min-height: 2.25rem;
+  --hh-button-min-target: 2rem;
+  --hh-kbd-size: 1.25rem;
+  --hh-focus-ring-width: 2px;
+  --hh-focus-ring-offset: 2px;
+  --hh-motion-fast: 120ms;
+  --hh-motion-feed: 220ms;
+  --hh-press-scale: 0.98;
+  --tr-row-h: 2.75rem;        /* one tape line; sprocket pitch is half of it */
+  --tr-sprocket: 1.125rem;
+  --tr-band: color-mix(in srgb, var(--hh-strip) 93%, var(--hh-strip-foreground));
+  --tr-margin: color-mix(in srgb, var(--hh-strip) 58%, var(--hh-border));
+}
+html[data-theme="hermes-telemetry-ribbon"] [data-density="glance"] {
+  --hh-type-body-size: 1rem;
+  --hh-button-min-target: 3rem;
+  --hh-option-row-min-height: 3rem;
+  --hh-strip-min-height: 3.5rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="hermes-telemetry-ribbon"] { --hh-motion-fast: 1ms; --hh-motion-feed: 1ms; }
+}
+
+/* ── Page frame ───────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--hh-background); color: var(--hh-foreground);
+  font: 400 var(--hh-type-body-size)/1.45 var(--hh-font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+.mono { font-family: var(--hh-font-mono); font-variant-numeric: tabular-nums; font-size: var(--hh-type-mono); letter-spacing: 0; }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: var(--hh-focus-ring-width) solid var(--hh-ring); outline-offset: var(--hh-focus-ring-offset); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.tr-page { padding: 14px 24px 20px; display: grid; gap: 10px; max-width: 1440px; margin: 0 auto; }
+
+/* Header: recorder plate */
+.tr-head { display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: end;
+  padding-bottom: 12px; border-bottom: 1px solid var(--hh-border); }
+.tr-head__plate { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.tr-head h1 { margin: 0; font: 700 2rem/0.95 var(--hh-font-strip-header); letter-spacing: 0.02em; text-transform: uppercase; }
+.tr-head__id { color: var(--hh-muted-foreground); }
+.tr-head dl { margin: 6px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; max-width: 96ch; }
+.tr-head dt { font: 600 0.8125rem/1.5 var(--hh-font-strip-header); text-transform: uppercase; letter-spacing: 0.08em; color: var(--hh-muted-foreground); }
+.tr-head dd { margin: 0; }
+.tr-controls { display: grid; gap: 8px; justify-items: end; }
+.tr-swatches { display: flex; gap: 6px; border: 0; padding: 0; margin: 0; }
+.tr-swatches legend { font: 600 0.8125rem/1 var(--hh-font-strip-header); text-transform: uppercase; letter-spacing: 0.08em; color: var(--hh-muted-foreground); margin-bottom: 6px; float: left; width: 100%; text-align: right; }
+.tr-swatch { display: grid; grid-template-columns: auto auto; align-items: center; gap: 2px 8px; padding: 6px 10px 6px 6px;
+  min-height: var(--hh-button-min-target); background: var(--hh-surface-card); color: var(--hh-surface-card-foreground);
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius); cursor: pointer; text-align: left; }
+.tr-swatch[aria-checked="true"] { background: var(--hh-accent); color: var(--hh-accent-foreground); border-color: var(--hh-ring); box-shadow: inset 0 0 0 1px var(--hh-ring); }
+.tr-swatch__chips { grid-row: span 2; display: flex; border: 1px solid var(--hh-border); }
+.tr-swatch__chips i { width: 12px; height: 26px; display: block; }
+.tr-swatch b { font: 600 0.75rem/1.1 var(--hh-font-sans); }
+.tr-swatch small { font: 400 0.6875rem/1.1 var(--hh-font-mono); white-space: nowrap; }
+.tr-actions { display: flex; gap: 8px; align-items: center; }
+
+/* Buttons */
+.hh-button { min-height: var(--hh-button-min-target); padding: 0 14px; border-radius: var(--hh-radius);
+  border: 1px solid var(--hh-border); background: var(--hh-secondary); color: var(--hh-secondary-foreground);
+  font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+  transition: transform var(--hh-motion-fast) ease-out, background-color var(--hh-motion-fast) ease-out; }
+.hh-button:active:not(:disabled) { transform: scale(var(--hh-press-scale)); }
+.hh-button[data-variant="primary"] { background: var(--hh-primary); color: var(--hh-primary-foreground); border-color: var(--hh-primary); }
+.hh-button:disabled { cursor: not-allowed; background: var(--hh-muted); color: var(--hh-muted-foreground); border-color: var(--hh-border); }
+.hh-kbd { display: inline-grid; place-items: center; min-width: var(--hh-kbd-size); height: var(--hh-kbd-size); padding: 0 4px;
+  font: 500 0.625rem/1 var(--hh-font-mono); border: 1px solid currentColor; border-bottom-width: 2px; border-radius: 2px; }
+
+.tr-label { font: 600 0.75rem/1 var(--hh-font-strip-header); text-transform: uppercase; letter-spacing: 0.1em; color: var(--hh-muted-foreground); }
+.tr-illustrative { font: 500 0.625rem/1 var(--hh-font-mono); text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 4px 6px; border: 1px dashed var(--hh-border); color: var(--hh-muted-foreground); border-radius: 2px; }
+
+/* ── Stage ────────────────────────────────────────────────────── */
+.tr-stage { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 24px; align-items: start; }
+.tr-frame-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+
+.tr-desktop { height: 662px; display: grid; grid-template-rows: auto minmax(0, 1fr);
+  background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground);
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius); overflow: hidden; box-shadow: 0 12px 32px var(--hh-shadow); }
+
+.hh-app-bar { display: flex; align-items: center; gap: 18px; padding: 0 14px; min-height: 42px;
+  background: var(--hh-surface-tray); color: var(--hh-surface-tray-foreground); border-bottom: 1px solid var(--hh-border); }
+.hh-app-bar__brand { font: 700 1.0625rem/1 var(--hh-font-strip-header); letter-spacing: 0.06em; text-transform: uppercase; }
+.hh-app-bar nav { display: flex; gap: 2px; }
+.hh-app-bar nav a { color: inherit; text-decoration: none; padding: 6px 10px; font-weight: 500; border-radius: 2px; }
+.hh-app-bar nav a[aria-current="page"] { background: var(--hh-secondary); color: var(--hh-secondary-foreground); box-shadow: inset 0 -2px 0 var(--hh-foreground); }
+.hh-app-bar__end { margin-left: auto; display: flex; gap: 14px; align-items: center; }
+.hh-connection { display: inline-flex; align-items: center; gap: 8px; color: var(--hh-live); }
+.hh-connection__lamp { width: 8px; height: 8px; border-radius: 50%; background: var(--hh-live);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--hh-live) 25%, transparent), 0 0 10px color-mix(in srgb, var(--hh-live) 60%, transparent); } /* glow: live state only */
+
+.tr-cc { display: grid; grid-template-columns: 404px minmax(0, 1fr); min-height: 0; }
+
+/* ── Tape (Round log) ─────────────────────────────────────────── */
+.tr-tape-col { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-height: 0;
+  background: var(--hh-surface-shelf); color: var(--hh-surface-shelf-foreground); border-right: 1px solid var(--hh-border); }
+.tr-tape-col__head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px 8px; }
+.tr-tape-col__head h2 { margin: 0; font: 600 1rem/1 var(--hh-font-strip-header); letter-spacing: 0.06em; text-transform: uppercase; }
+
+.tr-tape { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
+  margin: 0 14px; border-left: 1px solid var(--hh-border); border-right: 1px solid var(--hh-border); }
+.tr-feed { position: relative; list-style: none; margin: 0; padding: 0 var(--tr-sprocket); flex: 1 0 auto; display: flex; flex-direction: column; justify-content: flex-end;
+  background: var(--hh-strip); color: var(--hh-strip-foreground); }
+/* Sprocket margins: edges only, never behind text. Holes are anchored to the bottom so a whole-line feed keeps the pitch. */
+.tr-feed::before, .tr-feed::after { content: ""; position: absolute; top: 0; bottom: 0; width: var(--tr-sprocket);
+  background:
+    radial-gradient(circle at 50% 50%, var(--hh-surface-tray) 0 3.5px, var(--hh-border) 4px 4.5px, transparent 5px) 50% 100% / 100% calc(var(--tr-row-h) / 2) repeat-y,
+    var(--tr-margin); }
+.tr-feed::before { left: 0; border-right: 1px solid var(--hh-border); }
+.tr-feed::after { right: 0; border-left: 1px solid var(--hh-border); }
+
+.tr-row { min-height: var(--tr-row-h); height: var(--tr-row-h); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: auto auto; align-content: center;
+  gap: 0 8px; padding: 0 8px; border-bottom: 1px solid color-mix(in srgb, var(--hh-strip-foreground) 14%, var(--hh-strip)); }
+.tr-row:nth-child(even) { background: var(--tr-band); }
+.tr-row__time { font: 400 var(--hh-type-mono-sm)/1 var(--hh-font-mono); font-variant-numeric: tabular-nums; }
+.tr-row__main { display: contents; }
+.tr-row__time { grid-column: 1; grid-row: 1; }
+.tr-leader { margin-bottom: auto; padding: 10px 8px 0; display: grid; gap: 4px; font: 400 var(--hh-type-mono-sm)/1.5 var(--hh-font-mono); }
+.tr-leader b { font: 700 1rem/1 var(--hh-font-strip-header); letter-spacing: 0.12em; text-transform: uppercase; }
+.tr-leader hr { border: 0; border-top: 1px dashed currentColor; margin: 6px 0 0; width: 100%; }
+.tr-row__line1 { grid-column: 2; grid-row: 1; display: flex; gap: 8px; align-items: center; min-width: 0; }
+.tr-row__text { grid-column: 1 / 3; grid-row: 2; margin-top: 3px; }
+.tr-row .tr-holder { grid-column: 3; grid-row: 1 / 3; align-self: center; }
+.tr-row__id { font: 600 var(--hh-type-mono-sm)/1 var(--hh-font-mono); }
+.tr-row__text { font-size: 0.75rem; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tr-row[aria-current="true"] { box-shadow: inset 0 0 0 2px var(--hh-strip-foreground); }
+.tr-row a { color: inherit; text-decoration: none; }
+
+/* Callsign chip: swatch + text, never colour alone */
+.hh-callsign { display: inline-flex; align-items: center; gap: 6px; height: var(--hh-callsign-chip-height); padding: 0 7px 0 5px;
+  font: 500 var(--hh-type-mono-sm)/1 var(--hh-font-mono); border: 1px solid currentColor; border-radius: 2px; white-space: nowrap; }
+.hh-callsign::before { content: ""; width: 8px; height: 8px; background: var(--agent, transparent); outline: 1px solid currentColor; }
+.tr-feed .hh-callsign { height: 1.125rem; font-size: 0.625rem; max-width: 100%; overflow: hidden; border-color: color-mix(in srgb, var(--hh-strip-foreground) 45%, transparent); }
+
+/* Status holder tag (tape) */
+.tr-holder { --holder: var(--hh-expired); --holder-fg: var(--hh-expired-foreground);
+  font: 600 0.75rem/1 var(--hh-font-strip-header); letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 6px 3px; background: var(--holder); color: var(--holder-fg); border-radius: 1px;
+  box-shadow: 0 0 0 1px var(--hh-strip), 0 0 0 2px var(--holder); white-space: nowrap; }
+[data-status="pending"] { --holder: var(--hh-pending); --holder-fg: var(--hh-pending-foreground); }
+[data-status="answered"] { --holder: var(--hh-answered); --holder-fg: var(--hh-answered-foreground); }
+[data-status="expired"] { --holder: var(--hh-expired); --holder-fg: var(--hh-expired-foreground); }
+
+.tr-head-unit { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 14px 12px; padding: 8px 12px;
+  background: var(--hh-surface-tray); color: var(--hh-surface-tray-foreground); border: 1px solid var(--hh-border); border-top-width: 3px; }
+
+/* ── Open Round ───────────────────────────────────────────────── */
+.tr-round-col { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; background: var(--hh-surface-panel); }
+.tr-round-scroll { overflow: auto; padding: 14px 18px 18px; display: grid; gap: 12px; align-content: start; }
+
+.hh-strip { /* holder colour comes from [data-status] */
+  border: var(--hh-strip-holder-width) solid var(--holder); border-radius: var(--hh-radius); background: var(--hh-strip); color: var(--hh-strip-foreground); }
+.hh-strip__rail { display: flex; align-items: center; gap: 10px; padding: 3px 10px 4px; background: var(--holder); color: var(--holder-fg); }
+.hh-strip__status { font: 700 0.875rem/1 var(--hh-font-strip-header); letter-spacing: 0.1em; text-transform: uppercase; }
+.hh-strip__rail .mono { margin-left: auto; }
+.hh-strip__body { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; align-items: center; padding: 10px 12px; min-height: var(--hh-strip-min-height); }
+.hh-strip__title { margin: 0; font: 600 1.375rem/1.05 var(--hh-font-strip-header); letter-spacing: 0.01em; }
+.hh-strip__meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.hh-policy-timer { display: grid; gap: 4px; padding: 0 12px 10px; }
+.hh-policy-timer__text { display: flex; justify-content: space-between; font-size: 0.75rem; }
+.hh-policy-timer__track { height: var(--hh-timer-track-height); background: var(--tr-band); outline: 1px solid var(--hh-strip-foreground); outline-offset: 0; overflow: hidden; }
+.hh-policy-timer__fill { height: 100%; width: 87%; background: var(--holder); transform-origin: left; }
+
+.hh-question { background: var(--hh-surface-card); color: var(--hh-surface-card-foreground); border: 1px solid var(--hh-border);
+  border-radius: var(--hh-radius); padding: 10px 12px 12px; display: grid; gap: 8px; }
+.hh-question__head { display: flex; gap: 10px; align-items: baseline; }
+.hh-question__num { font: 600 var(--hh-type-mono-sm)/1 var(--hh-font-mono); padding: 3px 5px; background: var(--hh-secondary); color: var(--hh-secondary-foreground); }
+.hh-question__kind { font: 600 0.75rem/1 var(--hh-font-strip-header); text-transform: uppercase; letter-spacing: 0.1em; color: var(--hh-muted-foreground); }
+.hh-question__policy { margin-left: auto; font-size: 0.75rem; color: var(--hh-muted-foreground); }
+.hh-question__prompt { margin: 0; font-size: 0.9375rem; font-weight: 600; line-height: 1.35; }
+
+.hh-option { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto; gap: 10px; align-items: center;
+  min-height: var(--hh-option-row-min-height); padding: 4px 10px; border: 1px solid var(--hh-border); border-radius: var(--hh-radius); cursor: pointer; }
+.hh-option + .hh-option { margin-top: -1px; }
+.hh-option:has(input:checked) { background: var(--hh-accent); color: var(--hh-accent-foreground); box-shadow: inset 0 0 0 1px var(--hh-ring); position: relative; }
+.hh-option input { accent-color: var(--hh-ring); margin: 0; }
+.hh-recommended { font: 600 0.6875rem/1 var(--hh-font-strip-header); letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 6px 3px; background: var(--hh-recommended); color: var(--hh-recommended-foreground);
+  box-shadow: 0 0 0 1px var(--hh-surface-card), 0 0 0 2px var(--hh-recommended); }
+
+.hh-textarea { width: 100%; min-height: 3.25rem; resize: vertical; padding: 8px 10px; background: var(--hh-input); color: var(--hh-foreground);
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius); font: 400 var(--hh-type-mono)/1.4 var(--hh-font-mono); }
+
+.hh-attachment { border: 1px solid var(--hh-border); border-radius: var(--hh-radius); overflow: hidden; }
+.hh-attachment__head { display: flex; justify-content: space-between; align-items: center; padding: 5px 10px; background: var(--hh-muted); color: var(--hh-muted-foreground); }
+.hh-attachment pre { margin: 0; padding: 6px 0; background: var(--hh-code); color: var(--hh-code-foreground); max-height: 9.5rem; overflow: auto;
+  font: 400 var(--hh-type-mono-sm)/1.6 var(--hh-font-mono); }
+.hh-attachment pre span { display: block; padding: 0 10px; white-space: pre; }
+.hh-diff [data-line="add"] { background: var(--hh-diff-add); }
+.hh-diff [data-line="remove"] { background: var(--hh-diff-remove); }
+
+.tr-decision { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.tr-decision label { position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; min-height: var(--hh-option-row-min-height);
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius); font-weight: 600; cursor: pointer; }
+.tr-decision input { position: absolute; opacity: 0; pointer-events: none; }
+.tr-decision label:has(input:focus-visible) { outline: var(--hh-focus-ring-width) solid var(--hh-ring); outline-offset: var(--hh-focus-ring-offset); }
+.tr-decision label:has(input[value="approve"]:checked) { background: var(--hh-success); color: var(--hh-success-foreground); border-color: var(--hh-success); }
+.tr-decision label:has(input[value="reject"]:checked) { background: var(--hh-destructive); color: var(--hh-destructive-foreground); border-color: var(--hh-destructive); }
+
+.hh-answer-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; align-items: center; padding: 10px 18px;
+  background: var(--hh-surface-tray); color: var(--hh-surface-tray-foreground); border-top: 1px solid var(--hh-border); }
+.hh-answer-bar input { min-height: var(--hh-button-min-target); padding: 0 10px; background: var(--hh-input); color: var(--hh-foreground);
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius); }
+.hh-answer-bar__send { display: flex; align-items: center; gap: 10px; }
+.hh-kbd-hints { grid-column: 1 / -1; display: flex; gap: 14px; flex-wrap: wrap; color: var(--hh-muted-foreground); font-size: 0.75rem; margin: 0; padding: 0; list-style: none; }
+.hh-kbd-hints li { display: inline-flex; gap: 5px; align-items: center; }
+
+.tr-round[data-state="answered"] .tr-editable { opacity: 1; }
+.tr-round[data-state="answered"] .hh-question { border-style: dashed; }
+
+/* ── Phone (glance) ───────────────────────────────────────────── */
+.tr-phone { width: 390px; height: 662px; display: grid; grid-template-rows: auto auto minmax(0, 1fr); overflow: hidden;
+  background: var(--hh-background); border: 1px solid var(--hh-border); border-radius: 22px; box-shadow: 0 12px 32px var(--hh-shadow); }
+.tr-phone .hh-app-bar { min-height: 52px; padding: 0 16px; }
+.tr-phone .tr-tape { margin: 0; border: 0; height: calc(var(--tr-row-h) * 3); border-bottom: 1px solid var(--hh-border); }
+.tr-phone__body { overflow: auto; padding: 14px 16px 18px; display: grid; gap: 12px; align-content: start; }
+.tr-phone .hh-strip__title { font-size: 1.5rem; }
+.tr-phone .hh-question__prompt { font-size: 1.0625rem; }
+.tr-phone .tr-decision label { font-size: 1.0625rem; }
+.tr-phone .hh-button { width: 100%; justify-content: center; }
+.tr-phone__note { font-size: 0.875rem; color: var(--hh-muted-foreground); margin: 0; }
+</style>
+</head>
+<body>
+<div class="tr-page">
+  <header class="tr-head">
+    <div>
+      <div class="tr-head__plate">
+        <h1>Telemetry Ribbon</h1>
+        <span class="mono tr-head__id">Hermes world 05 · theme hermes-telemetry-ribbon · Phase 2 quick preview</span>
+      </div>
+      <dl>
+        <dt>Idea</dt><dd>Scrolling telemetry tape from a cockpit recorder: banded rows and sprocket margins in hull grey. Every Round is a line on the tape.</dd>
+        <dt>Signature</dt><dd>The Round log feeds up line by line. Send an Answer and the recorder prints the exchange one stepped line at a time.</dd>
+      </dl>
+    </div>
+    <div class="tr-controls">
+      <fieldset class="tr-swatches" role="radiogroup" aria-label="Colour option">
+        <legend>Colour option</legend>
+        <button type="button" class="tr-swatch" role="radio" aria-checked="true" data-set-palette="hull-grey">
+          <span class="tr-swatch__chips" aria-hidden="true"><i style="background:#16191c"></i><i style="background:#efebdf"></i><i style="background:#9a6512"></i></span>
+          <b>Hull Grey</b><small>recommended</small>
+        </button>
+        <button type="button" class="tr-swatch" role="radio" aria-checked="false" data-set-palette="oxide-tape">
+          <span class="tr-swatch__chips" aria-hidden="true"><i style="background:#1a1512"></i><i style="background:#f3ead6"></i><i style="background:#a5620f"></i></span>
+          <b>Oxide Tape</b><small>alternative</small>
+        </button>
+        <button type="button" class="tr-swatch" role="radio" aria-checked="false" data-set-palette="day-recorder">
+          <span class="tr-swatch__chips" aria-hidden="true"><i style="background:#d3d7d9"></i><i style="background:#fbf9f2"></i><i style="background:#8a5a0c"></i></span>
+          <b>Day Recorder</b><small>alternative</small>
+        </button>
+        <button type="button" class="tr-swatch" role="radio" aria-checked="false" data-set-palette="original">
+          <span class="tr-swatch__chips" aria-hidden="true"><i style="background:#1c1f22"></i><i style="background:#f6f3ea"></i><i style="background:#e8661f"></i></span>
+          <b>Original</b><small>first draft</small>
+        </button>
+      </fieldset>
+      <div class="tr-actions">
+        <button type="button" class="hh-button" data-variant="primary" id="play">Run signature · feed tape</button>
+        <button type="button" class="hh-button" id="reset">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="tr-stage">
+    <!-- (a) Desktop Command Center -->
+    <section aria-labelledby="desk-label">
+      <div class="tr-frame-label"><span class="tr-label" id="desk-label">Command Center · desktop · triage</span><span class="tr-illustrative">Illustrative data</span></div>
+      <div class="tr-desktop">
+        <header class="hh-app-bar">
+          <span class="hh-app-bar__brand">Hermes Hub</span>
+          <nav aria-label="Command Center">
+            <a href="#" aria-current="page">Triage</a><a href="#">Answered log</a><a href="#">Agents</a><a href="#">Settings</a>
+          </nav>
+          <div class="hh-app-bar__end">
+            <span class="mono" id="desk-count">Pending · 2 Rounds</span>
+            <span class="hh-connection mono" role="status"><span class="hh-connection__lamp" aria-hidden="true"></span>Live · SSE · 6 Agents</span>
+          </div>
+        </header>
+
+        <div class="tr-cc">
+          <section class="tr-tape-col" aria-labelledby="log-h">
+            <div class="tr-tape-col__head"><h2 id="log-h">Round log · tape 03</h2><span class="mono">6 Rounds</span></div>
+            <div class="tr-tape hh-answered-log" id="desk-tape">
+              <ol class="tr-feed" aria-live="polite" aria-label="Round log, newest at the print head">
+                <li class="tr-leader" aria-hidden="true"><b>Flight recorder · tape 03</b><span>loaded 13:40:02 · Hub hermes.local:7400 · 6 Agents seen</span><span>one line per Round event · newest at the print head</span><hr></li>
+                <li class="tr-row"><span class="tr-row__time">13:58:40</span><span class="tr-row__main"><span class="tr-row__line1"><span class="hh-callsign" style="--agent:var(--hh-agent-2)">CODEX·billing-sync</span></span><span class="tr-row__text"><span class="tr-row__id">R-0412</span> · approved · 1 Question</span></span><span class="tr-holder" data-status="answered">Answered</span></li>
+                <li class="tr-row"><span class="tr-row__time">14:02:11</span><span class="tr-row__main"><span class="tr-row__line1"><span class="hh-callsign" style="--agent:var(--hh-agent-5)">OMP·tokens-build</span></span><span class="tr-row__text"><span class="tr-row__id">R-0413</span> · policy applied recommended</span></span><span class="tr-holder" data-status="expired">Expired</span></li>
+                <li class="tr-row"><span class="tr-row__time">14:05:48</span><span class="tr-row__main"><span class="tr-row__line1"><span class="hh-callsign" style="--agent:var(--hh-agent-3)">CURSOR·landing-copy</span></span><span class="tr-row__text"><span class="tr-row__id">R-0414</span> · 2 values · 1 note</span></span><span class="tr-holder" data-status="answered">Answered</span></li>
+                <li class="tr-row"><span class="tr-row__time">14:09:30</span><span class="tr-row__main"><span class="tr-row__line1"><span class="hh-callsign" style="--agent:var(--hh-agent-6)">SCRIPT·nightly-backup</span></span><span class="tr-row__text"><span class="tr-row__id">R-0415</span> · policy cancelled the Round</span></span><span class="tr-holder" data-status="expired">Cancelled</span></li>
+                <li class="tr-row" id="row-0416"><span class="tr-row__time">14:16:55</span><span class="tr-row__main"><span class="tr-row__line1"><span class="hh-callsign" style="--agent:var(--hh-agent-4)">COPILOT·docs-site</span></span><span class="tr-row__text"><span class="tr-row__id">R-0416</span> · 1 Question · keeps waiting</span></span><span class="tr-holder" data-status="pending">Pending</span></li>
+                <li class="tr-row" id="row-0417" aria-current="true"><span class="tr-row__time">14:18:20</span><span class="tr-row__main"><span class="tr-row__line1"><span class="hh-callsign" style="--agent:var(--hh-agent-1)">CLAUDE·api-refactor</span></span><span class="tr-row__text"><span class="tr-row__id">R-0417</span> · 3 Questions · open</span></span><span class="tr-holder" data-status="pending">Pending</span></li>
+              </ol>
+            </div>
+            <div class="tr-head-unit"><span class="tr-label">Print head</span><span class="mono" id="desk-head">Feed ready · 0 lines queued</span></div>
+          </section>
+
+          <section class="tr-round-col tr-round" id="round" data-state="pending" aria-labelledby="round-title">
+            <div class="tr-round-scroll">
+              <article class="hh-strip" data-status="pending" id="round-strip">
+                <div class="hh-strip__rail"><span class="hh-strip__status" id="round-status">Pending</span><span>3 Questions · waits 10 min, then applies recommended</span><span class="mono" id="round-id">R-0417</span></div>
+                <div class="hh-strip__body">
+                  <h2 class="hh-strip__title" id="round-title">Payments client: retry strategy, flag name, staging migration</h2>
+                  <span class="mono">rcv 14:18:20</span>
+                  <div class="hh-strip__meta"><span class="hh-callsign" style="--agent:var(--hh-agent-1)">CLAUDE·api-refactor</span><span class="mono">cwd ~/src/payments · main@4f2c1e0</span></div>
+                </div>
+                <div class="hh-policy-timer" id="desk-timer">
+                  <div class="hh-policy-timer__text"><span>Unanswered Policy · applies recommended to Q1 in</span><span class="mono" data-timer-readout>08:42</span></div>
+                  <div class="hh-policy-timer__track" aria-hidden="true"><div class="hh-policy-timer__fill" data-timer-fill></div></div>
+                </div>
+              </article>
+
+              <fieldset class="hh-question tr-editable" style="margin:0">
+                <div class="hh-question__head"><span class="hh-question__num">Q1</span><span class="hh-question__kind">Single choice</span><span class="hh-question__policy">Policy · applies recommended at 10 min</span></div>
+                <legend class="sr-only">Q1</legend>
+                <p class="hh-question__prompt">Which retry strategy should the payments client use for 5xx responses?</p>
+                <div>
+                  <label class="hh-option"><span class="hh-kbd">1</span><input type="radio" name="q1" value="backoff" checked><span>Exponential backoff, 3 attempts, jitter</span><span class="hh-recommended">Recommended</span></label>
+                  <label class="hh-option"><span class="hh-kbd">2</span><input type="radio" name="q1" value="fixed"><span>Fixed 2 s interval, 5 attempts</span><span></span></label>
+                  <label class="hh-option"><span class="hh-kbd">3</span><input type="radio" name="q1" value="none"><span>No retry; surface the error to the caller</span><span></span></label>
+                </div>
+              </fieldset>
+
+              <div class="hh-question tr-editable">
+                <div class="hh-question__head"><span class="hh-question__num">Q2</span><span class="hh-question__kind">Free text</span><span class="hh-question__policy">Policy · keeps waiting</span></div>
+                <label class="hh-question__prompt" for="q2">Name the feature flag that gates the new client.</label>
+                <textarea class="hh-textarea" id="q2" rows="2">payments.retry_v2</textarea>
+              </div>
+
+              <fieldset class="hh-question tr-editable" style="margin:0">
+                <div class="hh-question__head"><span class="hh-question__num">Q3</span><span class="hh-question__kind">Approve / reject</span><span class="hh-question__policy">Policy · cancels in <span class="mono">14:12</span></span></div>
+                <legend class="sr-only">Q3</legend>
+                <p class="hh-question__prompt">Apply migration 0042_add_idempotency_key to staging?</p>
+                <div class="hh-attachment">
+                  <div class="hh-attachment__head"><span class="mono">log · bun run db:migrate --dry-run</span><span class="mono">9 lines</span></div>
+                  <pre class="hh-diff"><span>staging  db=payments  role=migrator</span><span>plan     0042_add_idempotency_key</span><span data-line="add">+ ALTER TABLE charges ADD COLUMN idempotency_key text;</span><span data-line="add">+ CREATE UNIQUE INDEX CONCURRENTLY charges_idem_key</span><span data-line="add">+   ON charges (merchant_id, idempotency_key);</span><span data-line="remove">- DROP INDEX charges_merchant_created_idx;</span><span>rows     1,284,902 scanned · lock est. 0.0 s</span><span>dry-run  ok · 0 errors · 1 warning (index drop)</span><span>exit     0</span></pre>
+                </div>
+                <div class="tr-decision" role="radiogroup" aria-label="Q3 decision">
+                  <label><input type="radio" name="q3" value="approve"><span class="hh-kbd">a</span>Approve</label>
+                  <label><input type="radio" name="q3" value="reject"><span class="hh-kbd">r</span>Reject</label>
+                </div>
+              </fieldset>
+            </div>
+
+            <form class="hh-answer-bar" id="answer-bar">
+              <label class="sr-only" for="notes">Notes for the Agent</label>
+              <input id="notes" class="mono" value="Ship backoff behind the flag; run 0042 after 18:00." aria-describedby="set-count">
+              <div class="hh-answer-bar__send">
+                <span class="mono" id="set-count">2 of 3 set</span>
+                <button type="submit" class="hh-button" data-variant="primary" id="send">Send Answer <span class="hh-kbd">⌘↵</span></button>
+              </div>
+              <ul class="hh-kbd-hints" aria-label="Keyboard">
+                <li><span class="hh-kbd">j</span><span class="hh-kbd">k</span> next / previous Round</li>
+                <li><span class="hh-kbd">1</span>–<span class="hh-kbd">9</span> choose option</li>
+                <li><span class="hh-kbd">a</span><span class="hh-kbd">r</span> approve / reject</li>
+                <li><span class="hh-kbd">⌘↵</span> send the whole Round</li>
+              </ul>
+            </form>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- (b) Phone glance -->
+    <section aria-labelledby="phone-label">
+      <div class="tr-frame-label"><span class="tr-label" id="phone-label">Phone · 390 px · glance</span><span class="tr-illustrative">Illustrative data</span></div>
+      <div class="tr-phone" data-density="glance">
+        <header class="hh-app-bar">
+          <span class="hh-app-bar__brand">Hermes</span>
+          <div class="hh-app-bar__end"><span class="hh-connection mono"><span class="hh-connection__lamp" aria-hidden="true"></span>Live · tailnet</span></div>
+        </header>
+        <div class="tr-tape hh-answered-log" id="phone-tape">
+          <ol class="tr-feed" aria-live="polite" aria-label="Round log">
+            <li class="tr-row"><span class="tr-row__time">14:09:30</span><span class="tr-row__main"><span class="tr-row__text"><span class="tr-row__id">R-0415</span> · SCRIPT·nightly-backup</span></span><span class="tr-holder" data-status="expired">Cancelled</span></li>
+            <li class="tr-row"><span class="tr-row__time">14:16:55</span><span class="tr-row__main"><span class="tr-row__text"><span class="tr-row__id">R-0416</span> · COPILOT·docs-site</span></span><span class="tr-holder" data-status="pending" id="phone-row-holder">Pending</span></li>
+            <li class="tr-row"><span class="tr-row__time">14:18:20</span><span class="tr-row__main"><span class="tr-row__text"><span class="tr-row__id">R-0417</span> · CLAUDE·api-refactor</span></span><span class="tr-holder" data-status="pending" id="phone-row-0417">Pending</span></li>
+          </ol>
+        </div>
+        <div class="tr-phone__body">
+          <article class="hh-strip" data-status="pending" id="phone-strip">
+            <div class="hh-strip__rail"><span class="hh-strip__status" id="phone-status">Pending</span><span>1 Question · keeps waiting</span><span class="mono">R-0416</span></div>
+            <div class="hh-strip__body" style="grid-template-columns:1fr">
+              <span class="hh-callsign" style="--agent:var(--hh-agent-4);justify-self:start">COPILOT·docs-site</span>
+              <h2 class="hh-strip__title">Deploy docs-site to production</h2>
+            </div>
+          </article>
+          <fieldset class="hh-question" style="margin:0">
+            <legend class="sr-only">Approve or reject</legend>
+            <div class="hh-question__head"><span class="hh-question__num">Q1</span><span class="hh-question__kind">Approve / reject</span></div>
+            <p class="hh-question__prompt">Promote build 2311 (preview passed, 0 broken links) to docs.example.dev?</p>
+            <div class="hh-attachment">
+              <div class="hh-attachment__head"><span class="mono">log · deploy plan</span><span class="mono">4 lines</span></div>
+              <pre class="hh-diff"><span>build    2311 · 412 pages · 3.1 MB</span><span>checks   links 0 broken · a11y 0 errors</span><span data-line="add">+ 6 pages changed since 2309</span><span>target   production · cdn purge 1 path</span></pre>
+            </div>
+            <div class="tr-decision" role="radiogroup" aria-label="Decision">
+              <label><input type="radio" name="p1" value="approve"><span class="hh-kbd">a</span>Approve</label>
+              <label><input type="radio" name="p1" value="reject"><span class="hh-kbd">r</span>Reject</label>
+            </div>
+          </fieldset>
+          <button type="button" class="hh-button" data-variant="primary" id="phone-send" disabled>Choose approve or reject</button>
+          <p class="tr-phone__note">Unanswered Policy · keeps waiting. No timer on this Round.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const $ = (s) => document.querySelector(s);
+  const snapshot = new Map();
+  for (const sel of ['#desk-tape', '#phone-tape', '#round', '.tr-phone__body', '#desk-head', '#desk-count']) snapshot.set(sel, $(sel).innerHTML);
+
+  /* Colour options */
+  const swatches = [...document.querySelectorAll('[data-set-palette]')];
+  for (const b of swatches) b.addEventListener('click', () => {
+    root.dataset.palette = b.dataset.setPalette;
+    for (const o of swatches) o.setAttribute('aria-checked', String(o === b));
+  });
+
+  /* Signature: the tape feeds up one line at a time (bounded: one call = one line). */
+  const ms = () => parseFloat(getComputedStyle(root).getPropertyValue('--hh-motion-feed')) || 0;
+  const wait = (t) => new Promise((r) => setTimeout(r, t));
+  async function feedLine(tapeSel, html) {
+    const feed = $(tapeSel + ' .tr-feed');
+    const row = document.createElement('li');
+    row.className = 'tr-row';
+    row.innerHTML = html;
+    feed.append(row);
+    if (reduce.matches) return;
+    const d = ms();
+    const h = row.getBoundingClientRect().height;
+    feed.animate([{ transform: `translateY(${h}px)` }, { transform: 'translateY(0)' }], { duration: d, easing: 'steps(4, end)' });
+    row.animate([{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: d * 2, delay: d, easing: 'steps(18, end)', fill: 'backwards' });
+    await wait(d * 3 + 80);
+  }
+  const line = (t, id, text, status, word) =>
+    `<span class="tr-row__time">${t}</span><span class="tr-row__main"><span class="tr-row__text"><span class="tr-row__id">${id}</span> · ${text}</span></span><span class="tr-holder" data-status="${status}">${word}</span>`;
+
+  /* Desktop Round */
+  let timerId, remaining = 8 * 60 + 42, busy = false;
+  function tickTimer() {
+    remaining = Math.max(0, remaining - 1);
+    const m = String(Math.floor(remaining / 60)).padStart(2, '0'), s = String(remaining % 60).padStart(2, '0');
+    const r = $('[data-timer-readout]'); if (r) r.textContent = `${m}:${s}`;
+    const f = $('[data-timer-fill]'); if (f) f.style.width = (remaining / 600 * 100).toFixed(1) + '%';
+  }
+  function setCount() {
+    const n = (document.querySelector('input[name="q1"]:checked') ? 1 : 0) + ($('#q2').value.trim() ? 1 : 0) + (document.querySelector('input[name="q3"]:checked') ? 1 : 0);
+    $('#set-count').textContent = `${n} of 3 set`;
+    $('#send').disabled = n < 3 || busy || $('#round').dataset.state === 'answered';
+  }
+  function bindDesk() {
+    $('#round').addEventListener('input', setCount);
+    $('#answer-bar').addEventListener('submit', (e) => { e.preventDefault(); sendDesk(); });
+    setCount();
+    clearInterval(timerId);
+    remaining = 8 * 60 + 42;
+    timerId = setInterval(tickTimer, 1000);
+  }
+  async function sendDesk() {
+    if (busy || $('#round').dataset.state === 'answered') return;
+    if (!document.querySelector('input[name="q3"]:checked')) { document.querySelector('input[name="q3"][value="approve"]').checked = true; }
+    busy = true; setCount();
+    clearInterval(timerId);
+    const q1 = document.querySelector('input[name="q1"]:checked').value, q3 = document.querySelector('input[name="q3"]:checked').value;
+    $('#desk-head').textContent = 'Printing · 3 lines queued';
+    await feedLine('#desk-tape', line('14:19:02', 'R-0417', `Answer sent · Q1 ${q1} · Q2 set · Q3 ${q3} · 1 note`, 'answered', 'Sent'));
+    $('#desk-head').textContent = 'Printing · 2 lines queued';
+    await feedLine('#desk-tape', line('14:19:03', 'R-0417', 'delivered to CLAUDE·api-refactor over SSE', 'answered', 'Delivered'));
+    $('#desk-head').textContent = 'Printing · 1 line queued';
+    await feedLine('#desk-tape', line('14:19:03', 'R-0417', 'Agent resumed · Round closed', 'answered', 'Answered'));
+    const row = $('#row-0417 .tr-holder'); row.dataset.status = 'answered'; row.textContent = 'Answered';
+    $('#row-0417').removeAttribute('aria-current');
+    $('#row-0417 .tr-row__text').innerHTML = '<span class="tr-row__id">R-0417</span> · 3 values · 1 note';
+    const p = $('#phone-row-0417'); p.dataset.status = 'answered'; p.textContent = 'Answered';
+    $('#round').dataset.state = 'answered';
+    $('#round-strip').dataset.status = 'answered';
+    $('#round-status').textContent = 'Answered';
+    $('#round-strip .hh-strip__rail span:nth-child(2)').textContent = '3 Questions · delivered 14:19:03';
+    $('#desk-timer').innerHTML = '<div class="hh-policy-timer__text"><span>Unanswered Policy · not needed, answered in 00:43</span><span class="mono">stopped</span></div>';
+    for (const el of document.querySelectorAll('#round input, #round textarea')) el.disabled = true;
+    $('#desk-head').textContent = 'Feed ready · 3 lines printed';
+    $('#desk-count').textContent = 'Pending · 1 Round';
+    busy = false; setCount();
+    $('#send').textContent = 'Answered · delivered';
+  }
+
+  /* Phone glance Round */
+  function bindPhone() {
+    const btn = $('#phone-send');
+    document.querySelector('.tr-phone__body').addEventListener('change', (e) => {
+      if (e.target.name !== 'p1') return;
+      btn.disabled = false;
+      btn.textContent = e.target.value === 'approve' ? 'Send Answer · approve' : 'Send Answer · reject';
+    });
+    btn.addEventListener('click', sendPhone);
+  }
+  async function sendPhone() {
+    const btn = $('#phone-send');
+    const v = document.querySelector('input[name="p1"]:checked');
+    if (!v || btn.dataset.sent) return;
+    btn.dataset.sent = '1'; btn.disabled = true; btn.textContent = 'Printing';
+    const word = v.value === 'approve' ? 'approved' : 'rejected';
+    await feedLine('#phone-tape', line('14:19:40', 'R-0416', `Answer · ${word}`, 'answered', 'Sent'));
+    await feedLine('#phone-tape', line('14:19:41', 'R-0416', 'delivered to COPILOT·docs-site', 'answered', 'Answered'));
+    const h = $('#phone-row-holder'); h.dataset.status = 'answered'; h.textContent = 'Answered';
+    $('#phone-strip').dataset.status = 'answered';
+    $('#phone-status').textContent = 'Answered';
+    for (const el of document.querySelectorAll('input[name="p1"]')) el.disabled = true;
+    btn.textContent = `Answered · ${word} · delivered`;
+    const d = $('#row-0416 .tr-holder'); d.dataset.status = 'answered'; d.textContent = 'Answered';
+    $('#row-0416 .tr-row__text').innerHTML = `<span class="tr-row__id">R-0416</span> · ${word} from phone`;
+  }
+
+  /* Keys: 1–3 choose, a/r decide, Cmd/Ctrl+Enter send */
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); sendDesk(); return; }
+    if (e.target.matches('input:not([type="radio"]), textarea') || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (/^[1-3]$/.test(e.key)) { const o = document.querySelectorAll('input[name="q1"]')[+e.key - 1]; if (o && !o.disabled) { o.checked = true; setCount(); } }
+    if (e.key === 'a' || e.key === 'r') { const o = document.querySelector(`input[name="q3"][value="${e.key === 'a' ? 'approve' : 'reject'}"]`); if (o && !o.disabled) { o.checked = true; setCount(); } }
+  });
+
+  $('#play').addEventListener('click', sendDesk);
+  $('#reset').addEventListener('click', () => {
+    if (busy) return;
+    for (const [sel, html] of snapshot) $(sel).innerHTML = html;
+    $('#round').dataset.state = 'pending';
+    $('#round').replaceWith($('#round').cloneNode(true));
+    $('#answer-bar').replaceWith($('#answer-bar').cloneNode(true));
+    const pb = document.querySelector('.tr-phone__body'); pb.replaceWith(pb.cloneNode(true));
+    bindDesk(); bindPhone();
+  });
+
+  bindDesk(); bindPhone();
+})();
+</script>
+</body>
+</html>

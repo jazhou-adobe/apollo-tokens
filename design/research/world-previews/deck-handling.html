@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en" data-theme="hermes-deck-handling" data-palette="night-deck">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hermes world preview · Deck Handling Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Martian+Mono:wdth,wght@75..112.5,400..600&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+<!--
+  Phase 2 quick preview: Hermes world `deck-handling` (theme value `hermes-deck-handling`).
+  Not a token source. Colour options are CSS custom-property sets with all 58 brief roles.
+
+  Contrast check (WCAG ratio, truncated, run with a Python script over every brief gate: role/foreground pairs,
+  code-foreground on diff lines, muted-foreground on background/surfaces/muted, border+ring on surfaces/strip/input,
+  holders on strip+background, agent-*/chart-* on card/panel/background). 83 checks per option, 0 failures.
+
+  night-deck (recommended): background:foreground 13.8, strip:strip-foreground 13.48, surface-panel:surface-panel-foreground 11.67, primary:primary-foreground 9.64, pending:pending-foreground 4.76, recommended:recommended-foreground 4.72, code-fg/diff-add 9.48, code-fg/diff-remove 10.3, muted-fg/background 8.02, pending/strip 3.75, pending/background 3.71, answered/strip 3.8, recommended/strip 3.72, border/strip 3.6, border/surface-tray 3.14, ring/input 4.05; lowest: border/surface-tray 3.14
+  day-plot: background:foreground 12.57, strip:strip-foreground 17.21, surface-panel:surface-panel-foreground 14.67, primary:primary-foreground 11.91, pending:pending-foreground 6.12, recommended:recommended-foreground 5.78, code-fg/diff-add 12.72, code-fg/diff-remove 11.78, muted-fg/background 6.12, pending/strip 5.96, pending/background 4.35, answered/strip 6.29, recommended/strip 5.63, border/strip 5.53, border/surface-tray 4.72, ring/input 6.17; lowest: agent-4/background 3.87
+  red-lens: background:foreground 13.61, strip:strip-foreground 13.24, surface-panel:surface-panel-foreground 12.19, primary:primary-foreground 7.2, pending:pending-foreground 4.78, recommended:recommended-foreground 4.75, code-fg/diff-add 9.56, code-fg/diff-remove 9.94, muted-fg/background 7.7, pending/strip 3.53, pending/background 3.8, answered/strip 3.57, recommended/strip 3.51, border/strip 3.41, border/surface-tray 3.44, ring/input 4.16; lowest: ring/strip 3.38
+  original: background:foreground 12.84, strip:strip-foreground 15.63, surface-panel:surface-panel-foreground 10.72, primary:primary-foreground 10.98, pending:pending-foreground 4.75, recommended:recommended-foreground 4.72, code-fg/diff-add 9.18, code-fg/diff-remove 10.26, muted-fg/background 7.62, pending/strip 4.23, pending/background 3.28, answered/strip 4.29, recommended/strip 4.21, border/strip 3.46, border/surface-tray 3.2, ring/input 4.32; lowest: ring/surface-tray 3.19
+-->
+<style>
+html[data-theme="hermes-deck-handling"],
+html[data-theme="hermes-deck-handling"][data-palette="night-deck"]{color-scheme:dark;
+  --hh-background:#14191d; --hh-foreground:#e8e3d5; --hh-surface-card:#1d2429; --hh-surface-card-foreground:#e8e3d5; --hh-surface-panel:#20282d; --hh-surface-panel-foreground:#e8e3d5; --hh-surface-shelf:#181e23; --hh-surface-shelf-foreground:#e8e3d5; --hh-surface-tray:#232b31; --hh-surface-tray-foreground:#e8e3d5; --hh-primary:#e2b54a; --hh-primary-foreground:#17130a; --hh-secondary:#2c353b; --hh-secondary-foreground:#e8e3d5; --hh-muted:#232b31; --hh-muted-foreground:#a7b0b5; --hh-accent:#34424a; --hh-accent-foreground:#f1ede2; --hh-destructive:#e4705a; --hh-destructive-foreground:#1a0c08; --hh-border:#6d777f; --hh-input:#10151a; --hh-ring:#2f7f9c; --hh-success:#4fbf7a; --hh-success-foreground:#07170d; --hh-warning:#e2a33a; --hh-warning-foreground:#1a1005; --hh-info:#6fb0c8; --hh-info-foreground:#06141a; --hh-strip:#ece4cf; --hh-strip-foreground:#1a1c1e; --hh-pending:#966b15; --hh-pending-foreground:#ffffff; --hh-answered:#3c7a8c; --hh-answered-foreground:#ffffff; --hh-expired:#6c7479; --hh-expired-foreground:#ffffff; --hh-recommended:#2b8348; --hh-recommended-foreground:#ffffff; --hh-live:#59d48a; --hh-live-foreground:#06150c; --hh-code:#0f1418; --hh-code-foreground:#d9e1e4; --hh-diff-add:#173a26; --hh-diff-remove:#4a221d; --hh-shadow:#000000; --hh-scrim:#05080a; --hh-agent-1:#6fb0c8; --hh-agent-2:#d9906a; --hh-agent-3:#a99be0; --hh-agent-4:#8fc46a; --hh-agent-5:#e08fb4; --hh-agent-6:#c9c07a; --hh-chart-1:#e2b54a; --hh-chart-2:#6fb0c8; --hh-chart-3:#d9906a; --hh-chart-4:#8fc46a; --hh-chart-5:#a99be0;}
+html[data-theme="hermes-deck-handling"][data-palette="day-plot"]{color-scheme:light;
+  --hh-background:#d6dbd3; --hh-foreground:#15191c; --hh-surface-card:#f4f3ee; --hh-surface-card-foreground:#15191c; --hh-surface-panel:#e8ebe4; --hh-surface-panel-foreground:#15191c; --hh-surface-shelf:#dde1da; --hh-surface-shelf-foreground:#15191c; --hh-surface-tray:#eceae2; --hh-surface-tray-foreground:#15191c; --hh-primary:#1f3a4a; --hh-primary-foreground:#ffffff; --hh-secondary:#c9cfc6; --hh-secondary-foreground:#15191c; --hh-muted:#e0e4dd; --hh-muted-foreground:#454d53; --hh-accent:#bccad0; --hh-accent-foreground:#15191c; --hh-destructive:#a8321e; --hh-destructive-foreground:#ffffff; --hh-border:#5f686e; --hh-input:#fbfbf8; --hh-ring:#1d6683; --hh-success:#1d6b3a; --hh-success-foreground:#ffffff; --hh-warning:#7f5300; --hh-warning-foreground:#ffffff; --hh-info:#1d5f7a; --hh-info-foreground:#ffffff; --hh-strip:#fdfcf7; --hh-strip-foreground:#15191c; --hh-pending:#875800; --hh-pending-foreground:#ffffff; --hh-answered:#2f6577; --hh-answered-foreground:#ffffff; --hh-expired:#5d6469; --hh-expired-foreground:#ffffff; --hh-recommended:#1f7440; --hh-recommended-foreground:#ffffff; --hh-live:#1f7440; --hh-live-foreground:#ffffff; --hh-code:#f3f1e8; --hh-code-foreground:#1b2024; --hh-diff-add:#cfe9d5; --hh-diff-remove:#f5d3cc; --hh-shadow:#2a2f2c; --hh-scrim:#1b201d; --hh-agent-1:#2b6a86; --hh-agent-2:#9c4e28; --hh-agent-3:#6649ad; --hh-agent-4:#4a7520; --hh-agent-5:#a03a70; --hh-agent-6:#6f6210; --hh-chart-1:#1f3a4a; --hh-chart-2:#9c4e28; --hh-chart-3:#2b6a86; --hh-chart-4:#4a7520; --hh-chart-5:#6649ad;}
+html[data-theme="hermes-deck-handling"][data-palette="red-lens"]{color-scheme:dark;
+  --hh-background:#1a1414; --hh-foreground:#ecdcd0; --hh-surface-card:#221a19; --hh-surface-card-foreground:#ecdcd0; --hh-surface-panel:#271e1c; --hh-surface-panel-foreground:#ecdcd0; --hh-surface-shelf:#1e1716; --hh-surface-shelf-foreground:#ecdcd0; --hh-surface-tray:#2a201e; --hh-surface-tray-foreground:#ecdcd0; --hh-primary:#e08a5a; --hh-primary-foreground:#1a0d06; --hh-secondary:#352a28; --hh-secondary-foreground:#ecdcd0; --hh-muted:#2a201e; --hh-muted-foreground:#b8a59b; --hh-accent:#4a3430; --hh-accent-foreground:#f3e6dc; --hh-destructive:#ef6a5a; --hh-destructive-foreground:#1a0806; --hh-border:#887066; --hh-input:#140f0f; --hh-ring:#986e29; --hh-success:#6cc08a; --hh-success-foreground:#08160d; --hh-warning:#e6a84a; --hh-warning-foreground:#1a1005; --hh-info:#8ab4c8; --hh-info-foreground:#08131a; --hh-strip:#eadcc6; --hh-strip-foreground:#1c1614; --hh-pending:#976a1b; --hh-pending-foreground:#ffffff; --hh-answered:#43798c; --hh-answered-foreground:#ffffff; --hh-expired:#806f69; --hh-expired-foreground:#ffffff; --hh-recommended:#2f824c; --hh-recommended-foreground:#ffffff; --hh-live:#6cd896; --hh-live-foreground:#07160d; --hh-code:#120d0d; --hh-code-foreground:#e6d8cc; --hh-diff-add:#1f3424; --hh-diff-remove:#4a201c; --hh-shadow:#000000; --hh-scrim:#0a0606; --hh-agent-1:#8ab4c8; --hh-agent-2:#e6a07a; --hh-agent-3:#b8a2e0; --hh-agent-4:#9cc87a; --hh-agent-5:#e892b8; --hh-agent-6:#d8c884; --hh-chart-1:#e08a5a; --hh-chart-2:#8ab4c8; --hh-chart-3:#d8c884; --hh-chart-4:#9cc87a; --hh-chart-5:#b8a2e0;}
+html[data-theme="hermes-deck-handling"][data-palette="original"]{color-scheme:dark;
+  --hh-background:#1c261f; --hh-foreground:#e9eadf; --hh-surface-card:#232f27; --hh-surface-card-foreground:#e9eadf; --hh-surface-panel:#27342b; --hh-surface-panel-foreground:#e9eadf; --hh-surface-shelf:#1f2a22; --hh-surface-shelf-foreground:#e9eadf; --hh-surface-tray:#2a372e; --hh-surface-tray-foreground:#e9eadf; --hh-primary:#f0c419; --hh-primary-foreground:#191500; --hh-secondary:#34423a; --hh-secondary-foreground:#e9eadf; --hh-muted:#2a372e; --hh-muted-foreground:#aeb8ae; --hh-accent:#3d4d42; --hh-accent-foreground:#f2f3ea; --hh-destructive:#e8664c; --hh-destructive-foreground:#190a06; --hh-border:#738676; --hh-input:#161f19; --hh-ring:#3b8aa8; --hh-success:#5cc47e; --hh-success-foreground:#07160c; --hh-warning:#f0b43a; --hh-warning-foreground:#1a1205; --hh-info:#7ab8cc; --hh-info-foreground:#06131a; --hh-strip:#f4f2e8; --hh-strip-foreground:#171a17; --hh-pending:#926d0f; --hh-pending-foreground:#ffffff; --hh-answered:#3c7a8c; --hh-answered-foreground:#ffffff; --hh-expired:#6b756d; --hh-expired-foreground:#ffffff; --hh-recommended:#2b8348; --hh-recommended-foreground:#ffffff; --hh-live:#5ee08e; --hh-live-foreground:#06150c; --hh-code:#121a15; --hh-code-foreground:#dbe3dc; --hh-diff-add:#1c3d26; --hh-diff-remove:#4a241e; --hh-shadow:#000000; --hh-scrim:#050806; --hh-agent-1:#7ab8cc; --hh-agent-2:#e0986e; --hh-agent-3:#ada0e2; --hh-agent-4:#a8d070; --hh-agent-5:#e494ba; --hh-agent-6:#d8cc7a; --hh-chart-1:#f0c419; --hh-chart-2:#7ab8cc; --hh-chart-3:#e0986e; --hh-chart-4:#a8d070; --hh-chart-5:#ada0e2;}
+
+/* Type, shape, depth: the only token groups a world may override. Sizes and density mirror the core contract. */
+html[data-theme="hermes-deck-handling"]{
+  --hh-font-sans:"Archivo", ui-sans-serif, system-ui, sans-serif;
+  --hh-font-mono:"Martian Mono", ui-monospace, "SF Mono", monospace;
+  --hh-font-strip-header:"Barlow Condensed", "Archivo Narrow", sans-serif;
+  --deck-handling-font-stencil:"Saira Stencil One", "Barlow Condensed", sans-serif;
+  --hh-radius-sm:2px; --hh-radius-md:4px; --hh-radius-lg:6px;
+  --hh-shadow-template:0 1px 0 color-mix(in srgb, var(--hh-shadow) 55%, transparent), 0 3px 6px -2px color-mix(in srgb, var(--hh-shadow) 50%, transparent);
+  --hh-button-min-target:28px; --hh-control-size-sm:24px; --hh-control-size-lg:36px;
+  --hh-focus-ring-width:2px; --hh-focus-ring-offset:2px;
+  --hh-strip-min-height:72px; --hh-strip-holder-width:3px; --hh-timer-track-height:3px;
+  --hh-callsign-chip-height:20px; --hh-option-row-min-height:32px; --hh-kbd-size:18px;
+  --hh-code-max-height:150px;
+  --hh-type-body-size:13px; --hh-density-gap:8px;
+}
+[data-density="glance"]{
+  --hh-button-min-target:48px; --hh-option-row-min-height:52px; --hh-type-body-size:16px; --hh-density-gap:12px;
+  --hh-callsign-chip-height:24px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--hh-background); color:var(--hh-foreground); font:400 var(--hh-type-body-size)/1.45 var(--hh-font-sans); -webkit-font-smoothing:antialiased; min-width:1440px}
+button{font:inherit; color:inherit}
+:focus-visible{outline:var(--hh-focus-ring-width) solid var(--hh-ring); outline-offset:var(--hh-focus-ring-offset)}
+.mono{font-family:var(--hh-font-mono); font-stretch:87.5%; font-variant-numeric:tabular-nums; letter-spacing:0}
+.stencil{font-family:var(--deck-handling-font-stencil); letter-spacing:.06em}
+.muted{color:var(--hh-muted-foreground)}
+
+/* ---------- preview header ---------- */
+.pv-head{display:grid; grid-template-columns:auto 1fr auto; gap:24px; align-items:center; padding:10px 16px 8px; border-bottom:1px solid var(--hh-border); background:var(--hh-surface-shelf)}
+.pv-title{display:flex; flex-direction:column; gap:2px}
+.pv-kicker{font:500 10px/1 var(--hh-font-mono); font-stretch:87.5%; letter-spacing:.12em; color:var(--hh-muted-foreground); text-transform:uppercase}
+.pv-name{font:400 26px/1 var(--deck-handling-font-stencil); letter-spacing:.05em; margin:0}
+.pv-copy{display:grid; grid-template-columns:auto 1fr; gap:2px 10px; font-size:11.5px; line-height:1.4; max-width:780px; margin:0}
+.pv-copy dt{font:600 11px/1.5 var(--hh-font-strip-header); letter-spacing:.12em; text-transform:uppercase; color:var(--hh-muted-foreground)}
+.pv-copy dd{margin:0}
+.pv-right{display:flex; flex-direction:column; align-items:flex-end; gap:6px}
+.pv-switch{display:flex; gap:6px; margin:0; padding:0; border:0}
+.pv-switch legend{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+.pv-opt{display:flex; align-items:center; gap:6px; min-height:var(--hh-button-min-target); padding:3px 9px 3px 5px; border:1px solid var(--hh-border); border-radius:var(--hh-radius-md); background:var(--hh-surface-card); color:var(--hh-surface-card-foreground); cursor:pointer; font-size:12px}
+.pv-opt[aria-checked="true"]{background:var(--hh-primary); color:var(--hh-primary-foreground); border-color:var(--hh-primary)}
+.pv-sw{display:flex; border:1px solid var(--hh-border); border-radius:2px; overflow:hidden}
+.pv-sw i{display:block; width:9px; height:16px}
+.pv-note{font:500 10px/1.4 var(--hh-font-mono); font-stretch:87.5%; letter-spacing:.06em; color:var(--hh-muted-foreground); text-transform:uppercase}
+.pv-note b{border:1px solid var(--hh-border); padding:1px 5px; border-radius:2px; font-weight:500; color:var(--hh-foreground)}
+
+/* ---------- layout ---------- */
+.pv-main{display:grid; grid-template-columns:1fr 390px; gap:16px; padding:12px 16px 16px; align-items:start}
+.cc{border:1px solid var(--hh-border); border-radius:var(--hh-radius-lg); background:var(--hh-surface-shelf); overflow:hidden}
+.cc-bar{display:flex; align-items:center; gap:14px; height:40px; padding:0 12px; border-bottom:1px solid var(--hh-border); background:var(--hh-surface-tray); color:var(--hh-surface-tray-foreground)}
+.cc-bar h1{font:700 15px/1 var(--hh-font-strip-header); letter-spacing:.14em; text-transform:uppercase; margin:0}
+.cc-bar .sep{width:1px; height:18px; background:var(--hh-border)}
+.cc-counts{display:flex; gap:12px; font-size:12px}
+.cc-counts b{font-family:var(--hh-font-mono); font-stretch:87.5%; font-variant-numeric:tabular-nums; font-weight:500}
+.cc-bar .grow{flex:1}
+.hh-connection{display:inline-flex; align-items:center; gap:7px; font:500 11px/1 var(--hh-font-mono); font-stretch:87.5%; text-transform:uppercase; letter-spacing:.06em}
+.hh-connection i{width:8px; height:8px; border-radius:50%; background:var(--hh-live); box-shadow:0 0 0 2px color-mix(in srgb, var(--hh-live) 25%, transparent), 0 0 8px var(--hh-live)}
+.cc-body{display:grid; grid-template-columns:520px 1fr; height:742px}
+
+/* ---------- deck board ---------- */
+.deck{position:relative; border-right:1px solid var(--hh-border); display:grid; grid-template-rows:auto 1fr; background:var(--hh-background)}
+.deck-plot{position:relative; height:600px; overflow:hidden}
+.deck-plot svg.hull{position:absolute; inset:0; width:100%; height:100%}
+.hull-body{fill:var(--hh-surface-shelf); stroke:var(--hh-border); stroke-width:1.5}
+.deck-line{stroke:var(--hh-primary); stroke-width:2; fill:none}
+.deck-dash{stroke-dasharray:10 8}
+.deck-zone{fill:none; stroke:var(--hh-border); stroke-width:1; stroke-dasharray:3 4}
+.deck-elev{fill:var(--hh-surface-tray); stroke:var(--hh-border); stroke-width:1}
+.deck-label{font:400 12px var(--deck-handling-font-stencil); letter-spacing:.14em; fill:var(--hh-muted-foreground)}
+.deck-rivet{fill:var(--hh-border)}
+.cat-status{position:absolute; left:164px; top:14px; font:500 10px/1 var(--hh-font-mono); font-stretch:87.5%; letter-spacing:.06em; text-transform:uppercase; padding:4px 6px; border:1px solid var(--hh-border); border-radius:2px; background:var(--hh-surface-card); color:var(--hh-surface-card-foreground)}
+.cat-status[data-state="launching"]{border-color:var(--hh-live); color:var(--hh-surface-card-foreground); box-shadow:0 0 6px color-mix(in srgb, var(--hh-live) 60%, transparent)}
+.shuttle{position:absolute; left:143px; top:196px; width:14px; height:8px; border-radius:1px; background:var(--hh-primary); border:1px solid var(--hh-primary-foreground)}
+.board-tag{position:absolute; right:10px; bottom:8px; font:500 10px/1 var(--hh-font-mono); font-stretch:87.5%; letter-spacing:.06em; text-transform:uppercase; color:var(--hh-muted-foreground)}
+
+/* craft template = Round strip in its holder */
+.hh-strip{--holder:var(--hh-pending); --holder-fg:var(--hh-pending-foreground);
+  position:absolute; width:214px; padding:0 var(--hh-strip-holder-width) var(--hh-strip-holder-width); border:0; border-radius:var(--hh-radius-md);
+  background:var(--holder); color:var(--hh-strip-foreground); text-align:left; cursor:pointer; box-shadow:var(--hh-shadow-template)}
+.hh-strip[data-status="answered"]{--holder:var(--hh-answered); --holder-fg:var(--hh-answered-foreground)}
+.hh-strip[data-status="expired"]{--holder:var(--hh-expired); --holder-fg:var(--hh-expired-foreground); cursor:default}
+.hh-strip[aria-current="true"]{outline:var(--hh-focus-ring-width) solid var(--hh-ring); outline-offset:2px}
+.hh-strip:hover:not([data-status="expired"]) .strip-paper{background:color-mix(in srgb, var(--hh-strip) 92%, var(--holder))}
+.strip-tab{display:flex; justify-content:space-between; align-items:center; height:17px; padding:0 4px; color:var(--holder-fg); font:600 11px/1 var(--hh-font-strip-header); letter-spacing:.14em; text-transform:uppercase}
+.strip-tab .mono{font-size:10px; letter-spacing:.02em; font-weight:500}
+.strip-paper{position:relative; display:grid; grid-template-columns:26px 1fr; gap:2px 6px; min-height:var(--hh-strip-min-height); padding:5px 6px 8px 5px; background:var(--hh-strip); border-radius:2px}
+.strip-paper .craft{grid-row:1 / span 3; width:26px; height:26px; color:var(--hh-strip-foreground); align-self:start; margin-top:1px}
+.strip-head{font:700 14px/1.05 var(--hh-font-strip-header); letter-spacing:.04em; text-transform:uppercase}
+.strip-policy{font-size:11px; line-height:1.25}
+.strip-timer{position:absolute; left:0; right:0; bottom:0; height:var(--hh-timer-track-height); background:color-mix(in srgb, var(--hh-strip-foreground) 14%, var(--hh-strip))}
+.strip-timer i{display:block; height:100%; background:var(--holder); width:var(--left, 100%)}
+.strip-timer.none{background:repeating-linear-gradient(90deg, var(--holder) 0 6px, transparent 6px 10px)}
+
+.hh-callsign{display:inline-flex; align-items:center; gap:5px; height:var(--hh-callsign-chip-height); padding:0 6px 0 3px; border:1px solid var(--agent); border-radius:2px; background:var(--hh-surface-card); color:var(--hh-surface-card-foreground); font:500 10px/1 var(--hh-font-mono); font-stretch:87.5%; white-space:nowrap; max-width:100%; overflow:hidden; text-overflow:ellipsis; justify-self:start}
+.hh-callsign::before{content:""; flex:none; width:8px; height:calc(var(--hh-callsign-chip-height) - 8px); background:var(--agent); border-radius:1px}
+[data-density="glance"] .hh-callsign{font-size:12.5px}
+
+.log{border-top:1px solid var(--hh-border); background:var(--hh-surface-tray); color:var(--hh-surface-tray-foreground); padding:8px 12px 10px}
+.log h2,.rp h2.lbl-h{font:700 12px/1 var(--hh-font-strip-header); letter-spacing:.16em; text-transform:uppercase; margin:0 0 6px; color:var(--hh-muted-foreground)}
+.hh-answered-log{list-style:none; margin:0; padding:0; display:grid; gap:4px; max-height:96px; overflow:auto}
+.hh-answered-log li{display:grid; grid-template-columns:62px 92px 1fr; gap:8px; align-items:center; font-size:12px}
+.hh-answered-log .t{font-family:var(--hh-font-mono); font-stretch:87.5%; font-size:11px; color:var(--hh-muted-foreground); font-variant-numeric:tabular-nums}
+.word{display:inline-block; font:600 11px/1 var(--hh-font-strip-header); letter-spacing:.12em; text-transform:uppercase; padding:3px 5px; border-radius:2px; text-align:center}
+.word[data-s="answered"]{background:var(--hh-answered); color:var(--hh-answered-foreground)}
+.word[data-s="expired"]{background:var(--hh-expired); color:var(--hh-expired-foreground)}
+.word[data-s="pending"]{background:var(--hh-pending); color:var(--hh-pending-foreground)}
+.word[data-s="launching"]{background:var(--hh-live); color:var(--hh-live-foreground)}
+
+/* ---------- open Round panel ---------- */
+.rp{display:flex; flex-direction:column; background:var(--hh-surface-panel); color:var(--hh-surface-panel-foreground); min-width:0; min-height:0; overflow:hidden}
+.rp-head{padding:12px 14px 10px; border-bottom:1px solid var(--hh-border)}
+.rp-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.rp-id{font:500 11px/1 var(--hh-font-mono); font-stretch:87.5%; color:var(--hh-muted-foreground)}
+.rp-title{font:700 22px/1.1 var(--hh-font-strip-header); letter-spacing:.03em; text-transform:uppercase; margin:8px 0 4px}
+.rp-status{font-size:13px}
+.rp-status b{font-weight:600}
+.rp-meta{font-size:11.5px; margin-top:3px}
+.hh-policy-timer{display:grid; grid-template-columns:1fr auto; gap:5px 10px; align-items:center; margin-top:10px}
+.hh-policy-timer .track{grid-column:1 / -1; height:var(--hh-timer-track-height); background:var(--hh-muted); border-radius:1px; overflow:hidden}
+.hh-policy-timer .track i{display:block; height:100%; background:var(--hh-pending); width:var(--left,100%)}
+.hh-policy-timer .lbl{font-size:11.5px; color:var(--hh-muted-foreground)}
+.hh-policy-timer .val{font:500 12px/1 var(--hh-font-mono); font-stretch:87.5%; font-variant-numeric:tabular-nums}
+.rp-qs{flex:1; min-height:0; overflow:auto; padding:10px 14px 10px; display:grid; gap:12px; align-content:start}
+.hh-question{border:1px solid var(--hh-border); border-radius:var(--hh-radius-md); background:var(--hh-surface-card); color:var(--hh-surface-card-foreground); padding:9px 10px 10px}
+.q-top{display:flex; justify-content:space-between; gap:8px; align-items:baseline; margin-bottom:6px}
+.q-kind{font:600 11px/1 var(--hh-font-strip-header); letter-spacing:.14em; text-transform:uppercase; color:var(--hh-muted-foreground)}
+.q-text{font-size:14px; font-weight:500; margin:0 0 8px; line-height:1.35}
+.q-state{font:500 10.5px/1 var(--hh-font-mono); font-stretch:87.5%; text-transform:uppercase; letter-spacing:.04em; color:var(--hh-muted-foreground)}
+.q-state[data-done="true"]{color:var(--hh-surface-card-foreground)}
+.opts{display:grid; gap:4px}
+.hh-option{display:grid; grid-template-columns:var(--hh-kbd-size) 14px 1fr auto; gap:8px; align-items:center; min-height:var(--hh-option-row-min-height); padding:4px 8px; border:1px solid var(--hh-border); border-radius:var(--hh-radius-sm); background:var(--hh-input); cursor:pointer; text-align:left; width:100%}
+.hh-option .dot{width:14px; height:14px; border:1.5px solid var(--hh-border); border-radius:50%; display:grid; place-items:center}
+.hh-option[data-multi] .dot{border-radius:2px}
+.hh-option[aria-checked="true"]{border-color:var(--hh-primary); background:color-mix(in srgb, var(--hh-primary) 10%, var(--hh-input))}
+.hh-option[aria-checked="true"] .dot{border-color:var(--hh-primary)}
+.hh-option[aria-checked="true"] .dot::after{content:""; width:6px; height:6px; border-radius:inherit; background:var(--hh-primary)}
+.hh-recommended{display:inline-flex; align-items:center; gap:4px; font:600 10.5px/1 var(--hh-font-strip-header); letter-spacing:.12em; text-transform:uppercase; padding:3px 5px 3px 4px; border-radius:2px; background:var(--hh-recommended); color:var(--hh-recommended-foreground)}
+.hh-recommended::before{content:"\25B2"; font-size:7px}
+.hh-kbd{display:inline-grid; place-items:center; min-width:var(--hh-kbd-size); height:var(--hh-kbd-size); padding:0 4px; border:1px solid var(--hh-border); border-bottom-width:2px; border-radius:3px; font:500 10px/1 var(--hh-font-mono); font-stretch:87.5%; color:inherit; background:var(--hh-surface-card)}
+.hh-attachment{margin:0 0 8px; border:1px solid var(--hh-border); border-radius:var(--hh-radius-sm); overflow:hidden}
+.att-head{display:flex; justify-content:space-between; padding:4px 8px; background:var(--hh-muted); color:var(--hh-muted-foreground); font:500 10.5px/1.4 var(--hh-font-mono); font-stretch:87.5%}
+.hh-diff{margin:0; max-height:var(--hh-code-max-height); overflow:auto; background:var(--hh-code); color:var(--hh-code-foreground); font:400 11px/1.6 var(--hh-font-mono); font-stretch:87.5%}
+.hh-diff span{display:block; padding:0 8px; white-space:pre}
+.hh-diff .add{background:var(--hh-diff-add)}
+.hh-diff .rem{background:var(--hh-diff-remove)}
+.ar{display:grid; grid-template-columns:1fr 1fr; gap:6px}
+.ar button{display:flex; align-items:center; justify-content:center; gap:8px; min-height:max(var(--hh-button-min-target), 34px); border:1px solid var(--hh-border); border-radius:var(--hh-radius-sm); background:var(--hh-input); cursor:pointer; font-weight:600; letter-spacing:.02em}
+.ar button[aria-pressed="true"][data-v="approve"]{background:var(--hh-success); color:var(--hh-success-foreground); border-color:var(--hh-success)}
+.ar button[aria-pressed="true"][data-v="reject"]{background:var(--hh-destructive); color:var(--hh-destructive-foreground); border-color:var(--hh-destructive)}
+.q-free{width:100%; min-height:54px; resize:vertical; padding:6px 8px; border:1px solid var(--hh-border); border-radius:var(--hh-radius-sm); background:var(--hh-input); color:var(--hh-foreground); font:inherit}
+.hh-answer-bar{border-top:1px solid var(--hh-border); background:var(--hh-surface-tray); color:var(--hh-surface-tray-foreground); padding:8px 14px 10px; display:grid; gap:7px}
+.ab-notes{display:grid; grid-template-columns:auto 1fr; gap:8px; align-items:center}
+.ab-notes label{font:600 11px/1 var(--hh-font-strip-header); letter-spacing:.14em; text-transform:uppercase; color:var(--hh-muted-foreground)}
+.ab-notes input{height:30px; padding:0 8px; border:1px solid var(--hh-border); border-radius:var(--hh-radius-sm); background:var(--hh-input); color:var(--hh-foreground); font:inherit}
+.ab-row{display:flex; align-items:center; gap:10px}
+.ab-row .grow{flex:1}
+.btn-send{display:inline-flex; align-items:center; gap:10px; min-height:var(--hh-control-size-lg); padding:0 14px; border:1px solid var(--hh-primary); border-radius:var(--hh-radius-sm); background:var(--hh-primary); color:var(--hh-primary-foreground); font-weight:700; letter-spacing:.02em; cursor:pointer}
+.btn-send .hh-kbd{background:transparent; border-color:currentColor; color:inherit}
+.btn-send[aria-disabled="true"]{background:var(--hh-secondary); color:var(--hh-secondary-foreground); border-color:var(--hh-border); cursor:not-allowed}
+.hh-kbd-hints{display:flex; flex-wrap:wrap; gap:4px 10px; font-size:11px; color:var(--hh-muted-foreground)}
+.hh-kbd-hints span{display:inline-flex; gap:4px; align-items:center}
+.rp-msg{margin:14px; padding:12px; border:1px solid var(--hh-border); border-radius:var(--hh-radius-md); background:var(--hh-surface-card); color:var(--hh-surface-card-foreground)}
+
+/* ---------- phone ---------- */
+.phone{width:390px; border:1px solid var(--hh-border); border-radius:28px; background:var(--hh-background); overflow:hidden; box-shadow:0 0 0 6px var(--hh-surface-tray), 0 0 0 7px var(--hh-border)}
+.ph-status{display:flex; justify-content:space-between; padding:10px 22px 4px; font:500 11px/1 var(--hh-font-mono); font-stretch:87.5%}
+.ph-bar{display:flex; align-items:center; justify-content:space-between; padding:6px 16px 10px; border-bottom:1px solid var(--hh-border)}
+.ph-bar h2{margin:0; font:700 18px/1 var(--hh-font-strip-header); letter-spacing:.14em; text-transform:uppercase}
+.lane{position:relative; height:112px; margin:12px 16px 0; border:1px solid var(--hh-border); border-radius:var(--hh-radius-md); background:var(--hh-surface-shelf); overflow:hidden}
+.lane .track{position:absolute; left:212px; right:14px; top:56px; height:0; border-top:2px solid var(--hh-primary)}
+.lane .track::after{content:""; position:absolute; right:-2px; top:-7px; height:12px; border-right:2px solid var(--hh-primary)}
+.lane .lbl{position:absolute; left:216px; top:64px; font:400 11px var(--deck-handling-font-stencil); letter-spacing:.14em; color:var(--hh-muted-foreground)}
+.lane .lbl2{position:absolute; right:14px; top:10px; font:500 10px/1 var(--hh-font-mono); font-stretch:87.5%; text-transform:uppercase; color:var(--hh-muted-foreground)}
+.lane .hh-strip{width:198px; left:8px; top:10px}
+.lane .strip-paper{grid-template-columns:20px 1fr}
+.lane .strip-paper .craft{width:20px; height:20px}
+.lane .strip-head{font-size:13px}
+.ph-card{margin:12px 16px 0; border:1px solid var(--hh-border); border-radius:var(--hh-radius-md); background:var(--hh-surface-panel); color:var(--hh-surface-panel-foreground); padding:14px}
+.ph-card .q-text{font-size:17px; margin:10px 0}
+.ph-card .rp-status{font-size:14px}
+.ph-card .hh-diff{font-size:11.5px}
+.ph-ar{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px}
+.ph-ar button{min-height:var(--hh-button-min-target); border-radius:var(--hh-radius-md); font:700 17px/1 var(--hh-font-sans); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px}
+.ph-ar .ok{background:var(--hh-success); color:var(--hh-success-foreground); border:1px solid var(--hh-success)}
+.ph-ar .no{background:var(--hh-input); color:var(--hh-foreground); border:1px solid var(--hh-border)}
+.ph-more{margin:12px 16px 14px; display:grid; gap:8px}
+.ph-more h3{margin:0; font:700 12px/1 var(--hh-font-strip-header); letter-spacing:.16em; text-transform:uppercase; color:var(--hh-muted-foreground)}
+.ph-row{display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:var(--hh-button-min-target); padding:6px 10px; border:1px solid var(--hh-border); border-radius:var(--hh-radius-md); background:var(--hh-surface-card); color:var(--hh-surface-card-foreground); font-size:14px}
+.ph-row .r{font:500 12px/1 var(--hh-font-mono); font-stretch:87.5%; font-variant-numeric:tabular-nums}
+
+@media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} }
+</style>
+</head>
+<body>
+<header class="pv-head">
+  <div class="pv-title">
+    <span class="pv-kicker">Hermes Hub · world preview · <span class="mono">hermes-deck-handling</span></span>
+    <h1 class="pv-name">Deck Handling Board</h1>
+  </div>
+  <dl class="pv-copy">
+    <dt>Idea</dt><dd>The carrier "Ouija board": a top-down deck plan where handlers move aircraft templates. Agents are craft parked in deck zones.</dd>
+    <dt>Signature</dt><dd>When a Round is answered, its craft taxis to the catapult and off the board. Answer the open Round, or approve on the phone.</dd>
+  </dl>
+  <div class="pv-right">
+    <fieldset class="pv-switch" role="radiogroup" aria-label="Colour option">
+      <legend>Colour option</legend>
+      <button class="pv-opt" role="radio" aria-checked="true" data-p="night-deck"><span class="pv-sw"><i style="background:#14191d"></i><i style="background:#ece4cf"></i><i style="background:#e2b54a"></i></span>Night Deck · rec.</button>
+      <button class="pv-opt" role="radio" aria-checked="false" data-p="day-plot"><span class="pv-sw"><i style="background:#d6dbd3"></i><i style="background:#fdfcf7"></i><i style="background:#1f3a4a"></i></span>Day Plot</button>
+      <button class="pv-opt" role="radio" aria-checked="false" data-p="red-lens"><span class="pv-sw"><i style="background:#1a1414"></i><i style="background:#eadcc6"></i><i style="background:#e08a5a"></i></span>Red Lens</button>
+      <button class="pv-opt" role="radio" aria-checked="false" data-p="original"><span class="pv-sw"><i style="background:#1c261f"></i><i style="background:#f4f2e8"></i><i style="background:#f0c419"></i></span>Original</button>
+    </fieldset>
+    <span class="pv-note"><b>Illustrative data</b> &nbsp;Agents, Rounds and timers are samples</span>
+  </div>
+</header>
+
+<main class="pv-main">
+  <section class="cc" aria-label="Command Center, desktop triage" data-density="compact">
+    <div class="cc-bar">
+      <h1>Command Center · Deck plot</h1>
+      <span class="sep"></span>
+      <div class="cc-counts"><span>Pending <b id="c-pending">5</b></span><span>Answered <b id="c-answered">12</b></span><span>Expired <b id="c-expired">2</b></span><span>Agents <b>6</b></span></div>
+      <span class="grow"></span>
+      <span class="hh-connection"><i aria-hidden="true"></i>Live · SSE · 127.0.0.1:7820</span>
+    </div>
+    <div class="cc-body">
+      <div class="deck">
+        <div class="deck-plot" id="board" aria-label="Deck plot, pending Rounds as parked craft">
+          <svg class="hull" viewBox="0 0 520 600" aria-hidden="true" preserveAspectRatio="none">
+            <path class="hull-body" d="M140 4 H380 L410 60 L478 84 V540 L440 584 L300 598 H110 L18 560 L12 300 L58 196 L104 60 Z"/>
+            <!-- catapult tracks -->
+            <line class="deck-line" x1="150" y1="12" x2="150" y2="200"/>
+            <line class="deck-line" x1="380" y1="12" x2="380" y2="176"/>
+            <line class="deck-line" x1="142" y1="200" x2="158" y2="200"/>
+            <line class="deck-line" x1="372" y1="176" x2="388" y2="176"/>
+            <!-- angled landing centreline -->
+            <line class="deck-line deck-dash" x1="96" y1="596" x2="262" y2="196"/>
+            <!-- zones -->
+            <rect class="deck-zone" x="22" y="238" width="228" height="116" rx="4"/>
+            <rect class="deck-zone" x="22" y="362" width="228" height="116" rx="4"/>
+            <rect class="deck-zone" x="22" y="486" width="228" height="112" rx="4"/>
+            <rect class="deck-zone" x="270" y="206" width="228" height="116" rx="4"/>
+            <rect class="deck-zone" x="270" y="330" width="228" height="116" rx="4"/>
+            <rect class="deck-zone" x="270" y="454" width="228" height="116" rx="4"/>
+            <rect class="deck-elev" x="500" y="230" width="18" height="76"/>
+            <rect class="deck-elev" x="500" y="470" width="18" height="76"/>
+            <text class="deck-label" x="160" y="120">CAT 1</text>
+            <text class="deck-label" x="390" y="120">CAT 2</text>
+            <text class="deck-label" x="30" y="249">WAIST</text>
+            <text class="deck-label" x="30" y="373">FANTAIL</text>
+            <text class="deck-label" x="30" y="497">SPOT 9</text>
+            <text class="deck-label" x="278" y="217">THE ROW</text>
+            <text class="deck-label" x="278" y="341">STREET</text>
+            <text class="deck-label" x="278" y="465">ELEV 2</text>
+            <circle class="deck-rivet" cx="150" cy="10" r="2"/><circle class="deck-rivet" cx="370" cy="10" r="2"/>
+            <circle class="deck-rivet" cx="468" cy="92" r="2"/><circle class="deck-rivet" cx="118" cy="592" r="2"/>
+          </svg>
+          <div class="shuttle" id="shuttle" aria-hidden="true"></div>
+          <div class="cat-status" id="cat-status" data-state="ready">Cat 1 · Ready</div>
+          <span class="board-tag">Illustrative data · deck plot 1:1</span>
+        </div>
+        <div class="log">
+          <h2>Launch log · answered and expired</h2>
+          <ol class="hh-answered-log" id="log" reversed>
+            <li><span class="t">14:02:11</span><span class="word" data-s="answered">Answered</span><span><span class="hh-callsign" style="--agent:var(--hh-agent-2)">CODEX·billing-migrate</span> Approved</span></li>
+            <li><span class="t">13:58:40</span><span class="word" data-s="expired">Expired</span><span><span class="hh-callsign" style="--agent:var(--hh-agent-6)">SCRIPT·log-rotate</span> Policy cancelled</span></li>
+          </ol>
+        </div>
+      </div>
+      <section class="rp" id="panel" aria-label="Open Round" aria-live="polite"></section>
+    </div>
+  </section>
+
+  <section class="phone" aria-label="Phone, glance view" data-density="glance">
+    <div class="ph-status"><span>14:06</span><span>tailnet · hub.local</span></div>
+    <div class="ph-bar"><h2>Hermes · Deck</h2><span class="hh-connection"><i aria-hidden="true"></i>Live</span></div>
+    <div class="lane" id="lane" aria-label="Catapult 2"><span class="track"></span><span class="lbl">CAT 2</span><span class="lbl2" id="lane-status">Cat 2 · Ready</span></div>
+    <div id="ph-card"></div>
+    <div class="ph-more"><h3>Also pending</h3><div id="ph-list" style="display:grid;gap:8px"></div></div>
+  </section>
+</main>
+
+<script>
+const PLANE='<svg class="craft" viewBox="0 0 26 26" aria-hidden="true"><path fill="currentColor" d="M13 1.5c1 0 1.6 1.4 1.6 3.2v5.2l9 5.4v2.3l-9-2.6v5l2.6 2v1.8L13 22.6l-4.2 1.2V22l2.6-2v-5l-9 2.6v-2.3l9-5.4V4.7C11.4 2.9 12 1.5 13 1.5z"/></svg>';
+const rounds=[
+ {id:'R-0417',agent:'CLAUDE·api-refactor',a:1,zone:'Waist',x:29,y:256,status:'pending',topic:'Payments retry',policy:'waits 10 min, then applies recommended',short:'Then applies recommended',left:552,total:600,client:'Claude Code · pid 41822 · ~/src/ledger (api-refactor)',
+  qs:[{type:'single',text:'Which retry strategy should the payments client use?',opts:['Exponential backoff, 3 tries, max 8 s','Fixed 2 s delay, 5 tries','No retry; fail fast and surface the error'],rec:0,value:0},
+      {type:'approve',text:'Apply this patch to src/payments/client.ts?',att:{file:'src/payments/client.ts',meta:'+4 −2',lines:[[' ','export async function charge(req: ChargeReq) {'],['-','  return http.post("/charge", req);'],['-','  // TODO: retry'],['+','  return withRetry(() => http.post("/charge", req), {'],['+','    tries: 3, backoff: "exponential", maxDelayMs: 8000,'],['+','  });'],[' ','}']]},value:null}]},
+ {id:'R-0418',agent:'CODEX·db-migrate',a:2,zone:'The Row',x:277,y:224,status:'pending',topic:'Staging migration',policy:'waits 4 min, then cancels',short:'Then cancels',left:161,total:240,client:'Codex CLI · pid 51907 · ~/src/ledger (db-migrate)',
+  qs:[{type:'approve',text:'Run migration 0042_add_ledger_index on staging?',att:{file:'migrations/0042_add_ledger_index.sql',meta:'+3',lines:[['+','CREATE INDEX CONCURRENTLY ledger_entry_acct_ts'],['+','  ON ledger_entry (account_id, posted_at);'],['+','-- est. 41 s on staging, no lock']]},value:null}]},
+ {id:'R-0419',agent:'CURSOR·ui-tokens',a:3,zone:'Street',x:277,y:348,status:'pending',topic:'Focus ring token',policy:'keeps waiting',short:'Keeps waiting',left:null,total:null,client:'Cursor · window 2 · ~/src/console (ui-tokens)',
+  qs:[{type:'single',text:'Name for the new focus ring colour token?',opts:['--hh-ring','--hh-focus','--hh-outline-focus'],rec:0,value:null},
+      {type:'multi',text:'Which components get compact density first?',opts:['Strip bay','Answered log','Agent roster'],rec:null,value:[]}]},
+ {id:'R-0420',agent:'COPILOT·docs-sweep',a:4,zone:'Fantail',x:29,y:380,status:'pending',topic:'Changelog line',policy:'waits 30 min, then applies recommended',short:'Then applies recommended',left:1445,total:1800,client:'VS Code Copilot · ~/src/hermes-hub (docs-sweep)',
+  qs:[{type:'text',text:'Summary line for the CHANGELOG entry?',rec:'Command Center: answer a whole Round with ⌘↵.',value:''}]},
+ {id:'R-0421',agent:'OMP·release-notes',a:5,zone:'Elev 2',x:277,y:472,status:'pending',topic:'Release 0.9',policy:'waits 15 min, then cancels',short:'Then cancels',left:690,total:900,client:'omp · over tailnet · mbp-studio · ~/src/hermes-hub',
+  qs:[{type:'single',text:'Version bump for this release?',opts:['Patch · 0.8.4','Minor · 0.9.0','Major · 1.0.0'],rec:1,value:null},
+      {type:'approve',text:'Publish the notes to the GitHub release draft?',value:null}]},
+ {id:'R-0409',agent:'SCRIPT·nightly-backup',a:6,zone:'Spot 9',x:29,y:503,status:'expired',topic:'Prune snapshots',policy:'cancelled by policy at 13:58',short:'Cancelled at 13:58',left:0,total:600,qs:[]}
+];
+let openId='R-0417';
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=s=>s==null?'—':String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+const chip=r=>`<span class="hh-callsign" style="--agent:var(--hh-agent-${r.a})">${esc(r.agent)}</span>`;
+const done=q=>q.type==='multi'?q.value.length>0:q.type==='text'?q.value.trim()!=='':q.value!=null;
+const statusLine=r=>{const n=r.qs.length;return `<b>Pending</b> · ${n} Question${n>1?'s':''} · ${esc(r.policy)}`};
+
+function stripHTML(r,lane){
+  const pct=r.total?Math.round(r.left/r.total*100):100;
+  const word=r.status==='expired'?'Expired':r.status==='answered'?'Answered':'Pending';
+  const tag=r.status==='expired'?'div':'button';
+  return `<${tag} class="hh-strip" data-round="${r.id}" data-status="${r.status}" ${tag==='button'?`type="button" aria-current="${!lane&&r.id===openId}"`:''} style="left:${r.x}px;top:${r.y}px" aria-label="${word} · ${esc(r.agent)} · ${r.id} · ${esc(r.policy)}">
+    <span class="strip-tab"><span class="w">${word}${!lane&&r.id===openId?' · Open':''}</span><span class="mono" data-t>${r.status==='pending'?(r.left==null?'no limit':fmt(r.left)):r.status==='expired'?'13:58':''}</span></span>
+    <span class="strip-paper">${PLANE}${chip(r)}<span class="strip-head">${r.id} · ${esc(r.topic)}</span><span class="strip-policy">${lane?'1 Question':esc(r.short)}</span>
+      <span class="strip-timer ${r.left==null?'none':''}"><i style="--left:${pct}%"></i></span></span>
+  </${tag}>`;
+}
+function renderBoard(){
+  const b=$('#board');
+  b.querySelectorAll('.hh-strip:not([data-state])').forEach(e=>e.remove());
+  b.insertAdjacentHTML('beforeend',rounds.filter(r=>r.status!=='answered').map(r=>stripHTML(r)).join(''));
+  const p=rounds.filter(r=>r.status==='pending').length;
+  $('#c-pending').textContent=p;
+}
+function qHTML(q,i){
+  const st=`<span class="q-state" data-done="${done(q)}">${done(q)?'Answered':'Unanswered'}</span>`;
+  const kinds={single:'Single choice',multi:'Multiple choice',text:'Free text',approve:'Approve / reject'};
+  let body='';
+  if(q.att) body+=`<figure class="hh-attachment"><figcaption class="att-head"><span>diff · ${esc(q.att.file)}</span><span>${q.att.meta}</span></figcaption><pre class="hh-diff">${q.att.lines.map(([s,t])=>`<span class="${s==='+'?'add':s==='-'?'rem':''}">${s} ${esc(t)}</span>`).join('')}</pre></figure>`;
+  if(q.type==='single'||q.type==='multi') body+=`<div class="opts" role="${q.type==='single'?'radiogroup':'group'}" aria-label="Q${i+1} options">${q.opts.map((o,k)=>{
+      const on=q.type==='single'?q.value===k:q.value.includes(k);
+      return `<button type="button" class="hh-option" ${q.type==='multi'?'data-multi':''} role="${q.type==='single'?'radio':'checkbox'}" aria-checked="${on}" data-q="${i}" data-k="${k}"><span class="hh-kbd">${k+1}</span><span class="dot"></span><span>${esc(o)}</span>${q.rec===k?'<span class="hh-recommended">Recommended</span>':''}</button>`}).join('')}</div>`;
+  if(q.type==='approve') body+=`<div class="ar"><button type="button" data-v="approve" data-q="${i}" aria-pressed="${q.value==='approve'}"><span class="hh-kbd">a</span>${q.value==='approve'?'✓ Approved':'Approve'}</button><button type="button" data-v="reject" data-q="${i}" aria-pressed="${q.value==='reject'}"><span class="hh-kbd">r</span>${q.value==='reject'?'✕ Rejected':'Reject'}</button></div>`;
+  if(q.type==='text') body+=`<textarea class="q-free" data-q="${i}" aria-label="Q${i+1} answer" placeholder="Type the Answer">${esc(q.value)}</textarea><div style="margin-top:6px;display:flex;gap:6px;align-items:center;font-size:12px"><span class="hh-recommended">Recommended</span><span>${esc(q.rec)}</span><button type="button" class="hh-kbd" data-use="${i}" style="cursor:pointer;padding:0 6px">use</button></div>`;
+  return `<article class="hh-question"><div class="q-top"><span class="q-kind">Q${i+1} · ${kinds[q.type]}</span>${st}</div><p class="q-text">${esc(q.text)}</p>${body}</article>`;
+}
+function renderPanel(msg){
+  const p=$('#panel'); const r=rounds.find(x=>x.id===openId);
+  if(msg){p.innerHTML=msg;return}
+  if(!r){p.innerHTML='<div class="rp-msg"><b>Bay clear.</b> No pending Rounds. New Rounds park on the deck as they arrive.</div>';return}
+  const n=r.qs.filter(done).length, all=n===r.qs.length;
+  const pct=r.total?Math.round(r.left/r.total*100):100;
+  p.innerHTML=`<div class="rp-head">
+     <div class="rp-row">${chip(r)}<span class="rp-id">${r.id} · parked ${esc(r.zone)}</span><span class="grow"></span></div>
+     <h2 class="rp-title">${esc(r.topic)}</h2>
+     <div class="rp-status">${statusLine(r)}</div>
+     <div class="rp-meta muted mono" style="font-size:10.5px">${esc(r.client)}</div>
+     <div class="hh-policy-timer"><span class="lbl">Unanswered Policy · ${esc(r.policy)}</span><span class="val" data-pt>${r.left==null?'no limit':fmt(r.left)+' left'}</span><span class="track"><i style="--left:${pct}%"></i></span></div>
+   </div>
+   <div class="rp-qs">${r.qs.map(qHTML).join('')}</div>
+   <div class="hh-answer-bar">
+     <div class="ab-notes"><label for="notes">Notes</label><input id="notes" placeholder="Optional, sent with the Answer"></div>
+     <div class="ab-row"><span class="mono" style="font-size:11px">${n} of ${r.qs.length} answered</span><span class="grow"></span>
+       <button type="button" class="btn-send" id="send" aria-disabled="${!all}">${all?'Send Answer':'Answer every Question'}<span class="hh-kbd">⌘↵</span></button></div>
+     <div class="hh-kbd-hints"><span><span class="hh-kbd">j</span><span class="hh-kbd">k</span> next / previous Round</span><span><span class="hh-kbd">1–9</span> choose</span><span><span class="hh-kbd">a</span><span class="hh-kbd">r</span> approve / reject</span><span><span class="hh-kbd">⌘↵</span> send, craft launches</span></div>
+   </div>`;
+}
+function logLine(r,detail){
+  const t=[Math.floor(clock/3600),Math.floor(clock/60)%60,clock%60].map(n=>String(n).padStart(2,'0')).join(':');
+  $('#log').insertAdjacentHTML('afterbegin',`<li><span class="t">${t}</span><span class="word" data-s="answered">Answered</span><span>${chip(r)} ${esc(detail)}</span></li>`);
+  const c=$('#c-answered'); c.textContent=+c.textContent+1;
+}
+function summary(r){return r.qs.map(q=>q.type==='approve'?(q.value==='approve'?'Approved':'Rejected'):q.type==='single'?'Option '+(q.value+1):q.type==='multi'?q.value.length+' picked':'Text answer').join(' · ')}
+
+/* Signature: answered craft taxis to Cat 1, holds, launches off the bow */
+function launchOnBoard(r){
+  const el=$(`#board .hh-strip[data-round="${r.id}"]`);
+  r.status='answered';
+  if(!el){renderBoard();return Promise.resolve()}
+  el.dataset.state='launching'; el.dataset.status='answered'; el.style.zIndex=9; el.setAttribute('aria-current','false');
+  el.querySelector('.w').textContent='Answered · taxi'; el.querySelector('[data-t]').textContent='';
+  el.querySelector('.strip-open')?.remove();
+  const cat=$('#cat-status'), sh=$('#shuttle');
+  const dx=43-r.x, dy=104-r.y;
+  if(reduce){el.remove();renderBoard();return Promise.resolve()}
+  const k=[{transform:'translate(0,0)',easing:'cubic-bezier(.45,0,.25,1)'},{transform:`translate(${dx}px,${dy}px)`,offset:.6,easing:'linear'},{transform:`translate(${dx}px,${dy}px)`,offset:.74,easing:'cubic-bezier(.6,0,.95,.5)'},{transform:`translate(${dx}px,${dy-560}px)`}];
+  const a=el.animate(k,{duration:1900,fill:'forwards'});
+  setTimeout(()=>{el.querySelector('.w').textContent='Answered · cat 1';cat.dataset.state='launching';cat.textContent='Cat 1 · Launching'},1140);
+  setTimeout(()=>sh.animate([{transform:'translateY(0)'},{transform:'translateY(-210px)'}],{duration:500,easing:'cubic-bezier(.6,0,.95,.5)'}),1400);
+  return a.finished.then(()=>{el.remove();cat.dataset.state='ready';cat.textContent='Cat 1 · Ready';renderBoard()});
+}
+function answer(id,via){
+  const r=rounds.find(x=>x.id===id); if(!r||r.status!=='pending')return;
+  const detail=summary(r)+(via?' · '+via:'');
+  if(id===openId){
+    renderPanel(`<div class="rp-msg"><span class="word" data-s="launching">Launching</span>&nbsp; <b>Answered</b> · delivered to ${chip(r)}<br><span class="muted">${esc(detail)}. Craft taxis to Cat 1 and leaves the deck.</span></div>`);
+  }
+  if(id===phoneId) phoneLaunch(r);
+  launchOnBoard(r).then(()=>{logLine(r,detail);
+    if(id===openId){const nx=rounds.find(x=>x.status==='pending');openId=nx?nx.id:null;renderBoard();renderPanel()}
+    renderPhone();});
+}
+
+/* Phone: glance approve/reject */
+let phoneId='R-0418';
+function renderPhone(){
+  const lane=$('#lane'); lane.querySelectorAll('.hh-strip').forEach(e=>e.remove());
+  const r=rounds.find(x=>x.id===phoneId&&x.status==='pending');
+  const others=rounds.filter(x=>x.status==='pending'&&x.id!==phoneId);
+  $('#ph-list').innerHTML=others.slice(0,2).map(o=>`<div class="ph-row">${chip(o)}<span class="r">${o.left==null?'no limit':fmt(o.left)}</span></div>`).join('')+(others.length?`<div class="muted" style="font-size:13px">${others.length} Round${others.length>1?'s':''} with choices; answer at the desk.</div>`:'');
+  if(!r){$('#ph-card').innerHTML=`<div class="ph-card"><b>Cat 2 clear.</b> No approve/reject Rounds pending.</div>`;return}
+  lane.insertAdjacentHTML('beforeend',stripHTML({...r,x:8,y:10},true));
+  const q=r.qs[0];
+  $('#ph-card').innerHTML=`<div class="ph-card">
+    <div class="rp-row">${chip(r)}<span class="rp-id">${r.id}</span></div>
+    <p class="q-text">${esc(q.text)}</p>
+    <div class="rp-status">${statusLine(r)}</div>
+    <div class="hh-policy-timer"><span class="lbl">Policy timer</span><span class="val" data-pt-phone>${fmt(r.left)} left</span><span class="track"><i style="--left:${Math.round(r.left/r.total*100)}%"></i></span></div>
+    <figure class="hh-attachment" style="margin:12px 0 0"><figcaption class="att-head"><span>diff · 0042_add_ledger_index.sql</span><span>+3</span></figcaption><pre class="hh-diff">${q.att.lines.map(([s,t])=>`<span class="add">${s} ${esc(t)}</span>`).join('')}</pre></figure>
+    <div class="ph-ar"><button type="button" class="ok" data-ph="approve">✓ Approve</button><button type="button" class="no" data-ph="reject">✕ Reject</button></div>
+  </div>`;
+}
+function phoneLaunch(r){
+  const el=$('#lane .hh-strip'); const st=$('#lane-status');
+  if(!el) return;
+  el.dataset.state='launching'; el.dataset.status='answered'; el.querySelector('.w').textContent='Answered'; el.querySelector('[data-t]').textContent='';
+  st.textContent='Cat 2 · Launching';
+  $('#ph-card').innerHTML=`<div class="ph-card"><span class="word" data-s="launching">Launching</span>&nbsp; <b>Answered</b> · ${esc(summary(r))}<br><span class="muted">Delivered to ${esc(r.agent)}.</span></div>`;
+  if(reduce){st.textContent='Cat 2 · Ready';return}
+  el.animate([{transform:'translate(0,0)',easing:'cubic-bezier(.45,0,.25,1)'},{transform:'translate(206px,0)',offset:.5,easing:'linear'},{transform:'translate(206px,0)',offset:.64,easing:'cubic-bezier(.6,0,.95,.5)'},{transform:'translate(580px,0)'}],{duration:1700,fill:'forwards'}).finished.then(()=>{st.textContent='Cat 2 · Ready'});
+}
+
+/* events */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button,[data-use]'); if(!t)return;
+  if(t.classList.contains('pv-opt')){document.documentElement.dataset.palette=t.dataset.p;document.querySelectorAll('.pv-opt').forEach(b=>b.setAttribute('aria-checked',b===t));return}
+  if(t.classList.contains('hh-strip')&&!t.dataset.state&&t.closest('#board')){openId=t.dataset.round;renderBoard();renderPanel();return}
+  if(t.dataset.ph){const r=rounds.find(x=>x.id===phoneId);if(r&&r.status==='pending'){r.qs[0].value=t.dataset.ph;answer(phoneId,'from phone')}return}
+  const r=rounds.find(x=>x.id===openId); if(!r)return;
+  if(t.id==='send'){if(t.getAttribute('aria-disabled')!=='true')answer(r.id);return}
+  if(t.dataset.use!=null){r.qs[+t.dataset.use].value=r.qs[+t.dataset.use].rec;renderPanel();return}
+  if(t.dataset.q!=null){const q=r.qs[+t.dataset.q];
+    if(t.dataset.v)q.value=t.dataset.v;
+    else if(q.type==='single')q.value=+t.dataset.k;
+    else{const k=+t.dataset.k;q.value=q.value.includes(k)?q.value.filter(x=>x!==k):[...q.value,k]}
+    renderPanel();}
+});
+document.addEventListener('input',e=>{const t=e.target;if(t.classList.contains('q-free')){const r=rounds.find(x=>x.id===openId);r.qs[+t.dataset.q].value=t.value;
+  const all=r.qs.every(done),s=$('#send');s.setAttribute('aria-disabled',!all);s.firstChild.textContent=all?'Send Answer':'Answer every Question';
+  const st=t.closest('.hh-question').querySelector('.q-state');st.dataset.done=done(r.qs[+t.dataset.q]);st.textContent=done(r.qs[+t.dataset.q])?'Answered':'Unanswered';}});
+document.addEventListener('keydown',e=>{
+  if(e.target.matches('input,textarea')&&!(e.key==='Enter'&&(e.metaKey||e.ctrlKey)))return;
+  const r=rounds.find(x=>x.id===openId); if(!r)return;
+  const pend=rounds.filter(x=>x.status==='pending');
+  if(e.key==='j'||e.key==='k'){const i=pend.findIndex(x=>x.id===openId);openId=pend[(i+(e.key==='j'?1:pend.length-1))%pend.length].id;renderBoard();renderPanel()}
+  else if(/^[1-9]$/.test(e.key)){const q=r.qs.find(q=>q.type==='single'||q.type==='multi');if(q&&+e.key<=q.opts.length){const k=+e.key-1;if(q.type==='single')q.value=k;else q.value=q.value.includes(k)?q.value.filter(x=>x!==k):[...q.value,k];renderPanel()}}
+  else if(e.key==='a'||e.key==='r'){const q=r.qs.find(q=>q.type==='approve');if(q){q.value=e.key==='a'?'approve':'reject';renderPanel()}}
+  else if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){if(r.qs.every(done)){e.preventDefault();answer(r.id)}}
+});
+/* live timers: one tick per second, no CSS loops */
+let clock=14*3600+6*60; /* illustrative clock, matches the sample log */
+setInterval(()=>{
+  clock++;
+  rounds.forEach(r=>{if(r.status==='pending'&&r.left!=null&&r.left>0)r.left--});
+  document.querySelectorAll('.hh-strip[data-status="pending"]:not([data-state])').forEach(el=>{const r=rounds.find(x=>x.id===el.dataset.round);if(!r||r.left==null)return;el.querySelector('[data-t]').textContent=fmt(r.left);el.querySelector('.strip-timer i').style.setProperty('--left',Math.round(r.left/r.total*100)+'%')});
+  const r=rounds.find(x=>x.id===openId);const pt=document.querySelector('[data-pt]');if(r&&pt&&r.left!=null){pt.textContent=fmt(r.left)+' left';pt.parentElement.querySelector('.track i').style.setProperty('--left',Math.round(r.left/r.total*100)+'%')}
+  const pr=rounds.find(x=>x.id===phoneId);const pp=document.querySelector('[data-pt-phone]');if(pr&&pp&&pr.status==='pending'){pp.textContent=fmt(pr.left)+' left';pp.parentElement.querySelector('.track i').style.setProperty('--left',Math.round(pr.left/pr.total*100)+'%')}
+},1000);
+renderBoard();renderPanel();renderPhone();
+</script>
+</body>
+</html>

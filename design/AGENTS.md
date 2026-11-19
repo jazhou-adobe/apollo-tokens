@@ -1,0 +1,22 @@
+# Agent rules: Hermes Hub design system
+
+Read [brief.md](brief.md) first; it outranks every other file here. Then [tokens/token-taxonomy.md](tokens/token-taxonomy.md) and [agent-contract/screen-generation-rules.md](agent-contract/screen-generation-rules.md).
+
+- Colours, lengths, durations, shadows, and z-indexes come from `--hh-*` tokens. Raw values belong only in `tokens/`; `npm run validate` fails anything else.
+- Edit `tokens/tokens.json` and `tokens/themes.css` together; the validator checks parity.
+- Status never relies on colour: holders print a status word, callsign chips print the callsign, diff lines carry a sign.
+- Glow (`--hh-elevation-live`) only on live state. Reading planes stay opaque. No gradient text, glass, scanlines, or noise.
+- The holder frames a strip on every side. Never a thin coloured side stripe on a card.
+- Copy uses the glossary (Hub, Command Center, Agent, Human, Round, Question, Answer, Unanswered Policy) in the dispatcher voice: status word first, no exclamation marks, no emoji. Label fixture data as illustrative.
+- New world: add files under `tokens/worlds/`, load faces in `app/fonts.ts`, add the slug to `WORLD_SLUGS` in `preview/themes.ts`, run the validator.
+- Before handing back: `npm run validate`, `npm run test:validator`, `npx tsc --noEmit`, `npm run build`, then a browser check at 1440 and 390 px.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

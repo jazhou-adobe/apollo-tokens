@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en" data-theme="hermes-starship" data-palette="soot-terracotta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starship Hermes · Hermes Hub world preview</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=Marcellus+SC&family=Saira+Condensed:wght@500;600;700&display=swap">
+<!--
+Phase 2 quick preview: world `starship` (theme value hermes-starship), 4 colour options.
+Contrast check (WCAG 2.x, ratios truncated to 2 dp, never rounded up; all 58 roles per option; gates from design/brief.md):
+  soot-terracotta (recommended): PASS | role/foreground pairs min 4.80 (recommended); code-foreground on diff-add/remove min 9.70; muted-foreground on bg/surfaces/muted min 6.43 (surface-tray); border/ring vs surfaces/strip/input min 3.05 (ring/strip); holders vs strip/background min 3.18 (expired/strip); agent/chart vs card/panel/background min 4.36 (chart-1/surface-panel)
+  kiln-day: PASS | pairs min 5.27 (expired); code/diff min 9.28; muted-fg min 5.79 (surface-tray); border/ring min 3.40 (border/surface-tray); holders min 4.28 (expired/background); agent/chart min 4.45 (agent-1/surface-panel)
+  patina-watch: PASS | pairs min 4.71 (recommended); code/diff min 10.02; muted-fg min 6.32 (surface-tray); border/ring min 3.04 (ring/strip); holders min 3.07 (expired/strip); agent/chart min 4.71 (agent-1/surface-panel)
+  original: PASS | pairs min 4.70 (strip/strip-foreground); code/diff min 10.07; muted-fg min 7.31 (surface-tray); border/ring min 3.05 (border/strip); holders min 3.01 (pending/strip); agent/chart min 5.21 (chart-1/surface-panel)
+-->
+<style>
+/* ---------- Colour options (all 58 roles each) ---------- */
+/* Soot & Terracotta (recommended) */
+html[data-theme="hermes-starship"], html[data-theme="hermes-starship"][data-palette="soot-terracotta"] { color-scheme:dark;
+  --hh-background:#15110e; --hh-foreground:#ede4d6; --hh-surface-card:#201a15; --hh-surface-card-foreground:#ede4d6; --hh-surface-panel:#29211b; --hh-surface-panel-foreground:#ede4d6; --hh-surface-shelf:#1b1612; --hh-surface-shelf-foreground:#ede4d6;
+  --hh-surface-tray:#30271f; --hh-surface-tray-foreground:#ede4d6; --hh-primary:#cf6a43; --hh-primary-foreground:#160d08; --hh-secondary:#3a3028; --hh-secondary-foreground:#ede4d6; --hh-muted:#2a221c; --hh-muted-foreground:#b8aa97;
+  --hh-accent:#d8a55e; --hh-accent-foreground:#1a1109; --hh-destructive:#ee7b6c; --hh-destructive-foreground:#1a0b08; --hh-border:#8c7a68; --hh-input:#1b1612; --hh-ring:#bc714d; --hh-success:#7cbf86;
+  --hh-success-foreground:#0d1a0f; --hh-warning:#e2ac52; --hh-warning-foreground:#1a1206; --hh-info:#86b9c9; --hh-info-foreground:#0c171b; --hh-strip:#f1e7d5; --hh-strip-foreground:#1d150f; --hh-pending:#a8762a;
+  --hh-pending-foreground:#120b03; --hh-answered:#5d8793; --hh-answered-foreground:#071114; --hh-expired:#86807a; --hh-expired-foreground:#0f0e0d; --hh-recommended:#4f8c55; --hh-recommended-foreground:#061008; --hh-live:#86d6a2;
+  --hh-live-foreground:#08170e; --hh-code:#0f0c0a; --hh-code-foreground:#e6ddcf; --hh-diff-add:#1f3622; --hh-diff-remove:#431c17; --hh-agent-1:#e08a5c; --hh-agent-2:#d9b45e; --hh-agent-3:#8cc08a;
+  --hh-agent-4:#7fb3c9; --hh-agent-5:#b79ad6; --hh-agent-6:#d98fa8; --hh-shadow:#000000; --hh-scrim:#0a0806; --hh-chart-1:#cf6a43; --hh-chart-2:#d8a55e; --hh-chart-3:#7cbf86;
+  --hh-chart-4:#86b9c9; --hh-chart-5:#b79ad6;
+}
+/* Kiln Day */
+html[data-theme="hermes-starship"][data-palette="kiln-day"] { color-scheme:light;
+  --hh-background:#ebe2d3; --hh-foreground:#1e1712; --hh-surface-card:#f7f1e7; --hh-surface-card-foreground:#1e1712; --hh-surface-panel:#e4d9c7; --hh-surface-panel-foreground:#1e1712; --hh-surface-shelf:#f0e8db; --hh-surface-shelf-foreground:#1e1712;
+  --hh-surface-tray:#ddd0bc; --hh-surface-tray-foreground:#1e1712; --hh-primary:#a3431f; --hh-primary-foreground:#fff8f0; --hh-secondary:#d6c8b2; --hh-secondary-foreground:#1e1712; --hh-muted:#e2d7c5; --hh-muted-foreground:#56483a;
+  --hh-accent:#7a5310; --hh-accent-foreground:#fff8ec; --hh-destructive:#a8281c; --hh-destructive-foreground:#fff5f2; --hh-border:#7c6a57; --hh-input:#fbf7f0; --hh-ring:#a3431f; --hh-success:#2f6b39;
+  --hh-success-foreground:#f4fbf4; --hh-warning:#8a5a0c; --hh-warning-foreground:#fff9ee; --hh-info:#2c6476; --hh-info-foreground:#f2f9fb; --hh-strip:#fffbf3; --hh-strip-foreground:#1e1712; --hh-pending:#8a5a0c;
+  --hh-pending-foreground:#fff9ee; --hh-answered:#3b6a78; --hh-answered-foreground:#f2f9fb; --hh-expired:#6e6862; --hh-expired-foreground:#fbfaf8; --hh-recommended:#2f6b39; --hh-recommended-foreground:#f4fbf4; --hh-live:#2a7046;
+  --hh-live-foreground:#f2fbf5; --hh-code:#241c16; --hh-code-foreground:#efe6d8; --hh-diff-add:#20402a; --hh-diff-remove:#4e2019; --hh-agent-1:#a3431f; --hh-agent-2:#7a5a10; --hh-agent-3:#3d6b3a;
+  --hh-agent-4:#2f6478; --hh-agent-5:#6a4c8c; --hh-agent-6:#984060; --hh-shadow:#3a2a1c; --hh-scrim:#1e1712; --hh-chart-1:#a3431f; --hh-chart-2:#7a5a10; --hh-chart-3:#3d6b3a;
+  --hh-chart-4:#2f6478; --hh-chart-5:#6a4c8c;
+}
+/* Patina Watch */
+html[data-theme="hermes-starship"][data-palette="patina-watch"] { color-scheme:dark;
+  --hh-background:#101415; --hh-foreground:#e3e6e1; --hh-surface-card:#182022; --hh-surface-card-foreground:#e3e6e1; --hh-surface-panel:#1e2729; --hh-surface-panel-foreground:#e3e6e1; --hh-surface-shelf:#141a1b; --hh-surface-shelf-foreground:#e3e6e1;
+  --hh-surface-tray:#232d2f; --hh-surface-tray-foreground:#e3e6e1; --hh-primary:#5fb3a0; --hh-primary-foreground:#061210; --hh-secondary:#2c3739; --hh-secondary-foreground:#e3e6e1; --hh-muted:#1f282a; --hh-muted-foreground:#a5b0ad;
+  --hh-accent:#d2774e; --hh-accent-foreground:#150a05; --hh-destructive:#ee7f72; --hh-destructive-foreground:#1a0a08; --hh-border:#6f8582; --hh-input:#141a1b; --hh-ring:#518e7f; --hh-success:#82c48c;
+  --hh-success-foreground:#0a170c; --hh-warning:#e0b05a; --hh-warning-foreground:#191105; --hh-info:#8bbfd0; --hh-info-foreground:#0a161a; --hh-strip:#e9e6dc; --hh-strip-foreground:#151a1a; --hh-pending:#a3782e;
+  --hh-pending-foreground:#110b03; --hh-answered:#4f8796; --hh-answered-foreground:#041012; --hh-expired:#7f8381; --hh-expired-foreground:#0d0f0f; --hh-recommended:#4b8a5a; --hh-recommended-foreground:#050f07; --hh-live:#8fdcb0;
+  --hh-live-foreground:#06160d; --hh-code:#0b0f10; --hh-code-foreground:#dfe5e2; --hh-diff-add:#1c3824; --hh-diff-remove:#40201c; --hh-agent-1:#d2774e; --hh-agent-2:#d6b665; --hh-agent-3:#8cc79a;
+  --hh-agent-4:#80b8d1; --hh-agent-5:#b8a0db; --hh-agent-6:#dd94ad; --hh-shadow:#000000; --hh-scrim:#050808; --hh-chart-1:#5fb3a0; --hh-chart-2:#d2774e; --hh-chart-3:#d6b665;
+  --hh-chart-4:#80b8d1; --hh-chart-5:#b8a0db;
+}
+/* Original · red-figure */
+html[data-theme="hermes-starship"][data-palette="original"] { color-scheme:dark;
+  --hh-background:#0e0b09; --hh-foreground:#f0e2d2; --hh-surface-card:#1a1410; --hh-surface-card-foreground:#f0e2d2; --hh-surface-panel:#221a14; --hh-surface-panel-foreground:#f0e2d2; --hh-surface-shelf:#15100d; --hh-surface-shelf-foreground:#f0e2d2;
+  --hh-surface-tray:#2a2019; --hh-surface-tray-foreground:#f0e2d2; --hh-primary:#d4744a; --hh-primary-foreground:#100906; --hh-secondary:#3a2c22; --hh-secondary-foreground:#f0e2d2; --hh-muted:#241b15; --hh-muted-foreground:#c3ac94;
+  --hh-accent:#e9c58e; --hh-accent-foreground:#140d06; --hh-destructive:#f28b7a; --hh-destructive-foreground:#180806; --hh-border:#f0d7bc; --hh-input:#15100d; --hh-ring:#ffd9b8; --hh-success:#86c48f;
+  --hh-success-foreground:#0a160c; --hh-warning:#ecbb63; --hh-warning-foreground:#171005; --hh-info:#90c3d2; --hh-info-foreground:#08151a; --hh-strip:#b8653d; --hh-strip-foreground:#0e0805; --hh-pending:#f7d68c;
+  --hh-pending-foreground:#160f03; --hh-answered:#c2e4ed; --hh-answered-foreground:#061316; --hh-expired:#e2ddd5; --hh-expired-foreground:#11100e; --hh-recommended:#bdebb4; --hh-recommended-foreground:#071206; --hh-live:#93e0ad;
+  --hh-live-foreground:#07160c; --hh-code:#0b0807; --hh-code-foreground:#ecdfcf; --hh-diff-add:#1f3522; --hh-diff-remove:#45201a; --hh-agent-1:#e8935f; --hh-agent-2:#e2c06a; --hh-agent-3:#95cc93;
+  --hh-agent-4:#8cc0d5; --hh-agent-5:#c2a6df; --hh-agent-6:#e59ab2; --hh-shadow:#000000; --hh-scrim:#070504; --hh-chart-1:#d4744a; --hh-chart-2:#e2c06a; --hh-chart-3:#95cc93;
+  --hh-chart-4:#8cc0d5; --hh-chart-5:#c2a6df;
+}
+
+/* ---------- World type, shape, depth (world-overridable tiers only) ---------- */
+html[data-theme="hermes-starship"] {
+  --hh-font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --hh-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  --hh-font-strip-header: "Saira Condensed", "Arial Narrow", sans-serif;
+  --hh-font-plate: "Marcellus SC", "Times New Roman", serif;
+  --hh-radius-plate: 3px;
+  --hh-radius-control: 2px;
+  --hh-plate-bevel: inset 0 1px 0 color-mix(in srgb, var(--hh-foreground) 9%, transparent), inset 0 -1px 0 color-mix(in srgb, var(--hh-shadow) 45%, transparent);
+  --hh-plate-drop: 0 1px 0 color-mix(in srgb, var(--hh-shadow) 50%, transparent), 0 6px 14px -8px color-mix(in srgb, var(--hh-shadow) 60%, transparent);
+  /* core component tokens this preview uses (not overridden by the world) */
+  --hh-strip-holder-width: 3px;
+  --hh-timer-track-height: 4px;
+  --hh-callsign-chip-height: 22px;
+  --hh-option-row-min-height: 36px;
+  --hh-kbd-size: 20px;
+  --hh-button-min-target: 32px;
+  --hh-focus-ring-width: 2px;
+  --hh-focus-ring-offset: 2px;
+  --hh-type-body-size: 14px;
+  --hh-meander: 22px;
+}
+[data-density="glance"] {
+  --hh-button-min-target: 3rem;
+  --hh-option-row-min-height: 3.25rem;
+  --hh-type-body-size: 16px;
+}
+
+/* ---------- Page ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--hh-background); color: var(--hh-foreground);
+  font: 400 var(--hh-type-body-size)/1.45 var(--hh-font-sans);
+  padding: calc(var(--hh-meander) + 10px) calc(var(--hh-meander) + 20px);
+  min-height: 100vh;
+}
+:focus-visible { outline: var(--hh-focus-ring-width) solid var(--hh-ring); outline-offset: var(--hh-focus-ring-offset); }
+.mono { font-family: var(--hh-font-mono); font-variant-numeric: tabular-nums; }
+.vh { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* Meander band: page edges only */
+.meander { position: fixed; background: var(--hh-background); pointer-events: none; z-index: 5; }
+.meander::before { content: ""; position: absolute; inset: 3px; background: color-mix(in srgb, var(--hh-primary) 70%, var(--hh-background)); }
+.meander.h { left: 0; right: 0; height: var(--hh-meander); }
+.meander.h::before {
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24'%3E%3Cpath d='M0 1H24M0 23H24M3 23V5H21V19H7V9H17V15H11' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") repeat-x left center / auto 100%;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24'%3E%3Cpath d='M0 1H24M0 23H24M3 23V5H21V19H7V9H17V15H11' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") repeat-x left center / auto 100%; }
+.meander.v { top: var(--hh-meander); bottom: var(--hh-meander); width: var(--hh-meander); }
+.meander.v::before {
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24'%3E%3Cpath d='M1 0V24M23 0V24M23 3H5V21H19V7H9V17H15V11' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") repeat-y center top / 100% auto;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24'%3E%3Cpath d='M1 0V24M23 0V24M23 3H5V21H19V7H9V17H15V11' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E") repeat-y center top / 100% auto; }
+.meander.top { top: 0; } .meander.bottom { bottom: 0; } .meander.left { left: 0; } .meander.right { right: 0; }
+
+/* Engraved hull plate */
+.plate {
+  position: relative; background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground);
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius-plate);
+  box-shadow: var(--hh-plate-bevel), var(--hh-plate-drop);
+}
+.plate.riveted::before {
+  content: ""; position: absolute; inset: 6px; pointer-events: none;
+  background:
+    radial-gradient(circle at 3px 3px, var(--hh-border) 1.6px, transparent 2.2px) left top / 6px 6px no-repeat,
+    radial-gradient(circle at 3px 3px, var(--hh-border) 1.6px, transparent 2.2px) right top / 6px 6px no-repeat,
+    radial-gradient(circle at 3px 3px, var(--hh-border) 1.6px, transparent 2.2px) left bottom / 6px 6px no-repeat,
+    radial-gradient(circle at 3px 3px, var(--hh-border) 1.6px, transparent 2.2px) right bottom / 6px 6px no-repeat;
+}
+.engraved {
+  font-family: var(--hh-font-plate); letter-spacing: .14em;
+  text-shadow: 0 1px 0 color-mix(in srgb, var(--hh-foreground) 10%, transparent), 0 -1px 0 color-mix(in srgb, var(--hh-shadow) 55%, transparent);
+}
+
+/* Header plate */
+.world-head { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; padding: 10px 20px; }
+.emblem { width: 68px; height: 68px; color: var(--hh-primary); }
+.world-head h1 { margin: 0; font-weight: 400; font-size: 29px; line-height: 1.05; }
+.world-head .kicker { font: 500 11px/1 var(--hh-font-mono); letter-spacing: .08em; color: var(--hh-muted-foreground); text-transform: uppercase; margin: 0 0 5px; }
+.world-head dl { margin: 6px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 1px 12px; max-width: 84ch; }
+.world-head dt { font: 600 11px/1.75 var(--hh-font-strip-header); letter-spacing: .12em; text-transform: uppercase; color: var(--hh-muted-foreground); }
+.world-head dd { margin: 0; font-size: 13px; }
+.switcher { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 6px; width: 400px; }
+.switcher legend { font: 600 11px/1 var(--hh-font-strip-header); letter-spacing: .12em; text-transform: uppercase; color: var(--hh-muted-foreground); margin-bottom: 6px; padding: 0; }
+.swatch-btn {
+  display: flex; align-items: center; gap: 8px; min-height: var(--hh-button-min-target); padding: 5px 9px;
+  background: var(--hh-surface-card); color: var(--hh-surface-card-foreground);
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius-control); font: 500 12.5px/1.2 var(--hh-font-sans); cursor: pointer; text-align: left;
+}
+.swatch-btn[aria-pressed="true"] { outline: 2px solid var(--hh-ring); outline-offset: 1px; }
+.swatch-btn .chips { display: inline-flex; flex: none; }
+.swatch-btn .chips i { width: 12px; height: 18px; border: 1px solid var(--hh-border); margin-right: -1px; }
+.swatch-btn small { display: block; font: 400 10.5px/1.2 var(--hh-font-mono); color: var(--hh-muted-foreground); }
+.swatch-btn[aria-pressed="true"] small::after { content: " · active"; }
+
+/* Stage */
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 402px; gap: 22px; margin-top: 16px; align-items: start; }
+.frame-label { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 6px; font: 600 11px/1 var(--hh-font-strip-header); letter-spacing: .12em; text-transform: uppercase; color: var(--hh-muted-foreground); }
+.frame-label span:last-child { font-family: var(--hh-font-mono); letter-spacing: .04em; text-transform: none; font-weight: 400; }
+
+/* ---------- Command Center (desktop) ---------- */
+.desk { overflow: hidden; }
+.hh-app-bar { display: flex; align-items: center; gap: 14px; height: 42px; padding: 0 14px; background: var(--hh-surface-card); color: var(--hh-surface-card-foreground); border-bottom: 1px solid var(--hh-border); }
+.hh-app-bar .mark { width: 26px; height: 26px; color: var(--hh-primary); flex: none; }
+.hh-app-bar .brand { font-size: 15px; }
+.hh-app-bar .where { font: 600 13px/1 var(--hh-font-strip-header); letter-spacing: .1em; text-transform: uppercase; color: var(--hh-muted-foreground); }
+.hh-app-bar .counts { margin-left: auto; font: 500 12px/1 var(--hh-font-mono); }
+.hh-connection { display: inline-flex; align-items: center; gap: 7px; font: 500 12px/1 var(--hh-font-mono); padding: 5px 8px; border: 1px solid var(--hh-border); border-radius: var(--hh-radius-control); }
+.hh-connection i { width: 8px; height: 8px; border-radius: 50%; background: var(--hh-live); box-shadow: 0 0 0 2px color-mix(in srgb, var(--hh-live) 25%, transparent), 0 0 9px var(--hh-live); }
+.desk-body { display: grid; grid-template-columns: 300px minmax(0,1fr); }
+
+.hh-strip-bay { background: var(--hh-surface-shelf); color: var(--hh-surface-shelf-foreground); border-right: 1px solid var(--hh-border); padding: 10px 10px 12px; }
+.bay-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.bay-head h2 { margin: 0; font-size: 14px; font-weight: 400; }
+.hh-kbd-hints { display: inline-flex; gap: 4px; align-items: center; font: 400 11px/1 var(--hh-font-mono); color: var(--hh-muted-foreground); }
+kbd, .hh-kbd { display: inline-grid; place-items: center; min-width: var(--hh-kbd-size); height: var(--hh-kbd-size); padding: 0 4px; font: 500 11px/1 var(--hh-font-mono); background: var(--hh-surface-tray); color: var(--hh-surface-tray-foreground); border: 1px solid var(--hh-border); border-bottom-width: 2px; border-radius: 2px; }
+.bay-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 7px; }
+
+/* Strip holder: a bracket that frames the whole strip, status word in its head */
+.hh-strip-holder { --holder: var(--hh-pending); --holder-fg: var(--hh-pending-foreground);
+  border: var(--hh-strip-holder-width) solid var(--holder); border-radius: var(--hh-radius-plate); background: var(--holder); }
+.hh-strip-holder[data-status="answered"] { --holder: var(--hh-answered); --holder-fg: var(--hh-answered-foreground); }
+.hh-strip-holder[data-status="expired"] { --holder: var(--hh-expired); --holder-fg: var(--hh-expired-foreground); }
+.holder-head { display: flex; align-items: center; gap: 8px; padding: 1px 5px 3px; color: var(--holder-fg); font: 700 11.5px/1.2 var(--hh-font-strip-header); letter-spacing: .12em; text-transform: uppercase; }
+.holder-head .rid { margin-left: auto; font: 500 11px/1.2 var(--hh-font-mono); letter-spacing: 0; text-transform: none; }
+.hh-strip { position: relative; background: var(--hh-strip); color: var(--hh-strip-foreground); border-radius: 1px; padding: 7px 9px 8px; }
+.bay-list .hh-strip-holder { cursor: pointer; }
+.bay-list .hh-strip-holder[aria-current="true"] { outline: 2px solid var(--hh-ring); outline-offset: 2px; }
+.strip-title { margin: 4px 0 1px; font: 600 16px/1.15 var(--hh-font-strip-header); letter-spacing: .02em; }
+.hh-strip.oneline { display: flex; align-items: center; gap: 8px; }
+.hh-strip.oneline .strip-meta { white-space: nowrap; }
+.strip-meta { margin: 0; font: 400 11px/1.35 var(--hh-font-mono); font-variant-numeric: tabular-nums; }
+.hh-policy-timer { height: var(--hh-timer-track-height); background: color-mix(in srgb, var(--hh-strip-foreground) 14%, var(--hh-strip)); margin: 7px -9px -8px; }
+.hh-policy-timer span { display: block; height: 100%; width: calc(var(--left, 1) * 100%); background: var(--holder); transition: width 1s linear; }
+.hh-strip-holder:not([data-status="pending"]) .hh-policy-timer { display: none; }
+
+.hh-callsign { --agent: var(--hh-agent-1); display: inline-flex; align-items: center; gap: 6px; height: var(--hh-callsign-chip-height); padding: 0 7px 0 4px;
+  background: var(--hh-surface-card); color: var(--hh-surface-card-foreground); border: 1px solid var(--agent); border-radius: 2px; font: 500 11.5px/1 var(--hh-font-mono); white-space: nowrap; }
+.hh-callsign i { width: 12px; height: 12px; background: var(--agent); flex: none; }
+
+/* Open Round */
+.round { padding: 10px 12px; background: var(--hh-surface-panel); }
+.round .hh-strip { padding: 9px 14px 12px; }
+.round .holder-head { font-size: 12.5px; padding: 2px 8px 4px; }
+.round .holder-head .policy { margin-left: auto; font: 500 11.5px/1.2 var(--hh-font-mono); letter-spacing: 0; text-transform: none; }
+.round .hh-policy-timer { margin: -9px -14px 9px; }
+.round-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.round-head h2 { margin: 0; font: 600 21px/1.1 var(--hh-font-strip-header); letter-spacing: .02em; }
+.round-head .meta { margin-left: auto; font: 400 11.5px/1.2 var(--hh-font-mono); }
+
+.hh-question { border: 0; margin: 10px 0 0; padding: 8px 0 0; border-top: 1px solid var(--hh-border); min-width: 0; }
+.hh-question legend { padding: 0; float: left; width: 100%; font: 700 12px/1.2 var(--hh-font-strip-header); letter-spacing: .12em; text-transform: uppercase; }
+.hh-question legend + * { clear: both; }
+.qtext { margin: 0 0 6px; padding-top: 3px; font-size: 15px; font-weight: 500; }
+.opts { display: grid; gap: 5px; }
+.hh-option { display: grid; grid-template-columns: auto auto 1fr auto; align-items: center; gap: 10px; min-height: var(--hh-option-row-min-height); padding: 4px 8px;
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius-control); cursor: pointer; }
+.hh-option input { appearance: none; margin: 0; width: 16px; height: 16px; border: 2px solid var(--hh-strip-foreground); border-radius: 50%; display: grid; place-items: center; }
+.hh-option input:checked::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--hh-strip-foreground); }
+.hh-option:has(input:checked) { border-color: var(--hh-ring); box-shadow: inset 0 0 0 1px var(--hh-ring); }
+.hh-option:has(input:focus-visible) { outline: 2px solid var(--hh-ring); outline-offset: 2px; }
+.hh-recommended { display: inline-flex; align-items: center; gap: 5px; padding: 2px 7px; background: var(--hh-recommended); color: var(--hh-recommended-foreground); border-radius: 2px; font: 700 11px/1.3 var(--hh-font-strip-header); letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+.hh-recommended::before { content: "▲"; font-size: 8px; }
+
+.hh-attachment { border: 1px solid var(--hh-border); border-radius: var(--hh-radius-control); overflow: hidden; margin: 2px 0 9px; }
+.att-head { display: flex; align-items: center; gap: 10px; padding: 5px 9px; background: var(--hh-surface-card); color: var(--hh-surface-card-foreground); font: 400 11.5px/1.3 var(--hh-font-mono); }
+.att-head .kind { font: 700 11px/1 var(--hh-font-strip-header); letter-spacing: .12em; text-transform: uppercase; color: var(--hh-muted-foreground); }
+.att-head .n { margin-left: auto; color: var(--hh-muted-foreground); }
+.hh-diff { margin: 0; background: var(--hh-code); color: var(--hh-code-foreground); font: 400 12px/1.55 var(--hh-font-mono); padding: 4px 0; overflow: hidden; }
+.hh-diff span { display: block; padding: 0 10px; white-space: pre; }
+.hh-diff .add { background: var(--hh-diff-add); }
+.hh-diff .rem { background: var(--hh-diff-remove); }
+
+.ar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ar-btn { display: flex; align-items: center; justify-content: center; gap: 9px; min-height: var(--hh-button-min-target); padding: 0 12px; border: 1px solid var(--hh-border); border-radius: var(--hh-radius-control);
+  background: transparent; color: var(--hh-strip-foreground); font: 600 14px/1 var(--hh-font-sans); cursor: pointer; }
+.ar-btn kbd { background: var(--hh-surface-tray); }
+.ar-btn[data-v="approve"][aria-pressed="true"] { background: var(--hh-success); color: var(--hh-success-foreground); border-color: var(--hh-success); }
+.ar-btn[data-v="reject"][aria-pressed="true"] { background: var(--hh-destructive); color: var(--hh-destructive-foreground); border-color: var(--hh-destructive); }
+.ar-btn[aria-pressed="true"]::after { content: "· selected"; font: 400 11.5px/1 var(--hh-font-mono); }
+
+.hh-answer-bar { display: grid; grid-template-columns: minmax(0, 1fr) 210px auto; gap: 10px; align-items: center; margin-top: 10px; padding: 8px 10px; background: var(--hh-surface-tray); color: var(--hh-surface-tray-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-plate); }
+.hh-answer-bar .sum { margin: 0; font: 400 11.5px/1.35 var(--hh-font-mono); color: var(--hh-muted-foreground); }
+.hh-answer-bar .sum b { color: var(--hh-surface-tray-foreground); font-weight: 500; }
+.hh-input { width: 100%; min-height: var(--hh-button-min-target); padding: 0 10px; background: var(--hh-input); color: var(--hh-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-control); font: 400 13.5px/1 var(--hh-font-sans); }
+.hh-input::placeholder { color: var(--hh-muted-foreground); }
+.hh-button { display: inline-flex; align-items: center; gap: 10px; min-height: var(--hh-button-min-target); padding: 0 14px; background: var(--hh-primary); color: var(--hh-primary-foreground); border: 1px solid var(--hh-primary); border-radius: var(--hh-radius-control); font: 600 14px/1 var(--hh-font-sans); cursor: pointer; white-space: nowrap; }
+.hh-button kbd { background: transparent; color: inherit; border-color: currentColor; }
+.hh-button[aria-disabled="true"] { background: transparent; color: var(--hh-surface-tray-foreground); border-color: var(--hh-border); cursor: not-allowed; }
+.hh-button.ghost { background: transparent; color: inherit; border-color: var(--hh-border); }
+.answered-note { display: none; }
+.is-dispatched .answered-note { display: block; }
+.is-dispatched .live-only { display: none; }
+
+/* ---------- Signature: winged-sandal dispatch mark ---------- */
+.hh-dispatch-mark { position: relative; margin-left: auto; display: none; align-items: center; gap: 7px; padding: 2px 11px 2px 5px;
+  background: var(--hh-strip); color: var(--hh-strip-foreground); border: 2px solid var(--hh-answered); border-radius: 999px; transform: rotate(-4deg); }
+.hh-dispatch-mark svg { width: 40px; height: 26px; color: var(--hh-answered); flex: none; }
+.hh-dispatch-mark b { display: block; font: 700 13px/1.05 var(--hh-font-strip-header); letter-spacing: .16em; text-transform: uppercase; }
+.hh-dispatch-mark small { display: block; font: 400 10.5px/1.2 var(--hh-font-mono); white-space: nowrap; }
+.is-dispatched .hh-dispatch-mark { display: inline-flex; animation: hh-starship-dispatch 560ms cubic-bezier(.2,.7,.2,1) both; }
+.is-dispatched .hh-dispatch-mark .wing { transform-origin: 20px 14px; animation: hh-starship-wing 280ms ease-in-out 2 both; }
+.glance-head { display: flex; align-items: center; gap: 8px; }
+@keyframes hh-starship-dispatch {
+  0% { opacity: 0; transform: translate(-36px, 6px) rotate(-10deg) scale(.9); }
+  65% { opacity: 1; transform: translate(4px, 0) rotate(-3deg) scale(1.02); }
+  100% { opacity: 1; transform: translate(0, 0) rotate(-4deg) scale(1); }
+}
+@keyframes hh-starship-wing { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-16deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .is-dispatched .hh-dispatch-mark, .is-dispatched .hh-dispatch-mark .wing { animation: none; }
+  .hh-policy-timer span { transition: none; }
+}
+.is-dispatched .hh-question { opacity: 1; }
+.is-dispatched .hh-question .hh-option, .is-dispatched .ar-btn { cursor: default; }
+
+/* ---------- Phone (glance) ---------- */
+.phone { width: 402px; border: 6px solid var(--hh-surface-tray); border-radius: 30px; background: var(--hh-background); overflow: hidden; box-shadow: var(--hh-plate-drop); }
+.phone-screen { width: 390px; }
+.phone-status { display: flex; justify-content: space-between; padding: 8px 22px 4px; font: 500 12px/1 var(--hh-font-mono); color: var(--hh-muted-foreground); }
+.phone .hh-app-bar { height: 48px; border-top: 1px solid var(--hh-border); }
+.phone-body { padding: 12px 12px 16px; font-size: var(--hh-type-body-size); }
+.phone .bay-head h2 { font-size: 16px; }
+.phone .hh-strip { padding: 10px 12px 12px; }
+.phone .strip-title { font-size: 21px; margin-top: 8px; }
+.phone .qtext { font-size: 16.5px; margin-top: 6px; }
+.phone .hh-diff { font-size: 12px; }
+.phone .hh-policy-timer { margin: 10px -12px 10px; }
+.phone .ar { gap: 10px; }
+.phone .ar-btn { font-size: 17px; }
+.phone .policy-line { margin: 0 0 4px; font: 400 13px/1.35 var(--hh-font-mono); }
+.next { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 6px; }
+.list-row { display: flex; align-items: center; gap: 10px; min-height: var(--hh-button-min-target); padding: 6px 10px; background: var(--hh-surface-card); color: var(--hh-surface-card-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-control); font-size: 14.5px; }
+.list-row .st { margin-left: auto; font: 700 12px/1 var(--hh-font-strip-header); letter-spacing: .12em; text-transform: uppercase; padding: 4px 6px; background: var(--hh-pending); color: var(--hh-pending-foreground); border-radius: 2px; }
+.list-row[data-status="answered"] .st { background: var(--hh-answered); color: var(--hh-answered-foreground); }
+
+/* Footer notes */
+.notes { margin-top: 18px; padding: 12px 18px; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; font-size: 13px; }
+.notes h3 { margin: 0 0 4px; font: 600 12px/1.2 var(--hh-font-strip-header); letter-spacing: .12em; text-transform: uppercase; color: var(--hh-muted-foreground); }
+.notes p { margin: 0; }
+
+@media (max-width: 1180px) {
+  .stage { grid-template-columns: minmax(0,1fr); }
+  .world-head { grid-template-columns: auto 1fr; }
+  .switcher { grid-column: 1 / -1; width: auto; }
+  .notes { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="sandal" viewBox="0 0 64 40">
+      <g class="wing" fill="currentColor">
+        <path d="M17 22 C11 21 5 18 1 12 C7 14 12 15 18 17 Z"/>
+        <path d="M18 18 C13 15 9 10 8 3 C12 8 16 11 21 14 Z"/>
+        <path d="M21 15 C19 10 19 6 21 0 C24 5 25 10 24 15 Z"/>
+      </g>
+      <path fill="currentColor" d="M8 31 C8 28.5 11 27 15 27 L50 27 C56 27 60 29 60 31.5 C60 34 56 35.5 50 35.5 L14 35.5 C10 35.5 8 33.5 8 31 Z"/>
+      <g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 27 C15 21 18 17.5 23.5 16.5"/>
+        <path d="M23.5 16.5 C28 14 33 14 36 16"/>
+        <path d="M22 27 L31 17.5 M29 27 L37 19.5 M37 27 L43 22.5 M45 27 L47 25"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="meander h top" aria-hidden="true"></div>
+<div class="meander h bottom" aria-hidden="true"></div>
+<div class="meander v left" aria-hidden="true"></div>
+<div class="meander v right" aria-hidden="true"></div>
+
+<header class="world-head plate riveted">
+  <svg class="emblem" viewBox="0 0 80 80" role="img" aria-label="Starship Hermes emblem: winged sandal in an engraved roundel">
+    <defs><path id="ring" d="M40 40 m-30 0 a30 30 0 1 1 60 0 a30 30 0 1 1 -60 0"/></defs>
+    <circle cx="40" cy="40" r="38" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="40" cy="40" r="24" fill="none" stroke="currentColor" stroke-width="1"/>
+    <text font-family="Marcellus SC, serif" font-size="8.2" letter-spacing="1.6" fill="currentColor"><textPath href="#ring">HERMES · COURIER · DISPATCH ·</textPath></text>
+    <use href="#sandal" x="22" y="27" width="36" height="24"/>
+  </svg>
+  <div>
+    <p class="kicker">World preview · hermes-starship · Phase 2 · Hermes Hub</p>
+    <h1 class="engraved">Starship Hermes</h1>
+    <dl>
+      <dt>Idea</dt><dd>The courier god as a ship's emblem. Engraved hull plates, a meander band on the page edges only, terracotta and soot.</dd>
+      <dt>Signature</dt><dd>When a Round is sent back, a winged-sandal dispatch mark is struck on its strip. Try it: Approve Q2 and Send Answer, or tap Approve on the phone.</dd>
+    </dl>
+  </div>
+  <fieldset class="switcher" aria-label="Colour option">
+    <legend>Colour option · 4</legend>
+    <button type="button" class="swatch-btn" data-palette="soot-terracotta" aria-pressed="true"><span class="chips" aria-hidden="true"><i style="background:#15110e"></i><i style="background:#cf6a43"></i><i style="background:#f1e7d5"></i></span><span>Soot &amp; Terracotta<small>Recommended</small></span></button>
+    <button type="button" class="swatch-btn" data-palette="kiln-day" aria-pressed="false"><span class="chips" aria-hidden="true"><i style="background:#ebe2d3"></i><i style="background:#a3431f"></i><i style="background:#fffbf3"></i></span><span>Kiln Day<small>Alternative</small></span></button>
+    <button type="button" class="swatch-btn" data-palette="patina-watch" aria-pressed="false"><span class="chips" aria-hidden="true"><i style="background:#101415"></i><i style="background:#5fb3a0"></i><i style="background:#e9e6dc"></i></span><span>Patina Watch<small>Alternative</small></span></button>
+    <button type="button" class="swatch-btn" data-palette="original" aria-pressed="false"><span class="chips" aria-hidden="true"><i style="background:#0e0b09"></i><i style="background:#d4744a"></i><i style="background:#b8653d"></i></span><span>Original<small>Red-figure</small></span></button>
+  </fieldset>
+</header>
+
+<main class="stage">
+  <section aria-labelledby="desk-label">
+    <p class="frame-label"><span id="desk-label">Command Center · triage · desktop</span><span>Illustrative data</span></p>
+    <div class="desk plate">
+      <div class="hh-app-bar">
+        <svg class="mark" viewBox="0 0 64 40" aria-hidden="true"><use href="#sandal"/></svg>
+        <span class="brand engraved">Hermes</span>
+        <span class="where">Command Center</span>
+        <span class="counts" aria-live="polite"><span data-count="pending">4</span> pending · <span data-count="answered">1</span> answered · 1 expired</span>
+        <span class="hh-connection" role="status"><i aria-hidden="true"></i>Live · SSE · 5 Agents</span>
+      </div>
+      <div class="desk-body">
+        <aside class="hh-strip-bay" aria-label="Strip bay">
+          <div class="bay-head">
+            <h2 class="engraved">Strip bay</h2>
+            <span class="hh-kbd-hints"><kbd>j</kbd><kbd>k</kbd> move</span>
+          </div>
+          <ol class="bay-list">
+            <li class="hh-strip-holder" data-status="pending" data-round="R-0417" aria-current="true">
+              <div class="holder-head"><span class="st">Pending · open</span><span class="rid">R-0417</span></div>
+              <div class="hh-strip">
+                <span class="hh-callsign" style="--agent:var(--hh-agent-1)"><i></i>CLAUDE·api-refactor</span>
+                <h3 class="strip-title">Orders table migration</h3>
+                <p class="strip-meta">2 Questions · <b data-timer="521" data-total="600">08:41</b>, then recommended</p>
+                <div class="hh-policy-timer" aria-hidden="true"><span></span></div>
+              </div>
+            </li>
+            <li class="hh-strip-holder" data-status="pending" data-round="R-0418">
+              <div class="holder-head"><span class="st">Pending</span><span class="rid">R-0418</span></div>
+              <div class="hh-strip">
+                <span class="hh-callsign" style="--agent:var(--hh-agent-2)"><i></i>CODEX·billing-svc</span>
+                <h3 class="strip-title">Delete 3 stale feature flags</h3>
+                <p class="strip-meta">1 Question · waits, no limit</p>
+              </div>
+            </li>
+            <li class="hh-strip-holder" data-status="pending" data-round="R-0419">
+              <div class="holder-head"><span class="st">Pending</span><span class="rid">R-0419</span></div>
+              <div class="hh-strip">
+                <span class="hh-callsign" style="--agent:var(--hh-agent-4)"><i></i>CURSOR·web-shell</span>
+                <h3 class="strip-title">Pick the toast position</h3>
+                <p class="strip-meta">1 Question · <b data-timer="190" data-total="300">03:10</b>, then cancels</p>
+                <div class="hh-policy-timer" aria-hidden="true"><span></span></div>
+              </div>
+            </li>
+            <li class="hh-strip-holder" data-status="pending" data-round="R-0420">
+              <div class="holder-head"><span class="st">Pending</span><span class="rid">R-0420</span></div>
+              <div class="hh-strip">
+                <span class="hh-callsign" style="--agent:var(--hh-agent-3)"><i></i>OMP·infra-tailnet</span>
+                <h3 class="strip-title">Open port 3300 on the tailnet</h3>
+                <p class="strip-meta">1 Question · <b data-timer="292" data-total="600">04:52</b>, then cancels</p>
+                <div class="hh-policy-timer" aria-hidden="true"><span></span></div>
+              </div>
+            </li>
+            <li class="hh-strip-holder" data-status="answered" data-round="R-0414">
+              <div class="holder-head"><span class="st">Answered</span><span class="rid">R-0414</span></div>
+              <div class="hh-strip oneline">
+                <span class="hh-callsign" style="--agent:var(--hh-agent-5)"><i></i>COPILOT·docs-site</span>
+                <p class="strip-meta">13:58 · approved</p>
+              </div>
+            </li>
+            <li class="hh-strip-holder" data-status="expired" data-round="R-0411">
+              <div class="holder-head"><span class="st">Expired</span><span class="rid">R-0411</span></div>
+              <div class="hh-strip oneline">
+                <span class="hh-callsign" style="--agent:var(--hh-agent-6)"><i></i>SCRIPT·nightly</span>
+                <p class="strip-meta">13:40 · cancelled</p>
+              </div>
+            </li>
+          </ol>
+        </aside>
+
+        <section class="round" id="round" aria-labelledby="round-title">
+          <div class="hh-strip-holder" data-status="pending" id="round-holder">
+            <div class="holder-head">
+              <span class="st" id="round-status">Pending</span><span class="mono" style="letter-spacing:0;text-transform:none;font-weight:500">R-0417 · 2 Questions</span>
+              <span class="policy live-only">Policy · waits <b data-timer="521" data-total="600">08:41</b>, then applies recommended</span>
+              <span class="policy answered-note" id="round-answered-note">Sent back 14:02:31</span>
+            </div>
+            <div class="hh-strip">
+              <div class="hh-policy-timer" aria-hidden="true"><span></span></div>
+              <div class="round-head">
+                <span class="hh-callsign" style="--agent:var(--hh-agent-1)"><i></i>CLAUDE·api-refactor</span>
+                <h2 id="round-title">Orders table migration</h2>
+                <span class="meta live-only">received 14:01:52 · ~/src/api@main</span>
+                <div class="hh-dispatch-mark" role="status">
+                  <svg viewBox="0 0 64 40" aria-hidden="true"><use href="#sandal"/></svg>
+                  <span><b>Dispatched</b><small data-dispatch-time>14:02:31 · Q2 approved</small></span>
+                </div>
+              </div>
+
+              <fieldset class="hh-question" id="q1">
+                <legend>Q1 · Single choice · <span class="mono" style="letter-spacing:0;text-transform:none;font-weight:400">keys 1–3</span></legend>
+                <p class="qtext">How should the orders table migrate?</p>
+                <div class="opts">
+                  <label class="hh-option"><input type="radio" name="q1" value="1" checked><kbd>1</kbd><span>Expand–contract: add column, backfill, switch reads</span><span class="hh-recommended">Recommended</span></label>
+                  <label class="hh-option"><input type="radio" name="q1" value="2"><kbd>2</kbd><span>One migration inside a 20-minute maintenance window</span><span></span></label>
+                  <label class="hh-option"><input type="radio" name="q1" value="3"><kbd>3</kbd><span>Shadow table with dual writes for one release</span><span></span></label>
+                </div>
+              </fieldset>
+
+              <fieldset class="hh-question" id="q2">
+                <legend>Q2 · Approve / reject · <span class="mono" style="letter-spacing:0;text-transform:none;font-weight:400">keys a, r</span></legend>
+                <p class="qtext">Run the backfill against staging now?</p>
+                <div class="hh-attachment">
+                  <div class="att-head"><span class="kind">File · diff</span><span>db/migrations/0042_orders_split.sql</span><span class="n">+3 −1</span></div>
+<pre class="hh-diff" aria-label="Diff of 0042_orders_split.sql"><span>  ALTER TABLE orders</span><span class="rem">- DROP COLUMN legacy_total;</span><span class="add">+ ADD COLUMN total_cents bigint;</span><span class="add">+ UPDATE orders SET total_cents = legacy_total * 100</span><span class="add">+   WHERE id BETWEEN $1 AND $2;  -- batches of 5 000</span></pre>
+                </div>
+                <div class="ar" role="group" aria-label="Q2 answer">
+                  <button type="button" class="ar-btn" data-q="q2" data-v="approve" aria-pressed="false"><kbd>a</kbd>Approve</button>
+                  <button type="button" class="ar-btn" data-q="q2" data-v="reject" aria-pressed="false"><kbd>r</kbd>Reject</button>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <div class="hh-answer-bar">
+            <p class="sum" id="answer-sum" aria-live="polite">Q1 · <b>1 Expand–contract</b><br>Q2 · <b>needs Approve/Reject</b></p>
+            <label class="vh" for="notes">Notes to the Agent</label>
+            <input class="hh-input live-only" id="notes" type="text" placeholder="Notes to the Agent (optional)">
+            <span class="answered-note mono" style="font-size:12px">Answered · sent back to the Agent</span>
+            <span>
+              <button type="button" class="hh-button live-only" id="send" aria-disabled="true">Send Answer <kbd>⌘</kbd><kbd>↵</kbd></button>
+              <button type="button" class="hh-button ghost answered-note" data-reset="round">Restore demo</button>
+            </span>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="phone-label">
+    <p class="frame-label"><span id="phone-label">Phone · glance · 390 px</span><span>Illustrative data</span></p>
+    <div class="phone" data-density="glance">
+      <div class="phone-screen">
+        <div class="phone-status" aria-hidden="true"><span>14:02</span><span>tailnet</span></div>
+        <div class="hh-app-bar">
+          <svg class="mark" viewBox="0 0 64 40" aria-hidden="true"><use href="#sandal"/></svg>
+          <span class="brand engraved">Hermes</span>
+          <span class="counts"><span data-count="pending">4</span> pending</span>
+          <span class="hh-connection" role="status"><i aria-hidden="true"></i>Live</span>
+        </div>
+        <div class="phone-body" id="phone-round">
+          <div class="hh-strip-holder" data-status="pending" id="phone-holder">
+            <div class="holder-head"><span class="st" id="phone-status">Pending</span><span class="rid">R-0420 · 1 Question</span></div>
+            <div class="hh-strip">
+              <div class="glance-head">
+                <span class="hh-callsign" style="--agent:var(--hh-agent-3)"><i></i>OMP·infra-tailnet</span>
+                <div class="hh-dispatch-mark" role="status">
+                  <svg viewBox="0 0 64 40" aria-hidden="true"><use href="#sandal"/></svg>
+                  <span><b>Dispatched</b><small data-dispatch-time>14:02:40 · approved</small></span>
+                </div>
+              </div>
+              <h2 class="strip-title">Open port 3300 on the tailnet</h2>
+              <p class="qtext">Serve the design preview to tailnet peers only. Funnel stays off.</p>
+              <div class="hh-attachment">
+                <div class="att-head"><span class="kind">Command</span><span class="n">1 line</span></div>
+                <pre class="hh-diff"><span>$ tailscale serve --bg 3300</span></pre>
+              </div>
+              <p class="policy-line live-only">Pending · waits <b data-timer="292" data-total="600">04:52</b>, then cancels</p>
+              <p class="policy-line answered-note">Answered · Approve · sent back 14:02:40</p>
+              <div class="hh-policy-timer live-only" aria-hidden="true"><span></span></div>
+              <div class="ar live-only" role="group" aria-label="Answer R-0420">
+                <button type="button" class="ar-btn" data-phone="approve" data-v="approve" aria-pressed="false">Approve</button>
+                <button type="button" class="ar-btn" data-phone="reject" data-v="reject" aria-pressed="false">Reject</button>
+              </div>
+              <button type="button" class="hh-button ghost answered-note" data-reset="phone" style="width:100%;justify-content:center">Restore demo</button>
+            </div>
+          </div>
+          <div class="bay-head" style="margin-top:16px;margin-bottom:6px"><h2 class="engraved">Next in bay</h2><span class="hh-kbd-hints">oldest first</span></div>
+          <ul class="next">
+            <li class="list-row"><span class="hh-callsign" style="--agent:var(--hh-agent-1)"><i></i>CLAUDE</span>Orders migration<span class="st" data-row="R-0417">Pending</span></li>
+            <li class="list-row"><span class="hh-callsign" style="--agent:var(--hh-agent-2)"><i></i>CODEX</span>Stale flags<span class="st">Pending</span></li>
+            <li class="list-row"><span class="hh-callsign" style="--agent:var(--hh-agent-4)"><i></i>CURSOR</span>Toast position<span class="st">Pending</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="notes plate riveted">
+  <div><h3>Type</h3><p>Marcellus SC for engraved plates. Saira Condensed for strip headers and status words. Instrument Sans for reading. IBM Plex Mono for callsigns, Round ids and timers.</p></div>
+  <div><h3>Used future</h3><p>Hull plates are opaque with a rivet in each corner. The meander runs on the page edges only, never inside a reading plane. Glow appears on the live connection lamp and nowhere else.</p></div>
+  <div><h3>Data</h3><p>Illustrative data. Agents, Rounds, times and the diff are invented for this preview. Contrast ratios for all four colour options are in the page source.</p></div>
+</footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const fmt = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  const t0 = Date.now(), base = 14 * 3600 + 2 * 60 + 31; // illustrative ops clock, starts 14:02:31
+  const now = () => { const s = base + Math.floor((Date.now() - t0) / 1000); return [s / 3600, (s / 60) % 60, s % 60].map(n => String(Math.floor(n)).padStart(2, '0')).join(':'); };
+
+  // Colour option switcher
+  document.querySelectorAll('.swatch-btn').forEach(btn => btn.addEventListener('click', () => {
+    root.dataset.palette = btn.dataset.palette;
+    document.querySelectorAll('.swatch-btn').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+  }));
+
+  // Live Unanswered Policy timers
+  const timers = [...document.querySelectorAll('[data-timer]')];
+  const paint = el => {
+    const left = +el.dataset.timer, total = +el.dataset.total;
+    el.textContent = fmt(left);
+    const track = el.closest('.hh-strip-holder')?.querySelector('.hh-policy-timer span');
+    if (track) track.style.setProperty('--left', (left / total).toFixed(4));
+  };
+  timers.forEach(paint);
+  setInterval(() => timers.forEach(el => {
+    if (el.closest('.is-dispatched') || el.closest('[data-status]')?.dataset.status !== 'pending') return;
+    if (+el.dataset.timer > 0) { el.dataset.timer = +el.dataset.timer - 1; paint(el); }
+  }), 1000);
+
+  // Bay strips and counts
+  const bayStrip = id => document.querySelector(`.bay-list [data-round="${id}"]`);
+  const setBay = (id, status, meta) => {
+    const li = bayStrip(id);
+    li.dataset.status = status;
+    li.querySelector('.st').textContent = status === 'pending' ? (id === 'R-0417' ? 'Pending · open' : 'Pending') : 'Answered';
+    if (meta !== undefined) li.querySelector('.strip-meta').innerHTML = meta;
+    const row = document.querySelector(`[data-row="${id}"]`);
+    if (row) { row.textContent = status === 'pending' ? 'Pending' : 'Answered'; row.closest('.list-row').dataset.status = status; }
+    const pending = document.querySelectorAll('.bay-list [data-status="pending"]').length;
+    const answered = document.querySelectorAll('.bay-list [data-status="answered"]').length;
+    document.querySelectorAll('[data-count="pending"]').forEach(n => n.textContent = pending);
+    document.querySelectorAll('[data-count="answered"]').forEach(n => n.textContent = answered);
+  };
+  const metaHTML = {};
+  ['R-0417', 'R-0420'].forEach(id => metaHTML[id] = bayStrip(id).querySelector('.strip-meta').innerHTML);
+  const rebind = id => { const el = bayStrip(id).querySelector('[data-timer]'); if (el) { timers.push(el); paint(el); } };
+
+  // Desktop Round
+  const round = document.getElementById('round');
+  const holder = document.getElementById('round-holder');
+  const send = document.getElementById('send');
+  const sum = document.getElementById('answer-sum');
+  const q1Labels = { 1: 'Expand–contract', 2: 'Maintenance window', 3: 'Shadow table' };
+  const state = { q1: '1', q2: null };
+  const refresh = () => {
+    const done = !!state.q2;
+    send.setAttribute('aria-disabled', String(!done));
+    sum.innerHTML = `Q1 · <b>${state.q1} ${q1Labels[state.q1]}</b><br>Q2 · <b>${done ? (state.q2 === 'approve' ? 'Approve' : 'Reject') : 'needs Approve/Reject'}</b>`;
+  };
+  round.querySelectorAll('input[name="q1"]').forEach(r => r.addEventListener('change', () => { state.q1 = r.value; refresh(); }));
+  const setQ2 = v => {
+    if (round.classList.contains('is-dispatched')) return;
+    state.q2 = v;
+    round.querySelectorAll('.ar-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === v)));
+    refresh();
+  };
+  round.querySelectorAll('.ar-btn').forEach(b => b.addEventListener('click', () => setQ2(b.dataset.v)));
+  const dispatchRound = () => {
+    if (round.classList.contains('is-dispatched')) return;
+    if (!state.q2) { sum.innerHTML = 'Not sent<br>Q2 · <b>press a or r</b>'; round.querySelector('#q2 .ar-btn').focus(); return; }
+    const t = now();
+    round.classList.add('is-dispatched');
+    holder.dataset.status = 'answered';
+    document.getElementById('round-status').textContent = 'Answered';
+    document.getElementById('round-answered-note').textContent = `Sent back ${t}`;
+    round.querySelector('[data-dispatch-time]').textContent = `${t} · Q2 ${state.q2 === 'approve' ? 'approved' : 'rejected'}`;
+    round.querySelectorAll('input, .ar-btn').forEach(el => el.disabled = true);
+    sum.innerHTML = `Q1 · <b>${state.q1} ${q1Labels[state.q1]}</b><br>Q2 · <b>${state.q2 === 'approve' ? 'Approve' : 'Reject'}</b>`;
+    setBay('R-0417', 'answered', `Sent back ${t} · Q2 ${state.q2 === 'approve' ? 'approved' : 'rejected'}`);
+    round.querySelector('[data-reset="round"]').focus();
+  };
+  send.addEventListener('click', dispatchRound);
+  round.querySelector('[data-reset="round"]').addEventListener('click', () => {
+    round.classList.remove('is-dispatched');
+    holder.dataset.status = 'pending';
+    document.getElementById('round-status').textContent = 'Pending';
+    round.querySelectorAll('input, .ar-btn').forEach(el => el.disabled = false);
+    state.q2 = null;
+    round.querySelectorAll('.ar-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+    setBay('R-0417', 'pending', metaHTML['R-0417']); rebind('R-0417');
+    refresh(); send.focus();
+  });
+
+  // Phone Round (single approve/reject: tapping sends)
+  const phone = document.getElementById('phone-round');
+  const phoneHolder = document.getElementById('phone-holder');
+  phone.querySelectorAll('[data-phone]').forEach(b => b.addEventListener('click', () => {
+    if (phone.classList.contains('is-dispatched')) return;
+    const v = b.dataset.phone, t = now(), word = v === 'approve' ? 'Approve' : 'Reject';
+    phone.classList.add('is-dispatched');
+    phoneHolder.dataset.status = 'answered';
+    document.getElementById('phone-status').textContent = 'Answered';
+    phone.querySelector('[data-dispatch-time]').textContent = `${t} · ${word.toLowerCase()}d`;
+    phone.querySelector('.policy-line.answered-note').textContent = `Answered · ${word} · sent back ${t}`;
+    setBay('R-0420', 'answered', `Sent back ${t} · ${word.toLowerCase()}d`);
+    phone.querySelector('[data-reset="phone"]').focus();
+  }));
+  phone.querySelector('[data-reset="phone"]').addEventListener('click', () => {
+    phone.classList.remove('is-dispatched');
+    phoneHolder.dataset.status = 'pending';
+    document.getElementById('phone-status').textContent = 'Pending';
+    setBay('R-0420', 'pending', metaHTML['R-0420']); rebind('R-0420');
+  });
+
+  // Keyboard: 1–3, a, r, ⌘↵ / Ctrl+↵
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); dispatchRound(); return; }
+    if (e.target.matches('input[type="text"], textarea') || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (round.classList.contains('is-dispatched')) return;
+    if (['1', '2', '3'].includes(e.key)) { const r = round.querySelector(`input[name="q1"][value="${e.key}"]`); r.checked = true; state.q1 = e.key; refresh(); }
+    else if (e.key === 'a') setQ2('approve');
+    else if (e.key === 'r') setQ2('reject');
+  });
+  refresh();
+})();
+</script>
+</body>
+</html>

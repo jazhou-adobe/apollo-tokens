@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="en" data-theme="hermes-comms-deck" data-palette="bakelite">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comms Deck · Hermes world preview</title>
+<!--
+  Contrast check (WCAG 2.x, truncated to 2 dp; 58 checks per colour option; run with a throwaway Node script).
+  Gates from design/brief.md: role/role-foreground >= 4.5; code-foreground on diff-add/diff-remove >= 4.5;
+  muted-foreground on background, surfaces, muted >= 4.5; border and ring vs surfaces, strip, input >= 3;
+  pending/answered/expired/recommended vs strip and background >= 3; agent-1..6 vs card, panel, background >= 3.
+  Preview extras: foreground on input >= 4.5; pending and answered holders vs surface-card >= 3.
+  Bakelite Olive (recommended): all pass; min text pair 4.94, min boundary 3.05; strip-fg/strip 14.09, pending/strip 3.11, pending/bg 4.73, muted-fg/panel 7.03, border/strip 3.05, border/panel 3.65, ring/strip 3.11, rec/strip 3.1
+  Night Watch (alternative): all pass; min text pair 4.85, min boundary 3.11; strip-fg/strip 14.4, pending/strip 3.2, pending/bg 4.69, muted-fg/panel 7.54, border/strip 3.11, border/panel 3.62, ring/strip 3.18, rec/strip 3.19
+  Day Watch (alternative, light): all pass; min text pair 5.74, min boundary 3.8; strip-fg/strip 16.74, pending/strip 6.18, pending/bg 4.21, muted-fg/panel 6.48, border/strip 6.51, border/panel 3.8, ring/strip 6.51, rec/strip 6.49
+  Original (core Flight Strips): all pass; min text pair 5.15, min boundary 3.01; strip-fg/strip 14.51, pending/strip 3.11, pending/bg 4.89, muted-fg/panel 7.64, border/strip 3.15, border/panel 4.17, ring/strip 3.13, rec/strip 3.1
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Martian+Mono:wdth,wght@75..112.5,400..700&family=Big+Shoulders+Stencil+Text:wght@600;800&display=swap">
+<style>
+/* ── Colour options. Each block defines every role this preview uses. ── */
+html[data-theme="hermes-comms-deck"][data-palette="bakelite"] {
+  --hh-background: #13150e;
+  --hh-foreground: #ece6d1;
+  --hh-surface-panel: #2a2e1f;
+  --hh-surface-panel-foreground: #ece6d1;
+  --hh-surface-card: #1d2016;
+  --hh-surface-card-foreground: #ece6d1;
+  --hh-strip: #eee6cc;
+  --hh-strip-foreground: #1b1911;
+  --hh-muted: #34382a;
+  --hh-muted-foreground: #bdb9a1;
+  --hh-input: #0f110b;
+  --hh-border: #868468;
+  --hh-ring: #388ba4;
+  --hh-primary: #c99a3c;
+  --hh-primary-foreground: #14110a;
+  --hh-pending: #b87111;
+  --hh-pending-foreground: #110b02;
+  --hh-answered: #4c8a98;
+  --hh-answered-foreground: #06100f;
+  --hh-expired: #818273;
+  --hh-expired-foreground: #0e0e0a;
+  --hh-recommended: #46914b;
+  --hh-recommended-foreground: #050f06;
+  --hh-live: #62b552;
+  --hh-live-foreground: #061005;
+  --hh-code: #0e100a;
+  --hh-code-foreground: #ddd7bf;
+  --hh-diff-add: #213a20;
+  --hh-diff-remove: #47221b;
+  --hh-destructive: #cf5a44;
+  --hh-destructive-foreground: #120504;
+  --hh-agent-1: #e0a640;
+  --hh-agent-2: #6fb7c9;
+  --hh-agent-3: #c995d6;
+  --hh-agent-4: #a3c96c;
+  --hh-agent-5: #e5876f;
+  --hh-agent-6: #c2bc9c;
+  --hh-shadow: #050603;
+}
+html[data-theme="hermes-comms-deck"][data-palette="night-watch"] {
+  --hh-background: #07151a;
+  --hh-foreground: #e2ecec;
+  --hh-surface-panel: #11303a;
+  --hh-surface-panel-foreground: #e2ecec;
+  --hh-surface-card: #0b222a;
+  --hh-surface-card-foreground: #e2ecec;
+  --hh-strip: #e7e8df;
+  --hh-strip-foreground: #12191b;
+  --hh-muted: #173b46;
+  --hh-muted-foreground: #a7c4c9;
+  --hh-input: #05100f;
+  --hh-border: #69878f;
+  --hh-ring: #ab7621;
+  --hh-primary: #8fc9cf;
+  --hh-primary-foreground: #061416;
+  --hh-pending: #b27216;
+  --hh-pending-foreground: #120b02;
+  --hh-answered: #4289a3;
+  --hh-answered-foreground: #04111a;
+  --hh-expired: #7a818d;
+  --hh-expired-foreground: #0d0f14;
+  --hh-recommended: #3a905c;
+  --hh-recommended-foreground: #031009;
+  --hh-live: #58b77a;
+  --hh-live-foreground: #04110a;
+  --hh-code: #080c13;
+  --hh-code-foreground: #d6dde8;
+  --hh-diff-add: #173523;
+  --hh-diff-remove: #42202a;
+  --hh-destructive: #d9604f;
+  --hh-destructive-foreground: #140504;
+  --hh-agent-1: #e3a94b;
+  --hh-agent-2: #74c0d8;
+  --hh-agent-3: #c49ae6;
+  --hh-agent-4: #9ccc78;
+  --hh-agent-5: #ec8a7a;
+  --hh-agent-6: #b8c2d2;
+  --hh-shadow: #03050a;
+}
+html[data-theme="hermes-comms-deck"][data-palette="day-watch"] {
+  --hh-background: #d6cfba;
+  --hh-foreground: #1b1a14;
+  --hh-surface-panel: #c8c0a8;
+  --hh-surface-panel-foreground: #1b1a14;
+  --hh-surface-card: #e4ddc9;
+  --hh-surface-card-foreground: #1b1a14;
+  --hh-strip: #fbf8ef;
+  --hh-strip-foreground: #191812;
+  --hh-muted: #bdb59c;
+  --hh-muted-foreground: #3b3829;
+  --hh-input: #f4efe1;
+  --hh-border: #5f5a46;
+  --hh-ring: #1e5f86;
+  --hh-primary: #2f3a26;
+  --hh-primary-foreground: #f4efe0;
+  --hh-pending: #8a4f00;
+  --hh-pending-foreground: #fff8ec;
+  --hh-answered: #1f5e6c;
+  --hh-answered-foreground: #f2fbfc;
+  --hh-expired: #5a5a52;
+  --hh-expired-foreground: #fafaf6;
+  --hh-recommended: #22672c;
+  --hh-recommended-foreground: #f3fbf3;
+  --hh-live: #22672c;
+  --hh-live-foreground: #f3fbf3;
+  --hh-code: #23251c;
+  --hh-code-foreground: #e9e4d0;
+  --hh-diff-add: #1f3d1f;
+  --hh-diff-remove: #4b2219;
+  --hh-destructive: #9c2f1d;
+  --hh-destructive-foreground: #fff5f2;
+  --hh-agent-1: #7d4d00;
+  --hh-agent-2: #1d5f73;
+  --hh-agent-3: #6c3c85;
+  --hh-agent-4: #3e6119;
+  --hh-agent-5: #923a24;
+  --hh-agent-6: #4f4b3a;
+  --hh-shadow: #4a4430;
+}
+html[data-theme="hermes-comms-deck"][data-palette="original"] {
+  --hh-background: #11151b;
+  --hh-foreground: #e5e8ec;
+  --hh-surface-panel: #1d232c;
+  --hh-surface-panel-foreground: #e5e8ec;
+  --hh-surface-card: #171c23;
+  --hh-surface-card-foreground: #e5e8ec;
+  --hh-strip: #f1ead8;
+  --hh-strip-foreground: #1b1a16;
+  --hh-muted: #262d37;
+  --hh-muted-foreground: #aeb5bf;
+  --hh-input: #0d1015;
+  --hh-border: #7b8490;
+  --hh-ring: #448ab9;
+  --hh-primary: #c58a2a;
+  --hh-primary-foreground: #120c03;
+  --hh-pending: #b57713;
+  --hh-pending-foreground: #110b02;
+  --hh-answered: #4a8da1;
+  --hh-answered-foreground: #041014;
+  --hh-expired: #82878f;
+  --hh-expired-foreground: #0d0f12;
+  --hh-recommended: #3c9557;
+  --hh-recommended-foreground: #031008;
+  --hh-live: #50b36d;
+  --hh-live-foreground: #031008;
+  --hh-code: #0b0e12;
+  --hh-code-foreground: #d9dee5;
+  --hh-diff-add: #173622;
+  --hh-diff-remove: #43211f;
+  --hh-destructive: #d2604c;
+  --hh-destructive-foreground: #130504;
+  --hh-agent-1: #e2a442;
+  --hh-agent-2: #6fbad6;
+  --hh-agent-3: #c59be0;
+  --hh-agent-4: #9fca72;
+  --hh-agent-5: #e8877a;
+  --hh-agent-6: #b9c0ca;
+  --hh-shadow: #020305;
+}
+
+/* ── World type, shape and depth (overrides only these) ── */
+html[data-theme="hermes-comms-deck"] {
+  --hh-font-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --hh-font-mono: "Martian Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --hh-font-engrave: "Big Shoulders Stencil Text", "Archivo", sans-serif;
+  --hh-radius-sm: 3px;
+  --hh-radius-md: 5px;
+  --hh-cd-bevel: inset 0 1px 0 color-mix(in oklab, var(--hh-surface-panel-foreground) 10%, transparent), inset 0 -2px 0 color-mix(in oklab, var(--hh-shadow) 55%, transparent);
+  --hh-cd-lamp-hot: color-mix(in oklab, var(--hh-pending), #fff4d6 55%);
+  --hh-cd-live-hot: color-mix(in oklab, var(--hh-live), #f0ffe8 50%);
+  --hh-ease: cubic-bezier(.2, .7, .2, 1);
+  --hh-patch-draw: 620ms;
+  color-scheme: dark;
+}
+html[data-theme="hermes-comms-deck"][data-palette="day-watch"] { color-scheme: light; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--hh-background);
+  color: var(--hh-foreground);
+  font: 400 14px/1.45 var(--hh-font-body);
+  font-variation-settings: "wdth" 100;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--hh-ring); outline-offset: 2px; }
+.mono { font-family: var(--hh-font-mono); font-variation-settings: "wdth" 87.5; font-variant-numeric: tabular-nums; }
+.engrave { font-family: var(--hh-font-engrave); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ── Page header ── */
+.cd-head {
+  display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end;
+  padding: 10px 20px 10px; border-bottom: 1px solid var(--hh-border);
+}
+.cd-head .kicker { font-size: 11px; color: var(--hh-muted-foreground); letter-spacing: .04em; }
+.cd-head h1 { margin: 2px 0 2px; font: 800 28px/1 var(--hh-font-engrave); letter-spacing: .06em; text-transform: uppercase; }
+.cd-head p { margin: 0; max-width: 96ch; font-size: 12.5px; line-height: 1.4; color: var(--hh-muted-foreground); }
+.cd-head p b { color: var(--hh-foreground); font-weight: 600; }
+.cd-switch { display: flex; gap: 8px; align-items: stretch; border: 0; margin: 0; padding: 0; }
+.cd-switch legend { float: left; width: 100%; font-size: 11px; color: var(--hh-muted-foreground); margin-bottom: 6px; }
+.cd-switch label {
+  display: grid; gap: 4px; padding: 6px 10px; min-width: 128px; cursor: pointer;
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius-md); background: var(--hh-surface-card);
+  font-size: 12px; line-height: 1.2;
+}
+.cd-switch label small { color: var(--hh-muted-foreground); font-size: 11px; }
+.cd-switch input { position: absolute; opacity: 0; }
+.cd-switch label:has(input:checked) { border-color: var(--hh-foreground); box-shadow: inset 0 0 0 1px var(--hh-foreground); }
+.cd-switch label:has(input:focus-visible) { outline: 2px solid var(--hh-ring); outline-offset: 2px; }
+.cd-sw { display: flex; gap: 3px; }
+.cd-sw i { width: 14px; height: 14px; border-radius: 2px; border: 1px solid var(--hh-border); }
+.cd-reset { align-self: end; min-height: 32px; padding: 0 12px; border: 1px solid var(--hh-border); border-radius: var(--hh-radius-md); background: transparent; cursor: pointer; font-size: 12px; }
+
+/* ── Stage ── */
+.cd-stage { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 20px; padding: 10px 20px 16px; align-items: start; }
+.cd-frame { position: relative; border: 1px solid var(--hh-border); border-radius: 8px; background: var(--hh-background); overflow: hidden; }
+.cd-frame-label { position: absolute; right: 10px; bottom: 8px; font-size: 10.5px; color: var(--hh-muted-foreground); }
+.cd-cap { font-size: 11px; color: var(--hh-muted-foreground); margin: 0 0 6px; }
+
+/* App bar */
+.hh-app-bar {
+  display: flex; align-items: center; gap: 16px; height: 42px; padding: 0 14px;
+  background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground);
+  border-bottom: 1px solid var(--hh-shadow); box-shadow: var(--hh-cd-bevel);
+}
+.hh-app-bar .plate { font-size: 15px; }
+.hh-app-bar .plate span { color: var(--hh-muted-foreground); font-weight: 600; margin-left: 6px; }
+.hh-app-bar .count { font-size: 12px; color: var(--hh-muted-foreground); }
+.hh-app-bar .count b { color: var(--hh-surface-panel-foreground); }
+.hh-app-bar .spacer { flex: 1; }
+.hh-connection { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; }
+.hh-connection .cd-lamp { width: 10px; height: 10px; }
+.hh-kbd-hints { display: inline-flex; gap: 10px; font-size: 11px; color: var(--hh-muted-foreground); }
+.hh-kbd-hints kbd, kbd.hh-kbd {
+  display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 4px; margin-right: 3px;
+  font: 500 10.5px/1 var(--hh-font-mono); border: 1px solid var(--hh-border); border-bottom-width: 2px;
+  border-radius: 3px; background: var(--hh-surface-card); color: var(--hh-surface-card-foreground);
+}
+
+/* ── Lamps: the only glowing thing, and only when lit (live state) ── */
+.cd-lamp {
+  display: inline-block; flex: none; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--hh-muted);
+  box-shadow: inset 0 2px 3px var(--hh-shadow), 0 0 0 2px var(--hh-surface-card), 0 0 0 3px var(--hh-border);
+  transition: background-color 280ms var(--hh-ease), box-shadow 280ms var(--hh-ease);
+}
+.cd-lamp[data-state="lit"] {
+  background: radial-gradient(circle at 38% 34%, var(--hh-cd-lamp-hot) 0 22%, var(--hh-pending) 62%);
+  box-shadow: 0 0 0 2px var(--hh-surface-card), 0 0 0 3px var(--hh-border), 0 0 10px 2px color-mix(in oklab, var(--hh-pending) 75%, transparent);
+}
+.cd-lamp[data-state="live"] {
+  background: radial-gradient(circle at 38% 34%, var(--hh-cd-live-hot) 0 22%, var(--hh-live) 62%);
+  box-shadow: 0 0 0 2px var(--hh-surface-card), 0 0 0 3px var(--hh-border), 0 0 8px 1px color-mix(in oklab, var(--hh-live) 70%, transparent);
+}
+
+/* ── Jack field (Agent roster as a patch bay) ── */
+.hh-agent-roster.cd-field {
+  position: relative; margin: 10px 12px 0; padding: 8px 12px 34px;
+  background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground);
+  border: 1px solid var(--hh-shadow); border-radius: var(--hh-radius-md); box-shadow: var(--hh-cd-bevel);
+}
+.cd-field-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.cd-field-head .engrave { font-size: 13px; }
+.cd-field-head small { font-size: 11px; color: var(--hh-muted-foreground); }
+.cd-screw { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--hh-muted); box-shadow: inset 0 0 0 1px var(--hh-shadow); }
+.cd-screw::after { content: ""; position: absolute; left: 1px; right: 1px; top: 3px; height: 1px; background: var(--hh-shadow); transform: rotate(35deg); }
+.cd-screw.tl { top: 5px; left: 5px; } .cd-screw.tr { top: 5px; right: 5px; }
+.cd-screw.bl { bottom: 5px; left: 5px; } .cd-screw.br { bottom: 5px; right: 5px; }
+.cd-channels { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.cd-channel {
+  display: grid; gap: 6px; padding: 8px 8px 10px; min-width: 0;
+  background: var(--hh-surface-card); color: var(--hh-surface-card-foreground);
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm);
+}
+.cd-channel[aria-current="true"] { box-shadow: inset 0 0 0 1px var(--hh-surface-card-foreground); }
+.cd-ch-top { display: flex; justify-content: space-between; align-items: center; }
+.cd-ch-top .engrave { font-size: 14px; letter-spacing: .1em; }
+.hh-callsign {
+  display: inline-flex; align-items: center; gap: 5px; max-width: 100%; min-width: 0; height: 22px; padding: 0 5px;
+  border: 2px solid var(--agent); border-radius: 3px; font-size: 10px; font-variation-settings: "wdth" 75; white-space: nowrap; overflow: hidden;
+}
+.hh-callsign::before { content: ""; flex: none; width: 6px; height: 6px; background: var(--agent); border-radius: 1px; }
+.hh-callsign span { overflow: hidden; text-overflow: ellipsis; }
+.cd-ch-status { font-size: 11.5px; line-height: 1.3; min-height: 30px; }
+.cd-desk .cd-channel { gap: 5px; padding: 7px 7px 8px; }
+.cd-desk .cd-channel .hh-callsign { padding: 0 4px; }
+.cd-desk .cd-channel .hh-callsign::before { display: none; }
+.cd-ch-status b { font-weight: 700; }
+.cd-jack-row { display: flex; align-items: center; gap: 8px; font-size: 10px; color: var(--hh-muted-foreground); }
+.cd-jack {
+  position: relative; flex: none; width: 20px; height: 20px; border-radius: 50%; padding: 0; cursor: pointer;
+  background: radial-gradient(circle, var(--hh-shadow) 0 30%, var(--hh-muted) 34% 62%, var(--hh-border) 66%);
+  border: 1px solid var(--hh-shadow);
+}
+.cd-jack:disabled { cursor: default; }
+.cd-jack::after {
+  content: ""; position: absolute; inset: -3px; border-radius: 50%;
+  background: radial-gradient(circle, var(--hh-shadow) 0 22%, var(--cord, var(--hh-border)) 26%);
+  border: 1px solid var(--hh-shadow); transform: scale(0); transition: transform 180ms var(--hh-ease);
+}
+.is-patched .cd-jack[data-jack]::after, .is-patched ~ .cd-plugboard .cd-jack[data-jack]::after { transform: scale(1); }
+.cd-rail {
+  position: absolute; left: 12px; right: 12px; bottom: 9px; height: 5px;
+  background: var(--hh-shadow); border: 1px solid var(--hh-border); border-radius: 3px;
+}
+.cd-rail .engrave { position: absolute; right: 0; bottom: 7px; font-size: 10px; letter-spacing: .12em; color: var(--hh-muted-foreground); }
+.cd-cords { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.cd-cords path { fill: none; stroke-linecap: round; }
+.cd-cords .sheath { stroke: var(--hh-shadow); stroke-width: 6; }
+.cd-cords .wire { stroke-width: 3.5; }
+.cd-cords .draw { transition: stroke-dashoffset var(--hh-patch-draw) var(--hh-ease); }
+
+/* ── Triage body ── */
+.cd-body { display: grid; grid-template-columns: 262px minmax(0, 1fr); gap: 12px; padding: 10px 12px 12px; }
+.cd-side { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.cd-side .cd-panel { min-width: 0; }
+.cd-panel { background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground); border: 1px solid var(--hh-shadow); border-radius: var(--hh-radius-md); box-shadow: var(--hh-cd-bevel); padding: 10px; }
+.cd-panel h2 { margin: 0 0 8px; font-size: 12.5px; }
+.cd-queue { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.cd-queue li {
+  display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: center; padding: 7px 8px;
+  background: var(--hh-surface-card); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm);
+}
+.cd-queue li[aria-current="true"] { box-shadow: inset 0 0 0 1px var(--hh-surface-card-foreground); }
+.cd-queue .rid { font-size: 11px; display: flex; gap: 8px; align-items: center; min-width: 0; white-space: nowrap; }
+.cd-queue .rid .hh-callsign { height: 18px; font-size: 10px; border-width: 1.5px; flex: 0 1 auto; }
+.cd-queue .what { grid-column: 2; font-size: 11.5px; line-height: 1.3; color: var(--hh-muted-foreground); }
+.cd-queue .what b { color: var(--hh-surface-card-foreground); font-weight: 600; }
+.hh-answered-log { list-style: none; margin: 0; padding: 0; font-size: 10.5px; display: grid; gap: 5px; }
+.hh-answered-log li { display: grid; grid-template-columns: 36px 46px minmax(0, 1fr); gap: 6px; color: var(--hh-muted-foreground); }
+.hh-answered-log li b { color: var(--hh-surface-panel-foreground); font-weight: 600; }
+
+/* ── Round strip in its holder (holder = full bracket + status word; never a side stripe) ── */
+.hh-strip-holder {
+  --holder: var(--hh-pending); --holder-fg: var(--hh-pending-foreground);
+  position: relative; padding: 4px; border: 3px solid var(--holder); border-radius: 6px; background: var(--hh-surface-card);
+  transition: border-color 280ms var(--hh-ease);
+}
+.hh-strip-holder[data-status="answered"] { --holder: var(--hh-answered); --holder-fg: var(--hh-answered-foreground); }
+.hh-strip-holder::before, .hh-strip-holder::after {
+  content: ""; position: absolute; width: 14px; height: 14px; border: 3px solid var(--hh-shadow); bottom: -3px;
+}
+.hh-strip-holder::before { left: -3px; border-right: 0; border-top: 0; border-radius: 0 0 0 6px; }
+.hh-strip-holder::after { right: -3px; border-left: 0; border-top: 0; border-radius: 0 0 6px 0; }
+.hh-holder-tab {
+  position: absolute; top: -3px; left: 14px; transform: translateY(-100%);
+  display: inline-flex; gap: 8px; align-items: center; height: 20px; padding: 0 8px;
+  background: var(--holder); color: var(--holder-fg); border-radius: 4px 4px 0 0;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .06em; white-space: nowrap;
+}
+.hh-strip { background: var(--hh-strip); color: var(--hh-strip-foreground); border-radius: 3px; }
+.hh-strip-head { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 10px 14px 8px; border-bottom: 1px solid var(--hh-border); }
+.hh-strip-head h3 { margin: 0; font: 700 19px/1.1 var(--hh-font-body); font-variation-settings: "wdth" 72; text-transform: uppercase; letter-spacing: .02em; }
+.hh-strip-head .meta { display: flex; gap: 10px; align-items: center; font-size: 11.5px; }
+.hh-strip-head .hh-callsign { --agent: var(--hh-agent-1); border-color: var(--hh-strip-foreground); height: 20px; }
+.hh-strip-head .hh-callsign::before { background: var(--hh-strip-foreground); }
+.hh-policy-timer { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; font-size: 11px; }
+.hh-policy-timer .track { height: 6px; border: 1px solid var(--hh-strip-foreground); border-radius: 3px; overflow: hidden; }
+.hh-policy-timer .fill { height: 100%; background: var(--hh-strip-foreground); transform-origin: left; }
+.hh-strip-body { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); }
+.hh-strip-body > .col { padding: 10px 14px 12px; display: grid; gap: 12px; align-content: start; }
+.hh-strip-body > .col + .col { border-left: 1px dashed var(--hh-border); }
+.hh-question { border: 0; margin: 0; padding: 0; min-width: 0; }
+.hh-question legend { padding: 0; margin-bottom: 6px; font-size: 13.5px; font-weight: 600; line-height: 1.3; }
+.hh-question legend .q { display: block; font: 500 10.5px/1.4 var(--hh-font-mono); font-variation-settings: "wdth" 87.5; letter-spacing: .02em; margin-bottom: 2px; }
+.hh-question code { font: 500 12px var(--hh-font-mono); white-space: nowrap; }
+.hh-option {
+  position: relative; display: flex; align-items: center; gap: 10px; min-height: 34px; padding: 4px 8px; margin-bottom: 4px;
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); cursor: pointer; font-size: 13px; line-height: 1.25;
+}
+.hh-option input { width: 15px; height: 15px; margin: 0; accent-color: var(--hh-strip-foreground); flex: none; }
+.hh-option:has(input:checked) { border-color: var(--hh-strip-foreground); box-shadow: inset 0 0 0 1px var(--hh-strip-foreground); }
+.hh-option:has(input:focus-visible) { outline: 2px solid var(--hh-ring); outline-offset: 1px; }
+.hh-option .key { margin-left: auto; }
+.hh-option.is-rec { border: 2px solid var(--hh-recommended); }
+.hh-recommended {
+  display: inline-flex; align-items: center; gap: 5px; height: 18px; padding: 0 6px; flex: none;
+  background: var(--hh-recommended); color: var(--hh-recommended-foreground); border-radius: 2px;
+  font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+}
+.hh-option .key kbd { margin: 0; }
+.hh-free { display: grid; gap: 4px; }
+.hh-free textarea {
+  width: 100%; min-height: 52px; resize: vertical; padding: 6px 8px; font: 500 12.5px/1.4 var(--hh-font-mono);
+  background: var(--hh-strip); color: var(--hh-strip-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm);
+}
+.hh-free small { font-size: 11px; }
+.hh-attachment { border: 1px solid var(--hh-strip-foreground); border-radius: var(--hh-radius-sm); overflow: hidden; }
+.hh-attachment header { display: flex; justify-content: space-between; gap: 8px; padding: 3px 8px; font-size: 10.5px; border-bottom: 1px solid var(--hh-strip-foreground); }
+.hh-diff { margin: 0; padding: 4px 0; background: var(--hh-code); color: var(--hh-code-foreground); font: 400 11px/1.5 var(--hh-font-mono); font-variation-settings: "wdth" 75; overflow-x: auto; }
+.hh-diff span { display: block; padding: 0 8px; white-space: pre; }
+.hh-diff .add { background: var(--hh-diff-add); }
+.hh-diff .rem { background: var(--hh-diff-remove); }
+.hh-answer-bar {
+  display: flex; gap: 10px; align-items: center; padding: 8px 10px; margin-top: 4px;
+  background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground); border-radius: 3px; box-shadow: var(--hh-cd-bevel);
+}
+.hh-answer-bar input {
+  flex: 1; min-width: 0; height: 32px; padding: 0 10px; background: var(--hh-input); color: var(--hh-foreground);
+  border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); font-size: 12.5px;
+}
+.hh-answer-bar input::placeholder { color: var(--hh-muted-foreground); }
+.hh-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 32px; padding: 0 12px;
+  border: 1px solid var(--hh-shadow); border-radius: var(--hh-radius-sm); cursor: pointer; font-weight: 700; font-size: 13px;
+  background: var(--hh-primary); color: var(--hh-primary-foreground);
+  box-shadow: inset 0 -2px 0 color-mix(in oklab, var(--hh-shadow) 45%, transparent);
+  transition: transform 90ms var(--hh-ease);
+}
+.hh-button:active:not(:disabled) { transform: scale(.97); }
+.hh-button[data-variant="ghost"] { background: transparent; color: inherit; border-color: var(--hh-border); box-shadow: none; font-weight: 500; }
+.hh-button:disabled { cursor: default; }
+.hh-button kbd { border-color: currentColor; background: transparent; color: inherit; }
+
+/* Answered state: strip inputs lock, holder switches, the answer bar reports */
+.hh-strip-holder[data-status="answered"] .hh-strip-body { pointer-events: none; }
+
+/* ── Phone glance ── */
+.cd-phone { width: 390px; }
+.cd-phone[data-density="glance"] { font-size: 16px; }
+.cd-phone .status-bar { display: flex; justify-content: space-between; align-items: center; height: 40px; padding: 0 16px; background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground); box-shadow: var(--hh-cd-bevel); font-size: 12px; }
+.cd-phone .status-bar .engrave { font-size: 15px; }
+.cd-phone .inner { padding: 14px 14px 30px; display: grid; gap: 14px; }
+.cd-phone .cd-field { margin: 0; padding: 12px 14px 14px; }
+.cd-phone .cd-channel { grid-template-columns: auto 1fr; align-items: center; gap: 8px 12px; padding: 10px 12px; }
+.cd-phone .cd-channel .hh-callsign { font-size: 12px; height: 26px; }
+.cd-phone .cd-ch-status { grid-column: 1 / -1; font-size: 14px; min-height: 0; }
+.cd-phone .cd-plugboard { position: relative; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--hh-border); font-size: 11px; color: var(--hh-muted-foreground); }
+.cd-phone .cd-plugboard .cd-jack { width: 26px; height: 26px; }
+.cd-phone .cd-plugboard .end { display: flex; align-items: center; gap: 8px; }
+.cd-phone .hh-strip-head h3 { font-size: 22px; }
+.cd-phone .hh-strip-head .meta { font-size: 12.5px; flex-wrap: wrap; }
+.cd-phone .hh-question legend { font-size: 18px; margin-bottom: 10px; }
+.cd-phone .hh-question legend .q { font-size: 12px; }
+.cd-phone .phone-body { padding: 12px 14px 14px; display: grid; gap: 12px; }
+.cd-phone .hh-diff { font-size: 12px; }
+.cd-phone .hh-policy-timer { font-size: 12.5px; }
+.cd-phone .decide { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cd-phone .decide .hh-button { min-height: 3.25rem; font-size: 17px; }
+.cd-phone .decide [data-variant="reject"] { background: var(--hh-destructive); color: var(--hh-destructive-foreground); }
+.cd-phone .decide [data-variant="approve"] { background: var(--hh-recommended); color: var(--hh-recommended-foreground); }
+.cd-phone .rec-note { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.cd-phone .result { margin: 0; font-size: 15px; font-weight: 600; min-height: 1.4em; }
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="hermes-comms-deck"] { --hh-patch-draw: 0ms; }
+  .cd-lamp, .cd-jack::after, .hh-strip-holder, .hh-button { transition: none; }
+}
+</style>
+</head>
+<body>
+<header class="cd-head">
+  <div>
+    <div class="kicker mono">Hermes world preview · Phase 2 · theme <b>hermes-comms-deck</b></div>
+    <h1>Comms Deck</h1>
+    <p><b>Idea:</b> a ship's comms console. Agents are channels on a jack field; each pending Round is a lit channel lamp.
+      <b>Signature:</b> answering patches the channel, and the lamp goes dark. Try it: <kbd class="hh-kbd">⌘↵</kbd> or <b>Patch Answer</b> on the desk, <b>Approve</b> or <b>Reject</b> on the phone, or click a lit channel's jack.</p>
+  </div>
+  <div style="display:flex; gap:10px; align-items:end">
+    <fieldset class="cd-switch">
+      <legend>Colour option</legend>
+      <label><input type="radio" name="palette" value="bakelite" checked><span class="cd-sw"><i style="background:#2a2e1f"></i><i style="background:#eee6cc"></i><i style="background:#b87111"></i></span>Bakelite Olive<small>Recommended</small></label>
+      <label><input type="radio" name="palette" value="night-watch"><span class="cd-sw"><i style="background:#11303a"></i><i style="background:#e7e8df"></i><i style="background:#b27216"></i></span>Night Watch<small>Alternative</small></label>
+      <label><input type="radio" name="palette" value="day-watch"><span class="cd-sw"><i style="background:#c8c0a8"></i><i style="background:#fbf8ef"></i><i style="background:#8a4f00"></i></span>Day Watch<small>Alternative · light</small></label>
+      <label><input type="radio" name="palette" value="original"><span class="cd-sw"><i style="background:#1d232c"></i><i style="background:#f1ead8"></i><i style="background:#b57713"></i></span>Original<small>Core Flight Strips</small></label>
+    </fieldset>
+    <button type="button" class="cd-reset" data-action="reset">Relight lamps</button>
+  </div>
+</header>
+
+<main class="cd-stage" id="stage">
+  <!-- (a) Desktop Command Center triage -->
+  <section class="cd-frame cd-desk" data-density="compact" aria-label="Command Center triage, desktop">
+    <div class="hh-app-bar">
+      <span class="plate engrave">Hermes Hub<span>Comms Deck</span></span>
+      <span class="count mono"><b data-count="lamps">3</b> lamps lit · <b data-count="rounds">3</b> Rounds pending</span>
+      <span class="spacer"></span>
+      <span class="hh-kbd-hints"><span><kbd>j</kbd><kbd>k</kbd>channel</span><span><kbd>1</kbd>–<kbd>9</kbd>option</span><span><kbd>⌘↵</kbd>patch</span></span>
+      <span class="hh-connection mono"><span class="cd-lamp" data-state="live" aria-hidden="true"></span>Live · SSE · 12 ms</span>
+    </div>
+
+    <div class="hh-agent-roster cd-field" data-field>
+      <i class="cd-screw tl"></i><i class="cd-screw tr"></i><i class="cd-screw bl"></i><i class="cd-screw br"></i>
+      <div class="cd-field-head"><span class="engrave">Jack field · Agent channels</span><small>Lit lamp = Round waiting · dark lamp = clear</small></div>
+      <div class="cd-channels">
+        <div class="cd-channel" data-channel="01" aria-current="true" style="--agent:var(--hh-agent-1)">
+          <div class="cd-ch-top"><span class="engrave">Ch 01</span><span class="cd-lamp" data-state="lit" aria-hidden="true"></span></div>
+          <span class="hh-callsign mono"><span>CLAUDE·api-refactor</span></span>
+          <div class="cd-ch-status" data-status-text><b>Pending</b> · R-0412 · 3 Questions</div>
+          <div class="cd-jack-row"><button type="button" class="cd-jack" data-jack="01" aria-label="Patch channel 01 (answers R-0412)"></button>In</div>
+        </div>
+        <div class="cd-channel" data-channel="02" style="--agent:var(--hh-agent-2)">
+          <div class="cd-ch-top"><span class="engrave">Ch 02</span><span class="cd-lamp" data-state="lit" aria-hidden="true"></span></div>
+          <span class="hh-callsign mono"><span>CODEX·infra-deploy</span></span>
+          <div class="cd-ch-status" data-status-text><b>Pending</b> · R-0415 · approve/reject</div>
+          <div class="cd-jack-row"><button type="button" class="cd-jack" data-jack="02" data-verdict="Approved" aria-label="Patch channel 02 (approves R-0415)"></button>In</div>
+        </div>
+        <div class="cd-channel is-patched" data-channel="03" style="--agent:var(--hh-agent-3)">
+          <div class="cd-ch-top"><span class="engrave">Ch 03</span><span class="cd-lamp" aria-hidden="true"></span></div>
+          <span class="hh-callsign mono"><span>CURSOR·web-checkout</span></span>
+          <div class="cd-ch-status"><b>Clear</b> · patched 14:21</div>
+          <div class="cd-jack-row"><button type="button" class="cd-jack" data-jack="03" disabled aria-label="Channel 03 patched"></button>In</div>
+        </div>
+        <div class="cd-channel" data-channel="04" style="--agent:var(--hh-agent-4)">
+          <div class="cd-ch-top"><span class="engrave">Ch 04</span><span class="cd-lamp" data-state="lit" aria-hidden="true"></span></div>
+          <span class="hh-callsign mono"><span>COPILOT·docs-site</span></span>
+          <div class="cd-ch-status" data-status-text><b>Pending</b> · R-0416 · 1 Question</div>
+          <div class="cd-jack-row"><button type="button" class="cd-jack" data-jack="04" aria-label="Patch channel 04 (applies recommended to R-0416)"></button>In</div>
+        </div>
+        <div class="cd-channel is-patched" data-channel="05" style="--agent:var(--hh-agent-5)">
+          <div class="cd-ch-top"><span class="engrave">Ch 05</span><span class="cd-lamp" aria-hidden="true"></span></div>
+          <span class="hh-callsign mono"><span>OMP·release-notes</span></span>
+          <div class="cd-ch-status"><b>Clear</b> · patched 14:09</div>
+          <div class="cd-jack-row"><button type="button" class="cd-jack" data-jack="05" disabled aria-label="Channel 05 patched"></button>In</div>
+        </div>
+        <div class="cd-channel" data-channel="06" style="--agent:var(--hh-agent-6)">
+          <div class="cd-ch-top"><span class="engrave">Ch 06</span><span class="cd-lamp" aria-hidden="true"></span></div>
+          <span class="hh-callsign mono"><span>SCRIPT·nightly-etl</span></span>
+          <div class="cd-ch-status"><b>Expired</b> · R-0398 cancelled by policy</div>
+          <div class="cd-jack-row"><button type="button" class="cd-jack" data-jack="06" disabled aria-label="Channel 06 idle"></button>In</div>
+        </div>
+      </div>
+      <div class="cd-rail"><span class="engrave">Answer bus</span></div>
+      <svg class="cd-cords" aria-hidden="true"></svg>
+    </div>
+
+    <div class="cd-body">
+      <div class="cd-side">
+        <section class="cd-panel" aria-labelledby="q-head">
+          <h2 id="q-head" class="engrave">Lit lamps · pending Rounds</h2>
+          <ol class="cd-queue">
+            <li aria-current="true" data-round="R-0412"><span class="cd-lamp" data-state="lit" aria-hidden="true"></span><span class="rid mono">R-0412 <span class="hh-callsign" style="--agent:var(--hh-agent-1)"><span>CLAUDE·api-refactor</span></span></span><span class="what" data-status-text><b>Pending</b> · 3 Questions · waits 10 min, then applies recommended</span></li>
+            <li data-round="R-0415"><span class="cd-lamp" data-state="lit" aria-hidden="true"></span><span class="rid mono">R-0415 <span class="hh-callsign" style="--agent:var(--hh-agent-2)"><span>CODEX·infra-deploy</span></span></span><span class="what" data-status-text><b>Pending</b> · approve/reject · waits 5 min, then cancels</span></li>
+            <li data-round="R-0416"><span class="cd-lamp" data-state="lit" aria-hidden="true"></span><span class="rid mono">R-0416 <span class="hh-callsign" style="--agent:var(--hh-agent-4)"><span>COPILOT·docs-site</span></span></span><span class="what" data-status-text><b>Pending</b> · 1 Question · keeps waiting</span></li>
+          </ol>
+        </section>
+        <section class="cd-panel" aria-labelledby="log-head">
+          <h2 id="log-head" class="engrave">Answered log</h2>
+          <ol class="hh-answered-log mono" data-log>
+            <li><span>14:21</span><b>R-0409</b><span>Answered · Ch 03</span></li>
+            <li><span>14:09</span><b>R-0404</b><span>Answered · Ch 05</span></li>
+            <li><span>13:52</span><b>R-0398</b><span>Expired · policy cancelled</span></li>
+          </ol>
+          <p class="cd-cap" style="margin:8px 0 0">Illustrative data · not live Rounds</p>
+        </section>
+      </div>
+
+      <form class="hh-strip-holder" data-status="pending" data-round-form="R-0412" style="margin-top:16px" onsubmit="return false">
+        <span class="hh-holder-tab mono" data-holder-word>PENDING · Round R-0412 · Ch 01</span>
+        <div class="hh-strip">
+          <div class="hh-strip-head">
+            <h3>Session table migration</h3>
+            <div class="meta mono"><span class="hh-callsign"><span>CLAUDE·api-refactor</span></span><span>3 Questions</span><span>sent 14:28:51</span></div>
+            <div class="hh-policy-timer mono"><div class="track" aria-hidden="true"><div class="fill" data-timer-fill style="transform:scaleX(.77)"></div></div><span data-timer="462" data-total="600" data-then="then applies recommended">07:42 left · then applies recommended</span></div>
+          </div>
+          <div class="hh-strip-body">
+            <div class="col">
+              <fieldset class="hh-question">
+                <legend><span class="q">Q1 · Single choice</span>Which migration path for the <code>sessions</code> table?</legend>
+                <label class="hh-option is-rec"><input type="radio" name="q1" value="batch" checked>Add column, backfill in batches<span class="hh-recommended">Rec · Recommended</span><span class="key"><kbd class="hh-kbd">1</kbd></span></label>
+                <label class="hh-option"><input type="radio" name="q1" value="shadow">Shadow table, swap at cutover<span class="key"><kbd class="hh-kbd">2</kbd></span></label>
+                <label class="hh-option"><input type="radio" name="q1" value="hold">Hold until the freeze lifts<span class="key"><kbd class="hh-kbd">3</kbd></span></label>
+              </fieldset>
+              <figure class="hh-attachment" style="margin:0">
+                <header class="mono"><span>migrations/0042_sessions.sql</span><span>Diff · +3 −1</span></header>
+<pre class="hh-diff"><span>  ALTER TABLE sessions</span><span class="rem">- DROP COLUMN legacy_token;</span><span class="add">+ ADD COLUMN token_v2 text;</span><span class="add">+ CREATE INDEX CONCURRENTLY</span><span class="add">+   sessions_token_v2_idx ON sessions(token_v2);</span><span>  -- backfill: 5k rows per batch</span></pre>
+              </figure>
+            </div>
+            <div class="col">
+              <fieldset class="hh-question">
+                <legend><span class="q">Q2 · Multiple choice</span>Which checks gate the merge?</legend>
+                <label class="hh-option"><input type="checkbox" name="q2" value="unit" checked>Unit tests<span class="key"><kbd class="hh-kbd">4</kbd></span></label>
+                <label class="hh-option is-rec"><input type="checkbox" name="q2" value="dry" checked>Migration dry run<span class="hh-recommended">Rec</span><span class="key"><kbd class="hh-kbd">5</kbd></span></label>
+                <label class="hh-option"><input type="checkbox" name="q2" value="load">Load test on staging<span class="key"><kbd class="hh-kbd">6</kbd></span></label>
+              </fieldset>
+              <fieldset class="hh-question hh-free">
+                <legend><span class="q">Q3 · Free text</span>Name the feature flag for the new read path.</legend>
+                <textarea name="q3" aria-label="Q3 answer" spellcheck="false">sessions_v2_read</textarea>
+                <small class="mono">No recommended value · waits with the Round</small>
+              </fieldset>
+            </div>
+          </div>
+          <div class="hh-answer-bar">
+            <input type="text" name="notes" placeholder="Notes to the Agent (optional)" aria-label="Notes to the Agent">
+            <button type="button" class="hh-button" data-variant="ghost">Skip <kbd class="hh-kbd">j</kbd></button>
+            <button type="submit" class="hh-button" data-action="patch" data-target="01">Patch Answer <kbd class="hh-kbd">⌘↵</kbd></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- (b) Phone glance: one approve/reject Round -->
+  <section class="cd-frame cd-phone" data-density="glance" aria-label="Phone glance, approve or reject">
+    <div class="status-bar"><span class="engrave">Hermes · Comms</span><span class="hh-connection mono"><span class="cd-lamp" data-state="live" aria-hidden="true"></span>Live · tailnet</span></div>
+    <div class="inner">
+      <div class="hh-agent-roster cd-field" data-field>
+        <i class="cd-screw tl"></i><i class="cd-screw tr"></i><i class="cd-screw bl"></i><i class="cd-screw br"></i>
+        <div class="cd-channel" data-channel="02" style="--agent:var(--hh-agent-2)">
+          <span class="engrave" style="font-size:17px">Ch 02</span>
+          <span class="hh-callsign mono"><span>CODEX·infra-deploy</span></span>
+          <div class="cd-ch-status" data-status-text style="display:flex; align-items:center; gap:10px"><span class="cd-lamp" data-state="lit" aria-hidden="true"></span><span><b>Pending</b> · lamp lit · R-0415</span></div>
+        </div>
+        <div class="cd-plugboard">
+          <span class="end"><button type="button" class="cd-jack" data-jack="02" data-verdict="Approved" aria-label="Patch channel 02 (approves R-0415)"></button>Ch 02 in</span>
+          <span class="end">Answer bus<i class="cd-jack" data-bus aria-hidden="true" style="cursor:default"></i></span>
+        </div>
+        <svg class="cd-cords" aria-hidden="true"></svg>
+      </div>
+
+      <form class="hh-strip-holder" data-status="pending" data-round-form="R-0415" style="margin-top:18px" onsubmit="return false">
+        <span class="hh-holder-tab mono" data-holder-word>PENDING · R-0415</span>
+        <div class="hh-strip">
+          <div class="hh-strip-head">
+            <h3>Deploy to staging</h3>
+            <div class="hh-policy-timer mono"><div class="track" aria-hidden="true"><div class="fill" data-timer-fill style="transform:scaleX(.83)"></div></div><span data-timer="250" data-total="300" data-then="then cancels">04:10 left · then cancels</span></div>
+          </div>
+          <div class="phone-body">
+            <fieldset class="hh-question">
+              <legend><span class="q">Q1 · Approve / reject</span>Apply the staging plan for <code>infra-deploy</code>?</legend>
+              <figure class="hh-attachment" style="margin:0">
+                <header class="mono"><span>terraform plan</span><span>Code</span></header>
+<pre class="hh-diff"><span class="add">+ 2 to add  (queue, alarm)</span><span>~ 1 to change (lb listener)</span><span class="rem">- 0 to destroy</span></pre>
+              </figure>
+            </fieldset>
+            <div class="rec-note"><span class="hh-recommended">Rec · Approve</span><span>Agent recommends approve</span></div>
+            <div class="decide">
+              <button type="button" class="hh-button" data-variant="reject" data-action="patch" data-target="02" data-verdict="Rejected">Reject <kbd class="hh-kbd">r</kbd></button>
+              <button type="button" class="hh-button" data-variant="approve" data-action="patch" data-target="02" data-verdict="Approved">Approve <kbd class="hh-kbd">a</kbd></button>
+            </div>
+            <p class="result" role="status" data-phone-result></p>
+          </div>
+        </div>
+      </form>
+    </div>
+    <span class="cd-frame-label">Illustrative data · 390 px</span>
+  </section>
+</main>
+<div class="sr-only" aria-live="polite" data-announce></div>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const stage = document.getElementById('stage');
+  const pristine = stage.innerHTML;
+  const NS = 'http://www.w3.org/2000/svg';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const drawMs = () => (reduce.matches ? 0 : 620);
+  const pad = (n) => String(n).padStart(2, '0');
+  const clock = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+
+  const centre = (el, box) => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2 - box.left, r.top + r.height / 2 - box.top]; };
+
+  // A cord hangs from the channel jack to the answer bus beneath it.
+  function busPoint(field, jack, box) {
+    const bus = field.querySelector('[data-bus]');
+    if (bus) return centre(bus, box);
+    const [jx] = centre(jack, box);
+    const rail = field.querySelector('.cd-rail').getBoundingClientRect();
+    return [jx + 30, rail.top - box.top + 1];
+  }
+  function drawCord(field, id, animate) {
+    const jack = field.querySelector(`[data-jack="${id}"]`);
+    const svg = field.querySelector('.cd-cords');
+    if (!jack || !svg) return;
+    svg.querySelector(`[data-cord="${id}"]`)?.remove();
+    const box = field.getBoundingClientRect();
+    const [jx, jy] = centre(jack, box);
+    const [bx, by] = busPoint(field, jack, box);
+    // Phone: U-shaped slack between two jacks. Desk: S-drop from the channel jack into the bus bar.
+    const d = field.querySelector('[data-bus]')
+      ? `M${bx} ${by} C${bx} ${by + 30} ${jx} ${jy + 30} ${jx} ${jy}`
+      : `M${bx} ${by} C${bx} ${by - 16} ${jx} ${jy + 22} ${jx} ${jy}`;
+    const g = document.createElementNS(NS, 'g');
+    g.dataset.cord = id;
+    const colour = getComputedStyle(jack.closest('[style*="--agent"]') || field.querySelector(`[data-channel="${id}"]`)).getPropertyValue('--agent');
+    for (const cls of ['sheath', 'wire']) {
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', d); p.setAttribute('class', cls);
+      if (cls === 'wire') p.style.stroke = colour;
+      g.append(p);
+    }
+    const tip = document.createElementNS(NS, 'rect');
+    Object.entries({ x: bx - 4, y: by - 3, width: 8, height: 6, rx: 1.5, class: 'tip' }).forEach(([k, v]) => tip.setAttribute(k, v));
+    tip.style.fill = colour;
+    g.append(tip);
+    svg.append(g);
+    jack.style.setProperty('--cord', colour);
+    if (!animate || !drawMs()) return;
+    for (const p of g.querySelectorAll('path')) {
+      const len = p.getTotalLength();
+      p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+      p.getBoundingClientRect();
+      p.classList.add('draw'); p.style.strokeDashoffset = 0;
+    }
+  }
+  function drawAll() {
+    document.querySelectorAll('[data-field]').forEach((field) => {
+      field.querySelectorAll('.cd-cords g').forEach((g) => g.remove());
+      field.querySelectorAll('.is-patched [data-jack], .is-patched ~ .cd-plugboard [data-jack]').forEach((j) => drawCord(field, j.dataset.jack, false));
+    });
+  }
+
+  const announce = (msg) => { document.querySelector('[data-announce]').textContent = msg; };
+
+  const rounds = { '01': { id: 'R-0412', what: 'Answer' }, '02': { id: 'R-0415', what: 'Approve/reject' }, '04': { id: 'R-0416', what: 'Answer' } };
+
+  function patch(id, verdict) {
+    const channels = [...document.querySelectorAll(`[data-channel="${id}"]`)];
+    if (!channels.length || channels[0].classList.contains('is-patched')) return;
+    const round = rounds[id];
+    const word = verdict ? `Answered · ${verdict}` : 'Answered';
+    const t = clock();
+    channels.forEach((ch) => {
+      ch.classList.add('is-patched');
+      const field = ch.closest('[data-field]');
+      drawCord(field, id, true);
+      field.querySelectorAll(`[data-jack="${id}"]`).forEach((j) => { j.disabled = true; j.setAttribute('aria-label', `Channel ${id} patched`); });
+    });
+    setTimeout(() => {
+      channels.forEach((ch) => {
+        const field = ch.closest('[data-field]');
+        field.querySelectorAll('.cd-lamp[data-state="lit"]').forEach((l) => { if (l.closest('[data-channel]') === ch || field.querySelector('.cd-plugboard')) l.removeAttribute('data-state'); });
+        const s = ch.querySelector('[data-status-text]');
+        if (s) {
+          const lamp = s.querySelector('.cd-lamp');
+          s.innerHTML = `<b>Clear</b> · ${round.id} ${verdict ? verdict.toLowerCase() : 'answered'} · patched ${t}`;
+          if (lamp) s.prepend(lamp);
+        }
+      });
+      const row = document.querySelector(`.cd-queue [data-round="${round.id}"]`);
+      if (row) {
+        row.querySelector('.cd-lamp').removeAttribute('data-state');
+        row.querySelector('[data-status-text]').innerHTML = `<b>${word}</b> · patched Ch ${id} · ${t}`;
+      }
+      document.querySelectorAll(`[data-round-form="${round.id}"]`).forEach((f) => {
+        f.dataset.status = 'answered';
+        f.querySelector('[data-holder-word]').textContent = f.closest('.cd-phone')
+          ? `${word.toUpperCase()} · ${round.id}`
+          : `${word.toUpperCase()} · ${round.id} · patched Ch ${id}`;
+        f.querySelectorAll('[data-action="patch"]').forEach((b) => { b.disabled = true; });
+        const submit = f.querySelector('.hh-answer-bar [data-action="patch"]');
+        if (submit) submit.textContent = `Patched · ${t}`;
+      });
+      const res = document.querySelector('[data-phone-result]');
+      if (id === '02' && res) res.textContent = `${word} · lamp dark · patched ${t}`;
+      const log = document.querySelector('[data-log]');
+      log.insertAdjacentHTML('afterbegin', `<li><span>${t}</span><b>${round.id}</b><span>${word} · Ch ${id}</span></li>`);
+      const lit = document.querySelectorAll('.cd-desk .cd-channel .cd-lamp[data-state="lit"]').length;
+      document.querySelector('[data-count="lamps"]').textContent = lit;
+      document.querySelector('[data-count="rounds"]').textContent = lit;
+      announce(`${round.id} ${word}. Channel ${id} patched. Lamp dark.`);
+    }, drawMs());
+  }
+
+  // Policy timers count down while their Round is pending.
+  setInterval(() => {
+    document.querySelectorAll('[data-timer]').forEach((el) => {
+      const form = el.closest('[data-round-form]');
+      if (form?.dataset.status !== 'pending') { el.textContent = 'Stopped · answered in time'; return; }
+      const left = Math.max(0, Number(el.dataset.timer) - 1);
+      el.dataset.timer = left;
+      el.textContent = `${pad(Math.floor(left / 60))}:${pad(left % 60)} left · ${el.dataset.then}`;
+      form.querySelector('[data-timer-fill]').style.transform = `scaleX(${left / el.dataset.total})`;
+    });
+  }, 1000);
+
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-action], [data-jack]');
+    if (!t || t.disabled) return;
+    if (t.dataset.action === 'reset') { stage.innerHTML = pristine; drawAll(); announce('Lamps relit.'); return; }
+    if (t.dataset.action === 'patch') { e.preventDefault(); patch(t.dataset.target, t.dataset.verdict); return; }
+    if (t.dataset.jack && rounds[t.dataset.jack]) patch(t.dataset.jack, t.dataset.verdict);
+  });
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); patch('01'); return; }
+    if (e.target.matches('input[type="text"], textarea')) return;
+    if (e.key === 'a') patch('02', 'Approved');
+    if (e.key === 'r') patch('02', 'Rejected');
+    const n = Number(e.key);
+    if (n >= 1 && n <= 6) document.querySelectorAll('.cd-desk .hh-option input')[n - 1]?.click();
+  });
+  document.querySelectorAll('input[name="palette"]').forEach((r) => r.addEventListener('change', () => { root.dataset.palette = r.value; drawAll(); }));
+  addEventListener('resize', drawAll);
+  document.fonts.ready.then(drawAll);
+  drawAll();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+skills:
+  customDirectories:
+    # points back at the cyber-avatar repo (this repo lives at projects/<owner>/<repo>
+    # under it) so this project can see cyber-avatar's skills too.
+    # top-level skills (non-recursive scan picks these up directly, e.g. herdr, impeccable)
+    - ../../../.agents/skills
+    # nested-taxonomy skills (deeper than one level, so they need explicit entries)
+    - ../../../.agents/skills/tools
+    - ../../../.agents/skills/design
+    - ../../../.agents/skills/design/emilkowalski
+    - ../../../.agents/skills/workflow
+    - ../../../.agents/skills/ppt
+extensions:
+  # omp has no agentPaths setting; agent profiles are discovered from <extension-root>/agents.
+  # Pointing an extension root at cyber-avatar's .omp loads .omp/agents/*.md (e.g.
+  # openai-code-reviewer) even when the clone has its own .omp/agents. Note: this array
+  # replaces (not merges with) any user-level `extensions:` list.
+  - ../../../.omp
