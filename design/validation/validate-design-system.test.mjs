@@ -11,6 +11,7 @@ function freshPackage() {
     ...pkg,
     tokens: structuredClone(pkg.tokens),
     sources: new Map(pkg.sources),
+    codeFiles: new Map(pkg.codeFiles),
     artifacts: new Set(pkg.artifacts),
     worlds: pkg.worlds.map((world) => ({ ...world, json: structuredClone(world.json) })),
   };
@@ -403,4 +404,52 @@ test('focus on a filled checked control must contrast with the fill in the theme
   assert.equal(failuresMatching(ringed, /focus on .* against its fill/).length, 0, all(ringed));
   const called = withFixtureWorld(freshPackage(), { css: `${scope} .hh-question-response:has(> .hh-approve-pair > .hh-option[data-checked='true'])::before { background: var(--hh-ring); }\n` });
   assert.equal(failuresMatching(called, /focus on .* against its fill/).length, 0, all(called));
+});
+
+// ---------- fonts and world registry ----------
+
+test('a next/font call whose variable no theme or registered world uses fails, naming the call', () => {
+  const pkg = freshPackage();
+  const unused = "const unusedFace = Archivo({ subsets: ['latin'], display: 'swap', preload: false, variable: '--font-unused-face' });\n";
+  pkg.sources.set('app/fonts.ts', `${pkg.sources.get('app/fonts.ts')}${unused}`);
+  assert.equal(failuresMatching(pkg, /^app\/fonts\.ts: next\/font call unusedFace \(--font-unused-face\) is not used by tokens\/themes\.css or any registered world$/).length, 1, all(pkg));
+});
+
+test('a world face is unused once its world is no longer registered', () => {
+  const pkg = freshPackage();
+  pkg.sources.set('preview/themes.ts', pkg.sources.get('preview/themes.ts').replace(/WORLD_SLUGS([^=]*)=\s*\[[^\]]*\]/, 'WORLD_SLUGS$1= []'));
+  assert.equal(failuresMatching(pkg, /^app\/fonts\.ts: next\/font call michroma \(--font-michroma\) is not used/).length, 1, all(pkg));
+});
+
+test('every self-hosted font file is loaded by a src, and every src exists', () => {
+  const orphan = freshPackage();
+  orphan.artifacts.add('app/fonts/Orphan-latin.woff2');
+  assert.equal(failuresMatching(orphan, /^app\/fonts\/Orphan-latin\.woff2 is not referenced by a src in app\/fonts\.ts$/).length, 1, all(orphan));
+  const missing = freshPackage();
+  missing.sources.set('app/fonts.ts', missing.sources.get('app/fonts.ts').replace('./fonts/BigShoulders-latin-variable.woff2', './fonts/Missing.woff2'));
+  assert.equal(failuresMatching(missing, /^app\/fonts\.ts: src \.\/fonts\/Missing\.woff2 does not exist$/).length, 1, all(missing));
+  assert.equal(failuresMatching(missing, /^app\/fonts\/BigShoulders-latin-variable\.woff2 is not referenced/).length, 1, all(missing));
+});
+
+test('a registered world without its stylesheet fails', () => {
+  const pkg = freshPackage();
+  pkg.worlds[0].css = null;
+  assert.equal(failuresMatching(pkg, /^hermes-flight-director: tokens\/worlds\/flight-director\.css is missing$/).length, 1, all(pkg));
+});
+
+test('a world face that no next/font call loads fails', () => {
+  const css = 'html[data-theme="hermes-fixture"] .hh-display { font-family: var(--font-nowhere), sans-serif; }\n';
+  const pkg = withFixtureWorld(freshPackage(), { css });
+  assert.equal(failuresMatching(pkg, /^hermes-fixture: tokens\/worlds\/fixture\.css uses var\(--font-nowhere\) but app\/fonts\.ts has no next\/font call with that variable$/).length, 1, all(pkg));
+});
+
+test('live code that names an archived world fails; prose and docs do not', () => {
+  const pkg = freshPackage();
+  pkg.artifacts.add('archive/worlds/retired-fixture/retired-fixture.json');
+  pkg.sources.set('preview/legacy.ts', "export const LEGACY = 'retired-fixture';\n");
+  pkg.codeFiles.set('tokens/legacy.json', '{ "theme": "hermes-retired-fixture" }\n');
+  pkg.sources.set('app/prose.tsx', 'export const Copy = () => <p>The retired-fixture idea lives on.</p>;\n');
+  pkg.sources.set('foundations/prose.md', 'The `retired-fixture` world is archived.\n');
+  const failures = failuresMatching(pkg, /names archived world "retired-fixture"/);
+  assert.deepEqual(failures.map((failure) => failure.split(':')[0]).sort(), ['preview/legacy.ts', 'tokens/legacy.json'], failures.join('\n'));
 });

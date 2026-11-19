@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Hermes Hub design-system validator: token contract, per-theme CSS parity, WCAG contrast, density knobs, world rules,
-// and raw-value guardrails.
+// font and world-registry consistency, and raw-value guardrails.
 // Usage: node validation/validate-design-system.mjs (from design/), or npm run validate.
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { extname, join, relative, sep } from 'node:path';
@@ -72,6 +72,10 @@ const SOURCE_EXTENSIONS = new Set(['.css', '.ts', '.tsx', '.md']);
 // archive/ holds retired worlds (raw token values, unregistered); it is not part of the live system.
 const SKIPPED_DIRS = new Set(['node_modules', '.next', 'out', 'research', 'validation', 'archive']);
 const WORLD_REGISTRY = 'preview/themes.ts';
+// Live code that must never name a retired world (archive/worlds/<slug>/). sources holds the .ts/.tsx/.css files;
+// loadPackage also reads .json and .mjs files under these directories into codeFiles.
+const LIVE_DIRS = new Set(['app', 'preview', 'tokens', 'components', 'patterns', 'foundations', 'agent-contract']);
+const CODE_EXTENSIONS = new Set(['.ts', '.tsx', '.css', '.mjs', '.json']);
 
 // Worlds live beside the core tokens: tokens/worlds/<slug>.json (theme definition) + <slug>.css (runtime block and skins).
 // They join validation as themes named hermes-<slug>. A file that fails to parse is reported, not thrown, so one broken
@@ -102,6 +106,7 @@ function loadWorlds(root) {
 export function loadPackage(root) {
   const artifacts = new Set();
   const sources = new Map();
+  const codeFiles = new Map();
   const walk = (dir) => {
     for (const entry of readdirSync(dir)) {
       const full = join(dir, entry);
@@ -114,6 +119,7 @@ export function loadPackage(root) {
       artifacts.add(rel);
       const topDir = rel.split('/')[0];
       if (SOURCE_EXTENSIONS.has(extname(entry)) && !SKIPPED_DIRS.has(topDir)) sources.set(rel, readFileSync(full, 'utf8'));
+      else if (CODE_EXTENSIONS.has(extname(entry)) && LIVE_DIRS.has(topDir)) codeFiles.set(rel, readFileSync(full, 'utf8'));
     }
   };
   walk(root);
@@ -122,6 +128,7 @@ export function loadPackage(root) {
     tokens: JSON.parse(readFileSync(join(root, 'tokens', 'tokens.json'), 'utf8')),
     themesCss: readFileSync(join(root, 'tokens', 'themes.css'), 'utf8'),
     sources,
+    codeFiles,
     artifacts,
     worlds: worlds.worlds,
     loadErrors: worlds.loadErrors,
@@ -616,24 +623,93 @@ function worldFailures(world, roles) {
   return failures;
 }
 
+// ---------- fonts and world registry ----------
+
+const FONTS_MODULE = 'app/fonts.ts';
+const FONT_FILE = /\.(?:woff2?|ttf|otf)$/;
+
+const stripComments = (text) => text.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
+const escapeRegExp = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const fontVariablesUsed = (css) => new Set([...css.matchAll(/var\(\s*(--font-[\w-]+)/g)].map(([, name]) => name));
+
+// next/font calls in app/fonts.ts: one `const name = Loader({ ... });` per face, Loader imported from next/font/*.
+function fontCalls(text) {
+  const loaders = new Set();
+  for (const [, named, single] of text.matchAll(/import\s+(?:\{([^}]*)\}|(\w+))\s+from\s+['"]next\/font\/[\w-]+['"]/g)) {
+    if (single) loaders.add(single);
+    for (const name of (named ?? '').split(',')) if (name.trim()) loaders.add(name.trim().split(/\s+as\s+/).pop());
+  }
+  return [...text.matchAll(/const\s+(\w+)\s*=\s*(\w+)\(\s*\{([\s\S]*?)\}\s*\)\s*;/g)]
+    .filter(([, , loader]) => loaders.has(loader))
+    .map(([, name, , options]) => ({ name, variable: /variable:\s*['"](--font-[\w-]+)['"]/.exec(options)?.[1] }));
+}
+
+// Registered worlds: the slugs in preview/themes.ts WORLD_SLUGS, or null when the array cannot be found.
+function registeredWorldSlugs(sources) {
+  const registry = sources.get(WORLD_REGISTRY);
+  const match = registry === undefined ? null : /WORLD_SLUGS[^=]*=\s*\[([^\]]*)\]/.exec(registry);
+  return match ? [...match[1].matchAll(/['"]([\w-]+)['"]/g)].map(([, slug]) => slug) : null;
+}
+
 // Worlds are registered by slug in preview/themes.ts (WORLD_SLUGS). Every world on disk must be registered, and every
 // registered slug must have both files, so the preview and the validator always see the same set.
 function registryFailures(worlds, sources) {
   const failures = [];
-  const registry = sources.get(WORLD_REGISTRY);
-  if (registry === undefined) return failures;
-  const match = /WORLD_SLUGS[^=]*=\s*\[([^\]]*)\]/.exec(registry);
-  if (!match) return [`${WORLD_REGISTRY} must declare the WORLD_SLUGS array`];
-  const registered = [...match[1].matchAll(/['"]([\w-]+)['"]/g)].map(([, slug]) => slug);
+  if (!sources.has(WORLD_REGISTRY)) return failures;
+  const registered = registeredWorldSlugs(sources);
+  if (!registered) return [`${WORLD_REGISTRY} must declare the WORLD_SLUGS array`];
   const onDisk = new Set(worlds.map((world) => world.slug));
   for (const slug of onDisk) if (!registered.includes(slug)) failures.push(`${THEME_PREFIX}${slug}: tokens/worlds/${slug}.json exists but is not registered in ${WORLD_REGISTRY} WORLD_SLUGS`);
   for (const slug of registered) if (!onDisk.has(slug)) failures.push(`${WORLD_REGISTRY} registers "${slug}" but tokens/worlds/${slug}.json does not exist`);
   return failures;
 }
 
+// Every next/font call feeds a face the tokens use, every self-hosted file is loaded, and every face a world names is
+// loaded. Core faces are used from tokens/themes.css; world faces from a registered world's stylesheet.
+function fontFailures(sources, artifacts, coreCss, worlds) {
+  const failures = [];
+  const fontsTs = sources.get(FONTS_MODULE);
+  if (fontsTs === undefined) return failures;
+  const text = stripComments(fontsTs);
+  const calls = fontCalls(text);
+  const variables = new Set(calls.map((call) => call.variable).filter(Boolean));
+  const registered = new Set(registeredWorldSlugs(sources) ?? []);
+  const used = fontVariablesUsed([coreCss, ...worlds.filter((world) => registered.has(world.slug)).map((world) => world.css)].join('\n'));
+  for (const call of calls) {
+    if (!call.variable) failures.push(`${FONTS_MODULE}: next/font call ${call.name} sets no --font-* variable`);
+    else if (!used.has(call.variable)) failures.push(`${FONTS_MODULE}: next/font call ${call.name} (${call.variable}) is not used by tokens/themes.css or any registered world`);
+  }
+  const referenced = new Set([...text.matchAll(/['"]\.\/fonts\/([^'"]+)['"]/g)].map(([, file]) => file));
+  for (const file of referenced) if (!artifacts.has(`app/fonts/${file}`)) failures.push(`${FONTS_MODULE}: src ./fonts/${file} does not exist`);
+  for (const artifact of artifacts) {
+    if (artifact.startsWith('app/fonts/') && FONT_FILE.test(artifact) && !referenced.has(artifact.slice('app/fonts/'.length))) failures.push(`${artifact} is not referenced by a src in ${FONTS_MODULE}`);
+  }
+  for (const world of worlds) {
+    for (const name of fontVariablesUsed(world.css)) if (!variables.has(name)) failures.push(`${world.theme}: tokens/worlds/${world.slug}.css uses var(${name}) but ${FONTS_MODULE} has no next/font call with that variable`);
+  }
+  return failures;
+}
+
+// A retired world (archive/worlds/<slug>/) must not be named by live code. Only code files are scanned: slugs such as
+// starship are ordinary words in prose (including JSX copy), so a slug counts as a reference only where it touches
+// code punctuation (a quote, backtick, slash, dot, hyphen, underscore, or #), as in theme values, paths, and prefixes.
+function archivedWorldFailures(artifacts, files) {
+  const failures = [];
+  const slugs = new Set([...artifacts].map((path) => /^archive\/worlds\/([\w-]+)\//.exec(path)?.[1]).filter(Boolean));
+  for (const slug of slugs) {
+    const name = escapeRegExp(slug);
+    const reference = new RegExp(`[-'"\`/._#]${name}(?!\\w)|(?<!\\w)${name}[-'"\`/_]`);
+    for (const [path, text] of files) {
+      if (!LIVE_DIRS.has(path.split('/')[0]) || !CODE_EXTENSIONS.has(extname(path))) continue;
+      if (reference.test(text)) failures.push(`${path}: names archived world "${slug}" (archive/worlds/${slug}/); retired worlds stay out of live code`);
+    }
+  }
+  return failures;
+}
+
 // ---------- validation ----------
 
-export function validateDesignSystem({ tokens: coreTokens, themesCss: coreCss, sources, artifacts, worlds = [], loadErrors = [] }) {
+export function validateDesignSystem({ tokens: coreTokens, themesCss: coreCss, sources, codeFiles = new Map(), artifacts, worlds = [], loadErrors = [] }) {
   const failures = [...loadErrors];
   const fail = (message) => failures.push(message);
 
@@ -644,6 +720,8 @@ export function validateDesignSystem({ tokens: coreTokens, themesCss: coreCss, s
   for (const world of readyWorlds) if (world.css === null) fail(`${world.theme}: tokens/worlds/${world.slug}.css is missing`);
   const loadedWorlds = readyWorlds.filter((world) => world.css !== null);
   failures.push(...registryFailures(worlds, sources));
+  failures.push(...fontFailures(sources, artifacts, coreCss, loadedWorlds));
+  failures.push(...archivedWorldFailures(artifacts, [...sources, ...codeFiles]));
   const coreThemes = coreTokens.meta?.themes ?? [];
   for (const world of loadedWorlds) if (coreThemes.includes(world.theme)) fail(`${world.theme}: a world cannot reuse a core theme name`);
   const tokens = {

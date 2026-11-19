@@ -30,7 +30,7 @@ A contribution updates every layer it touches:
 9. Is the copy in the Dispatcher voice and the glossary's terms?
 10. Does `npm run validate` pass?
 
-The `design-reviewer` agent (configured in `.omp/agents/design-reviewer.md`) applies this checklist and the side-stripe, glass and glow bans.
+The `design-reviewer` agent (shared by every Apollo brand, in `apollo-tokens/.omp/agents/design-reviewer.md`) applies this checklist and the side-stripe, glass and glow bans.
 
 ## Adding a world
 
