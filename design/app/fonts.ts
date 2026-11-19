@@ -1,4 +1,4 @@
-import { Archivo, B612, Barlow_Condensed, IBM_Plex_Mono, IBM_Plex_Sans, IBM_Plex_Sans_Condensed, Martian_Mono, Schibsted_Grotesk, Sofia_Sans_Extra_Condensed } from 'next/font/google';
+import { Archivo, Barlow_Condensed, Martian_Mono, Schibsted_Grotesk } from 'next/font/google';
 import localFont from 'next/font/local';
 
 /*
@@ -43,26 +43,7 @@ export const coreFontVariables = [schibstedGrotesk, atkinsonNext, atkinsonMono].
 const barlowCondensed = Barlow_Condensed({ subsets: ['latin'], weight: ['700', '800'], display: 'swap', preload: false, variable: '--font-barlow-condensed' });
 const archivo = Archivo({ subsets: ['latin'], weight: ['400', '700'], display: 'swap', preload: false, variable: '--font-archivo' });
 const martianMono = Martian_Mono({ subsets: ['latin'], weight: ['400', '700'], display: 'swap', preload: false, variable: '--font-martian-mono' });
-// Flight Deck: B612 (body, labels and every numeral; 400, 700), Big Shoulders Stencil (display and placards; 700, 800).
-// Big Shoulders Stencil is self-hosted (Google Fonts' latin variable file, wght 100–900, SIL OFL 1.1) because
-// next/font/google has no fallback metrics for it; the local loader measures the file to size its Arial fallback.
-const b612 = B612({ subsets: ['latin'], weight: ['400', '700'], display: 'swap', preload: false, variable: '--font-b612' });
-const bigShouldersStencil = localFont({
-  src: './fonts/BigShouldersStencil-Variable-latin.woff2',
-  weight: '100 900',
-  display: 'swap',
-  preload: false,
-  adjustFontFallback: 'Arial',
-  variable: '--font-big-shoulders-stencil',
-});
-// Sortie Board: IBM Plex Sans (reading text, labels and controls; 400, 700), IBM Plex Sans Condensed (every numeral and
-// figure column, tnum; 400, 700), Sofia Sans Extra Condensed (board titles only; 700, 800), IBM Plex Mono (short
-// identifiers: Swim IDs, Length numbers, status marks, code; 400, 700).
-const ibmPlexSans = IBM_Plex_Sans({ subsets: ['latin'], weight: ['400', '700'], display: 'swap', preload: false, variable: '--font-ibm-plex-sans' });
-const ibmPlexSansCondensed = IBM_Plex_Sans_Condensed({ subsets: ['latin'], weight: ['400', '700'], display: 'swap', preload: false, variable: '--font-ibm-plex-sans-condensed' });
-const sofiaSansExtraCondensed = Sofia_Sans_Extra_Condensed({ subsets: ['latin'], weight: ['700', '800'], display: 'swap', preload: false, variable: '--font-sofia-sans-extra-condensed' });
-const ibmPlexMono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '700'], display: 'swap', preload: false, variable: '--font-ibm-plex-mono' });
 
-const worldFonts: { variable: string }[] = [barlowCondensed, archivo, martianMono, b612, bigShouldersStencil, ibmPlexSans, ibmPlexSansCondensed, sofiaSansExtraCondensed, ibmPlexMono];
+const worldFonts: { variable: string }[] = [barlowCondensed, archivo, martianMono];
 
 export const worldFontVariables = worldFonts.map((font) => font.variable).join(' ');

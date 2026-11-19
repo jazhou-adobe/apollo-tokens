@@ -73,7 +73,8 @@ const DECK_FLOORS = { 'button-min-target': 56, 'tap-key-size': 80 };
 const ROOT_FONT_PX = 16;
 
 const SOURCE_EXTENSIONS = new Set(['.css', '.ts', '.tsx', '.md']);
-const SKIPPED_DIRS = new Set(['node_modules', '.next', 'out', 'research', 'validation']);
+// archive/ holds retired worlds (raw token values, unregistered); it is not part of the live system.
+const SKIPPED_DIRS = new Set(['node_modules', '.next', 'out', 'research', 'validation', 'archive']);
 const SKIPPED_FILES = new Set(['brief.md']);
 
 // Seeded worlds: tokens/worlds/<slug>.json (theme definition) + <slug>.css (runtime block, palettes, skins). They join

@@ -7,8 +7,6 @@
    Register a world by importing its stylesheet here, one line per world, e.g.
    @import '../tokens/worlds/approach-lights.css'; */
 @import '../tokens/worlds/approach-lights.css';
-@import '../tokens/worlds/flight-deck.css';
-@import '../tokens/worlds/sortie-board.css';
 
 @layer base {
   html {

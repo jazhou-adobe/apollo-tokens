@@ -19,6 +19,7 @@ This file is the Phase 1 record for `build-brand-design-system`. It holds the ow
 | Density | `[data-density="compact"]` applies to the Admin console only. |
 | Core direction | **Pace Clock**, calm and grounded, with no sci-fi in the core. |
 | Worlds | Five sci-fi worlds in a **used-future** style were previewed: Approach Lights, Flight Deck, Sortie Board, Pressure Suit, Plotting Glass. After seeing the quick previews (`research/world-previews/`), the owner chose to build **Approach Lights, Flight Deck, Sortie Board**. Pressure Suit and Plotting Glass stay as previews only. Each built world has 4 colour options. |
+| Chosen design | After both review rounds (2026-11-20) the owner chose **Approach Lights** (`splitbook-approach-lights`) as Splitbook's design to take forward. Further review and refinement go to it only. The core themes stay; the other world options moved to `archive/` (unregistered, not validated). |
 | Reviewer | `design-reviewer`, copied from MathGo (`github-copilot/gpt-6.1-sol`), with thinking-level **medium**. |
 
 ## Brand constraints (from PRODUCT.md)

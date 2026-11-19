@@ -108,7 +108,7 @@ Use the glossary words exactly: Session, Swim, Length, Set, Focus metric, Tap Pa
 
 ## Worlds: the used-future rule
 
-Splitbook has five sci-fi **worlds** built over the same anatomy: Approach Lights, Flight Deck, Sortie Board, Pressure Suit and Plotting Glass. Each lives in `tokens/worlds/<slug>.json` + `.css`, uses the theme value `splitbook-<slug>`, and offers four colour options through `data-palette` (the recommended default, two alternatives, `original`).
+Splitbook's sci-fi **world** is **Approach Lights**, the owner's chosen design. It lives in `tokens/worlds/approach-lights.json` + `.css`, uses the theme value `splitbook-approach-lights`, and offers four colour options through `data-palette` (the recommended default, two alternatives, `original`). The other options explored (Flight Deck, Sortie Board, Pressure Suit, Plotting Glass) are kept in [`archive/`](../archive/README.md). Any future world follows the same contract.
 
 Worlds are **used future**: real carrier, cockpit and flight-deck conventions pushed forward in time. Tactile, worn-in, functional. The rule applies to every world and to nothing in the core.
 

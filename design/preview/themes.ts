@@ -1,7 +1,5 @@
 import tokens from '../tokens/tokens.json';
 import approachLights from '../tokens/worlds/approach-lights.json';
-import flightDeck from '../tokens/worlds/flight-deck.json';
-import sortieBoard from '../tokens/worlds/sortie-board.json';
 import type { ThemeOption } from './theme-constants';
 
 // Server-side theme registry: the core themes from tokens.json plus every seeded world in tokens/worlds/.
@@ -45,8 +43,6 @@ export type World = {
  */
 const WORLD_FILES: [string, WorldDefinition][] = [
   ['approach-lights', approachLights],
-  ['flight-deck', flightDeck],
-  ['sortie-board', sortieBoard],
 ];
 
 // The roles that carry most of a palette's identity, in the order the gallery paints them.
