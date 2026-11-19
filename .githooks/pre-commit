@@ -1,0 +1,4 @@
+#!/bin/sh
+# Apollo hub and skill checks. Installed by `npm install` (prepare script sets core.hooksPath).
+set -e
+npm run --silent check

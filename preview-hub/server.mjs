@@ -3,16 +3,18 @@
 //
 //   npm run preview            # http://localhost:3000
 //   HUB_PORT=4000 npm run preview
+//   npm run preview:stop       # stop the brand dev servers the hub started
 //
 // Each brand in brands.json is a Next.js preview app whose basePath is `/<slug>`, so `/<slug>/*` is proxied to that
 // app's own dev server unchanged (pages, /_next assets, and the HMR websocket). A brand server that is already
-// listening is reused; otherwise the hub starts `next dev` in the brand's directory and restarts it if it exits.
+// listening is reused; otherwise the hub starts `next dev` detached in the brand's directory, logging to
+// preview-hub/logs/<slug>.log, and restarts it if it exits while the hub runs. Stopping the hub leaves brand servers up.
 //
 // The hub also serves each brand's standalone world previews as static files at `/_previews/<slug>/<path>`, from
 // `research/world-previews/` (candidates and chosen worlds) and `archive/worlds/` (options not taken), and lists them
 // on the index page. The list is read on every index request, so a new preview appears without a restart.
 import { spawn } from 'node:child_process';
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { closeSync, existsSync, mkdirSync, openSync, readdirSync, readFileSync, readSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import http from 'node:http';
 import net from 'node:net';
 import { basename, dirname, extname, join, relative, resolve, sep } from 'node:path';
@@ -22,6 +24,7 @@ const hubDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(hubDir, '..');
 const HUB_PORT = Number(process.env.HUB_PORT ?? 3000);
 const RESTART_LIMIT = 5; // restarts per brand per minute before giving up
+const LOG_DIR = join(hubDir, 'logs');
 const PREVIEW_ROOTS = ['research/world-previews', 'archive/worlds'];
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -37,7 +40,6 @@ const MIME = {
 /** tokenPrefix and defaultTheme are read by .skills/apply-apollo-theme, not by the hub. */
 /** @type {{ slug: string; label: string; summary: string; dir: string; port: number; tokenPrefix: string; defaultTheme: string }[]} */
 const brands = JSON.parse(readFileSync(resolve(hubDir, 'brands.json'), 'utf8'));
-const children = new Set();
 
 const brandFor = (url = '/') => brands.find((brand) => url === `/${brand.slug}` || url.startsWith(`/${brand.slug}/`) || url.startsWith(`/${brand.slug}?`));
 
@@ -87,18 +89,22 @@ function isListening(port) {
   });
 }
 
+// Brand dev servers run detached: each writes to logs/<slug>.log (truncated on start) and records its process group in
+// logs/<slug>.pid, so restarting the hub reuses them instead of killing them. `npm run preview:stop` stops them.
+const logPath = (brand) => join(LOG_DIR, `${brand.slug}.log`);
+const pidPath = (brand) => join(LOG_DIR, `${brand.slug}.pid`);
+
 function startBrand(brand) {
   const cwd = resolve(repoRoot, brand.dir);
   const restarts = [];
+  const prefix = `[${brand.slug}] `;
   const run = () => {
-    const child = spawn('npx', ['next', 'dev', '--port', String(brand.port)], { cwd, stdio: ['ignore', 'pipe', 'pipe'] });
-    children.add(child);
-    const prefix = `[${brand.slug}] `;
-    for (const stream of [child.stdout, child.stderr]) {
-      stream.on('data', (chunk) => process.stdout.write(String(chunk).replace(/^(?=.)/gm, prefix)));
-    }
+    const out = openSync(logPath(brand), 'w');
+    const child = spawn('npx', ['next', 'dev', '--port', String(brand.port)], { cwd, detached: true, stdio: ['ignore', out, out] });
+    closeSync(out);
+    writeFileSync(pidPath(brand), String(child.pid));
+    child.unref();
     child.on('exit', (code, signal) => {
-      children.delete(child);
       if (shuttingDown) return;
       const now = Date.now();
       restarts.push(now);
@@ -113,6 +119,39 @@ function startBrand(brand) {
     });
   };
   run();
+}
+
+/** Echo a brand's log to the hub's stdout, following truncation when the server restarts. */
+function tailLog(brand) {
+  const file = logPath(brand);
+  const prefix = `[${brand.slug}] `;
+  let offset = existsSync(file) ? statSync(file).size : 0;
+  setInterval(() => {
+    if (!existsSync(file)) return;
+    const size = statSync(file).size;
+    if (size < offset) offset = 0;
+    if (size === offset) return;
+    const fd = openSync(file, 'r');
+    const chunk = Buffer.alloc(size - offset);
+    readSync(fd, chunk, 0, chunk.length, offset);
+    closeSync(fd);
+    offset = size;
+    process.stdout.write(chunk.toString().replace(/^(?=.)/gm, prefix));
+  }, 500).unref();
+}
+
+function stopBrands() {
+  for (const brand of brands) {
+    if (!existsSync(pidPath(brand))) continue;
+    const pid = Number(readFileSync(pidPath(brand), 'utf8'));
+    try {
+      process.kill(-pid, 'SIGTERM');
+      console.log(`[${brand.slug}] stopped process group ${pid}`);
+    } catch {
+      console.log(`[${brand.slug}] process group ${pid} was not running`);
+    }
+    rmSync(pidPath(brand));
+  }
 }
 
 function indexPage() {
@@ -209,15 +248,22 @@ let shuttingDown = false;
 for (const signal of ['SIGINT', 'SIGTERM']) {
   process.on(signal, () => {
     shuttingDown = true;
-    for (const child of children) child.kill('SIGTERM');
     server.close(() => process.exit(0));
     setTimeout(() => process.exit(0), 2000).unref();
   });
 }
 
+if (process.argv.includes('--stop')) {
+  stopBrands();
+  process.exit(0);
+}
+
+mkdirSync(LOG_DIR, { recursive: true });
 for (const brand of brands) {
   if (await isListening(brand.port)) console.log(`[${brand.slug}] reusing the server already on port ${brand.port}`);
   else startBrand(brand);
+  console.log(`[${brand.slug}] dev-server log: ${relative(process.cwd(), logPath(brand))}`);
+  tailLog(brand);
 }
 server.listen(HUB_PORT, () => {
   console.log(`Apollo preview hub on http://localhost:${HUB_PORT}`);

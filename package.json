@@ -4,6 +4,13 @@
   "type": "module",
   "description": "One server for every brand's design-system preview, mapped by path (/splitbook, /hermes).",
   "scripts": {
-    "preview": "node preview-hub/server.mjs"
+    "preview": "node preview-hub/server.mjs",
+    "preview:stop": "node preview-hub/server.mjs --stop",
+    "smoke": "node preview-hub/smoke.mjs",
+    "check": "node --check preview-hub/server.mjs && node --check preview-hub/smoke.mjs && node .skills/apply-apollo-theme/scripts/theme-manifest.mjs splitbook > /dev/null && node .skills/apply-apollo-theme/scripts/theme-manifest.mjs hermes > /dev/null",
+    "prepare": "git config core.hooksPath .githooks"
+  },
+  "devDependencies": {
+    "playwright-core": "1.65.1"
   }
 }
