@@ -71,12 +71,16 @@ export function OverviewGrid({ items }: { items: OverviewItem[] }) {
   );
 }
 
-function Tile({ item, position, onPick }: { item: OverviewItem; position: number; onPick: (theme: string, position: number) => void }) {
+/**
+ * A live /tile thumbnail scaled to its box. The frame is inert and hidden from assistive technology: it is a mouse shortcut
+ * to `href`, and the caption beside it carries the real link.
+ */
+export function ThumbFrame({ query, href, title }: { query: URLSearchParams; href: string; title: string }) {
   const frameRef = useRef<HTMLAnchorElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [scale, setScale] = useState(0);
 
-  // The thumbnail renders at the virtual viewport set by --hh-layout-thumbnail-*; scale it to the tile's width.
+  // The thumbnail renders at the virtual viewport set by --hh-layout-thumbnail-*; scale it to the frame's width.
   useEffect(() => {
     const frame = frameRef.current;
     const iframe = iframeRef.current;
@@ -88,6 +92,14 @@ function Tile({ item, position, onPick }: { item: OverviewItem; position: number
     return () => observer.disconnect();
   }, []);
 
+  return (
+    <a ref={frameRef} className="hh-overview-frame" href={href} tabIndex={-1} aria-hidden="true">
+      <iframe ref={iframeRef} className="hh-overview-iframe" src={`/tile?${query}`} title={title} loading="lazy" inert style={{ '--overview-scale': scale } as CSSProperties} />
+    </a>
+  );
+}
+
+function Tile({ item, position, onPick }: { item: OverviewItem; position: number; onPick: (theme: string, position: number) => void }) {
   const palette = item.palettes[position];
   const query = new URLSearchParams({ theme: item.value });
   if (palette?.id) query.set('palette', palette.id);
@@ -95,10 +107,7 @@ function Tile({ item, position, onPick }: { item: OverviewItem; position: number
 
   return (
     <li className="hh-overview-tile">
-      {/* Mouse shortcut to the caption link's target; the frame is inert, so keyboard and screen readers use the caption. */}
-      <a ref={frameRef} className="hh-overview-frame" href={`/design?${query}`} tabIndex={-1} aria-hidden="true">
-        <iframe ref={iframeRef} className="hh-overview-iframe" src={`/tile?${query}`} title={`${name} thumbnail`} inert style={{ '--overview-scale': scale } as CSSProperties} />
-      </a>
+      <ThumbFrame query={query} href={`/design?${query}`} title={`${name} thumbnail`} />
       <div className="hh-overview-caption">
         <a className="hh-link hh-label" href={`/design?${query}`}>
           {item.label}

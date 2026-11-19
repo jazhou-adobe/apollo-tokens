@@ -1,8 +1,8 @@
 {
   "label": "Deck Handling Board",
   "order": 1,
-  "$description": "The carrier \"Ouija board\": a top-down deck plan where handlers move aircraft templates. Agents are craft parked in deck zones; each Round is a template in its holder, and the deck lines, catapult track and stencil markings are painted on the board edges only.",
-  "signature": "When a Round is answered, its craft taxis to the catapult and off the board: the Answered toast carries a catapult track along its foot and the craft runs down it and leaves. The open Round sits on the catapult (strip [data-selected=\"true\"]) and taxis in when J/K or a click selects it.",
+  "$description": "The carrier \"Ouija board\": a top-down deck plan where handlers move aircraft templates. Agents are craft parked in deck zones; each Round is a cut template in its holder, numbered by its deck spot, set in drafting lettering. Craft geometry carries the identity, not hazard paint.",
+  "signature": "When a Round is answered, its own strip departs: while the core holds it in .hh-strip[data-state=\"departing\"], the craft on the template taxis along a catapult track drawn across the strip and runs off the board, and the template clears its spot. The status word stays printed throughout; under reduced motion the strip simply clears.",
   "colorScheme": "dark",
   "color": {
     "background": {
@@ -241,33 +241,33 @@
   "overrides": {
     "font-sans": {
       "$type": "fontFamily",
-      "$value": "var(--font-archivo), ui-sans-serif, system-ui, sans-serif",
-      "$description": "Archivo (variable 100–900): reading text, Questions, labels and controls. A plain, slightly industrial grotesque, like the type on a handling-room placard."
+      "$value": "var(--font-public-sans), ui-sans-serif, system-ui, sans-serif",
+      "$description": "Public Sans (variable 100–900; 400 and 600 used): reading text, Questions, labels, controls and navigation, in sentence case. A plain government-document grotesque, like a handling-room procedures sheet."
     },
     "font-mono": {
       "$type": "fontFamily",
-      "$value": "var(--font-martian-mono), ui-monospace, monospace",
-      "$description": "Martian Mono (variable 100–800, width 75–112.5): callsigns, ids, timers, code. The skin sets font-stretch 87.5% on mono elements so tail codes stay compact; tabular numerals as in the core."
+      "$value": "var(--font-jetbrains-mono), ui-monospace, monospace",
+      "$description": "JetBrains Mono (variable 100–800; 400 and 500 used): callsigns, ids, timers, deck spots and code at the core mono sizes, tabular numerals."
     },
     "font-condensed": {
       "$type": "fontFamily",
-      "$value": "var(--font-barlow-condensed), 'Arial Narrow', sans-serif",
-      "$description": "Barlow Condensed (static 500–800): strip headers, holder status words, headings, the narrow lettering painted on craft templates."
-    },
-    "type-display-family": {
-      "$type": "fontFamily",
-      "$value": "var(--font-saira-stencil), var(--hh-font-condensed)",
-      "$description": "Saira Stencil (variable 100–900): display only, like deck-zone markings sprayed through a stencil. Never on reading text."
+      "$value": "var(--font-barlow-semi-condensed), 'Arial Narrow', sans-serif",
+      "$description": "Barlow Semi Condensed (static 600 and 700): drafting lettering for strip headers, holder status words, headings and the board name. Short legends only."
     },
     "type-display-weight": {
       "$type": "fontWeight",
-      "$value": "var(--hh-font-weight-semibold)",
-      "$description": "Stencil display reads cleanest at 600; heavier cuts close the stencil bridges."
+      "$value": "var(--hh-font-weight-bold)",
+      "$description": "Display set in Barlow Semi Condensed 700, a real cut; drafting lettering, not poster weight."
+    },
+    "font-weight-heavy": {
+      "$type": "fontWeight",
+      "$value": 700,
+      "$description": "This world loads no 800 cut. Holder status words and the app bar brand ask for heavy; 700 keeps them on a real Barlow Semi Condensed cut instead of a synthesised bold."
     },
     "letter-spacing-caps": {
       "$type": "dimension",
-      "$value": "0.1em",
-      "$description": "Wider caps tracking for condensed status words and deck markings, as painted lettering is spaced."
+      "$value": "0.08em",
+      "$description": "Caps tracking for short condensed legends (status words, badges, deck spots), as template lettering is spaced."
     },
     "radius-sm": {
       "$type": "dimension",
@@ -286,13 +286,13 @@
     },
     "elevation-raised": {
       "$type": "shadow",
-      "$value": "0 0.0625rem 0 0 var(--hh-shadow), 0 0.1875rem 0.375rem -0.125rem var(--hh-shadow)",
-      "$description": "A plastic template lying on plexiglass: a hard one-pixel contact edge plus a short soft drop. Decorative only."
+      "$value": "0 0.0625rem 0.25rem 0 var(--hh-shadow)",
+      "$description": "A plastic template resting on plexiglass: soft contact depth, no hard offset edge. Decorative only."
     },
     "elevation-overlay": {
       "$type": "shadow",
-      "$value": "0 0.125rem 0 0 var(--hh-shadow), 0 0.75rem 1.5rem -0.25rem var(--hh-shadow)",
-      "$description": "A placard lifted off the board: contact edge plus a tighter drop than the core. Decorative only."
+      "$value": "0 0.5rem 1.5rem -0.25rem var(--hh-shadow)",
+      "$description": "A placard lifted off the board: one soft drop, tighter than the core. Decorative only."
     }
   },
   "palette": {

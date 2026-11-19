@@ -1,7 +1,7 @@
 /*
  * World: Deck Handling Board (theme value hermes-deck-handling). Definition: deck-handling.json.
  * The carrier "Ouija board": a top-down deck plan where handlers move aircraft templates; Agents are craft parked in
- * deck zones. Signature: an answered Round's craft taxis to the catapult and off the board.
+ * deck zones. Signature: an answered Round's own strip departs; its craft taxis to the catapult and off the board.
  * Blocks: the theme block (recommended Night Deck colours, type/shape/depth overrides, helpers), one block per colour
  * option, then the skin. Every selector is scoped to the theme; durations come from --hh-motion-*.
  */
@@ -67,20 +67,19 @@ html[data-theme="hermes-deck-handling"] {
   --hh-chart-3: #d9906a;
   --hh-chart-4: #8fc46a;
   --hh-chart-5: #a99be0;
-  --hh-font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --hh-font-mono: var(--font-martian-mono), ui-monospace, monospace;
-  --hh-font-condensed: var(--font-barlow-condensed), 'Arial Narrow', sans-serif;
-  --hh-type-display-family: var(--font-saira-stencil), var(--hh-font-condensed);
-  --hh-type-display-weight: var(--hh-font-weight-semibold);
-  --hh-letter-spacing-caps: 0.1em;
+  --hh-font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --hh-font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --hh-font-condensed: var(--font-barlow-semi-condensed), 'Arial Narrow', sans-serif;
+  --hh-type-display-weight: var(--hh-font-weight-bold);
+  --hh-font-weight-heavy: 700;
+  --hh-letter-spacing-caps: 0.08em;
   --hh-radius-sm: 0.125rem;
   --hh-radius-md: 0.1875rem;
   --hh-radius-lg: 0.375rem;
-  --hh-elevation-raised: 0 0.0625rem 0 0 var(--hh-shadow), 0 0.1875rem 0.375rem -0.125rem var(--hh-shadow);
-  --hh-elevation-overlay: 0 0.125rem 0 0 var(--hh-shadow), 0 0.75rem 1.5rem -0.25rem var(--hh-shadow);
-  /* World helpers: top-down craft silhouettes for masks (nose up, and nose east for the launch). */
+  --hh-elevation-raised: 0 0.0625rem 0.25rem 0 var(--hh-shadow);
+  --hh-elevation-overlay: 0 0.5rem 1.5rem -0.25rem var(--hh-shadow);
+  /* World helper: the top-down craft silhouette, used as a mask. */
   --deck-handling-craft: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Cpath d='M13 1.5c1 0 1.6 1.4 1.6 3.2v5.2l9 5.4v2.3l-9-2.6v5l2.6 2v1.8L13 22.6l-4.2 1.2V22l2.6-2v-5l-9 2.6v-2.3l9-5.4V4.7C11.4 2.9 12 1.5 13 1.5z'/%3E%3C/svg%3E");
-  --deck-handling-craft-east: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Cpath transform='rotate(90 13 13)' d='M13 1.5c1 0 1.6 1.4 1.6 3.2v5.2l9 5.4v2.3l-9-2.6v5l2.6 2v1.8L13 22.6l-4.2 1.2V22l2.6-2v-5l-9 2.6v-2.3l9-5.4V4.7C11.4 2.9 12 1.5 13 1.5z'/%3E%3C/svg%3E");
 }
 
 /* Day Plot */
@@ -273,16 +272,12 @@ html[data-theme="hermes-deck-handling"][data-palette="original"] {
 }
 
 /* ================= Skin =================
- * Intensity budget. Identity (app bar, sidebar edge, strip bay deck plot, the launch): painted deck lines, pad-eyes and
- * stencil lettering. Function (controls, holders, overlays, navigation): condensed caps, cut-plastic corners, machined
- * lips, restrained material. Reading (open Round, Questions, options, attachments, diffs, notes): quiet opaque planes,
- * no texture behind text.
+ * Intensity budget. Identity is carried by craft geometry, not paint: the top-down craft on every template, the tail-fin
+ * callsign mark, numbered deck spots, taxi chevrons, and the departure itself. Function (controls, holders, overlays,
+ * navigation): sentence-case Public Sans, cut-plastic corners, a thin inset lip. Reading (open Round, Questions, options,
+ * attachments, diffs, notes): quiet opaque planes, no texture behind text. Deck-line yellow is kept for the primary
+ * action, the selected tab and the catapult track; never for ordinary separators.
  */
-
-/* Martian Mono is broad; every mono surface runs it at 87.5% width so tail codes and timers stay compact. */
-html[data-theme="hermes-deck-handling"] :is(.hh-mono, .hh-mono-sm, .hh-callsign, .hh-kbd, .hh-live-value, .hh-connection-detail, .hh-side-nav-count, .hh-attachment-body, .hh-table td[data-numeric], .hh-swatch-meta, code, kbd, samp, pre) {
-  font-stretch: 87.5%;
-}
 
 html[data-theme="hermes-deck-handling"] ::selection {
   background: var(--hh-primary);
@@ -298,59 +293,22 @@ html[data-theme="hermes-deck-handling"] :is(.hh-attachment-body, .hh-table-wrap,
   scrollbar-width: thin;
 }
 
-/* ---------- Identity: board edges ---------- */
+/* ---------- Identity ---------- */
 
-/* The app bar is the deck edge: a solid deck-line rail at its foot with the dashed foul line just above, both inside
- * its bottom padding so no text sits on them. The brand is stencilled. */
-html[data-theme="hermes-deck-handling"] .hh-app-bar {
-  background-image:
-    linear-gradient(var(--hh-primary), var(--hh-primary)),
-    repeating-linear-gradient(90deg, var(--hh-primary) 0 1.5rem, transparent 1.5rem 2.5rem);
-  background-size: 100% var(--hh-border-width-thick), 100% var(--hh-border-width-thick);
-  background-position: 0 100%, 0 calc(100% - 0.3125rem);
-  background-repeat: no-repeat;
-}
-
-html[data-theme="hermes-deck-handling"] .hh-app-bar-brand,
-html[data-theme="hermes-deck-handling"] .hh-sidebar-brand > :first-child {
-  font-family: var(--hh-type-display-family);
-  font-weight: var(--hh-type-display-weight);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
-/* Sidebar: a column of deck pad-eyes along the inline-end edge, inside the padding. */
-html[data-theme="hermes-deck-handling"] .hh-sidebar {
-  background-image: radial-gradient(circle at 50% 50%, var(--hh-border) 0 0.125rem, transparent 0.15rem);
-  background-size: 0.5rem 1.25rem;
-  background-position: right 0.25rem top 0.5rem;
-  background-repeat: repeat-y;
-}
-
-/* Section rules on /design are painted deck lines. */
-html[data-theme="hermes-deck-handling"] .hh-section-head {
-  border-bottom-color: var(--hh-primary);
-}
-
-html[data-theme="hermes-deck-handling"] .hh-kicker {
-  font-family: var(--hh-font-condensed);
-  font-weight: var(--hh-font-weight-bold);
+/* The board name: drafting lettering, the only tracked capitals outside status words and short legends. */
+html[data-theme="hermes-deck-handling"] .hh-app-bar-brand {
   letter-spacing: var(--hh-letter-spacing-caps);
 }
 
 /* ---------- Function: actions ---------- */
 
-/* Buttons are cut templates: condensed caps and a machined lip along the foot. */
+/* Buttons are cut templates: sentence case, square corners and a thin inset lip along the foot. */
 html[data-theme="hermes-deck-handling"] :is(.hh-button, .hh-icon-button) {
-  font-family: var(--hh-font-condensed);
-  font-weight: var(--hh-font-weight-bold);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-  box-shadow: inset 0 calc(var(--hh-border-width-thick) * -1) 0 0 var(--hh-border);
+  box-shadow: inset 0 calc(var(--hh-border-width-thin) * -1) 0 0 var(--hh-border);
 }
 
 html[data-theme="hermes-deck-handling"] :is(.hh-button[data-variant='primary'], .hh-button[data-variant='destructive']) {
-  box-shadow: inset 0 calc(var(--hh-border-width-thick) * -1) 0 0 var(--hh-shadow);
+  box-shadow: inset 0 calc(var(--hh-border-width-thin) * -1) 0 0 var(--hh-shadow);
 }
 
 html[data-theme="hermes-deck-handling"] :is(.hh-button[data-variant='ghost'], .hh-icon-button[data-variant='ghost']) {
@@ -362,21 +320,15 @@ html[data-theme="hermes-deck-handling"] .hh-button[aria-pressed='true'] {
   color: var(--hh-accent-foreground);
 }
 
-html[data-theme="hermes-deck-handling"] .hh-skip-link {
-  font-family: var(--hh-font-condensed);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
 html[data-theme="hermes-deck-handling"] .hh-link:hover {
   text-decoration-color: var(--hh-primary);
 }
 
 /* ---------- Function: inputs ---------- */
 
-/* Fields are recessed into the board: a heavier foot edge, the ring colour on focus. Their contents stay quiet. */
+/* Fields sit recessed in the board: an inset top bevel, the ring colour on focus. Their contents stay quiet. */
 html[data-theme="hermes-deck-handling"] :is(.hh-input, .hh-select, .hh-textarea) {
-  border-bottom-width: var(--hh-border-width-thick);
+  box-shadow: inset 0 var(--hh-border-width-thin) 0 0 var(--hh-shadow);
   transition: border-color var(--hh-motion-fast) var(--hh-easing-standard);
 }
 
@@ -384,15 +336,11 @@ html[data-theme="hermes-deck-handling"] :is(.hh-input, .hh-select, .hh-textarea)
   border-color: var(--hh-ring);
 }
 
-html[data-theme="hermes-deck-handling"] .hh-select {
+html[data-theme="hermes-deck-handling"] :is(.hh-select, .hh-checkbox input, .hh-radio input) {
   accent-color: var(--hh-primary);
 }
 
-html[data-theme="hermes-deck-handling"] :is(.hh-checkbox, .hh-radio) input {
-  accent-color: var(--hh-primary);
-}
-
-/* Switch: a shuttle slot. On, the slot is painted deck-line colour and the shuttle sits at the far end. */
+/* Switch: a shuttle slot. On, the slot takes the primary role and the shuttle sits at the far end. */
 html[data-theme="hermes-deck-handling"] .hh-switch-track {
   border-radius: 0;
   box-shadow: inset 0 var(--hh-border-width-thin) 0 0 var(--hh-shadow);
@@ -407,24 +355,9 @@ html[data-theme="hermes-deck-handling"] .hh-switch[aria-checked='true'] .hh-swit
   background: var(--hh-primary-foreground);
 }
 
-/* Chips are tie-down tags: condensed caps; pressed adds a deck-line foot as well as the fill. */
-html[data-theme="hermes-deck-handling"] .hh-chip {
-  font-family: var(--hh-font-condensed);
-  font-weight: var(--hh-font-weight-bold);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
+/* Chips: pressed adds an inset foot as well as the fill. */
 html[data-theme="hermes-deck-handling"] .hh-chip[aria-pressed='true'] {
-  box-shadow: inset 0 calc(var(--hh-border-width-thick) * -1) 0 0 var(--hh-primary);
-}
-
-/* Tabs and segmented controls: condensed caps; the selected tab is underlined with a deck line. */
-html[data-theme="hermes-deck-handling"] :is(.hh-tab, .hh-segmented label) {
-  font-family: var(--hh-font-condensed);
-  font-weight: var(--hh-font-weight-bold);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
+  box-shadow: inset 0 calc(var(--hh-border-width-thick) * -1) 0 0 var(--hh-accent-foreground);
 }
 
 html[data-theme="hermes-deck-handling"] .hh-tab[aria-selected='true'] {
@@ -440,47 +373,17 @@ html[data-theme="hermes-deck-handling"] :is(.hh-side-nav, .hh-bottom-nav) a[aria
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
-html[data-theme="hermes-deck-handling"] .hh-bottom-nav a {
-  font-family: var(--hh-font-condensed);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
 html[data-theme="hermes-deck-handling"] .hh-breadcrumbs li + li::before {
   content: '›';
 }
 
-html[data-theme="hermes-deck-handling"] .hh-toc a[aria-current='true'],
-html[data-theme="hermes-deck-handling"] .hh-toc a[aria-current='location'] {
-  text-decoration-color: var(--hh-primary);
-}
-
-/* ---------- Function: containers ---------- */
-
-/* The shelf is a painted parking zone: dashed in the border role. */
-html[data-theme="hermes-deck-handling"] .hh-shelf {
-  border-width: var(--hh-border-width-thick);
-}
-
-html[data-theme="hermes-deck-handling"] .hh-divider {
-  border-top-style: dashed;
-}
-
 /* ---------- Function: feedback ---------- */
 
+/* Short legends (status words, tones) in drafting lettering; the core keeps them in capitals. */
 html[data-theme="hermes-deck-handling"] :is(.hh-badge, .hh-recommended) {
   font-family: var(--hh-font-condensed);
   font-size: var(--hh-type-label-size);
   letter-spacing: var(--hh-letter-spacing-caps);
-}
-
-/* Alerts are placards: a heavy top edge in the tone, the tone word on its badge. */
-html[data-theme="hermes-deck-handling"] .hh-alert[data-tone] {
-  border-top-width: var(--hh-border-width-heavy);
-}
-
-html[data-theme="hermes-deck-handling"] .hh-toast {
-  border-top: var(--hh-border-width-thick) solid var(--hh-border);
 }
 
 /* Progress runs along a catapult track with tick marks every tenth. */
@@ -489,61 +392,11 @@ html[data-theme="hermes-deck-handling"] .hh-progress-track {
   background-image: repeating-linear-gradient(90deg, transparent 0 calc(10% - var(--hh-border-width-thin)), var(--hh-border) calc(10% - var(--hh-border-width-thin)) 10%);
 }
 
-html[data-theme="hermes-deck-handling"] .hh-progress-head {
-  font-family: var(--hh-font-condensed);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
 html[data-theme="hermes-deck-handling"] .hh-spinner {
   border-top-color: var(--hh-primary);
 }
 
-/* An empty state is an empty deck spot: its icon is drawn larger, like a stencilled marking. */
-html[data-theme="hermes-deck-handling"] .hh-empty-state > .hh-icon:first-child {
-  width: calc(var(--hh-icon-size) * 2);
-  height: calc(var(--hh-icon-size) * 2);
-}
-
-/* ---------- Function: overlays ---------- */
-
-html[data-theme="hermes-deck-handling"] :is(.hh-dialog, .hh-sheet) {
-  border-top: var(--hh-border-width-heavy) solid var(--hh-primary);
-}
-
-html[data-theme="hermes-deck-handling"] .hh-overlay-head {
-  background: var(--hh-surface-tray);
-  color: var(--hh-surface-tray-foreground);
-}
-
-html[data-theme="hermes-deck-handling"] .hh-overlay-head :is(h2, h3, .hh-heading-md) {
-  font-family: var(--hh-font-condensed);
-  font-weight: var(--hh-font-weight-bold);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
-html[data-theme="hermes-deck-handling"] :is(.hh-popover, .hh-menu) {
-  border-top-width: var(--hh-border-width-thick);
-}
-
-html[data-theme="hermes-deck-handling"] .hh-tooltip {
-  font-family: var(--hh-font-condensed);
-  font-weight: var(--hh-font-weight-semibold);
-  letter-spacing: var(--hh-letter-spacing-caps);
-}
-
 /* ---------- Function: data display ---------- */
-
-html[data-theme="hermes-deck-handling"] .hh-table th {
-  font-family: var(--hh-font-condensed);
-  font-size: var(--hh-type-label-size);
-  border-bottom-width: var(--hh-border-width-thick);
-}
-
-html[data-theme="hermes-deck-handling"] .hh-table td {
-  border-bottom-style: dashed;
-}
 
 html[data-theme="hermes-deck-handling"] .hh-kbd {
   background: var(--hh-input);
@@ -552,16 +405,11 @@ html[data-theme="hermes-deck-handling"] .hh-kbd {
 
 html[data-theme="hermes-deck-handling"] .hh-avatar {
   border-radius: var(--hh-radius-sm);
-  font-stretch: 87.5%;
 }
 
 /* ================= Domain widgets ================= */
 
 /* Callsign chip: a tail-code plate. The identity mark is a slanted tail fin; the callsign text is always printed. */
-html[data-theme="hermes-deck-handling"] .hh-callsign {
-  border-color: var(--agent-colour);
-}
-
 html[data-theme="hermes-deck-handling"] .hh-callsign-mark {
   width: calc(var(--hh-callsign-chip-height) * 0.32);
   height: calc(var(--hh-callsign-chip-height) * 0.62);
@@ -569,13 +417,13 @@ html[data-theme="hermes-deck-handling"] .hh-callsign-mark {
 }
 
 /* Round strip = an aircraft template in its holder. The holder frames the template on every side and prints the
- * status word in condensed caps on its tab; the template carries a top-down craft silhouette in strip ink. */
+ * status word in drafting capitals on its tab; the template carries a top-down craft silhouette in strip ink. */
 html[data-theme="hermes-deck-handling"] .hh-strip-tab {
   font-family: var(--hh-font-condensed);
   font-size: var(--hh-type-label-size);
 }
 
-html[data-theme="hermes-deck-handling"] .hh-strip-cell[data-cell='callsign']::before {
+html[data-theme="hermes-deck-handling"] :is(.hh-strip-cell[data-cell='callsign'], .hh-strip-cell[data-cell='meta'])::before {
   content: '';
   flex: none;
   width: calc(var(--hh-icon-size) * 1.3);
@@ -584,12 +432,47 @@ html[data-theme="hermes-deck-handling"] .hh-strip-cell[data-cell='callsign']::be
   mask: var(--deck-handling-craft) center / contain no-repeat;
 }
 
-html[data-theme="hermes-deck-handling"] .hh-strip[data-status='expired'] .hh-strip-cell[data-cell='callsign']::before {
+/* Wide boards park the craft ahead of the callsign; phones move it to the time cell so the callsign keeps the room. */
+html[data-theme="hermes-deck-handling"] .hh-strip-cell[data-cell='meta']::before {
+  display: none;
+}
+
+@media (max-width: 48rem) {
+  html[data-theme="hermes-deck-handling"] .hh-strip-cell[data-cell='callsign']::before {
+    display: none;
+  }
+
+  html[data-theme="hermes-deck-handling"] .hh-strip-cell[data-cell='meta']::before {
+    display: block;
+  }
+}
+
+html[data-theme="hermes-deck-handling"] .hh-strip[data-status='expired'] :is(.hh-strip-cell[data-cell='callsign'], .hh-strip-cell[data-cell='meta'])::before {
   transform: rotate(180deg);
 }
 
-/* Signature, part one: the open Round's template sits on the catapult. Selecting it (click, J/K) taxis it in, and its
- * tab shows a taxi chevron beside the status word. */
+/* Deck spots: each template in the bay is numbered by its spot, printed in the time cell on wide boards. */
+html[data-theme="hermes-deck-handling"] .hh-strip-bay-list {
+  counter-reset: deck-handling-spot;
+}
+
+html[data-theme="hermes-deck-handling"] .hh-strip-bay-list > .hh-strip {
+  counter-increment: deck-handling-spot;
+}
+
+@media (min-width: 48rem) {
+  html[data-theme="hermes-deck-handling"] .hh-strip-bay-list .hh-strip-cell[data-cell='meta']::after {
+    content: 'Spot ' counter(deck-handling-spot, decimal-leading-zero) / '';
+    order: -1;
+    font-family: var(--hh-type-mono-sm-family);
+    font-size: var(--hh-type-mono-sm-size);
+    font-weight: var(--hh-type-mono-sm-weight);
+    letter-spacing: var(--hh-letter-spacing-none);
+  }
+}
+
+/* The open Round's template sits on the catapult: selecting it (click, J/K) taxis it in, and its tab shows a taxi
+ * chevron beside the status word. */
 html[data-theme="hermes-deck-handling"] .hh-strip[data-selected='true'] {
   animation: deck-handling-taxi-in var(--hh-motion-panel) var(--hh-easing-enter) both;
 }
@@ -608,31 +491,10 @@ html[data-theme="hermes-deck-handling"] .hh-strip[data-selected='true'] .hh-stri
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
-/* Strip bay = the deck plot. A dashed foul line runs inside the top padding and pad-eyes sit in the corners; the
- * templates themselves stay opaque. */
-html[data-theme="hermes-deck-handling"] .hh-strip-bay {
-  background-image:
-    repeating-linear-gradient(90deg, var(--hh-primary) 0 1rem, transparent 1rem 1.75rem),
-    radial-gradient(circle, var(--hh-border) 0 0.125rem, transparent 0.15rem),
-    radial-gradient(circle, var(--hh-border) 0 0.125rem, transparent 0.15rem),
-    radial-gradient(circle, var(--hh-border) 0 0.125rem, transparent 0.15rem),
-    radial-gradient(circle, var(--hh-border) 0 0.125rem, transparent 0.15rem);
-  background-size: calc(100% - 1.5rem) var(--hh-border-width-thick), 0.5rem 0.5rem, 0.5rem 0.5rem, 0.5rem 0.5rem, 0.5rem 0.5rem;
-  background-position: 0.75rem 0.375rem, 0.25rem 0.25rem, right 0.25rem top 0.25rem, 0.25rem bottom 0.25rem, right 0.25rem bottom 0.25rem;
-  background-repeat: no-repeat;
-}
-
-html[data-theme="hermes-deck-handling"] .hh-strip-bay-head > :first-child {
-  font-family: var(--hh-font-condensed);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
-/* An empty spot on the deck: a painted parking frame with a craft outline in the border role. */
+/* An empty spot on the deck: the dashed slot with a parked-craft outline in the border role. */
 html[data-theme="hermes-deck-handling"] .hh-strip-bay-slot {
   display: grid;
   place-items: center;
-  border-width: var(--hh-border-width-thick);
 }
 
 html[data-theme="hermes-deck-handling"] .hh-strip-bay-slot::before {
@@ -641,16 +503,6 @@ html[data-theme="hermes-deck-handling"] .hh-strip-bay-slot::before {
   height: calc(var(--hh-icon-size) * 1.75);
   background: var(--hh-border);
   mask: var(--deck-handling-craft) center / contain no-repeat;
-}
-
-/* Open Round: the reading plane. Only type changes; no texture, no tint. */
-html[data-theme="hermes-deck-handling"] .hh-round-head .hh-strip-header {
-  letter-spacing: var(--hh-letter-spacing-caps);
-}
-
-html[data-theme="hermes-deck-handling"] .hh-question-meta {
-  font-family: var(--hh-font-condensed);
-  letter-spacing: var(--hh-letter-spacing-caps);
 }
 
 /* Recommended marker: signal-green tag with a pointer, the word always printed. */
@@ -662,84 +514,52 @@ html[data-theme="hermes-deck-handling"] .hh-recommended:not(:has(.hh-icon))::bef
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
 }
 
-html[data-theme="hermes-deck-handling"] .hh-attachment-head {
-  background: var(--hh-muted);
-  color: var(--hh-surface-card-foreground);
+/* ---------- Signature: departure from the board ----------
+ * The core keeps an answered strip mounted as data-state="departing" for --hh-motion-signature, then removes it. In this
+ * world the template itself leaves its spot: the craft on it turns to face the catapult, the template taxis forward,
+ * holds on the catapult, then launches off the board edge (the bay list clips it, so the page never scrolls sideways).
+ * The holder keeps its status word and "Delivered" throughout; nothing fades. Under reduced motion the duration
+ * collapses and the strip simply clears. */
+html[data-theme="hermes-deck-handling"] .hh-strip-bay-list:has(> .hh-strip[data-state='departing']) {
+  overflow-x: clip;
+  overflow-clip-margin: var(--hh-space-1);
 }
 
-/* Answer bar = launch control: a deck-line rail along its top edge. */
-html[data-theme="hermes-deck-handling"] .hh-answer-bar {
-  border-top: var(--hh-border-width-thick) solid var(--hh-primary);
+html[data-theme="hermes-deck-handling"] .hh-strip[data-state='departing'] {
+  animation: deck-handling-launch var(--hh-motion-signature) var(--hh-easing-standard) both;
 }
 
-/* Connection: a status placard in condensed caps; the detail stays mono. The lamp glows only while live (core). */
-html[data-theme="hermes-deck-handling"] .hh-connection {
-  font-family: var(--hh-font-condensed);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
-html[data-theme="hermes-deck-handling"] .hh-connection-detail {
-  letter-spacing: var(--hh-letter-spacing-none);
-  text-transform: none;
-}
-
-html[data-theme="hermes-deck-handling"] .hh-agent-card-head > :first-child,
-html[data-theme="hermes-deck-handling"] .hh-agent-state {
-  font-family: var(--hh-font-condensed);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
-/* Signature, part two: the launch. When a Round is answered the Answered toast mounts with a catapult track along its
- * foot (taxiway in the border role, catapult in deck-line colour). The craft taxis to the catapult, holds, then runs
- * down the track and off the board. Plays once per toast; collapses with --hh-motion-signature under reduced motion. */
-html[data-theme="hermes-deck-handling"] .hh-toast:has(.hh-badge[data-tone='answered']) {
-  position: relative;
-  overflow: hidden;
-  padding-bottom: calc(var(--hh-space-3) + var(--hh-space-6));
-}
-
-html[data-theme="hermes-deck-handling"] .hh-toast:has(.hh-badge[data-tone='answered'])::before {
-  content: '';
-  position: absolute;
-  inset-inline: var(--hh-space-3);
-  bottom: calc(var(--hh-space-1) + var(--hh-space-5) / 2 - var(--hh-border-width-thin));
-  height: var(--hh-border-width-thick);
-  background: linear-gradient(90deg, var(--hh-border) 0 35%, var(--hh-primary) 35% 100%);
-}
-
-html[data-theme="hermes-deck-handling"] .hh-toast:has(.hh-badge[data-tone='answered'])::after {
-  content: '';
-  position: absolute;
-  inset-inline: var(--hh-space-3);
-  bottom: var(--hh-space-1);
-  height: var(--hh-space-5);
-  background: var(--hh-surface-tray-foreground);
-  mask: var(--deck-handling-craft-east) 0% 50% / var(--hh-space-5) var(--hh-space-5) no-repeat;
-  animation: deck-handling-launch calc(var(--hh-motion-signature) * 3) var(--hh-easing-standard) 1 both;
+html[data-theme="hermes-deck-handling"] .hh-strip[data-state='departing'] :is(.hh-strip-cell[data-cell='callsign'], .hh-strip-cell[data-cell='meta'])::before {
+  animation: deck-handling-turn calc(var(--hh-motion-signature) * 0.3) var(--hh-easing-standard) both;
 }
 
 @keyframes deck-handling-taxi-in {
   from {
-    transform: translateX(calc(var(--hh-space-2) * -1));
+    transform: translateX(-0.5rem);
+  }
+}
+
+@keyframes deck-handling-turn {
+  to {
+    transform: rotate(90deg);
   }
 }
 
 @keyframes deck-handling-launch {
-  0% {
-    mask-position: 0% 50%;
+  0%,
+  30% {
+    transform: translateX(0);
     animation-timing-function: var(--hh-easing-standard);
   }
-  45% {
-    mask-position: 35% 50%;
+  55% {
+    transform: translateX(1.5rem);
     animation-timing-function: var(--hh-easing-linear);
   }
-  60% {
-    mask-position: 35% 50%;
+  65% {
+    transform: translateX(1.5rem);
     animation-timing-function: var(--hh-easing-exit);
   }
   100% {
-    mask-position: calc(100% + 2rem) 50%;
+    transform: translateX(110%);
   }
 }

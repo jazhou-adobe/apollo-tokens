@@ -2,7 +2,7 @@
   "label": "Flight Director 2169",
   "order": 4,
   "$description": "Flight Director 2169: the Command Center as a flight director's room a century and a half on. Every Agent holds a console position, Rounds are strips racked at the director's desk, a wide geometric face labels the consoles, and phosphor lights only values that are live right now.",
-  "signature": "GO / NO-GO polling for approve/reject Rounds, with text labels. Each approve/reject Question is a console position on the loop: the current one reads POLLING, Approve latches GO and Reject latches NO-GO in words on its answer slot, and the Answer bar keeps the poll tally (GO, NO-GO, standing by) until the Round is sent.",
+  "signature": "GO / NO-GO polling for approve/reject Rounds, with text labels. Each approve/reject Question is a console position on the loop: its answer slot prints STANDBY, POLLING while it is the current position, or the latched call GO / NO-GO in words, and the Answer bar leads with the poll tally (GO, NO-GO, standing by) until the Round is sent.",
   "colorScheme": "dark",
   "color": {
     "background": {
@@ -242,17 +242,17 @@
     "font-sans": {
       "$type": "fontFamily",
       "$value": "var(--font-archivo), ui-sans-serif, system-ui, sans-serif",
-      "$description": "Archivo (variable 100–900, width 62–125): reading text, Questions, controls. Labels and status words run it expanded (font-stretch 125%) like console engraving."
+      "$description": "Archivo (variable 100–900): every operational word: Round titles, Questions, headings, controls, navigation."
     },
     "font-mono": {
       "$type": "fontFamily",
       "$value": "var(--font-ibm-plex-mono), ui-monospace, monospace",
-      "$description": "IBM Plex Mono 400–700: callsigns, Round ids, timers, poll calls and code, always with tabular numerals."
+      "$description": "IBM Plex Mono 400–700: callsigns, Round ids, timers and code, always with tabular numerals."
     },
     "font-condensed": {
       "$type": "fontFamily",
       "$value": "var(--font-michroma), 'Eurostile', Arial, sans-serif",
-      "$description": "Michroma (one 400 cut): the wide geometric console face. It fills the display slot (strip headers, headings, app bar), so every token that names this family is set to the regular weight."
+      "$description": "Michroma (one 400 cut), the wide console face. Identity and short legends only: the display line, the app-bar brand, holder status words and the GO / NO-GO calls. Round titles and headings never use it."
     },
     "type-display-size": {
       "$type": "dimension",
@@ -269,45 +269,55 @@
       "$value": "var(--hh-font-weight-regular)",
       "$description": "Michroma ships one weight; never synthesised bold."
     },
+    "type-heading-lg-family": {
+      "$type": "fontFamily",
+      "$value": "var(--hh-font-sans)",
+      "$description": "Section and page headings are operational: Archivo, not the wide face."
+    },
     "type-heading-lg-size": {
       "$type": "dimension",
-      "$value": "1.375rem",
-      "$description": "Wide-face section headings, sized down from the condensed core."
+      "$value": "1.5rem",
+      "$description": "Archivo bold headings sized for scanning."
     },
     "type-heading-lg-line-height": {
       "$type": "number",
-      "$value": 1.25,
-      "$description": "Open leading for the wide face."
+      "$value": 1.2,
+      "$description": "Heading leading for Archivo."
     },
     "type-heading-lg-weight": {
       "$type": "fontWeight",
-      "$value": "var(--hh-font-weight-regular)",
-      "$description": "Michroma ships one weight."
+      "$value": "var(--hh-font-weight-bold)",
+      "$description": "Archivo 700, a real cut of the variable face."
+    },
+    "type-strip-header-family": {
+      "$type": "fontFamily",
+      "$value": "var(--hh-font-sans)",
+      "$description": "Round titles are scanned all day: Archivo, never the wide face."
     },
     "type-strip-header-size": {
       "$type": "dimension",
-      "$value": "0.9375rem",
-      "$description": "Round titles on strips in the wide face; small enough that long titles still wrap inside a strip."
+      "$value": "1.125rem",
+      "$description": "Round titles sit at or above the Question prompt size (body-lg), so the title leads the strip."
     },
     "type-strip-header-line-height": {
       "$type": "number",
-      "$value": 1.35,
-      "$description": "Open leading so two-line strip titles stay legible."
+      "$value": 1.3,
+      "$description": "Two-line titles stay compact."
     },
     "type-strip-header-weight": {
       "$type": "fontWeight",
-      "$value": "var(--hh-font-weight-regular)",
-      "$description": "Michroma ships one weight."
+      "$value": "var(--hh-font-weight-semibold)",
+      "$description": "Archivo 600, a real cut of the variable face."
     },
     "letter-spacing-caps": {
       "$type": "dimension",
-      "$value": "0.1em",
-      "$description": "Console engraving: wider tracking on uppercase status words, labels and key legends."
+      "$value": "0.08em",
+      "$description": "Tracking for the short uppercase legends that remain (status words, badges, poll calls)."
     },
     "letter-spacing-tight": {
       "$type": "dimension",
       "$value": "0em",
-      "$description": "The wide face is never tightened."
+      "$description": "The wide display face is never tightened."
     },
     "radius-sm": {
       "$type": "dimension",
@@ -326,8 +336,8 @@
     },
     "elevation-raised": {
       "$type": "shadow",
-      "$value": "0 0.125rem 0 0 var(--hh-shadow)",
-      "$description": "A hard lip under console modules and strips, like hardware set into a desk; no soft haze."
+      "$value": "0 0.0625rem 0.1875rem 0 var(--hh-shadow)",
+      "$description": "Soft contact depth: modules sit on the desk without a hard offset lip."
     },
     "elevation-overlay": {
       "$type": "shadow",
@@ -337,7 +347,7 @@
     "elevation-live": {
       "$type": "shadow",
       "$value": "0 0 0.5rem 0 var(--hh-live)",
-      "$description": "A tight phosphor bloom, for live state only."
+      "$description": "A tight bloom in the live colour, for live state only."
     }
   },
   "palette": {
@@ -587,7 +597,7 @@
     {
       "id": "day-shift",
       "label": "Day shift",
-      "$description": "Day shift: pale console paint and white strips; live values stay in dark readout wells.",
+      "$description": "Day shift: pale console paint and white strips. Exposed live marks use a dark signal green; bright phosphor stays inside dark readout wells.",
       "colorScheme": "light",
       "color": {
         "background": {
@@ -748,11 +758,11 @@
         },
         "live": {
           "$type": "color",
-          "$value": "#7df0a8"
+          "$value": "#256d44"
         },
         "live-foreground": {
           "$type": "color",
-          "$value": "#0b1a12"
+          "$value": "#ffffff"
         },
         "code": {
           "$type": "color",

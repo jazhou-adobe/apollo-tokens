@@ -23,7 +23,7 @@ export function QuestionsDemo({ questions }: { questions: Question[] }) {
           />
         ))}
       </ol>
-      <div className="hh-answer-bar" style={{ position: 'static' }}>
+      <div className="hh-answer-bar">
         <p className="hh-mono-sm" aria-live="polite">
           Answer value: {JSON.stringify(values)}
         </p>

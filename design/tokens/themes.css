@@ -203,15 +203,15 @@ html[data-theme="hermes-dark"] {
 /* Day-shift board: pale bay, white strips, the same holders and callsigns. */
 html[data-theme="hermes-light"] {
   color-scheme: light;
-  --hh-background: #e4e1d8;
+  --hh-background: #d6d3c8;
   --hh-foreground: #16191d;
   --hh-surface-card: #f7f6f1;
   --hh-surface-card-foreground: #16191d;
-  --hh-surface-panel: #eeece5;
+  --hh-surface-panel: #e8e5dd;
   --hh-surface-panel-foreground: #16191d;
-  --hh-surface-shelf: #f2f0e9;
+  --hh-surface-shelf: #eeebe4;
   --hh-surface-shelf-foreground: #16191d;
-  --hh-surface-tray: #dad6cb;
+  --hh-surface-tray: #ccc8bc;
   --hh-surface-tray-foreground: #16191d;
   --hh-primary: #1f262e;
   --hh-primary-foreground: #f3d77e;
@@ -224,7 +224,7 @@ html[data-theme="hermes-light"] {
   --hh-destructive: #b0281f;
   --hh-destructive-foreground: #ffffff;
   --hh-border: #686c72;
-  --hh-input: #ffffff;
+  --hh-input: #f0efe9;
   --hh-ring: #a8481a;
   --hh-success: #23733e;
   --hh-success-foreground: #ffffff;
@@ -244,7 +244,7 @@ html[data-theme="hermes-light"] {
   --hh-recommended-foreground: #ffffff;
   --hh-live: #0b6f80;
   --hh-live-foreground: #ffffff;
-  --hh-code: #f5f4ef;
+  --hh-code: #ecebe4;
   --hh-code-foreground: #1b1f24;
   --hh-diff-add: #d5eadb;
   --hh-diff-remove: #f3d9d5;

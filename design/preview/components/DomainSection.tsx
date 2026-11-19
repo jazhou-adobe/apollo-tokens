@@ -34,11 +34,12 @@ export function DomainSection() {
       <div id="strip-bay" className="hh-subsection">
         <h3 className="hh-heading-md">Strip bay</h3>
         <p className="hh-body-sm hh-measure">
-          Working triage. Focus anywhere inside, then press <kbd className="hh-kbd">J</kbd> / <kbd className="hh-kbd">K</kbd> to move between Rounds, <kbd className="hh-kbd">1</kbd>–
-          <kbd className="hh-kbd">9</kbd> to choose an option in the current Question, <kbd className="hh-kbd">A</kbd> / <kbd className="hh-kbd">R</kbd> to approve or reject, and{' '}
-          <kbd className="hh-kbd">⌘↵</kbd> or <kbd className="hh-kbd">Ctrl↵</kbd> to send the whole Round. R-0144 cancels by policy about 75 seconds after load. Illustrative data.
+          Working triage. The strip list is one Tab stop: <kbd className="hh-kbd">J</kbd> / <kbd className="hh-kbd">K</kbd> or the arrows move between strips and the Round beside it
+          follows. In the Round, <kbd className="hh-kbd">1</kbd>–<kbd className="hh-kbd">9</kbd> choose an option in the current Question, <kbd className="hh-kbd">A</kbd> /{' '}
+          <kbd className="hh-kbd">R</kbd> approve or reject, <kbd className="hh-kbd">N</kbd> opens notes, <kbd className="hh-kbd">Esc</kbd> goes back to pending, and{' '}
+          <kbd className="hh-kbd">⌘↵</kbd> or <kbd className="hh-kbd">Ctrl↵</kbd> sends the whole Round. R-0144 cancels by policy about 75 seconds after load. Illustrative data.
         </p>
-        <StripBay />
+        <StripBay context="Domain widgets" headingLevel={4} />
       </div>
 
       <div id="domain-strips" className="hh-subsection">
@@ -102,7 +103,7 @@ export function DomainSection() {
             <EmptyBay />
           </div>
         </div>
-        <AnsweredLog entries={ANSWERED_LOG} />
+        <AnsweredLog entries={ANSWERED_LOG} caption="Answered log (status widgets)" />
       </div>
     </section>
   );

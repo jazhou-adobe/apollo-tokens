@@ -20,7 +20,8 @@ export type IconName =
   | 'lock'
   | 'refresh'
   | 'bay'
-  | 'arrow-right';
+  | 'arrow-right'
+  | 'arrow-left';
 
 const PATHS: Record<IconName, string> = {
   check: 'M4 12.5l5 5L20 6.5',
@@ -44,6 +45,7 @@ const PATHS: Record<IconName, string> = {
   refresh: 'M20 6v5h-5M4 18v-5h5M18.5 11A7 7 0 0 0 6 7.5M5.5 13A7 7 0 0 0 18 16.5',
   bay: 'M3 4h18v4H3zM3 10h18v4H3zM3 16h18v4H3z',
   'arrow-right': 'M4 12h16M14 6l6 6l-6 6',
+  'arrow-left': 'M20 12H4M10 6l-6 6l6 6',
 };
 
 export function Icon({ name, label }: { name: IconName; label?: string }) {

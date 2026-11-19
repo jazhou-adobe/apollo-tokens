@@ -361,3 +361,33 @@ test('a world that prints error text in the destructive role must keep it legibl
   const printed = failuresMatching(withFixtureWorld(freshPackage(), { ...dim, css: `${scope} .hh-error { color: var(--hh-destructive); }\n` }), pattern);
   assert.equal(printed.length, 1, printed.join('\n'));
 });
+
+test('container queries outside the token layer must use breakpoint tokens too', () => {
+  const pkg = freshPackage();
+  pkg.sources.set('preview/raw.css', '@container (width < 700px) { .x { display: block; } }\n@container (width >= 48rem) { .y { display: grid; } }\n');
+  const failures = failuresMatching(pkg, /^preview\/raw\.css: container query uses/);
+  assert.equal(failures.length, 1, all(pkg));
+  assert.match(failures[0], /700px/);
+});
+
+test('a world halo outside live state fails, through a literal, a helper, or a drop-shadow filter', () => {
+  const scope = 'html[data-theme="hermes-fixture"]';
+  const css = [
+    `${scope} { --fixture-lamp-glow: 0 0 6px #f2a93b8c; }`,
+    `${scope} .hh-strip[data-status='pending'] .hh-strip-tab { box-shadow: 0 0 5px rgba(242, 169, 59, 0.55); }`,
+    `${scope} .hh-callsign-mark { box-shadow: var(--fixture-lamp-glow); }`,
+    `${scope} .hh-recommended { filter: drop-shadow(0 0 4px #31925199); }`,
+    `${scope} .hh-connection[data-state='live'] .hh-connection-lamp { box-shadow: 0 0 6px #4fd6e899; }`,
+    `${scope} .hh-card { box-shadow: 0 2px 4px #0000004d, inset 0 0 0 1px #ffffff1a; }`,
+  ].join('\n');
+  const failures = failuresMatching(withFixtureWorld(freshPackage(), { css }), /^hermes-fixture: ".*" paints a glow/);
+  assert.equal(failures.length, 3, failures.join('\n'));
+  assert.ok(failures.some((failure) => failure.includes('.hh-strip-tab')), failures.join('\n'));
+  assert.ok(failures.some((failure) => failure.includes('.hh-callsign-mark')), failures.join('\n'));
+  assert.ok(failures.some((failure) => failure.includes('.hh-recommended')), failures.join('\n'));
+});
+
+test('a world may not override a decorative elevation as a glow', () => {
+  const pkg = withFixtureWorld(freshPackage(), { overrides: { 'elevation-raised': { $type: 'shadow', $value: '0 0 0.75rem 0 #e9c46a80', $description: 'Halo' } } });
+  assert.equal(failuresMatching(pkg, /hermes-fixture: --hh-elevation-raised is overridden as a glow/).length, 1, all(pkg));
+});

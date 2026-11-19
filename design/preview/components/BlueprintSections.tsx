@@ -7,10 +7,9 @@ import { AnsweredLog } from './hermes/AnsweredLog';
 import { Attachment } from './hermes/Attachment';
 import { Callsign } from './hermes/Callsign';
 import { ConnectionStatus } from './hermes/ConnectionStatus';
-import { PhoneApprove, PhonePendingList } from './hermes/PhoneDemos';
+import { StripBay } from './hermes/StripBay';
 import { PolicyBadge } from './hermes/PolicyTimer';
 import { QuestionsDemo } from './hermes/QuestionsDemo';
-import { StripBay } from './hermes/StripBay';
 import { ReconnectingDemo, SignInDemo } from './SystemDemos';
 
 function AppBar({ title }: { title: string }) {
@@ -50,10 +49,10 @@ export function CommandCenterBlueprints() {
         <p className="hh-body hh-measure">Desktop first: dense, keyboard-driven triage beside the terminals. Each blueprint is composed only from the components above. Illustrative data.</p>
       </div>
 
-      <Blueprint id="bp-triage" title="Triage" note="Strip bay (compact) beside the open Round. The Answer bar stays pinned; the answered log sits one key away.">
+      <Blueprint id="bp-triage" title="Triage" note="Strip bay (compact) beside the open Round. The Round scrolls inside its sheet so its head and Answer bar stay in view; notes fold away until needed.">
         <AppBar title="Command Center" />
         <div className="hh-blueprint-body">
-          <StripBay controls={false} showLog={false} heading="Pending Rounds" />
+          <StripBay controls={false} showLog={false} heading="Pending Rounds" headingLevel={4} context="Triage blueprint" />
         </div>
       </Blueprint>
 
@@ -131,12 +130,15 @@ export function PhoneBlueprints() {
         <h2 id="blueprints-phone-title" className="hh-heading-lg">
           Phone blueprints
         </h2>
-        <p className="hh-body hh-measure">Phone second: quick approve / reject over the tailnet. Both frames run in glance density: thumb-sized targets, roomier rows, larger body text.</p>
+        <p className="hh-body hh-measure">
+          Phone second: quick approve / reject over the tailnet, in glance density. Pending list, then the Round as a full-width sheet with a sticky Answer bar and Back to
+          pending. The second frame opens on a Round.
+        </p>
       </div>
       <div className="hh-phone-row">
         <div className="hh-phone-frame" data-density="glance" aria-label="Phone: pending list" role="group">
           <AppBar title="Hermes" />
-          <PhonePendingList />
+          <StripBay controls={false} showLog={false} heading="Pending" headingLevel={3} context="Phone pending list" />
           <nav className="hh-bottom-nav" aria-label="Phone sections (pending list)">
             <a href="#blueprints-phone" aria-current="page">
               <Icon name="bay" /> Pending
@@ -148,7 +150,7 @@ export function PhoneBlueprints() {
         </div>
         <div className="hh-phone-frame" data-density="glance" aria-label="Phone: one Round" role="group">
           <AppBar title="Hermes" />
-          <PhoneApprove />
+          <StripBay controls={false} showLog={false} heading="Pending" headingLevel={3} context="Phone Round sheet" initialView="round" initialOpenId="R-0144" />
           <nav className="hh-bottom-nav" aria-label="Phone sections (one Round)">
             <a href="#blueprints-phone" aria-current="page">
               <Icon name="bay" /> Pending

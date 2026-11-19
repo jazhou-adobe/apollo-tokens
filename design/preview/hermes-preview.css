@@ -332,26 +332,6 @@
   padding: var(--hh-density-inset);
 }
 
-/* Strip bay beside the open Round; the panel wraps below the bay once it would drop under half the width. */
-.hh-command {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--hh-density-gap);
-  min-width: 0;
-  align-items: flex-start;
-}
-
-.hh-command > .hh-strip-bay {
-  flex: 1 1 var(--hh-layout-bay-width);
-}
-
-.hh-command-panel {
-  display: grid;
-  gap: var(--hh-density-gap);
-  flex: 999 1 0;
-  min-width: min(100%, 55%);
-}
-
 .hh-phone-row {
   display: flex;
   flex-wrap: wrap;
@@ -538,17 +518,13 @@
   background: var(--hh-background);
 }
 
-.hh-palette-options {
+.hh-world-compare-grid {
   display: grid;
-  gap: var(--hh-space-2);
-}
-
-.hh-palette-option {
-  display: flex;
-  align-items: center;
-  gap: var(--hh-space-2);
-  min-height: var(--hh-control-size-sm);
-  cursor: pointer;
+  gap: var(--hh-space-3);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--hh-overlay-tooltip-width)), 1fr));
+  margin: var(--hh-space-2) 0 0;
+  padding: 0;
+  list-style: none;
 }
 
 /* ---------- /specimen and /tile ---------- */
@@ -560,6 +536,11 @@
   min-height: 100dvh;
   align-content: start;
   background: var(--hh-background);
+}
+
+/* The specimen's app bar scrolls away, so it never sits over the Round sheet's head or its Back to pending control. */
+.hh-specimen > .hh-app-bar {
+  position: static;
 }
 
 .hh-specimen-body {
@@ -605,6 +586,18 @@
 @media (min-width: 48rem) {
   .hh-main {
     padding-inline: var(--hh-space-8);
+  }
+}
+
+/* Phone and tablet: theme, colour, and density sit together without their explanations, the index folds behind
+   "On this page", and the first specimen follows directly. */
+@media (max-width: 64rem) {
+  .hh-sidebar {
+    gap: var(--hh-space-3);
+  }
+
+  .hh-sidebar .hh-hint {
+    display: none;
   }
 }
 

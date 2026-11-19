@@ -45,3 +45,11 @@ Also loaded: `/worlds` (empty state) at both widths in both themes, with no issu
 - No screen-reader pass; live-region text was read from the DOM.
 - No Safari or Firefox run.
 - `prefers-reduced-motion` was checked by the validator (every duration collapses to 1ms), not in the browser.
+
+## Phase 4 re-check (taste TR and studio ST fixes)
+
+Run 2026-11-20 against the shared dev server on 3300. No server was started or stopped, and no build was run.
+
+- **Overflow and dev-overlay issues:** `/design` and `/specimen` in both core themes and all four worlds, at default, compact (core) and glance density, plus `/overview` and `/worlds`, at 1440 and 390. Every load showed no horizontal scroll, no Next.js issues, and no duplicate ids. One page failed on the first pass: `/design` in Flight Director, compact density, at 390. A hidden tooltip widened the page; hidden tooltips are now out of layout, and the page passed the re-check.
+- **Desktop keyboard (`/specimen`, hermes-dark, 1440):** the strip list is one Tab stop. `J` and arrows move between strips and the open Round follows. `N` opens notes and focuses them. `Ctrl↵` with a Question unanswered moves focus to it and shows a `role="alert"` error. `Esc` closes the Round and focuses its strip. `Enter` reopens it. `⌘↵` sends; the strip stays as `data-state="departing"` with the status word Answered for about 480 ms, then leaves. The confirmation appears in the bay-status region and the next strip takes focus.
+- **Phone flow (`/specimen`, 390, glance):** the pending list shows alone. Tapping a strip opens the Round sheet: the head sits just below the top of the viewport, the Answer bar ends at 828 px of an 844 px viewport, and the Questions scroll inside the sheet. "Back to pending" returns to the list and focuses the strip. Sending returns to the list, focuses the next strip and shows the confirmation. Key hints are hidden.

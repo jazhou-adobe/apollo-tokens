@@ -15,7 +15,7 @@ export function SidebarIndex({ sections, pages }: { sections: readonly Section[]
     <div className="hh-toc-wrap" data-open={open ? 'true' : 'false'}>
       <button type="button" className="hh-toc-toggle" aria-expanded={open} aria-controls={panelId} onClick={() => setOpen(!open)}>
         <Icon name="menu" />
-        Contents
+        On this page
       </button>
       <div id={panelId} className="hh-toc-panel">
         {pages}

@@ -13,7 +13,6 @@ export default function WorldsPage() {
   return (
     <main className="hh-gallery" id="top" aria-labelledby="worlds-title">
       <header className="hh-hero">
-        <span className="hh-kicker">Used-future skins over the same strip board</span>
         <h1 id="worlds-title" className="hh-display">
           Worlds
         </h1>

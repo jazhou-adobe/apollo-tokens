@@ -1,19 +1,19 @@
 /*
- * Comms Deck (hermes-comms-deck): a ship's comms console. Agents are channels on a jack field; each pending Round is a
- * lit channel lamp. Signature: answering patches the channel, and the lamp goes dark.
+ * Comms Deck (hermes-comms-deck): a ship's comms console. Agents are numbered channels on a jack field; each pending
+ * Round is a lit channel lamp. Signature: answering patches the channel, and the lamp goes dark.
  *
  * Layout of this file: the theme block (recommended "Bakelite Olive" colours, documented overrides, --comms-deck-*
  * helpers), one block per colour option, then the skin.
- * Intensity budget:
- *   identity  - app bar, sidebar, strip bay (the jack field), agent channel cards, lamps and the patch signature: enamel
- *               panels, screw heads, stencilled plates.
- *   function  - keys (buttons), wells (inputs), switches, chips, tabs, menus, dialogs, holders: bakelite shape, bevels,
- *               plate lettering, no texture.
- *   reading   - strip paper, Questions, options, attachments, diffs, notes: opaque, flat, high contrast. No texture or
- *               glow ever sits behind text the Human reads or writes.
- * Glow appears only on lit lamps (pending Rounds) and the live connection lamp. Every lamp sits beside a status word.
- * Helpers: --comms-deck-lamp-hot (lit lamp filament), --comms-deck-lamp-glow (lit lamp halo), --comms-deck-bevel (worn
- * top highlight), --comms-deck-socket (jack socket), --comms-deck-screw (screw heads), --comms-deck-cord (patch cord).
+ * Identity comes from channel addressing and patch state, not from ornament:
+ *   identity  - channel numbers on every callsign, channel lamps (lit / patched / dark) on holders and status badges,
+ *               the patch signature, and one casing detail: the app bar's two panel screws.
+ *   function  - keys (buttons), wells (inputs), switches, chips, tabs, menus, dialogs: bakelite shape and an inset
+ *               bevel, sentence-case labels in the reading face, thin boundaries.
+ *   reading   - strip paper, Questions, options, attachments, diffs, notes: opaque, flat, high contrast.
+ * Halos appear only on live state (the connection lamp and live values). Pending lamps are filled but never glow. Every
+ * lamp sits beside a status word.
+ * Helpers: --comms-deck-lamp-hot (lit lamp filament), --comms-deck-bevel (worn top highlight), --comms-deck-socket (jack
+ * socket), --comms-deck-screw (app bar screws).
  */
 
 html[data-theme="hermes-comms-deck"] {
@@ -77,20 +77,12 @@ html[data-theme="hermes-comms-deck"] {
   --hh-chart-4: #c995d6;
   --hh-chart-5: #e5876f;
   --comms-deck-lamp-hot: #ffd88a;
-  --comms-deck-lamp-glow: #f2a93b8c;
   --comms-deck-bevel: #ffffff1f;
   --comms-deck-socket: #050603;
   --comms-deck-screw: #4d523c;
-  --comms-deck-cord: #9cc0b0;
-  --hh-font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --hh-font-mono: var(--font-martian-mono), ui-monospace, monospace;
-  --hh-font-condensed: var(--font-big-shoulders-stencil), 'Arial Narrow', sans-serif;
-  --hh-type-strip-header-family: var(--font-archivo), 'Arial Narrow', sans-serif;
-  --hh-type-heading-lg-weight: 800;
-  --hh-type-mono-size: 0.8125rem;
-  --hh-type-mono-sm-size: 0.71875rem;
-  --hh-letter-spacing-caps: 0.08em;
-  --hh-letter-spacing-tight: 0.02em;
+  --hh-font-sans: var(--font-source-sans-3), ui-sans-serif, system-ui, sans-serif;
+  --hh-font-mono: var(--font-chivo-mono), ui-monospace, monospace;
+  --hh-font-condensed: var(--font-chivo), 'Arial Narrow', sans-serif;
   --hh-radius-sm: 0.1875rem;
   --hh-radius-md: 0.3125rem;
   --hh-elevation-raised: inset 0 0.0625rem 0 var(--comms-deck-bevel), 0 0.125rem 0.3125rem var(--hh-shadow);
@@ -161,11 +153,9 @@ html[data-theme="hermes-comms-deck"][data-palette="night-watch"] {
   --hh-chart-4: #c49ae6;
   --hh-chart-5: #ec8a7a;
   --comms-deck-lamp-hot: #ffd58c;
-  --comms-deck-lamp-glow: #f0a8408c;
   --comms-deck-bevel: #ffffff1a;
   --comms-deck-socket: #020708;
   --comms-deck-screw: #2b4d59;
-  --comms-deck-cord: #c6d99a;
 }
 
 /* Day Watch */
@@ -230,11 +220,9 @@ html[data-theme="hermes-comms-deck"][data-palette="day-watch"] {
   --hh-chart-4: #6c3c85;
   --hh-chart-5: #923a24;
   --comms-deck-lamp-hot: #f6b24a;
-  --comms-deck-lamp-glow: #c97a0f66;
   --comms-deck-bevel: #ffffff8c;
   --comms-deck-socket: #3a3628;
   --comms-deck-screw: #a39a7d;
-  --comms-deck-cord: #24506a;
 }
 
 /* Original */
@@ -299,23 +287,18 @@ html[data-theme="hermes-comms-deck"][data-palette="original"] {
   --hh-chart-4: #b48ae0;
   --hh-chart-5: #e5675c;
   --comms-deck-lamp-hot: #ffd27a;
-  --comms-deck-lamp-glow: #e9a5408c;
   --comms-deck-bevel: #ffffff1a;
   --comms-deck-socket: #05070a;
   --comms-deck-screw: #3a424c;
-  --comms-deck-cord: #d9773a;
 }
 
 /* ================= Skin ================= */
 
-/* ---------- Faces: wide mono set narrower; strip headers in narrowed Archivo ---------- */
-
-html[data-theme="hermes-comms-deck"] :is(.hh-mono, .hh-mono-sm, .hh-callsign, .hh-kbd, .hh-attachment-body, .hh-connection-detail, .hh-live-value, .hh-side-nav-count, .hh-avatar, code, kbd, pre, samp) {
-  font-stretch: 87.5%;
-}
+/* ---------- Lettering: Chivo for identity and Round titles, sentence case for everything operational ---------- */
 
 html[data-theme="hermes-comms-deck"] .hh-strip-header {
-  font-stretch: 75%;
+  letter-spacing: var(--hh-letter-spacing-none);
+  text-transform: none;
 }
 
 html[data-theme="hermes-comms-deck"] ::selection {
@@ -328,16 +311,7 @@ html[data-theme="hermes-comms-deck"] :is(.hh-strip-paper, .hh-round) ::selection
   color: var(--hh-strip);
 }
 
-/* ---------- Identity: enamel console panels with screw heads (page edges, jack field, answer bar) ---------- */
-
-html[data-theme="hermes-comms-deck"] :is(.hh-sidebar, .hh-strip-bay, .hh-panel, .hh-answer-bar) {
-  background-image:
-    radial-gradient(circle at 0.3125rem 0.3125rem, var(--comms-deck-screw) 0 0.125rem, var(--comms-deck-socket) 0.125rem 0.1875rem, transparent 0.1875rem),
-    radial-gradient(circle at calc(100% - 0.3125rem) 0.3125rem, var(--comms-deck-screw) 0 0.125rem, var(--comms-deck-socket) 0.125rem 0.1875rem, transparent 0.1875rem),
-    radial-gradient(circle at 0.3125rem calc(100% - 0.3125rem), var(--comms-deck-screw) 0 0.125rem, var(--comms-deck-socket) 0.125rem 0.1875rem, transparent 0.1875rem),
-    radial-gradient(circle at calc(100% - 0.3125rem) calc(100% - 0.3125rem), var(--comms-deck-screw) 0 0.125rem, var(--comms-deck-socket) 0.125rem 0.1875rem, transparent 0.1875rem);
-  background-repeat: no-repeat;
-}
+/* ---------- The one casing detail: two panel screws on the app bar ---------- */
 
 html[data-theme="hermes-comms-deck"] .hh-app-bar {
   background-color: var(--hh-surface-panel);
@@ -346,32 +320,25 @@ html[data-theme="hermes-comms-deck"] .hh-app-bar {
     radial-gradient(circle at calc(100% - 0.375rem) 50%, var(--comms-deck-screw) 0 0.125rem, var(--comms-deck-socket) 0.125rem 0.1875rem, transparent 0.1875rem);
   background-repeat: no-repeat;
   color: var(--hh-surface-panel-foreground);
-  border-bottom: var(--hh-border-width-thick) solid var(--hh-border);
-  box-shadow: var(--hh-elevation-raised);
+  box-shadow: inset 0 calc(var(--hh-border-width-thin) * -1) 0 var(--comms-deck-bevel);
 }
 
-html[data-theme="hermes-comms-deck"] .hh-app-bar-brand {
-  font-family: var(--hh-font-condensed);
-  font-stretch: normal;
-  font-weight: var(--hh-font-weight-heavy);
-  letter-spacing: var(--hh-letter-spacing-caps);
+/* ---------- Channel addressing: every callsign is a numbered channel with its jack ---------- */
+
+html[data-theme="hermes-comms-deck"] .hh-callsign {
+  border-color: var(--agent-colour);
 }
 
-html[data-theme="hermes-comms-deck"] .hh-sidebar {
-  box-shadow: inset calc(var(--hh-border-width-thin) * -1) 0 0 var(--comms-deck-bevel);
+html[data-theme="hermes-comms-deck"] .hh-callsign::before {
+  content: 'Ch 0' attr(data-agent);
+  padding-inline-end: var(--hh-space-2);
+  border-inline-end: var(--hh-border-width-thin) solid var(--agent-colour);
+  font-weight: var(--hh-font-weight-bold);
 }
 
-html[data-theme="hermes-comms-deck"] :is(.hh-strip-bay, .hh-panel) {
-  box-shadow: var(--hh-elevation-raised);
-}
-
-/* Stencilled plate lettering on the jack field, empty states and overlay heads. */
-html[data-theme="hermes-comms-deck"] :is(.hh-strip-bay-head .hh-heading-md, .hh-empty-state .hh-heading-md, .hh-overlay-head :is(h2, h3, .hh-heading-md)) {
-  font-family: var(--hh-font-condensed);
-  font-size: var(--hh-type-strip-header-size);
-  font-weight: var(--hh-font-weight-heavy);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
+html[data-theme="hermes-comms-deck"] .hh-callsign-mark {
+  border-radius: var(--hh-radius-pill);
+  background: radial-gradient(circle, var(--comms-deck-socket) 0 16%, var(--agent-colour) 22%);
 }
 
 /* The empty jack positions of a clear bay: a dark socket in each slot. */
@@ -380,40 +347,9 @@ html[data-theme="hermes-comms-deck"] .hh-strip-bay-slot {
   background-repeat: no-repeat;
 }
 
-/* ---------- Agent channels: each card is a numbered channel plate on the jack field ---------- */
-
-html[data-theme="hermes-comms-deck"] .hh-agent-roster {
-  counter-reset: comms-deck-channel;
-}
-
-html[data-theme="hermes-comms-deck"] .hh-agent-card {
-  counter-increment: comms-deck-channel;
-  box-shadow: var(--hh-elevation-raised);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-agent-card::before {
-  content: 'Ch ' counter(comms-deck-channel, decimal-leading-zero);
-  font-family: var(--hh-font-condensed);
-  font-size: var(--hh-type-strip-header-size);
-  line-height: var(--hh-type-strip-header-line-height);
-  font-weight: var(--hh-font-weight-heavy);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
-/* Callsign plate: the channel label, framed in the Agent's colour, with a jack socket for its mark. */
-html[data-theme="hermes-comms-deck"] .hh-callsign {
-  border: var(--hh-border-width-thick) solid var(--agent-colour);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-callsign-mark {
-  border-radius: var(--hh-radius-pill);
-  background: radial-gradient(circle, var(--comms-deck-socket) 0 16%, var(--agent-colour) 22%);
-}
-
-/* ---------- Channel lamps: lit while a Round waits, dark once it is patched ----------
- * Lamps are drawn before the status word on pending, answered and expired badges and strip tabs, so the word always
- * names the state. Only a lit lamp has a halo. */
+/* ---------- Channel lamps: lit while a Round waits, patched once answered, dark when it expires ----------
+ * Drawn before the status word on pending, answered and expired badges and on every strip holder's tab, so the word
+ * always names the state. Lit lamps are filled, never haloed: halos belong to live state only. */
 
 html[data-theme="hermes-comms-deck"] :is(.hh-badge[data-tone='pending'], .hh-badge[data-tone='answered'], .hh-badge[data-tone='expired'], .hh-strip > .hh-strip-tab > :first-child)::before {
   content: '';
@@ -432,9 +368,7 @@ html[data-theme="hermes-comms-deck"] .hh-badge::before {
 
 html[data-theme="hermes-comms-deck"] :is(.hh-badge[data-tone='pending'], .hh-strip[data-status='pending'] > .hh-strip-tab > :first-child)::before {
   background: radial-gradient(circle at 38% 34%, var(--hh-strip) 0 14%, var(--comms-deck-lamp-hot) 30% 100%);
-  box-shadow:
-    0 0 0 var(--hh-border-width-thin) var(--hh-pending-foreground),
-    0 0 0.3125rem var(--comms-deck-lamp-glow);
+  box-shadow: 0 0 0 var(--hh-border-width-thin) var(--hh-pending-foreground);
 }
 
 /* Patched: the plug is seated in the jack and the lamp is dark. */
@@ -442,15 +376,34 @@ html[data-theme="hermes-comms-deck"] :is(.hh-badge[data-tone='answered'], .hh-st
   background: radial-gradient(circle, var(--hh-answered) 0 30%, var(--hh-answered-foreground) 36%);
 }
 
-/* Expired or cancelled: an empty, dark socket. */
+/* Expired or cancelled: a dark lamp with nothing in the jack. */
 html[data-theme="hermes-comms-deck"] :is(.hh-badge[data-tone='expired'], .hh-strip[data-status='expired'] > .hh-strip-tab > :first-child)::before {
   background: var(--hh-expired-foreground);
 }
 
 /* ---------- Signature: answering patches the channel, and the lamp goes dark ----------
- * Plays once when an Answered toast, the newest answered-log row, or the phone's sent screen mounts: the plug drops into
- * the jack, the lit lamp over it fades out, and on the toast a patch cord runs across the slip and is stowed. Durations
- * are --hh-motion-signature, so reduced motion shows the final, patched state at once. */
+ * The channel lamp changes state in place. On the departing strip (the core keeps it mounted for --hh-motion-signature)
+ * the lamp steps lit → patched (the plug drops into the jack) → dark while the strip holds still, then the strip fades
+ * out in place. On the Answered confirmation, the newest answered-log row and the phone's sent screen, the plug seats
+ * while the lit lamp over it fades out. Durations are --hh-motion-signature, so reduced motion shows the final state. */
+
+html[data-theme="hermes-comms-deck"] .hh-strip[data-state='departing'] {
+  animation: comms-deck-strip-out var(--hh-motion-signature) var(--hh-easing-exit) both;
+}
+
+html[data-theme="hermes-comms-deck"] .hh-strip[data-state='departing'] > .hh-strip-tab > :first-child::before {
+  animation: comms-deck-channel-out var(--hh-motion-signature) var(--hh-easing-standard) both;
+}
+
+@keyframes comms-deck-strip-out {
+  0%,
+  65% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 
 html[data-theme="hermes-comms-deck"] :is(.hh-toast, .hh-phone-body[role='status'], .hh-answered-log tbody tr:first-child) .hh-badge[data-tone='answered'] {
   position: relative;
@@ -470,28 +423,31 @@ html[data-theme="hermes-comms-deck"] :is(.hh-toast, .hh-phone-body[role='status'
   margin-top: -0.4375em;
   border-radius: var(--hh-radius-pill);
   background: radial-gradient(circle at 38% 34%, var(--hh-strip) 0 14%, var(--comms-deck-lamp-hot) 30% 100%);
-  box-shadow: 0 0 0.3125rem var(--comms-deck-lamp-glow);
   opacity: 0;
   pointer-events: none;
   animation: comms-deck-lamp-out var(--hh-motion-signature) var(--hh-easing-standard) both;
 }
 
-html[data-theme="hermes-comms-deck"] .hh-toast:has(> .hh-badge[data-tone='answered']) {
-  position: relative;
-  overflow: hidden;
-}
-
-html[data-theme="hermes-comms-deck"] .hh-toast:has(> .hh-badge[data-tone='answered'])::before {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: var(--hh-border-width-thick);
-  background: var(--comms-deck-cord);
-  transform-origin: left center;
-  opacity: 0;
-  pointer-events: none;
-  animation: comms-deck-cord var(--hh-motion-signature) var(--hh-easing-standard) both;
+@keyframes comms-deck-channel-out {
+  0%,
+  18% {
+    background: radial-gradient(circle at 38% 34%, var(--hh-strip) 0 14%, var(--comms-deck-lamp-hot) 30% 100%);
+    transform: none;
+  }
+  19% {
+    background: radial-gradient(circle, var(--hh-strip) 0 30%, var(--hh-strip-foreground) 36%);
+    transform: translateY(-0.375em);
+  }
+  34%,
+  44% {
+    background: radial-gradient(circle, var(--hh-strip) 0 30%, var(--hh-strip-foreground) 36%);
+    transform: none;
+  }
+  45%,
+  100% {
+    background: var(--comms-deck-socket);
+    transform: none;
+  }
 }
 
 @keyframes comms-deck-plug-in {
@@ -499,10 +455,7 @@ html[data-theme="hermes-comms-deck"] .hh-toast:has(> .hh-badge[data-tone='answer
     opacity: 0;
     transform: translateY(-0.875em);
   }
-  60% {
-    opacity: 1;
-    transform: translateY(0.0625em);
-  }
+  60%,
   to {
     opacity: 1;
     transform: none;
@@ -519,22 +472,21 @@ html[data-theme="hermes-comms-deck"] .hh-toast:has(> .hh-badge[data-tone='answer
   }
 }
 
-@keyframes comms-deck-cord {
-  from {
-    opacity: 1;
-    transform: scaleX(0);
-  }
-  70% {
-    opacity: 1;
-    transform: scaleX(1);
-  }
-  to {
-    opacity: 0;
-    transform: scaleX(1);
-  }
+/* ---------- Selected Answers read as a patched connection; native radio and checkbox shapes stay ---------- */
+
+html[data-theme="hermes-comms-deck"] .hh-option input:checked {
+  background: var(--hh-strip-foreground);
 }
 
-/* ---------- Function: bakelite keys ---------- */
+html[data-theme="hermes-comms-deck"] .hh-option input:checked::before {
+  background: var(--hh-strip);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-option:has(input:checked) .hh-option-text > :first-child {
+  font-weight: var(--hh-font-weight-bold);
+}
+
+/* ---------- Function: bakelite keys and recessed wells (inset bevels only, no external offsets) ---------- */
 
 html[data-theme="hermes-comms-deck"] :is(.hh-button, .hh-icon-button) {
   box-shadow:
@@ -555,13 +507,9 @@ html[data-theme="hermes-comms-deck"] .hh-kbd {
   box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
 }
 
-/* ---------- Function: recessed wells for typing (flat inside, so the text plane stays quiet) ---------- */
-
 html[data-theme="hermes-comms-deck"] :is(.hh-input, .hh-select, .hh-textarea) {
   box-shadow: inset 0 var(--hh-border-width-thick) 0 var(--hh-shadow);
 }
-
-/* ---------- Function: toggles, chips, tabs, segmented selector ---------- */
 
 html[data-theme="hermes-comms-deck"] .hh-switch-track {
   background: var(--hh-input);
@@ -569,26 +517,18 @@ html[data-theme="hermes-comms-deck"] .hh-switch-track {
 }
 
 html[data-theme="hermes-comms-deck"] .hh-switch-thumb {
-  box-shadow:
-    inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel),
-    0 var(--hh-border-width-thin) 0 var(--hh-shadow);
+  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
 }
 
 html[data-theme="hermes-comms-deck"] .hh-switch[aria-checked='true'] .hh-switch-track {
   background: var(--hh-accent);
 }
 
-/* Chips read as label-maker tape stuck on the console. */
-html[data-theme="hermes-comms-deck"] .hh-chip {
-  font-family: var(--hh-font-mono);
-  font-size: var(--hh-type-mono-sm-size);
-  font-stretch: 87.5%;
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
+html[data-theme="hermes-comms-deck"] :is(.hh-chip, .hh-segmented label) {
   box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
 }
 
-html[data-theme="hermes-comms-deck"] .hh-chip[aria-pressed='true'] {
+html[data-theme="hermes-comms-deck"] :is(.hh-chip[aria-pressed='true'], .hh-segmented label:has(input:checked)) {
   box-shadow: inset 0 var(--hh-border-width-thick) 0 var(--hh-shadow);
 }
 
@@ -613,139 +553,27 @@ html[data-theme="hermes-comms-deck"] .hh-tab[aria-selected='true']::before {
   box-shadow: inset 0 0 0 var(--hh-border-width-thin) var(--hh-accent);
 }
 
-html[data-theme="hermes-comms-deck"] .hh-segmented label {
-  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-segmented label:has(input:checked) {
-  box-shadow: inset 0 var(--hh-border-width-thick) 0 var(--hh-shadow);
-}
-
-/* ---------- Function: navigation ---------- */
-
 /* The current page is the selected channel: a round indicator, a heavier label and the accent plate. */
 html[data-theme="hermes-comms-deck"] :is(.hh-side-nav, .hh-bottom-nav) a[aria-current='page']::before {
   border-radius: var(--hh-radius-pill);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-bottom-nav {
-  border-top-width: var(--hh-border-width-thick);
-  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
 }
 
 html[data-theme="hermes-comms-deck"] .hh-breadcrumbs li + li::before {
   content: '›';
 }
 
-/* ---------- Function: containers and feedback ---------- */
-
-html[data-theme="hermes-comms-deck"] .hh-tray {
-  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-divider {
-  box-shadow: 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-avatar {
+html[data-theme="hermes-comms-deck"] :is(.hh-avatar, .hh-avatar[data-size='sm']) {
   border-radius: var(--hh-radius-pill);
-  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-avatar[data-size='sm'] {
-  border-radius: var(--hh-radius-pill);
-}
-
-html[data-theme="hermes-comms-deck"] :is(.hh-alert, .hh-toast) {
-  border-width: var(--hh-border-width-thick);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-alert {
-  box-shadow: var(--hh-elevation-raised);
-}
-
-/* Progress reads as a segmented level meter in a recessed slot. */
-html[data-theme="hermes-comms-deck"] .hh-progress-track {
-  background: var(--hh-input);
-  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--hh-shadow);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-progress-fill {
-  mask-image: repeating-linear-gradient(90deg, #000 0 0.5rem, transparent 0.5rem 0.625rem);
 }
 
 html[data-theme="hermes-comms-deck"] .hh-spinner {
   border-top-color: var(--hh-primary);
 }
 
-html[data-theme="hermes-comms-deck"] .hh-empty-state {
-  border-color: var(--hh-border);
-}
-
-/* ---------- Function: overlays are console sub-panels ---------- */
-
-html[data-theme="hermes-comms-deck"] :is(.hh-dialog, .hh-sheet) {
-  border-width: var(--hh-border-width-thick);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-overlay-head {
-  background: var(--hh-surface-tray);
-  color: var(--hh-surface-tray-foreground);
-  border-radius: var(--hh-radius-lg) var(--hh-radius-lg) 0 0;
-  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-sheet .hh-overlay-head {
-  border-radius: 0;
-}
-
-html[data-theme="hermes-comms-deck"] :is(.hh-popover, .hh-menu) {
-  border-width: var(--hh-border-width-thick);
-}
-
-/* ---------- Function: tables print like the radio log ---------- */
-
-html[data-theme="hermes-comms-deck"] .hh-table th {
-  font-family: var(--hh-font-condensed);
-  font-size: var(--hh-type-label-size);
-  font-weight: var(--hh-font-weight-heavy);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-table td {
-  border-bottom-style: dashed;
-}
-
-/* ---------- Function: Round strips in their holders ---------- */
-
-html[data-theme="hermes-comms-deck"] .hh-strip-tab {
-  align-items: center;
-}
-
-html[data-theme="hermes-comms-deck"] .hh-strip[data-selected='true'] {
-  outline-width: var(--hh-border-width-thick);
-}
-
-/* The policy timer along the holder rail is a segmented lamp bar; a keep-waiting policy keeps its dashed full track. */
-html[data-theme="hermes-comms-deck"] .hh-policy-timer:not([data-policy='wait']) .hh-policy-timer-fill {
-  mask-image: repeating-linear-gradient(90deg, #000 0 0.375rem, transparent 0.375rem 0.5rem);
-}
-
-html[data-theme="hermes-comms-deck"] .hh-answer-bar {
-  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
-}
-
 /* Attachment heads are label plates; the code plane under them stays flat and opaque. */
 html[data-theme="hermes-comms-deck"] .hh-attachment-head {
   background: var(--hh-surface-shelf);
   color: var(--hh-surface-shelf-foreground);
-}
-
-/* ---------- Connection plate: the live lamp is the only lamp lit for the link ---------- */
-
-html[data-theme="hermes-comms-deck"] .hh-connection {
-  background: var(--hh-surface-card);
-  color: var(--hh-surface-card-foreground);
-  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
 }
 
 html[data-theme="hermes-comms-deck"] .hh-connection[data-state='offline'] .hh-connection-lamp {

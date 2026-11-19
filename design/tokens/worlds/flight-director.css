@@ -1,10 +1,11 @@
 /* Flight Director 2169: the Command Center as a flight director's room, 150 years on. Used future: console banks with
-   machined edges and corner rivets, cream strips racked at the director's desk, a wide geometric face (Michroma) for
-   console legends, Archivo for reading, IBM Plex Mono for ids and timers. Phosphor lights only live values, inside dark
-   readout wells. Signature: GO / NO-GO polling on approve/reject Questions (see "Signature" below).
-   Intensity budget: identity (app bar, page edges, console banks, the poll) carries rivets, bezels and phosphor;
-   function (controls, holders, overlays) keeps the machined shape with plain fills; reading planes (Question text,
-   attachments, diffs, notes) stay quiet, opaque and high-contrast. */
+   machined edges, cream strips racked at the director's desk, Archivo for every operational word, IBM Plex Mono for
+   ids and timers, and a wide geometric face (Michroma) kept to identity and short legends. Phosphor lights only live
+   values and the polling state, inside dark readout wells (--flight-director-well / --flight-director-phosphor, which
+   clear 4.5:1 in every palette). Signature: GO / NO-GO polling on approve/reject Questions (see "Signature" below).
+   Intensity budget: identity (app bar, page edge, the poll) carries rivets, bevels and phosphor; function keeps
+   machined shape with neutral fills and sentence-case labels; reading planes stay quiet, opaque and high-contrast.
+   Strong boundaries are reserved for holders, focus and the called answer slot. */
 html[data-theme="hermes-flight-director"] {
   color-scheme: dark;
   --hh-background: #101519;
@@ -65,24 +66,28 @@ html[data-theme="hermes-flight-director"] {
   --hh-chart-3: #93d18c;
   --hh-chart-4: #c79ce2;
   --hh-chart-5: #e88e8e;
+  --flight-director-well: #07120c;
+  --flight-director-phosphor: #7df0a8;
   --hh-font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --hh-font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
   --hh-font-condensed: var(--font-michroma), 'Eurostile', Arial, sans-serif;
   --hh-type-display-size: 2.125rem;
   --hh-type-display-line-height: 1.15;
   --hh-type-display-weight: var(--hh-font-weight-regular);
-  --hh-type-heading-lg-size: 1.375rem;
-  --hh-type-heading-lg-line-height: 1.25;
-  --hh-type-heading-lg-weight: var(--hh-font-weight-regular);
-  --hh-type-strip-header-size: 0.9375rem;
-  --hh-type-strip-header-line-height: 1.35;
-  --hh-type-strip-header-weight: var(--hh-font-weight-regular);
-  --hh-letter-spacing-caps: 0.1em;
+  --hh-type-heading-lg-family: var(--hh-font-sans);
+  --hh-type-heading-lg-size: 1.5rem;
+  --hh-type-heading-lg-line-height: 1.2;
+  --hh-type-heading-lg-weight: var(--hh-font-weight-bold);
+  --hh-type-strip-header-family: var(--hh-font-sans);
+  --hh-type-strip-header-size: 1.125rem;
+  --hh-type-strip-header-line-height: 1.3;
+  --hh-type-strip-header-weight: var(--hh-font-weight-semibold);
+  --hh-letter-spacing-caps: 0.08em;
   --hh-letter-spacing-tight: 0em;
   --hh-radius-sm: 0.0625rem;
   --hh-radius-md: 0.1875rem;
   --hh-radius-lg: 0.375rem;
-  --hh-elevation-raised: 0 0.125rem 0 0 var(--hh-shadow);
+  --hh-elevation-raised: 0 0.0625rem 0.1875rem 0 var(--hh-shadow);
   --hh-elevation-overlay: 0 0.875rem 1.75rem -0.5rem var(--hh-shadow);
   --hh-elevation-live: 0 0 0.5rem 0 var(--hh-live);
   accent-color: var(--hh-primary);
@@ -151,6 +156,8 @@ html[data-theme="hermes-flight-director"][data-palette="night-watch"] {
   --hh-chart-3: #99d493;
   --hh-chart-4: #cfa2e6;
   --hh-chart-5: #ee9590;
+  --flight-director-well: #06110e;
+  --flight-director-phosphor: #6fe6c8;
 }
 html[data-theme="hermes-flight-director"][data-palette="day-shift"] {
   color-scheme: light;
@@ -193,8 +200,8 @@ html[data-theme="hermes-flight-director"][data-palette="day-shift"] {
   --hh-expired-foreground: #ffffff;
   --hh-recommended: #1e6e3c;
   --hh-recommended-foreground: #ffffff;
-  --hh-live: #7df0a8;
-  --hh-live-foreground: #0b1a12;
+  --hh-live: #256d44;
+  --hh-live-foreground: #ffffff;
   --hh-code: #14191c;
   --hh-code-foreground: #d9e1dc;
   --hh-diff-add: #17321f;
@@ -212,6 +219,8 @@ html[data-theme="hermes-flight-director"][data-palette="day-shift"] {
   --hh-chart-3: #2f7a2a;
   --hh-chart-4: #7a3fa0;
   --hh-chart-5: #b0353a;
+  --flight-director-well: #0b1a12;
+  --flight-director-phosphor: #7df0a8;
 }
 html[data-theme="hermes-flight-director"][data-palette="original"] {
   color-scheme: dark;
@@ -273,10 +282,12 @@ html[data-theme="hermes-flight-director"][data-palette="original"] {
   --hh-chart-3: #94d98e;
   --hh-chart-4: #cba0e8;
   --hh-chart-5: #f0918c;
+  --flight-director-well: #06120a;
+  --flight-director-phosphor: #66ff99;
 }
 
 /* =====================================================================================================================
-   Skin. Every selector is scoped to the theme. Rivets are small radial dots placed in panel corners, never behind text.
+   Skin. Every selector is scoped to the theme.
    ===================================================================================================================== */
 
 /* ---------- Page and global ---------- */
@@ -297,28 +308,16 @@ html[data-theme="hermes-flight-director"] :is(.hh-mono, .hh-mono-sm, code, kbd, 
   font-variant-numeric: tabular-nums slashed-zero;
 }
 
-/* Console engraving: short legends (status words, labels, key and tab legends) run Archivo expanded and tracked. */
-html[data-theme="hermes-flight-director"] :is(.hh-badge, .hh-recommended, .hh-answer-state, .hh-label, .hh-chip, .hh-button, .hh-side-nav a, .hh-bottom-nav a, .hh-table th, .hh-agent-state) {
-  font-stretch: semi-expanded;
-}
-html[data-theme="hermes-flight-director"] :is(.hh-badge, .hh-recommended, .hh-table th) {
-  font-stretch: expanded;
-}
-
-/* ---------- Type: the wide console face on short legends only ---------- */
-html[data-theme="hermes-flight-director"] :is(.hh-display, .hh-heading-lg) {
+/* ---------- Identity: the wide face on the display line, the brand and holder status words; rivets at the edge ---------- */
+html[data-theme="hermes-flight-director"] .hh-display {
   letter-spacing: var(--hh-letter-spacing-caps);
   text-wrap: balance;
 }
-html[data-theme="hermes-flight-director"] .hh-strip-header {
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
+/* Headings and Round titles are operational: Archivo in sentence case. */
+html[data-theme="hermes-flight-director"] :is(.hh-heading-lg, .hh-strip-header) {
+  letter-spacing: var(--hh-letter-spacing-none);
+  text-transform: none;
 }
-html[data-theme="hermes-flight-director"] .hh-kicker {
-  letter-spacing: var(--hh-letter-spacing-caps);
-}
-
-/* ---------- Identity: app bar and shell are the director's console bank ---------- */
 html[data-theme="hermes-flight-director"] .hh-app-bar {
   background-color: var(--hh-surface-tray);
   background-image:
@@ -326,12 +325,11 @@ html[data-theme="hermes-flight-director"] .hh-app-bar {
     radial-gradient(circle at calc(100% - 0.4375rem) 0.4375rem, var(--hh-border) 0.125rem, transparent 0.1875rem),
     radial-gradient(circle at 0.4375rem calc(100% - 0.4375rem), var(--hh-border) 0.125rem, transparent 0.1875rem),
     radial-gradient(circle at calc(100% - 0.4375rem) calc(100% - 0.4375rem), var(--hh-border) 0.125rem, transparent 0.1875rem);
-  border-bottom: var(--hh-border-width-thick) solid var(--hh-border);
-  box-shadow: inset 0 0.0625rem 0 color-mix(in srgb, var(--hh-surface-tray-foreground) 10%, transparent), var(--hh-elevation-raised);
+  box-shadow: inset 0 0.0625rem 0 color-mix(in srgb, var(--hh-surface-tray-foreground) 10%, transparent);
 }
 html[data-theme="hermes-flight-director"] .hh-app-bar-brand {
   font-family: var(--hh-font-condensed);
-  font-size: var(--hh-type-strip-header-size);
+  font-size: var(--hh-type-heading-md-size);
   font-weight: var(--hh-font-weight-regular);
   letter-spacing: var(--hh-letter-spacing-caps);
 }
@@ -339,25 +337,27 @@ html[data-theme="hermes-flight-director"] .hh-sidebar {
   background-image:
     radial-gradient(circle at 0.4375rem 0.4375rem, var(--hh-border) 0.125rem, transparent 0.1875rem),
     radial-gradient(circle at calc(100% - 0.4375rem) 0.4375rem, var(--hh-border) 0.125rem, transparent 0.1875rem);
-  box-shadow: inset calc(var(--hh-border-width-thick) * -1) 0 0 var(--hh-border);
+  box-shadow: inset calc(var(--hh-border-width-thin) * -1) 0 0 var(--hh-border);
 }
-html[data-theme="hermes-flight-director"] .hh-section-head {
-  border-bottom-style: double;
-  border-bottom-width: var(--hh-border-width-heavy);
+html[data-theme="hermes-flight-director"] .hh-strip-tab {
+  font-family: var(--hh-font-condensed);
+  font-weight: var(--hh-font-weight-regular);
+  letter-spacing: var(--hh-letter-spacing-caps);
 }
 
-/* ---------- Navigation ---------- */
+/* ---------- Function: neutral controls, machined edges by inset bevel, sentence case ---------- */
+html[data-theme="hermes-flight-director"] :is(.hh-button, .hh-icon-button) {
+  border-radius: var(--hh-radius-sm);
+  box-shadow: inset 0 calc(var(--hh-border-width-thick) * -1) 0 color-mix(in srgb, currentColor 18%, transparent);
+}
+html[data-theme="hermes-flight-director"] :is(.hh-button, .hh-icon-button)[data-variant='ghost'] {
+  box-shadow: none;
+}
+html[data-theme="hermes-flight-director"] :is(.hh-chip, .hh-segmented label, .hh-avatar, .hh-kbd, .hh-badge, .hh-recommended, .hh-skip-link, .hh-tooltip, .hh-connection, .hh-connection-lamp) {
+  border-radius: var(--hh-radius-sm);
+}
 html[data-theme="hermes-flight-director"] :is(.hh-side-nav, .hh-bottom-nav) a {
   border-radius: var(--hh-radius-sm);
-  text-transform: uppercase;
-  letter-spacing: var(--hh-letter-spacing-caps);
-  font-size: var(--hh-type-mono-sm-size);
-}
-html[data-theme="hermes-flight-director"] :is(.hh-side-nav, .hh-bottom-nav) a[aria-current='page'] {
-  box-shadow: inset 0 calc(var(--hh-border-width-thick) * -1) 0 color-mix(in srgb, var(--hh-accent-foreground) 45%, transparent);
-}
-html[data-theme="hermes-flight-director"] .hh-bottom-nav {
-  border-top-width: var(--hh-border-width-thick);
 }
 html[data-theme="hermes-flight-director"] .hh-breadcrumbs li + li::before {
   content: '›';
@@ -365,41 +365,10 @@ html[data-theme="hermes-flight-director"] .hh-breadcrumbs li + li::before {
 html[data-theme="hermes-flight-director"] .hh-link {
   text-underline-offset: 0.2em;
 }
-html[data-theme="hermes-flight-director"] .hh-skip-link {
-  border-radius: var(--hh-radius-sm);
-  text-transform: uppercase;
-  letter-spacing: var(--hh-letter-spacing-caps);
-}
-
-/* ---------- Function: buttons are machined console keys with a lip ---------- */
-html[data-theme="hermes-flight-director"] :is(.hh-button, .hh-icon-button) {
-  border-radius: var(--hh-radius-sm);
-  border-bottom-width: var(--hh-border-width-thick);
-  box-shadow: inset 0 0.0625rem 0 color-mix(in srgb, currentColor 16%, transparent);
-}
-html[data-theme="hermes-flight-director"] .hh-button {
-  text-transform: uppercase;
-  letter-spacing: var(--hh-letter-spacing-caps);
-}
-html[data-theme="hermes-flight-director"] .hh-button[data-variant='primary'] {
-  border-bottom-color: color-mix(in srgb, var(--hh-primary) 55%, var(--hh-background));
-}
-html[data-theme="hermes-flight-director"] .hh-button[data-variant='destructive'] {
-  border-bottom-color: color-mix(in srgb, var(--hh-destructive) 55%, var(--hh-background));
-}
-html[data-theme="hermes-flight-director"] :is(.hh-button, .hh-icon-button)[data-variant='ghost'] {
-  box-shadow: none;
-}
 html[data-theme="hermes-flight-director"] .hh-kbd {
-  border-radius: var(--hh-radius-sm);
   font-family: var(--hh-font-mono);
 }
-html[data-theme="hermes-flight-director"] .hh-avatar {
-  border-radius: var(--hh-radius-sm);
-  border-bottom-width: var(--hh-border-width-thick);
-}
-
-/* ---------- Function: inputs are recessed into the desk ---------- */
+/* Inputs are recessed into the desk. */
 html[data-theme="hermes-flight-director"] :is(.hh-input, .hh-select, .hh-textarea) {
   border-radius: var(--hh-radius-sm);
   box-shadow: inset 0 0.125rem 0 var(--hh-shadow);
@@ -410,11 +379,7 @@ html[data-theme="hermes-flight-director"] :is(.hh-input, .hh-select, .hh-textare
 html[data-theme="hermes-flight-director"] :is(.hh-checkbox, .hh-radio) input {
   accent-color: var(--hh-primary);
 }
-html[data-theme="hermes-flight-director"] .hh-label {
-  letter-spacing: var(--hh-letter-spacing-caps);
-}
-
-/* Toggle switch: a recessed slot, the thumb is a key cap; on lights the slot in success with the words beside it. */
+/* Toggle switch: a recessed slot; on lights the slot in success, with the words beside it. */
 html[data-theme="hermes-flight-director"] .hh-switch-track {
   border-radius: var(--hh-radius-sm);
   background: var(--hh-input);
@@ -430,65 +395,29 @@ html[data-theme="hermes-flight-director"] .hh-switch[aria-checked='true'] .hh-sw
 html[data-theme="hermes-flight-director"] .hh-switch[aria-checked='true'] .hh-switch-thumb {
   background: var(--hh-success-foreground);
 }
-
-html[data-theme="hermes-flight-director"] .hh-chip {
-  border-radius: var(--hh-radius-sm);
-  border-bottom-width: var(--hh-border-width-thick);
-  text-transform: uppercase;
-  letter-spacing: var(--hh-letter-spacing-caps);
-  font-size: var(--hh-type-mono-sm-size);
-}
-html[data-theme="hermes-flight-director"] .hh-segmented label {
-  border-bottom-width: var(--hh-border-width-thick);
-  border-radius: var(--hh-radius-sm);
-}
-
-/* Tabs: engraved legends over a ruled rail; the selected tab sits on a primary bar. */
-html[data-theme="hermes-flight-director"] .hh-tabs {
-  border-bottom-width: var(--hh-border-width-thick);
-}
-html[data-theme="hermes-flight-director"] .hh-tab {
-  text-transform: uppercase;
-  letter-spacing: var(--hh-letter-spacing-caps);
-  font-size: var(--hh-type-mono-sm-size);
-}
 html[data-theme="hermes-flight-director"] .hh-tab[aria-selected='true'] {
   border-bottom-color: var(--hh-primary);
 }
 
-/* ---------- Containers: console modules ---------- */
-html[data-theme="hermes-flight-director"] :is(.hh-card, .hh-panel, .hh-shelf, .hh-tray) {
+/* ---------- Containers, feedback, overlays: one quiet boundary each ---------- */
+html[data-theme="hermes-flight-director"] :is(.hh-card, .hh-panel, .hh-shelf, .hh-alert, .hh-toast, .hh-popover, .hh-menu, .hh-empty-state, .hh-agent-card, .hh-strip-bay) {
   border-radius: var(--hh-radius-md);
-}
-html[data-theme="hermes-flight-director"] .hh-card {
-  box-shadow: inset 0 0.0625rem 0 color-mix(in srgb, var(--hh-surface-card-foreground) 8%, transparent), var(--hh-elevation-raised);
-}
-html[data-theme="hermes-flight-director"] :is(.hh-panel, .hh-strip-bay, .hh-agent-card) {
-  background-image:
-    radial-gradient(circle at 0.4375rem 0.4375rem, var(--hh-border) 0.125rem, transparent 0.1875rem),
-    radial-gradient(circle at calc(100% - 0.4375rem) 0.4375rem, var(--hh-border) 0.125rem, transparent 0.1875rem);
-  box-shadow: inset 0 0.0625rem 0 color-mix(in srgb, var(--hh-foreground) 8%, transparent), var(--hh-elevation-raised);
 }
 html[data-theme="hermes-flight-director"] .hh-tray {
   border-radius: 0;
 }
-html[data-theme="hermes-flight-director"] .hh-divider {
-  border-top-width: var(--hh-border-width-thick);
-  border-top-style: double;
+html[data-theme="hermes-flight-director"] :is(.hh-dialog, .hh-sheet) .hh-overlay-head {
+  background: var(--hh-surface-shelf);
+  color: var(--hh-surface-shelf-foreground);
 }
-
-/* ---------- Feedback ---------- */
-html[data-theme="hermes-flight-director"] .hh-badge {
-  border-radius: var(--hh-radius-sm);
+html[data-theme="hermes-flight-director"] .hh-menu [role='menuitem'] {
+  border-radius: 0;
 }
-/* Annunciator panels: the tone frames the whole panel and the badge prints the word. */
-html[data-theme="hermes-flight-director"] .hh-alert {
-  border-width: var(--hh-border-width-thick);
-  border-radius: var(--hh-radius-sm);
+html[data-theme="hermes-flight-director"] .hh-tooltip {
+  font-family: var(--hh-font-mono);
 }
-html[data-theme="hermes-flight-director"] .hh-toast {
-  border-width: var(--hh-border-width-thick);
-  border-radius: var(--hh-radius-sm);
+html[data-theme="hermes-flight-director"] .hh-table th {
+  background: var(--hh-surface-shelf);
 }
 /* Progress: a segmented bar graph, the gaps cut over the fill. */
 html[data-theme="hermes-flight-director"] .hh-progress-track {
@@ -507,40 +436,8 @@ html[data-theme="hermes-flight-director"] .hh-progress-track::after {
 html[data-theme="hermes-flight-director"] .hh-skeleton {
   border-radius: 0;
 }
-html[data-theme="hermes-flight-director"] .hh-empty-state {
-  border-radius: var(--hh-radius-sm);
-}
 
-/* ---------- Overlays: modules lifted off the desk, with a riveted label plate ---------- */
-html[data-theme="hermes-flight-director"] :is(.hh-dialog, .hh-sheet) {
-  border-width: var(--hh-border-width-thick);
-}
-html[data-theme="hermes-flight-director"] :is(.hh-dialog, .hh-sheet) .hh-overlay-head {
-  background-color: var(--hh-surface-shelf);
-  color: var(--hh-surface-shelf-foreground);
-  background-image:
-    radial-gradient(circle at 0.4375rem 0.4375rem, var(--hh-border) 0.125rem, transparent 0.1875rem),
-    radial-gradient(circle at calc(100% - 0.4375rem) 0.4375rem, var(--hh-border) 0.125rem, transparent 0.1875rem);
-}
-html[data-theme="hermes-flight-director"] :is(.hh-popover, .hh-menu) {
-  border-width: var(--hh-border-width-thick);
-  border-radius: var(--hh-radius-sm);
-}
-html[data-theme="hermes-flight-director"] .hh-menu [role='menuitem'] {
-  border-radius: 0;
-}
-html[data-theme="hermes-flight-director"] .hh-tooltip {
-  border-radius: var(--hh-radius-sm);
-  font-family: var(--hh-font-mono);
-}
-
-/* ---------- Data display ---------- */
-html[data-theme="hermes-flight-director"] .hh-table th {
-  background: var(--hh-surface-shelf);
-  border-bottom-width: var(--hh-border-width-thick);
-}
-
-/* ---------- Domain: callsign nameplates ---------- */
+/* ---------- Domain: callsign nameplates, holders, live readouts ---------- */
 html[data-theme="hermes-flight-director"] .hh-callsign {
   padding-inline-start: 0;
   overflow: hidden;
@@ -551,76 +448,28 @@ html[data-theme="hermes-flight-director"] .hh-callsign-mark {
   width: var(--hh-space-2);
   height: auto;
 }
-
-/* ---------- Domain: strips racked in holders ---------- */
-html[data-theme="hermes-flight-director"] .hh-strip {
-  position: relative;
+html[data-theme="hermes-flight-director"] :is(.hh-strip-paper, .hh-policy-timer, .hh-strip-bay-slot) {
+  border-radius: 0;
 }
-/* Holder clips: short ticks above and below each end of the holder, the hardware that grips the strip. */
-html[data-theme="hermes-flight-director"] .hh-strip::after {
-  content: '';
-  position: absolute;
-  inset: calc(var(--hh-space-1) * -1) 0;
-  border-block: var(--hh-border-width-thick) solid var(--holder);
-  clip-path: polygon(0 0, var(--hh-space-4) 0, var(--hh-space-4) 100%, 0 100%, 0 0, 100% 0, 100% 100%, calc(100% - var(--hh-space-4)) 100%, calc(100% - var(--hh-space-4)) 0, 100% 0);
-  pointer-events: none;
-}
-html[data-theme="hermes-flight-director"] .hh-strip-tab {
-  font-family: var(--hh-font-condensed);
-  font-weight: var(--hh-font-weight-regular);
-  letter-spacing: var(--hh-letter-spacing-caps);
-}
-/* The live countdown in a pending holder is a phosphor readout in a dark well. */
+/* The live countdown in a pending holder is phosphor in a dark readout well. */
 html[data-theme="hermes-flight-director"] .hh-strip[data-status='pending'] .hh-strip-tab .hh-mono-sm {
   padding: 0 var(--hh-space-2);
   border-radius: var(--hh-radius-sm);
-  background: var(--hh-live-foreground);
-  color: var(--hh-live);
+  background: var(--flight-director-well);
+  color: var(--flight-director-phosphor);
   font-family: var(--hh-font-mono);
+  letter-spacing: var(--hh-letter-spacing-none);
   text-transform: none;
 }
-html[data-theme="hermes-flight-director"] .hh-strip-paper {
-  border-radius: 0;
-}
-html[data-theme="hermes-flight-director"] .hh-policy-timer {
-  border-radius: 0;
-}
-html[data-theme="hermes-flight-director"] .hh-strip-bay {
-  border-width: var(--hh-border-width-thick);
-}
-html[data-theme="hermes-flight-director"] .hh-strip-bay-slot {
-  border-radius: 0;
-}
-
-/* Live values: phosphor in a dark readout well; the only glow besides the connection lamp. */
+/* A live value: phosphor in a dark well, the only glow besides the connection lamp. */
 html[data-theme="hermes-flight-director"] .hh-live-value[data-live='true'] {
-  background: var(--hh-live-foreground);
-  color: var(--hh-live);
-  box-shadow: inset 0 0 0 var(--hh-border-width-thin) var(--hh-live), var(--hh-elevation-live);
-}
-html[data-theme="hermes-flight-director"] .hh-connection {
-  border-radius: var(--hh-radius-sm);
-}
-html[data-theme="hermes-flight-director"] .hh-connection-lamp {
-  border-radius: var(--hh-radius-sm);
+  background: var(--flight-director-well);
+  color: var(--flight-director-phosphor);
+  box-shadow: inset 0 0 0 var(--hh-border-width-thin) var(--flight-director-phosphor), var(--hh-elevation-live);
 }
 
-/* ---------- Domain: the open Round on strip paper; reading planes stay quiet ---------- */
-html[data-theme="hermes-flight-director"] .hh-round {
-  border-width: var(--hh-border-width-thick);
-  border-radius: var(--hh-radius-sm);
-  counter-reset: flight-director-go flight-director-nogo flight-director-standby;
-}
-html[data-theme="hermes-flight-director"] .hh-round-head {
-  border-bottom-width: var(--hh-border-width-thick);
-}
-html[data-theme="hermes-flight-director"] .hh-option {
-  border-radius: var(--hh-radius-sm);
-}
-html[data-theme="hermes-flight-director"] .hh-recommended {
-  border-radius: var(--hh-radius-sm);
-}
-html[data-theme="hermes-flight-director"] .hh-attachment {
+/* ---------- Reading planes: the open Round stays quiet ---------- */
+html[data-theme="hermes-flight-director"] :is(.hh-round, .hh-option, .hh-attachment) {
   border-radius: var(--hh-radius-sm);
 }
 html[data-theme="hermes-flight-director"] .hh-attachment-head {
@@ -630,49 +479,45 @@ html[data-theme="hermes-flight-director"] .hh-attachment-head {
   font-size: var(--hh-type-mono-sm-size);
 }
 html[data-theme="hermes-flight-director"] .hh-answer-bar {
-  border-top-width: var(--hh-border-width-thick);
   border-radius: 0;
-  background-image:
-    radial-gradient(circle at 0.4375rem calc(100% - 0.4375rem), var(--hh-border) 0.125rem, transparent 0.1875rem),
-    radial-gradient(circle at calc(100% - 0.4375rem) calc(100% - 0.4375rem), var(--hh-border) 0.125rem, transparent 0.1875rem);
 }
-
-/* ---------- Domain: Agent roster cards are console positions ---------- */
-html[data-theme="hermes-flight-director"] .hh-agent-card {
-  border-top-width: var(--hh-border-width-heavy);
-  border-radius: var(--hh-radius-sm);
-}
-html[data-theme="hermes-flight-director"] .hh-agent-state {
-  text-transform: uppercase;
-  letter-spacing: var(--hh-letter-spacing-caps);
-  font-size: var(--hh-type-mono-sm-size);
+/* The notes disclosure sits on strip paper, where muted ink never goes: its hint takes the paper's own ink. */
+html[data-theme="hermes-flight-director"] .hh-notes-summary .hh-muted {
+  color: inherit;
 }
 
 /* =====================================================================================================================
-   Signature: GO / NO-GO polling. Each approve/reject Question is a console position on the loop. Its answer slot
-   becomes a console module that prints the call in words: STANDBY, POLLING (the current position, data-current),
-   GO (Approve aria-pressed) or NO-GO (Reject aria-pressed). The call latches once per change, bounded and on
-   --hh-motion-signature, which collapses to 1ms under reduced motion. The Answer bar keeps the tally with counters.
+   Signature: GO / NO-GO polling. Each approve/reject Question is a console position on the loop. Its answer slot is
+   the one console module in the Round and prints the call in words: STANDBY, POLLING (the current position,
+   data-current, in phosphor), GO (Approve chosen) or NO-GO (Reject chosen). The core reports the choice as
+   .hh-option[data-choice="approve|reject"][data-checked="true"] inside .hh-approve-pair. A called slot takes the call's
+   colour as its boundary. The call latches once per change on --hh-motion-signature (1ms under reduced motion), and
+   the Answer bar leads with the tally, counted by CSS counters.
    ===================================================================================================================== */
+html[data-theme="hermes-flight-director"] .hh-round {
+  counter-reset: flight-director-go flight-director-nogo flight-director-standby;
+}
 html[data-theme="hermes-flight-director"] .hh-question:has(.hh-approve-pair) {
   counter-increment: flight-director-standby;
 }
-html[data-theme="hermes-flight-director"] .hh-question:has(.hh-approve-pair .hh-button[data-variant='primary'][aria-pressed='true']) {
+html[data-theme="hermes-flight-director"] .hh-question:has(.hh-approve-pair > .hh-option[data-choice='approve'][data-checked='true']) {
   counter-increment: flight-director-go;
 }
-html[data-theme="hermes-flight-director"] .hh-question:has(.hh-approve-pair .hh-button[data-variant='destructive'][aria-pressed='true']) {
+html[data-theme="hermes-flight-director"] .hh-question:has(.hh-approve-pair > .hh-option[data-choice='reject'][data-checked='true']) {
   counter-increment: flight-director-nogo;
 }
 html[data-theme="hermes-flight-director"] .hh-question-response:has(> .hh-approve-pair) {
-  padding: var(--hh-space-3);
+  padding: var(--hh-space-2);
   border: var(--hh-border-width-thin) solid var(--hh-border);
   border-radius: var(--hh-radius-md);
-  background-color: var(--hh-surface-panel);
-  background-image:
-    radial-gradient(circle at 0.4375rem 0.4375rem, var(--hh-border) 0.125rem, transparent 0.1875rem),
-    radial-gradient(circle at calc(100% - 0.4375rem) 0.4375rem, var(--hh-border) 0.125rem, transparent 0.1875rem);
+  background: var(--hh-surface-panel);
   color: var(--hh-surface-panel-foreground);
-  box-shadow: inset 0 0.0625rem 0 color-mix(in srgb, var(--hh-surface-panel-foreground) 10%, transparent), var(--hh-elevation-raised);
+}
+html[data-theme="hermes-flight-director"] .hh-question-response:has(> .hh-approve-pair > .hh-option[data-choice='approve'][data-checked='true']) {
+  border: var(--hh-border-width-thick) solid var(--hh-success);
+}
+html[data-theme="hermes-flight-director"] .hh-question-response:has(> .hh-approve-pair > .hh-option[data-choice='reject'][data-checked='true']) {
+  border: var(--hh-border-width-thick) solid var(--hh-destructive);
 }
 /* The call: always a word, never a lamp alone. */
 html[data-theme="hermes-flight-director"] .hh-question-response:has(> .hh-approve-pair)::before {
@@ -685,79 +530,67 @@ html[data-theme="hermes-flight-director"] .hh-question-response:has(> .hh-approv
   color: var(--hh-surface-panel-foreground);
   font-family: var(--hh-font-condensed);
   font-size: var(--hh-type-heading-md-size);
-  line-height: var(--hh-type-label-line-height);
+  line-height: var(--hh-type-heading-md-line-height);
   letter-spacing: var(--hh-letter-spacing-caps);
   text-transform: uppercase;
 }
-html[data-theme="hermes-flight-director"] .hh-question[data-current='true'] .hh-question-response:has(> .hh-approve-pair):not(:has([aria-pressed='true']))::before {
-  content: 'Polling · GO or NO-GO?';
-  border-color: var(--hh-live);
-  background: var(--hh-live-foreground);
-  color: var(--hh-live);
+html[data-theme="hermes-flight-director"] .hh-question[data-current='true'] .hh-question-response:has(> .hh-approve-pair):not(:has([data-checked='true']))::before {
+  content: 'Polling';
+  border-color: var(--flight-director-phosphor);
+  background: var(--flight-director-well);
+  color: var(--flight-director-phosphor);
   animation: flight-director-poll var(--hh-motion-signature) var(--hh-easing-standard) 2;
 }
-html[data-theme="hermes-flight-director"] .hh-question-response:has(> .hh-approve-pair .hh-button[data-variant='primary'][aria-pressed='true'])::before {
+html[data-theme="hermes-flight-director"] .hh-question-response:has(> .hh-approve-pair > .hh-option[data-choice='approve'][data-checked='true'])::before {
   content: 'GO';
   border-color: var(--hh-success);
   background: var(--hh-success);
   color: var(--hh-success-foreground);
   animation: flight-director-latch-go var(--hh-motion-signature) var(--hh-easing-enter);
 }
-html[data-theme="hermes-flight-director"] .hh-question-response:has(> .hh-approve-pair .hh-button[data-variant='destructive'][aria-pressed='true'])::before {
+html[data-theme="hermes-flight-director"] .hh-question-response:has(> .hh-approve-pair > .hh-option[data-choice='reject'][data-checked='true'])::before {
   content: 'NO-GO';
   border-color: var(--hh-destructive);
   background: var(--hh-destructive);
   color: var(--hh-destructive-foreground);
   animation: flight-director-latch-nogo var(--hh-motion-signature) var(--hh-easing-enter);
 }
-/* The pair are neutral console keys until called; the called key latches in the call's colour. */
-html[data-theme="hermes-flight-director"] .hh-approve-pair .hh-button {
+/* The recommended marker inside a half-width key drops its tracking and may wrap rather than overrun the key. */
+html[data-theme="hermes-flight-director"] .hh-approve-pair .hh-recommended {
+  max-width: 100%;
+  letter-spacing: var(--hh-letter-spacing-none);
+  white-space: normal;
+}
+/* The two choices are neutral keys until called; the called key latches in the call's colour. */
+html[data-theme="hermes-flight-director"] .hh-approve-pair > .hh-option {
   border-color: var(--hh-border);
   background: var(--hh-surface-tray);
   color: var(--hh-surface-tray-foreground);
+  box-shadow: inset 0 calc(var(--hh-border-width-thick) * -1) 0 color-mix(in srgb, currentColor 18%, transparent);
 }
-html[data-theme="hermes-flight-director"] .hh-approve-pair .hh-button:hover {
-  outline-color: currentColor;
-}
-html[data-theme="hermes-flight-director"] .hh-approve-pair .hh-button[data-variant='primary'][aria-pressed='true'] {
+html[data-theme="hermes-flight-director"] .hh-approve-pair > .hh-option[data-choice='approve'][data-checked='true'] {
   border-color: var(--hh-success-foreground);
   background: var(--hh-success);
   color: var(--hh-success-foreground);
 }
-html[data-theme="hermes-flight-director"] .hh-approve-pair .hh-button[data-variant='destructive'][aria-pressed='true'] {
+html[data-theme="hermes-flight-director"] .hh-approve-pair > .hh-option[data-choice='reject'][data-checked='true'] {
   border-color: var(--hh-destructive-foreground);
   background: var(--hh-destructive);
   color: var(--hh-destructive-foreground);
 }
-/* Poll tally on the Answer bar of any Round that carries approve/reject Questions. */
-html[data-theme="hermes-flight-director"] .hh-round:has(.hh-approve-pair) > .hh-answer-bar::before {
-  content: 'GO / NO-GO poll · ' counter(flight-director-go) ' GO · ' counter(flight-director-nogo) ' NO-GO · ' counter(flight-director-standby) ' standing by';
+/* The poll tally leads the Answer bar of any Round that carries approve/reject Questions. */
+html[data-theme="hermes-flight-director"] .hh-round:has(.hh-approve-pair) .hh-answer-bar::before {
+  content: 'Poll  ' counter(flight-director-go) ' GO  ·  ' counter(flight-director-nogo) ' NO-GO  ·  ' counter(flight-director-standby) ' standing by';
   justify-self: start;
-  padding: 0 var(--hh-space-2);
-  border: var(--hh-border-width-thin) solid var(--hh-border);
+  padding: var(--hh-space-1) var(--hh-space-3);
   border-radius: var(--hh-radius-sm);
   background: var(--hh-surface-shelf);
   color: var(--hh-surface-shelf-foreground);
   font-family: var(--hh-font-mono);
-  font-size: var(--hh-type-mono-sm-size);
-  line-height: var(--hh-type-mono-sm-line-height);
-  font-weight: var(--hh-type-mono-sm-weight);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
-/* The approve/reject keys sit two to a half-width slot: their legends keep normal width, tracking and case so they fit. */
-html[data-theme="hermes-flight-director"] .hh-approve-pair .hh-button {
-  font-stretch: normal;
-  letter-spacing: var(--hh-letter-spacing-none);
-  text-transform: none;
-}
-/* Phone widths: every key drops the extra width and tracking. */
-@media (max-width: 48rem) {
-  html[data-theme="hermes-flight-director"] .hh-button {
-    font-stretch: normal;
-    letter-spacing: var(--hh-letter-spacing-none);
-  }
+  font-size: var(--hh-type-heading-md-size);
+  line-height: var(--hh-type-heading-md-line-height);
+  font-weight: var(--hh-font-weight-semibold);
+  white-space: pre-wrap;
 }
 
 @keyframes flight-director-poll {

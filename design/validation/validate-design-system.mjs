@@ -366,11 +366,12 @@ function rawValueFailures(path, text, breakpoints) {
 
   let code = ext === '.css' ? text.replace(/\/\*[\s\S]*?\*\//g, '') : text;
   if (ext === '.css') {
-    code = code.replace(/@media([^{]*)\{/g, (_, prelude) => {
+    // Media and container query breakpoints both come from the breakpoint tokens.
+    code = code.replace(/@(media|container)([^{]*)\{/g, (_, kind, prelude) => {
       const lengths = prelude.match(LENGTH_OR_TIME) ?? [];
       const offTokens = lengths.filter((length) => !breakpoints.has(length));
-      if (offTokens.length) failures.push(`${path}: media query uses ${offTokens.join(', ')}; use a breakpoint token (${[...breakpoints].join(', ')})`);
-      return '@media {';
+      if (offTokens.length) failures.push(`${path}: ${kind} query uses ${offTokens.join(', ')}; use a breakpoint token (${[...breakpoints].join(', ')})`);
+      return `@${kind} {`;
     });
     report('raw shadow', code.match(RAW_SHADOW) ?? []);
     report('unitless visual value (use a type, opacity, or layer token)', code.match(UNITLESS_VISUAL) ?? []);
@@ -396,6 +397,76 @@ function liveGlowFailures(path, css) {
     if (!glows) continue;
     for (const selector of block.selectors) {
       if (!/live/.test(selector)) failures.push(`${path}: "${selector}" paints the live glow (${PREFIX}elevation-live) but does not target live state; glow is for live state only`);
+    }
+  }
+  return failures;
+}
+
+// A halo is a shadow layer with no offset and a blur: light emitted around a shape. Worlds may not paint one, through any
+// value or helper, outside live state (the connection lamp, a live value); pending, selection, and decoration never glow.
+const GLOW_PROPERTIES = new Set(['box-shadow', 'filter', 'text-shadow']);
+
+function splitTopLevel(value, separator = ',') {
+  const parts = [];
+  let depth = 0;
+  let start = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    const char = value[index];
+    if (char === '(') depth += 1;
+    else if (char === ')') depth -= 1;
+    else if (char === separator && depth === 0) {
+      parts.push(value.slice(start, index).trim());
+      start = index + 1;
+    }
+  }
+  parts.push(value.slice(start).trim());
+  return parts.filter(Boolean);
+}
+
+function isHalo(layer) {
+  if (/\binset\b/.test(layer) || /^none$/.test(layer)) return false;
+  // Drop colours (functions, hex, keywords stay as words) so only the length list remains.
+  const lengths = layer
+    .replace(/\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color-mix)\([^()]*(?:\([^()]*\)[^()]*)*\)/g, ' ')
+    .replace(/#[0-9a-fA-F]{3,8}\b/g, ' ')
+    .match(/var\([^()]*(?:\([^()]*\)[^()]*)*\)|calc\([^()]*(?:\([^()]*\)[^()]*)*\)|-?\d*\.?\d+[a-z%]*/g);
+  if (!lengths || lengths.length < 3) return false;
+  const zero = (token) => /^-?0*\.?0+[a-z%]*$/.test(token);
+  const [offsetX, offsetY, blur] = lengths;
+  return zero(offsetX) && zero(offsetY) && !zero(blur);
+}
+
+function haloLayers(property, value) {
+  if (property === 'filter') return [...value.matchAll(/drop-shadow\(([^()]*(?:\([^()]*\)[^()]*)*)\)/g)].map((match) => match[1]).filter(isHalo);
+  return splitTopLevel(value).filter(isHalo);
+}
+
+function worldHaloFailures(world, blocks, scope, paletteBlockPattern) {
+  const failures = [];
+  // Helper values (--<slug>-*) and documented overrides from the theme and palette blocks, so a glow hidden in a helper is
+  // still found. Core elevation tokens other than live are plain shadows.
+  const helpers = new Map();
+  for (const block of blocks) {
+    const selector = block.selectors.length === 1 ? block.selectors[0] : '';
+    if (block.media || !(selector === scope || paletteBlockPattern.test(selector))) continue;
+    for (const [property, value] of block.decls) if (property.startsWith(`--${world.slug}-`) || property.startsWith(`${PREFIX}elevation-`)) helpers.set(property, value);
+  }
+  const resolve = (value, depth = 0) =>
+    depth > 5 ? value : value.replace(/var\((--[\w-]+)(?:\s*,\s*([^()]*))?\)/g, (match, name, fallback) => (helpers.has(name) ? resolve(helpers.get(name), depth + 1) : fallback ?? match));
+  for (const [name, value] of helpers) {
+    if (name.startsWith(`${PREFIX}elevation-`) && name !== `${PREFIX}elevation-live` && haloLayers('box-shadow', resolve(value)).length) {
+      failures.push(`${name} is overridden as a glow; only elevation-live may glow`);
+    }
+  }
+  for (const block of blocks) {
+    if (block.parents.some((parent) => parent.startsWith('@keyframes'))) continue;
+    for (const [property, value] of block.decls) {
+      if (!GLOW_PROPERTIES.has(property) || LIVE_GLOW.test(value)) continue;
+      const halos = haloLayers(property, resolve(value));
+      if (!halos.length) continue;
+      for (const selector of block.selectors) {
+        if (!/live/.test(selector)) failures.push(`"${selector}" paints a glow (${property}: ${halos[0]}) outside live state; halos belong only to .hh-connection[data-state='live'] and .hh-live-value[data-live]`);
+      }
     }
   }
   return failures;
@@ -506,6 +577,7 @@ function worldFailures(world, roles) {
   if (themeBlocks !== 1) fail(`tokens/worlds/${slug}.css needs exactly one ${scope} block (found ${themeBlocks})`);
   for (const id of paletteIds) if ((paletteBlocks.get(id) ?? 0) !== 1) fail(`palette "${id}" needs exactly one ${paletteSelector(world.theme, id)} block (found ${paletteBlocks.get(id) ?? 0})`);
   for (const failure of liveGlowFailures(`tokens/worlds/${slug}.css`, css)) fail(failure);
+  for (const failure of worldHaloFailures(world, parseCssBlocks(css), scope, paletteBlockPattern)) fail(failure);
   return failures;
 }
 

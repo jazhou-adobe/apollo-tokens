@@ -1,8 +1,14 @@
-/** Visible key hints for strip-bay triage. Shortcuts act only while focus is inside the bay and can be switched off. */
+/**
+ * Visible key hints for triage. Bay keys act while the strip list has focus; Round keys while focus is in the open Round
+ * (letters and digits never in a text field). Single-key shortcuts can be switched off; glance density hides the hints.
+ */
 export const SHORTCUTS = [
-  { keys: ['J', 'K'], action: 'next / previous Round' },
+  { keys: ['J', 'K'], action: 'next / previous strip' },
+  { keys: ['Enter'], action: 'open the Round' },
   { keys: ['1–9'], action: 'choose an option' },
   { keys: ['A', 'R'], action: 'approve / reject' },
+  { keys: ['N'], action: 'notes' },
+  { keys: ['Esc'], action: 'back to pending' },
   { keys: ['⌘↵', 'Ctrl↵'], action: 'send the Answer' },
 ] as const;
 

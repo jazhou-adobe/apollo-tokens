@@ -1,12 +1,14 @@
 /*
  * Starship Hermes: the courier god as a ship's emblem.
- * Engraved hull plates in terracotta and soot, a Greek-key meander on the page edges only, Marcellus SC engraved into
- * display plates, Saira Condensed console caps, Instrument Sans for reading, IBM Plex Mono for serials and timers.
- * Signature: a winged-sandal dispatch mark is struck beside the Answered status when a Round is sent back.
+ * Terracotta and soot; a Greek-key meander on the two outside vertical edges only; Marcellus SC engraved into the
+ * ship's identity (display lettering, the ship's name); Instrument Sans for every operational label; IBM Plex Mono for
+ * serials, timers and code. Reading planes stay parchment in every colour option.
+ * Signature: a winged-sandal dispatch seal is struck on the departing strip and beside the Answered confirmation.
  * Every decorative colour derives from a role or a per-palette --starship-* helper, so each colour option recolours the
- * meander, rivets, bevels and the dispatch mark. Design source: research/world-previews/starship.html.
+ * meander, bevels and seal. Design source: research/world-previews/starship.html.
  */
 
+/* Soot & Terracotta (recommended) */
 html[data-theme="hermes-starship"] {
   color-scheme: dark;
   --hh-background: #15110e;
@@ -69,23 +71,18 @@ html[data-theme="hermes-starship"] {
   --hh-chart-5: #b79ad6;
   --hh-font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
   --hh-font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
-  --hh-font-condensed: var(--font-saira-condensed), 'Arial Narrow', sans-serif;
+  --hh-font-condensed: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
   --hh-font-weight-heavy: 700;
-  --hh-letter-spacing-caps: 0.1em;
   --hh-type-display-family: var(--font-marcellus-sc), 'Times New Roman', serif;
   --hh-type-display-weight: var(--hh-font-weight-regular);
-  --hh-type-heading-lg-family: var(--font-marcellus-sc), 'Times New Roman', serif;
-  --hh-type-heading-lg-weight: var(--hh-font-weight-regular);
   --hh-radius-md: 0.1875rem;
   --hh-radius-lg: 0.3125rem;
-  --hh-elevation-raised: 0 0.0625rem 0 0 var(--hh-shadow), 0 0.5rem 1rem -0.625rem var(--hh-shadow);
-  --hh-elevation-overlay: 0 0.0625rem 0 0 var(--hh-shadow), 0 1rem 2.5rem -0.5rem var(--hh-shadow);
+  --hh-elevation-raised: 0 0.25rem 0.75rem -0.375rem var(--hh-shadow);
+  --hh-elevation-overlay: 0 0.75rem 2rem -0.5rem var(--hh-shadow);
   --starship-bevel-hi: rgba(255, 238, 214, 0.07);
   --starship-bevel-lo: rgba(0, 0, 0, 0.45);
   --starship-sandal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 40'%3E%3Cpath d='M17 22C11 21 5 18 1 12C7 14 12 15 18 17ZM18 18C13 15 9 10 8 3C12 8 16 11 21 14ZM21 15C19 10 19 6 21 0C24 5 25 10 24 15ZM8 31C8 28.5 11 27 15 27L50 27C56 27 60 29 60 31.5C60 34 56 35.5 50 35.5L14 35.5C10 35.5 8 33.5 8 31Z'/%3E%3Cpath d='M15 27C15 21 18 17.5 23.5 16.5C28 14 33 14 36 16M22 27L31 17.5M29 27L37 19.5M37 27L43 22.5M45 27L47 25' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
-  --starship-meander-h: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M0 15H16M2 15V2H14V12H5V5H11V9' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E");
   --starship-meander-v: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M15 0V16M15 2H2V14H12V5H5V11H9' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E");
-  --starship-rivets: radial-gradient(circle, var(--hh-border) 0 0.09375rem, transparent 0.125rem), radial-gradient(circle, var(--hh-border) 0 0.09375rem, transparent 0.125rem), radial-gradient(circle, var(--hh-border) 0 0.09375rem, transparent 0.125rem), radial-gradient(circle, var(--hh-border) 0 0.09375rem, transparent 0.125rem);
   scrollbar-color: var(--hh-border) var(--hh-surface-shelf);
 }
 
@@ -242,25 +239,25 @@ html[data-theme="hermes-starship"][data-palette="original"] {
   --hh-accent-foreground: #140d06;
   --hh-destructive: #f28b7a;
   --hh-destructive-foreground: #180806;
-  --hh-border: #f0d7bc;
+  --hh-border: #9c6446;
   --hh-input: #15100d;
-  --hh-ring: #ffd9b8;
+  --hh-ring: #ad6340;
   --hh-success: #86c48f;
   --hh-success-foreground: #0a160c;
   --hh-warning: #ecbb63;
   --hh-warning-foreground: #171005;
   --hh-info: #90c3d2;
   --hh-info-foreground: #08151a;
-  --hh-strip: #b8653d;
-  --hh-strip-foreground: #0e0805;
-  --hh-pending: #f7d68c;
-  --hh-pending-foreground: #160f03;
-  --hh-answered: #c2e4ed;
-  --hh-answered-foreground: #061316;
-  --hh-expired: #e2ddd5;
-  --hh-expired-foreground: #11100e;
-  --hh-recommended: #bdebb4;
-  --hh-recommended-foreground: #071206;
+  --hh-strip: #efe2cc;
+  --hh-strip-foreground: #1a0f09;
+  --hh-pending: #a8762a;
+  --hh-pending-foreground: #120b03;
+  --hh-answered: #5d8793;
+  --hh-answered-foreground: #071114;
+  --hh-expired: #86807a;
+  --hh-expired-foreground: #0f0e0d;
+  --hh-recommended: #4f8c55;
+  --hh-recommended-foreground: #061008;
   --hh-live: #93e0ad;
   --hh-live-foreground: #07160c;
   --hh-code: #0b0807;
@@ -285,34 +282,41 @@ html[data-theme="hermes-starship"][data-palette="original"] {
 }
 
 /* ================= Skin =================
- * Intensity budget.
- * Identity, full material: the meander band on the page edges, the app bar (terracotta keel, engraved name, winged-sandal
- * emblem), engraved display and section headings, and the dispatch mark.
- * Function, restrained: hull-plate bevels on controls, condensed caps labels, rivets on container plates only.
- * Reading and writing, quiet: strip paper, Question text, options, attachments, diffs, inputs and notes stay flat, opaque,
- * and untextured; the only material there is a recessed well on inputs.
+ * Intensity budget. Material is concentrated in the ship's identity: the meander on the two outside vertical edges,
+ * the app bar (terracotta keel, engraved name, winged-sandal emblem), engraved display lettering, and the dispatch
+ * seal. Function keeps the core anatomy and boundaries with one restrained inset bevel on keys. Reading and writing
+ * planes (strip paper, Questions, options, attachments, diffs, inputs, notes) are untouched: flat, opaque parchment.
+ * Lettering: Marcellus SC for identity only; Instrument Sans for every operational label in sentence case; IBM Plex
+ * Mono for serials, timers and code.
  */
 
-/* ---------- Identity: meander band on the page edges only ---------- */
-/* Fixed above the page on the left, right and bottom edges (the app bar's terracotta keel carries the top), 0.625rem
- * wide: every page and frame insets its content by at least 0.625rem (compact density-inset), so the band never sits
- * behind text. It ignores the pointer. */
-html[data-theme="hermes-starship"] body::after {
+/* ---------- Identity: meander on the outside vertical edges ---------- */
+/* Drawn beneath the page content (body is the stacking context), so it shows only in the outer gutters and never
+ * crosses a reading or action surface; full-bleed bars and panels simply cover it. It scrolls with the page. */
+html[data-theme="hermes-starship"] body {
+  position: relative;
+  isolation: isolate;
+}
+
+html[data-theme="hermes-starship"] body::before {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
-  z-index: var(--hh-layer-sticky);
+  z-index: -1;
   pointer-events: none;
   background: var(--hh-primary);
   opacity: 0.8;
   -webkit-mask:
-    var(--starship-meander-h) left bottom / 0.625rem 0.625rem repeat-x,
     var(--starship-meander-v) left top / 0.625rem 0.625rem repeat-y,
     var(--starship-meander-v) right top / 0.625rem 0.625rem repeat-y;
   mask:
-    var(--starship-meander-h) left bottom / 0.625rem 0.625rem repeat-x,
     var(--starship-meander-v) left top / 0.625rem 0.625rem repeat-y,
     var(--starship-meander-v) right top / 0.625rem 0.625rem repeat-y;
+}
+
+/* The specimen frame paints the same background as the page; letting the page show through keeps the edges visible. */
+html[data-theme="hermes-starship"] .hh-specimen {
+  background: transparent;
 }
 
 html[data-theme="hermes-starship"] ::selection {
@@ -320,24 +324,21 @@ html[data-theme="hermes-starship"] ::selection {
   color: var(--hh-primary-foreground);
 }
 
-/* ---------- Identity: engraved headings ---------- */
-/* Marcellus SC is cut like letters engraved in a hull plate; the highlight under each stroke is the bevel catching light. */
+/* ---------- Identity: engraved lettering ---------- */
 html[data-theme="hermes-starship"] .hh-display,
-html[data-theme="hermes-starship"] .hh-heading-lg {
-  letter-spacing: var(--hh-letter-spacing-caps);
+html[data-theme="hermes-starship"] .hh-app-bar-brand,
+html[data-theme="hermes-starship"] .hh-sidebar-brand > .hh-heading-lg {
+  font-family: var(--hh-type-display-family);
+  font-weight: var(--hh-type-display-weight);
+  letter-spacing: 0.04em;
+  text-transform: none;
   text-shadow: 0 0.0625rem 0 var(--starship-bevel-hi);
 }
 
 /* ---------- Identity: app bar ---------- */
 html[data-theme="hermes-starship"] .hh-app-bar {
   border-bottom: var(--hh-border-width-thick) solid var(--hh-primary);
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), var(--hh-elevation-raised);
-}
-
-html[data-theme="hermes-starship"] .hh-app-bar-brand {
-  font-family: var(--hh-type-display-family);
-  font-weight: var(--hh-type-display-weight);
-  text-shadow: 0 0.0625rem 0 var(--starship-bevel-hi);
+  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi);
 }
 
 /* The winged sandal replaces the generic bay icon as the ship's emblem. */
@@ -362,102 +363,22 @@ html[data-theme="hermes-starship"] .hh-sidebar-brand > .hh-heading-lg {
   gap: var(--hh-space-2);
 }
 
-/* ---------- Plates: containers ---------- */
-/* Hull plates: a one-line bevel and a rivet in each corner, inside the padding so no rivet sits behind text. */
-html[data-theme="hermes-starship"] .hh-card,
-html[data-theme="hermes-starship"] .hh-agent-card,
-html[data-theme="hermes-starship"] .hh-world-card,
-html[data-theme="hermes-starship"] .hh-strip-bay,
-html[data-theme="hermes-starship"] .hh-dialog,
-html[data-theme="hermes-starship"] .hh-sheet {
-  background-image: var(--starship-rivets);
-  background-repeat: no-repeat;
-  background-size: 0.375rem 0.375rem;
-  background-position:
-    left 0.25rem top 0.25rem,
-    right 0.25rem top 0.25rem,
-    left 0.25rem bottom 0.25rem,
-    right 0.25rem bottom 0.25rem;
+/* ---------- Function: operational titles in sentence case ---------- */
+/* Round titles and screen headings are long, typed by Agents and read at speed: the operational face, as written. Only
+ * the short status legends (holder tabs, badges, the recommended marker) stay in capitals. */
+html[data-theme="hermes-starship"] .hh-strip-header,
+html[data-theme="hermes-starship"] .hh-heading-lg {
+  text-transform: none;
 }
 
-html[data-theme="hermes-starship"] .hh-card,
-html[data-theme="hermes-starship"] .hh-agent-card,
-html[data-theme="hermes-starship"] .hh-world-card,
-html[data-theme="hermes-starship"] .hh-strip-bay {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), inset 0 -0.0625rem 0 var(--starship-bevel-lo), var(--hh-elevation-raised);
-}
-
-html[data-theme="hermes-starship"] .hh-panel,
-html[data-theme="hermes-starship"] .hh-tray,
-html[data-theme="hermes-starship"] .hh-sidebar {
+/* ---------- Function: keys with one inset bevel ---------- */
+html[data-theme="hermes-starship"] .hh-button,
+html[data-theme="hermes-starship"] .hh-icon-button {
   box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), inset 0 -0.0625rem 0 var(--starship-bevel-lo);
 }
 
-/* A shelf is a recess in the hull: an engraved double rule instead of a dashed edge. */
-html[data-theme="hermes-starship"] .hh-shelf,
-html[data-theme="hermes-starship"] .hh-empty-state {
-  border-style: double;
-  border-width: var(--hh-border-width-heavy);
-}
-
-html[data-theme="hermes-starship"] .hh-divider {
-  box-shadow: 0 0.0625rem 0 var(--starship-bevel-hi);
-}
-
-html[data-theme="hermes-starship"] .hh-section-head {
-  border-bottom-style: double;
-  border-bottom-width: var(--hh-border-width-heavy);
-}
-
-html[data-theme="hermes-starship"] .hh-blueprint,
-html[data-theme="hermes-starship"] .hh-phone-frame {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), var(--hh-elevation-raised);
-}
-
-/* ---------- Function: labels in condensed caps ---------- */
-html[data-theme="hermes-starship"] .hh-badge,
-html[data-theme="hermes-starship"] .hh-recommended,
-html[data-theme="hermes-starship"] .hh-strip-tab,
-html[data-theme="hermes-starship"] .hh-table th,
-html[data-theme="hermes-starship"] .hh-kicker,
-html[data-theme="hermes-starship"] .hh-dl dt,
-html[data-theme="hermes-starship"] .hh-chip,
-html[data-theme="hermes-starship"] .hh-tab,
-html[data-theme="hermes-starship"] .hh-segmented label {
-  font-family: var(--hh-font-condensed);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
-html[data-theme="hermes-starship"] .hh-badge,
-html[data-theme="hermes-starship"] .hh-recommended,
-html[data-theme="hermes-starship"] .hh-strip-tab {
-  font-size: var(--hh-type-label-size);
-}
-
-html[data-theme="hermes-starship"] .hh-dl dt {
-  font-weight: var(--hh-font-weight-semibold);
-}
-
-/* ---------- Function: buttons as hull-plate keys ---------- */
-html[data-theme="hermes-starship"] .hh-button,
-html[data-theme="hermes-starship"] .hh-icon-button,
-html[data-theme="hermes-starship"] .hh-toc-toggle {
-  font-family: var(--hh-font-condensed);
-  font-size: var(--hh-type-body-size);
-  font-weight: var(--hh-font-weight-semibold);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), inset 0 -0.125rem 0 var(--starship-bevel-lo);
-}
-
-html[data-theme="hermes-starship"] .hh-button[data-size='lg'] {
-  font-size: var(--hh-type-body-lg-size);
-}
-
-/* Pressed keys sit down into the plate: the bevel inverts. The core's thick foreground border still marks the state. */
-html[data-theme="hermes-starship"] .hh-button[aria-pressed='true'],
-html[data-theme="hermes-starship"] .hh-chip[aria-pressed='true'] {
+/* Pressed keys sit into the plate; the core's thick border still marks the state. */
+html[data-theme="hermes-starship"] .hh-button[aria-pressed='true'] {
   box-shadow: inset 0 0.125rem 0 var(--starship-bevel-lo);
 }
 
@@ -470,230 +391,92 @@ html[data-theme="hermes-starship"] .hh-link {
   text-decoration-color: var(--hh-primary);
 }
 
-/* ---------- Writing planes: recessed wells, flat and opaque ---------- */
-html[data-theme="hermes-starship"] .hh-input,
-html[data-theme="hermes-starship"] .hh-select,
-html[data-theme="hermes-starship"] .hh-textarea {
-  box-shadow: inset 0 0.125rem 0 var(--starship-bevel-lo);
-}
-
 html[data-theme="hermes-starship"] .hh-checkbox input,
 html[data-theme="hermes-starship"] .hh-radio input {
   accent-color: var(--hh-primary);
 }
 
-/* ---------- Function: switch, chips, tabs, segmented ---------- */
-html[data-theme="hermes-starship"] .hh-switch-track {
-  box-shadow: inset 0 0.125rem 0 var(--starship-bevel-lo);
-}
-
-html[data-theme="hermes-starship"] .hh-switch-thumb {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), 0 0.0625rem 0 var(--starship-bevel-lo);
-}
-
-html[data-theme="hermes-starship"] .hh-chip {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi);
-}
-
-html[data-theme="hermes-starship"] .hh-tabs {
-  border-bottom-width: var(--hh-border-width-thick);
-}
-
 html[data-theme="hermes-starship"] .hh-tab[aria-selected='true'] {
   border-bottom-color: var(--hh-primary);
-  font-weight: var(--hh-font-weight-bold);
 }
 
-html[data-theme="hermes-starship"] .hh-segmented label:has(input:checked) {
-  box-shadow: inset 0 0.125rem 0 var(--starship-bevel-lo);
-}
-
-/* ---------- Function: navigation ---------- */
-html[data-theme="hermes-starship"] .hh-side-nav a,
-html[data-theme="hermes-starship"] .hh-bottom-nav a {
-  font-family: var(--hh-font-condensed);
-  font-size: var(--hh-type-body-size);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
-/* The current page keeps its accent fill and heavy label; the square marker turns into a diamond rivet. */
+/* The current page keeps its accent fill and heavier label; the square marker turns into a diamond. */
 html[data-theme="hermes-starship"] .hh-side-nav a[aria-current='page']::before,
 html[data-theme="hermes-starship"] .hh-bottom-nav a[aria-current='page']::before {
   transform: rotate(45deg);
-}
-
-html[data-theme="hermes-starship"] .hh-side-nav a[aria-current='page'],
-html[data-theme="hermes-starship"] .hh-bottom-nav a[aria-current='page'] {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), inset 0 -0.0625rem 0 var(--starship-bevel-lo);
-}
-
-html[data-theme="hermes-starship"] .hh-bottom-nav {
-  border-top: var(--hh-border-width-thick) solid var(--hh-primary);
 }
 
 html[data-theme="hermes-starship"] .hh-breadcrumbs li + li::before {
   content: '›' / '';
 }
 
-/* ---------- Feedback ---------- */
-html[data-theme="hermes-starship"] .hh-alert {
-  border-width: var(--hh-border-width-thick);
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi);
-}
-
-html[data-theme="hermes-starship"] .hh-toast {
-  border-top: var(--hh-border-width-thick) solid var(--hh-primary);
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), var(--hh-elevation-overlay);
-}
-
-html[data-theme="hermes-starship"] .hh-progress-track {
-  box-shadow: inset 0 0.125rem 0 var(--starship-bevel-lo);
-}
-
-html[data-theme="hermes-starship"] .hh-progress-fill {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi);
-}
-
 html[data-theme="hermes-starship"] .hh-spinner {
   border-top-color: var(--hh-primary);
 }
 
-/* ---------- Overlays ---------- */
-html[data-theme="hermes-starship"] .hh-dialog,
-html[data-theme="hermes-starship"] .hh-sheet {
-  border-width: var(--hh-border-width-thick);
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), var(--hh-elevation-overlay);
-}
-
-html[data-theme="hermes-starship"] .hh-overlay-head {
-  border-bottom: var(--hh-border-width-thick) solid var(--hh-primary);
-}
-
-html[data-theme="hermes-starship"] .hh-overlay-foot {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi);
-}
-
-html[data-theme="hermes-starship"] .hh-popover,
-html[data-theme="hermes-starship"] .hh-menu {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), var(--hh-elevation-overlay);
-}
-
-html[data-theme="hermes-starship"] .hh-menu [role='menuitem'] {
-  font-family: var(--hh-font-condensed);
-  font-size: var(--hh-type-body-size);
-  letter-spacing: var(--hh-letter-spacing-caps);
-  text-transform: uppercase;
-}
-
-html[data-theme="hermes-starship"] .hh-tooltip {
-  font-family: var(--hh-type-mono-sm-family);
-  font-size: var(--hh-type-mono-sm-size);
-}
-
-/* ---------- Data display ---------- */
-html[data-theme="hermes-starship"] .hh-table th {
-  font-size: var(--hh-type-label-size);
-  border-bottom-width: var(--hh-border-width-thick);
-}
-
-/* Avatars are cut like hull ports: an octagon, with the initials still printed inside. */
+/* Shapes only, no added frames: hull-port avatars and diamond callsign marks (the callsign text still names the Agent). */
 html[data-theme="hermes-starship"] .hh-avatar {
   clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
   border-radius: 0;
-}
-
-html[data-theme="hermes-starship"] .hh-kbd {
-  background: var(--hh-surface-tray);
-  color: var(--hh-surface-tray-foreground);
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi);
-}
-
-/* ---------- Domain: callsign chip as a stamped hull tag ---------- */
-html[data-theme="hermes-starship"] .hh-callsign {
-  border-color: var(--agent-colour);
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi);
 }
 
 html[data-theme="hermes-starship"] .hh-callsign-mark {
   clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
 }
 
-/* ---------- Domain: strips in their holders ---------- */
-/* The holder stays a frame on every side with its status word; the world bevels it like a brass clip. The paper stays flat. */
-html[data-theme="hermes-starship"] .hh-strip {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), var(--hh-elevation-raised);
+/* ================= Signature: the winged-sandal dispatch seal =================
+ * When a Round is sent back, the seal is struck twice: on the departing strip itself (beside the Round's callsign and
+ * time, while the holder already reads Answered and "Delivered"), and beside the Answered badge in the reserved
+ * bay-status confirmation. The sandal glides in from the left and settles, the roundel stamps around it, and only then
+ * does the strip leave the bay. Everything runs once and settles monotonically (no overshoot), uses --hh-motion-*
+ * durations (1ms under reduced motion), and adds no glow and no text: the status words stay the core's. */
+
+/* 1. The departing strip: hold while the seal is struck, then glide out. Replaces the core fade, same duration. */
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] {
+  animation: starship-depart var(--hh-motion-signature) var(--hh-easing-standard) 1 both;
 }
 
-html[data-theme="hermes-starship"] .hh-strip-tab {
-  font-weight: var(--hh-font-weight-bold);
-}
-
-html[data-theme="hermes-starship"] .hh-strip-cell[data-cell='title'] {
-  border-top-style: dashed;
-}
-
-html[data-theme="hermes-starship"] .hh-policy-timer {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-lo);
-}
-
-html[data-theme="hermes-starship"] .hh-strip-bay-slot {
-  border-style: double;
-  border-width: var(--hh-border-width-heavy);
-}
-
-/* ---------- Domain: the open Round (reading plane: flat, opaque, no texture) ---------- */
-html[data-theme="hermes-starship"] .hh-round {
-  border-width: var(--hh-border-width-thick);
-}
-
-html[data-theme="hermes-starship"] .hh-round-head {
-  border-bottom-width: var(--hh-border-width-thick);
-}
-
-html[data-theme="hermes-starship"] .hh-attachment-head {
-  background: var(--hh-surface-card);
-  color: var(--hh-surface-card-foreground);
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi);
-}
-
-html[data-theme="hermes-starship"] .hh-answer-bar {
-  border-top: var(--hh-border-width-thick) solid var(--hh-border);
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi);
-}
-
-/* ---------- Domain: connection status ---------- */
-/* The lamp sits in a riveted bezel; only the live state glows (core rule). */
-html[data-theme="hermes-starship"] .hh-connection {
-  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), inset 0 -0.0625rem 0 var(--starship-bevel-lo);
-}
-
-html[data-theme="hermes-starship"] .hh-connection-lamp {
-  outline: var(--hh-border-width-thin) solid var(--hh-border);
-  outline-offset: var(--hh-border-width-thin);
-}
-
-/* ================= Signature: the winged-sandal dispatch mark =================
- * When a Round is sent back, the mark is struck beside its Answered status: in the "Answer sent" toast on the Command
- * Center and on the phone's sent screen. The sandal flies in from the left, then the roundel stamps around it.
- * Bounded (one run each), durations from --hh-motion-* (1ms under reduced motion), no glow. The status word stays the
- * Answered badge; the mark is decoration and adds no text. */
-html[data-theme="hermes-starship"] .hh-toast:has(> .hh-badge[data-tone='answered']),
-html[data-theme="hermes-starship"] .hh-phone-body[role='status']:has(> .hh-badge[data-tone='answered']) {
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] .hh-strip-paper {
   position: relative;
-  --starship-mark-top: var(--hh-space-3);
 }
 
-html[data-theme="hermes-starship"] .hh-phone-body[role='status']:has(> .hh-badge[data-tone='answered']) {
-  --starship-mark-top: var(--hh-density-inset);
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] .hh-strip-paper::before,
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] .hh-strip-paper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  inset-inline-end: var(--hh-space-3);
+  box-sizing: border-box;
+  width: 3.25rem;
+  height: 2.25rem;
+  margin-top: -1.125rem;
 }
 
-html[data-theme="hermes-starship"] .hh-toast:has(> .hh-badge[data-tone='answered'])::before,
-html[data-theme="hermes-starship"] .hh-phone-body[role='status']:has(> .hh-badge[data-tone='answered'])::before {
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] .hh-strip-paper::before {
+  border: var(--hh-border-width-thick) solid var(--hh-answered);
+  border-radius: var(--hh-radius-pill);
+  background: var(--hh-strip);
+  transform: rotate(-6deg);
+  animation: starship-stamp var(--hh-motion-fast) var(--hh-easing-enter) var(--hh-motion-standard) 1 both;
+}
+
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] .hh-strip-paper::after {
+  background: var(--hh-answered);
+  -webkit-mask: var(--starship-sandal) center / 70% auto no-repeat;
+  mask: var(--starship-sandal) center / 70% auto no-repeat;
+  transform: rotate(-6deg);
+  animation: starship-dispatch var(--hh-motion-standard) var(--hh-easing-enter) 1 both;
+}
+
+/* 2. The confirmation in the bay-status region keeps the seal after the strip has gone. */
+html[data-theme="hermes-starship"] .hh-toast:has(> .hh-badge[data-tone='answered']) {
+  position: relative;
+}
+
+html[data-theme="hermes-starship"] .hh-toast:has(> .hh-badge[data-tone='answered'])::before {
   content: '';
   flex: none;
   align-self: flex-start;
-  justify-self: start;
   box-sizing: border-box;
   width: 3.25rem;
   height: 2.25rem;
@@ -703,11 +486,10 @@ html[data-theme="hermes-starship"] .hh-phone-body[role='status']:has(> .hh-badge
   animation: starship-stamp var(--hh-motion-panel) var(--hh-easing-enter) var(--hh-motion-standard) 1 both;
 }
 
-html[data-theme="hermes-starship"] .hh-toast:has(> .hh-badge[data-tone='answered'])::after,
-html[data-theme="hermes-starship"] .hh-phone-body[role='status']:has(> .hh-badge[data-tone='answered'])::after {
+html[data-theme="hermes-starship"] .hh-toast:has(> .hh-badge[data-tone='answered'])::after {
   content: '';
   position: absolute;
-  top: var(--starship-mark-top);
+  top: var(--hh-space-3);
   inset-inline-start: var(--hh-density-inset);
   width: 3.25rem;
   height: 2.25rem;
@@ -718,14 +500,22 @@ html[data-theme="hermes-starship"] .hh-phone-body[role='status']:has(> .hh-badge
   animation: starship-dispatch var(--hh-motion-signature) var(--hh-easing-enter) 1 both;
 }
 
+@keyframes starship-depart {
+  from,
+  55% {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(var(--hh-enter-offset));
+  }
+}
+
 @keyframes starship-dispatch {
   from {
     opacity: 0;
-    transform: translateX(-1.75rem) rotate(-18deg) scale(0.9);
-  }
-  65% {
-    opacity: 1;
-    transform: translateX(0.25rem) rotate(-3deg) scale(1.02);
+    transform: translateX(-1.5rem) rotate(-14deg);
   }
   to {
     opacity: 1;
@@ -736,7 +526,7 @@ html[data-theme="hermes-starship"] .hh-phone-body[role='status']:has(> .hh-badge
 @keyframes starship-stamp {
   from {
     opacity: 0;
-    transform: rotate(-6deg) scale(1.4);
+    transform: rotate(-6deg) scale(1.3);
   }
   to {
     opacity: 1;

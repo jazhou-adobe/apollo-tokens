@@ -2,7 +2,6 @@ export default function Home() {
   return (
     <main className="hh-gallery" id="top">
       <div className="hh-hero">
-        <span className="hh-kicker">Hermes Hub</span>
         <h1 className="hh-display">Design system</h1>
         <p className="hh-body-lg hh-measure">
           The system lives at <a className="hh-link" href="/design">/design</a>. Every theme on one screen is at <a className="hh-link" href="/overview">/overview</a>, worlds at{' '}

@@ -928,16 +928,14 @@ fieldset.hh-field {
   font-size: var(--hh-type-body-sm-size);
   line-height: var(--hh-type-body-sm-line-height);
   transform: translateX(-50%);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity var(--hh-motion-fast) var(--hh-easing-standard);
+  /* Out of layout while hidden, so a tooltip near the edge never widens the page. */
+  display: none;
   pointer-events: none;
 }
 
 .hh-tooltip-anchor:hover .hh-tooltip,
 .hh-tooltip-anchor:focus-within .hh-tooltip {
-  opacity: 1;
-  visibility: visible;
+  display: block;
 }
 
 .hh-menu-anchor {
@@ -1181,6 +1179,22 @@ fieldset.hh-field {
   outline-offset: var(--hh-focus-ring-offset);
 }
 
+/* In the bay a strip is a listbox option: the whole strip is the target. */
+.hh-strip[role='option'] {
+  cursor: pointer;
+}
+
+.hh-strip[role='option'][aria-disabled='true'] {
+  cursor: default;
+}
+
+/* Shared outgoing transition: an answered strip stays mounted as data-state="departing" for --hh-motion-signature,
+   then leaves. The core fades it; worlds may animate it (taxi, patch, dispatch). Reduced motion removes it at once. */
+.hh-strip[data-state='departing'] {
+  pointer-events: none;
+  animation: hh-depart var(--hh-motion-signature) var(--hh-easing-exit) both;
+}
+
 .hh-strip-tab {
   display: flex;
   flex-wrap: wrap;
@@ -1337,10 +1351,71 @@ fieldset.hh-field {
   gap: var(--hh-density-gap);
   min-width: 0;
   padding: var(--hh-density-inset);
-  border: var(--hh-border-width-thin) solid var(--hh-border);
   border-radius: var(--hh-radius-md);
   background: var(--hh-surface-panel);
   color: var(--hh-surface-panel-foreground);
+}
+
+/* Reserved bay-status region: confirmations and policy outcomes, never over the open Round's Answer bar. */
+.hh-bay-status {
+  display: flex;
+  align-items: center;
+  min-height: calc(var(--hh-button-min-target) + var(--hh-space-2) * 2);
+}
+
+.hh-bay-status > * {
+  flex: 1;
+  margin: 0;
+}
+
+/* ---------- Command layout: bay beside the open Round, or (narrow container) the pending list or the Round sheet ---------- */
+
+.hh-command {
+  container: hh-command / inline-size;
+  min-width: 0;
+}
+
+.hh-command-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--hh-density-gap);
+  align-items: start;
+}
+
+.hh-command-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--hh-density-gap);
+  min-width: 0;
+}
+
+@container hh-command (width >= 48rem) {
+  .hh-command-grid {
+    grid-template-columns: minmax(0, min(var(--hh-layout-bay-width), 40%)) minmax(0, 1fr);
+  }
+
+  /* Beside a long bay, the Round sheet stays in view as the page scrolls; its own body scrolls inside it. */
+  .hh-command-panel {
+    align-self: stretch;
+    align-content: start;
+  }
+
+  .hh-command-panel > .hh-round {
+    position: sticky;
+    top: var(--hh-space-4);
+  }
+
+  /* Side by side, the strip's holder already shows the policy and its timer, so the Round does not repeat it. */
+  .hh-round-policy {
+    display: none;
+  }
+}
+
+@container hh-command (width < 48rem) {
+  .hh-command[data-view='queue'] .hh-command-panel,
+  .hh-command[data-view='round'] .hh-strip-bay {
+    display: none;
+  }
 }
 
 .hh-strip-bay-head {
@@ -1373,15 +1448,30 @@ fieldset.hh-field {
 
 /* ---------- Open Round: Questions beside their Answer slots ---------- */
 
+/* The open Round is a sheet: head on top, Questions scrolling inside, the Answer bar as its footer in normal flow, so the
+   bar never covers the head, the policy, or the first Question. */
 .hh-round {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  border: var(--hh-border-width-thin) solid var(--hh-border);
   border-radius: var(--hh-radius-md);
   background: var(--hh-strip);
   color: var(--hh-strip-foreground);
-  box-shadow: var(--hh-elevation-raised);
+  scroll-margin-top: calc(var(--hh-button-min-target) + var(--hh-space-4));
+}
+
+.hh-round:has(> .hh-round-body) {
+  max-height: calc(100dvh - var(--hh-button-min-target) - var(--hh-space-8));
+}
+
+.hh-round-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.hh-round-back {
+  justify-self: start;
 }
 
 .hh-round-head {
@@ -1409,7 +1499,12 @@ fieldset.hh-field {
 }
 
 .hh-question[data-current='true'] {
-  outline: var(--hh-border-width-thick) solid var(--hh-ring);
+  outline: var(--hh-border-width-thin) solid var(--hh-ring);
+  outline-offset: calc(var(--hh-border-width-thin) * -1);
+}
+
+.hh-question[data-current='true']:focus-within {
+  outline-width: var(--hh-border-width-thick);
   outline-offset: calc(var(--hh-border-width-thick) * -1);
 }
 
@@ -1447,6 +1542,7 @@ fieldset.hh-field {
   border: 0;
 }
 
+/* Choice rows sit on the paper separated by hairlines; only a chosen row gets a full, heavy boundary. */
 .hh-option {
   display: grid;
   grid-template-columns: max-content max-content minmax(0, 1fr);
@@ -1455,21 +1551,26 @@ fieldset.hh-field {
   box-sizing: border-box;
   min-height: var(--hh-option-row-min-height);
   padding: var(--hh-space-1) var(--hh-space-3);
-  border: var(--hh-border-width-thin) solid var(--hh-border);
-  border-radius: var(--hh-radius-md);
+  border: var(--hh-border-width-thick) solid transparent;
+  border-radius: var(--hh-radius-sm);
   background: var(--hh-strip);
   color: var(--hh-strip-foreground);
   cursor: pointer;
 }
 
-.hh-option[data-recommended='true'] {
-  border-color: var(--hh-recommended);
-  border-width: var(--hh-border-width-thick);
+.hh-option + .hh-option {
+  border-top: var(--hh-border-width-thin) solid var(--hh-border);
 }
 
-.hh-option:has(input:checked) {
-  border-color: var(--hh-strip-foreground);
-  border-width: var(--hh-border-width-thick);
+.hh-option:has(input:checked),
+.hh-option + .hh-option:has(input:checked) {
+  border: var(--hh-border-width-thick) solid var(--hh-strip-foreground);
+}
+
+.hh-option-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hh-space-2);
 }
 
 .hh-option-text {
@@ -1501,17 +1602,28 @@ fieldset.hh-field {
   white-space: nowrap;
 }
 
-/* Side by side while each button has room for icon, word, and key hint; stacked in narrow columns. */
+/* Approve / reject: a two-option radio group. Each row reads as a key on the paper; side by side while each has room, stacked
+   in narrow columns. State hooks: .hh-option[data-choice="approve|reject"][data-checked="true"]. */
 .hh-approve-pair {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--hh-control-size-lg) * 3.5)), 1fr));
   gap: var(--hh-space-2);
 }
 
-.hh-approve-pair .hh-button {
-  flex-wrap: wrap;
-  min-width: 0;
-  text-align: center;
+.hh-approve-pair > .hh-option,
+.hh-approve-pair > .hh-option + .hh-option {
+  border: var(--hh-border-width-thin) solid var(--hh-border);
+  font-family: var(--hh-type-label-family);
+  font-size: var(--hh-type-body-lg-size);
+  font-weight: var(--hh-type-label-weight);
+}
+
+.hh-approve-pair > .hh-option[data-checked='true'] {
+  border: var(--hh-border-width-thick) solid var(--hh-strip-foreground);
+}
+
+.hh-approve-pair > .hh-option[data-choice='reject'][data-checked='true'] {
+  border-color: var(--hh-destructive);
 }
 
 .hh-answer-state {
@@ -1610,13 +1722,12 @@ pre.hh-attachment-body {
 /* ---------- Answer bar: submit the whole Round ---------- */
 
 .hh-answer-bar {
-  position: sticky;
-  bottom: 0;
+  position: relative;
   z-index: var(--hh-layer-raised);
+  flex: none;
   display: grid;
   gap: var(--hh-space-3);
   padding: var(--hh-density-inset);
-  border-top: var(--hh-border-width-thin) solid var(--hh-border);
   border-radius: 0 0 var(--hh-radius-md) var(--hh-radius-md);
   background: var(--hh-surface-tray);
   color: var(--hh-surface-tray-foreground);
@@ -1630,8 +1741,48 @@ pre.hh-attachment-body {
   gap: var(--hh-space-2) var(--hh-space-4);
 }
 
-.hh-answer-bar .hh-textarea {
+/* Optional notes fold away until wanted ("Add notes", or N). */
+.hh-notes {
+  padding: 0 var(--hh-density-inset) var(--hh-density-inset);
+}
+
+.hh-notes-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--hh-space-2);
   min-height: var(--hh-button-min-target);
+  font-family: var(--hh-type-label-family);
+  font-size: var(--hh-type-label-size);
+  font-weight: var(--hh-type-label-weight);
+  cursor: pointer;
+}
+
+.hh-notes[open] .hh-textarea {
+  margin-top: var(--hh-space-2);
+}
+
+/* Glance (phone): no key hints anywhere; choice rows drop the hint column. */
+[data-density='glance'] :is(.hh-kbd-hints, .hh-answer-bar .hh-kbd, .hh-notes-summary .hh-kbd) {
+  display: none;
+}
+
+[data-density='glance'] .hh-option {
+  grid-template-columns: max-content minmax(0, 1fr);
+}
+
+[data-density='glance'] .hh-option > :first-child {
+  display: none;
+}
+
+[data-density='glance'] .hh-answer-bar .hh-button[type='submit'] {
+  flex: 1 1 100%;
+  min-height: var(--hh-control-size-lg);
+}
+
+/* Headings that receive focus only by script (opening a Round, the empty bay) show where reading starts, not a control. */
+:is(.hh-round-head, .hh-strip-bay-head) [tabindex='-1']:focus {
+  outline: none;
 }
 
 /* ---------- Keyboard hints ---------- */
@@ -1783,6 +1934,13 @@ pre.hh-attachment-body {
 @keyframes hh-slide {
   from {
     transform: translateX(100%);
+  }
+}
+
+@keyframes hh-depart {
+  to {
+    opacity: 0;
+    transform: translateX(var(--hh-enter-offset));
   }
 }
 

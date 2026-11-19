@@ -61,7 +61,6 @@ const ROLE_GROUPS: RoleGroup[] = GROUPS.map((group) => ({
 export function DirectionSection() {
   return (
     <section id="direction" className="hh-section hh-hero" aria-labelledby="page-title">
-      <span className="hh-kicker">Flight Strips · carrier ops-room edition · used future</span>
       <h1 id="page-title" className="hh-display">
         Every Round is a strip in a holder.
       </h1>

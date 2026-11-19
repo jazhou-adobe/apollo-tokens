@@ -34,7 +34,7 @@ export default function SpecimenPage() {
           </h1>
           <ActiveTheme options={THEMES} lead="Illustrative data" />
         </div>
-        <StripBay controls={false} showLog={false} heading="Pending Rounds" />
+        <StripBay controls={false} showLog={false} heading="Pending Rounds" headingLevel={2} context="Triage specimen" demo />
       </main>
     </div>
   );

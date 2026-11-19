@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ActiveTheme } from '../../preview/components/ActiveTheme';
 import { ConnectionStatus } from '../../preview/components/hermes/ConnectionStatus';
+import { SignatureSample } from '../../preview/components/hermes/SignatureSample';
 import { ToggleStrip } from '../../preview/components/hermes/Strip';
 import { ROUNDS } from '../../preview/fixtures';
 import { THEMES } from '../../preview/themes';
@@ -8,7 +9,8 @@ import { THEMES } from '../../preview/themes';
 export const metadata: Metadata = { title: 'Hermes theme thumbnail' };
 
 // Static route: a composition sized to the thumbnail viewport (--hh-layout-thumbnail-width × -height), so /overview can
-// show every theme at once. The theme comes from ?theme= and ?palette= (see app/layout.tsx).
+// show every theme at once: two strips on the left, the signature states on the right. The theme comes from ?theme= and
+// ?palette= (see app/layout.tsx).
 export const dynamic = 'force-static';
 
 export default function TilePage() {
@@ -28,10 +30,7 @@ export default function TilePage() {
           <ToggleStrip round={ROUNDS[0]} />
           <ToggleStrip round={ROUNDS[1]} />
         </ul>
-        <ul className="hh-strip-bay-list" data-density="compact">
-          <ToggleStrip round={ROUNDS[2]} />
-          <ToggleStrip round={ROUNDS[4]} />
-        </ul>
+        <SignatureSample />
       </div>
     </main>
   );

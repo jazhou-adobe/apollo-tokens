@@ -5,7 +5,8 @@ import { Icon } from './Icon';
 export function CoreSettingsNav() {
   return (
     <div className="hh-command">
-      <nav className="hh-side-nav hh-panel" aria-label="Settings sections" style={{ flex: '1 1 var(--hh-overlay-menu-width)' }}>
+      <div className="hh-command-grid">
+      <nav className="hh-side-nav hh-panel" aria-label="Settings sections">
         <a href="#settings-tokens" aria-current="page">
           <Icon name="lock" /> Agent tokens
         </a>
@@ -72,6 +73,7 @@ export function CoreSettingsNav() {
           <SwitchDemo label="Policy fires in 1 minute" initial />
           <SwitchDemo label="Agent disconnected" />
         </div>
+      </div>
       </div>
     </div>
   );
