@@ -53,7 +53,7 @@ The JSON output gives `htmlAttributes`, `colorScheme`, `densities`, `tokenPrefix
   - Splitbook: `deck` on Capture screens used poolside (the Deck size knob, any theme); `compact` on the Admin console only. Never `compact` on watcher screens.
   - Hermes: `compact` for dense triage on desktop; `glance` on the phone surface (thumb-sized targets). The phone queue applies glance itself unless the page sets a density.
 - **AGENTS.md** in the target app: point agents at the copied `agent-contract/screen-generation-rules.md`, `components/`, `patterns/` and `foundations/`, and name the brand, theme and colour option. `next dev` writes its own `<!-- BEGIN:nextjs-agent-rules -->` block into `AGENTS.md` and re-adds it if removed; keep that block and add the brand section after it.
-- **Next.js version**: use the latest Next 16 patch, not the version pinned in the brand's `package.json`. 16.4.1 has a published security advisory (as of 2026-11-20): `next dev` and `next build` stop once with a notice. Upgrade the app rather than retrying past it.
+- **Next.js version**: use the latest Next 16 patch (the brand repos pin 16.4.6 as of 2026-11-20; 16.4.1 has a published security advisory). If `next dev` or `next build` stops with a security notice, run `npx next upgrade --agent=security` in the app rather than retrying past it.
 
 ## 4. Motion
 
