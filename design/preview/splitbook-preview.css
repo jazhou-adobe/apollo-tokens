@@ -61,8 +61,23 @@
     display: block;
   }
 }
+/* The /design opening leads with the chosen design: the live Length rail, then the running split and the counts. */
 .sb-hero-specimen {
   max-inline-size: var(--sb-layout-capture-max);
+}
+.sb-hero-counts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sb-density-gap);
+  margin: 0;
+  text-align: center;
+}
+.sb-hero-counts > div {
+  display: grid;
+  gap: var(--sb-space-1);
+}
+.sb-hero-counts dd {
+  margin: 0;
 }
 .sb-toc-toggle {
   inline-size: 100%;
@@ -109,6 +124,13 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--sb-density-gap);
+}
+/* On phones the headline gives its room to the live example: heading-lg instead of display. */
+@media not (min-width: 48rem) {
+  .sb-hero .sb-display {
+    font-size: var(--sb-type-heading-lg-size);
+    line-height: var(--sb-type-heading-lg-line-height);
+  }
 }
 .sb-kicker {
   color: var(--sb-muted-foreground);
@@ -318,56 +340,29 @@
 }
 
 /* ---------- /specimen: one compact Capture + Review screen, the frame world previews render ---------- */
-/* One Capture screen. On phones the Review sheet appears only once the Swim has ended, so recording shows Capture alone. */
+/*
+ * One Capture screen. Before and while recording it is a single centred Capture region at every width, under a one-row
+ * page header (title, illustrative note, theme): no waiting Review panel. Once the Swim ends the pair appears: the
+ * ended Tap Pad (a compact result) beside the Review sheet from md, above it on phones.
+ */
 .sb-capture {
   display: grid;
   align-content: start;
   gap: var(--sb-density-gap);
   min-height: 100vh;
 }
-.sb-capture:not([data-phase='ended']) .sb-capture-review,
-.sb-capture:not([data-phase='ended']) .sb-capture-pair > .sb-pair-axis {
-  display: none;
-}
-@media (min-width: 48rem) {
-  .sb-capture:not([data-phase='ended']) .sb-capture-review {
-    display: block;
-  }
-  .sb-capture:not([data-phase='ended']) .sb-capture-pair > .sb-pair-axis {
-    display: block;
-  }
+.sb-capture:not([data-phase='ended']) .sb-capture-pair {
+  grid-template-columns: minmax(0, 1fr);
+  inline-size: 100%;
+  max-inline-size: var(--sb-layout-capture-max);
+  justify-self: center;
 }
 .sb-capture-intro {
-  display: grid;
-  gap: var(--sb-space-2);
-}
-/*
- * Phone Capture as a stable instrument: the slim app bar keeps only the Swimmer and End Swim, on one row; the title
- * shrinks, and while recording the theme note and system link step aside, so the Tap Pad starts high on the first screen.
- * The undo cluster is two rows directly under the Wall key: wall tap across, then one per counter.
- */
-@media not (min-width: 48rem) {
-  .sb-capture .sb-wordmark {
-    display: none;
-  }
-  .sb-capture .sb-app-bar,
-  .sb-capture .sb-app-bar > .sb-row {
-    flex-wrap: nowrap;
-  }
-  .sb-capture-intro h1 {
-    font-size: var(--sb-type-heading-md-size);
-    line-height: var(--sb-type-heading-md-line-height);
-  }
-  .sb-capture[data-phase='live'] .sb-capture-aside {
-    display: none;
-  }
-  .sb-capture .sb-tap-pad .sb-action-row {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .sb-capture .sb-tap-pad[data-phase='live'] .sb-action-row > :first-child {
-    grid-column: 1 / -1;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sb-space-2) var(--sb-space-4);
 }
 .sb-specimen-body {
   display: grid;
@@ -377,6 +372,39 @@
   box-sizing: border-box;
   margin-inline: auto;
   padding: 0 var(--sb-density-inset) var(--sb-density-inset);
+}
+/*
+ * Phone Capture as a stable instrument: counters, Wall and every undo control fit the first screen together while
+ * recording, at Deck sizing too (the Tap Pad's own phone composition is in splitbook-components.css). The slim app bar
+ * keeps only the Swimmer and End Swim on one row; the title shrinks to label size beside the illustrative note; the
+ * theme note and system link step aside while recording; the page frame narrows so the Tap Pad takes the width. The
+ * status line and the tap log follow below the fold.
+ */
+@media not (min-width: 48rem) {
+  .sb-capture,
+  .sb-specimen-body {
+    gap: var(--sb-space-2);
+  }
+  .sb-specimen-body {
+    padding-inline: var(--sb-space-3);
+  }
+  .sb-capture .sb-wordmark {
+    display: none;
+  }
+  .sb-capture .sb-app-bar,
+  .sb-capture .sb-app-bar > .sb-row {
+    flex-wrap: nowrap;
+  }
+  .sb-capture-intro {
+    gap: var(--sb-space-2);
+  }
+  .sb-capture-intro h1 {
+    font-size: var(--sb-type-label-size);
+    line-height: var(--sb-type-label-line-height);
+  }
+  .sb-capture[data-phase='live'] .sb-capture-aside {
+    display: none;
+  }
 }
 
 /* ---------- /tile: a thumbnail composition sized to the thumbnail viewport ---------- */

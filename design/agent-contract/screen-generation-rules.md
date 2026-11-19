@@ -61,15 +61,15 @@ Mandatory for any agent building a Splitbook screen. Read [`brief.md`](../brief.
 - Knobs: `<html data-theme="splitbook-deck">`. No density attribute.
 - Chrome: skip link; slim `.sb-app-bar` with "Swim 3 · 100 m freestyle", Swimmer name (Profile switcher read-only), End Swim (`.sb-button[data-variant="secondary"]`).
 - Body: one `.sb-tap-pad` panel, `data-state="live"` (recording):
-  - `.sb-tap-pad-head`: "Swim 3 · Length 3 of 4" and `.sb-live-mark[data-state="live"]` with the word "Recording" and the record disc in `live`.
-  - `.sb-split-readout[data-state="live"]`: running split "18.6" in `numeral-xl` (`live`); "Last Length 32.4 s" in `numeral-md`.
+  - `.sb-tap-pad-head`: "Swim 3 · Length 3 of 4" at `label` size and `.sb-live-mark[data-state="live"]` with the word "Recording" and the record disc in `live`, on one row.
+  - `.sb-split-readout[data-state="live"]`: running split "18.6" in `numeral-xl` (`live`); one caption line "Length 3 of 4 · 25 m pool · running split".
   - `.sb-length-strip`: Length 1 → 15, Length 2 ← 16, Length 3 → "Now" (`data-state="current"`), Length 4 upcoming; each `.sb-length-cell` at `--sb-length-cell-size`.
   - `.sb-tap-keys`: one counter `.sb-tap-key[data-kind="counter"]` "Strokes" at `--sb-tap-key-size`, count "9" in `numeral-lg`, both `metric`, accessible name "Add stroke, now 9"; then the Wall key `.sb-tap-key[data-kind="wall"]`, full width at the bottom, `live` / `live-foreground`, label "Wall", shortcut Space.
-  - `.sb-tray` undo tray: "Undo wall tap", "Undo stroke"; `.sb-tap-log` listing the last taps in words.
+  - Undo cluster (`.sb-action-row`, one row directly under the Wall key): "Undo wall tap", "Undo stroke"; then the status line, and `.sb-tap-log` listing the last taps in words below the first screen.
 - Tokens: `tap-pad`, `tap-pad-foreground`, `live`, `live-foreground`, `metric`, `metric-foreground`, `border`, `ring`, `tap-key-size`, `length-cell-size`, `button-min-target`, `density-gap`, `type-numeral-xl-size`.
-- Behaviour: activation on release; the tapped key gets `data-flash="true"` for one outline flash; per-Length announcement "Length 2: 32.4 seconds, 16 strokes"; undo supersedes the last Capture event; End Swim removes `data-state="live"` and shows "Ended" with Resume and "Review this Swim", no dialog.
+- Behaviour: activation on release; the tapped key gets `data-flash="true"` for one outline flash; per-Length announcement "Length 2: 32.4 seconds, 16 strokes"; undo supersedes the last Capture event; End Swim removes `data-state="live"` and shows "Ended": the keys give way to the count summary, with Resume and "Review this Swim", no dialog, and the Review sheet pairs with the ended pad.
 - States shown: ready ("Start"), recording, ended, saving offline ("Saved on this phone. Will sync when you're back online.").
-- Accessibility: keys ≥ 5rem in Deck, ≥ `density-gap` apart, Wall key in thumb reach, End Swim far from it; "Recording" in words; reduced motion keeps the split counting and drops the press scale.
+- Accessibility: keys ≥ 5rem in Deck, ≥ `density-gap` apart, Wall key in thumb reach, End Swim far from it; counters, Wall key and every undo control on the first screen together at 390 × 844; "Recording" in words; reduced motion keeps the split counting and drops the press scale.
 - Copy: "Recording. Tap Wall at each touch." Nothing else on screen.
 
 ## Handoff checklist

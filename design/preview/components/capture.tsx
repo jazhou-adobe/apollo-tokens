@@ -196,7 +196,8 @@ function Heading({ level, id, className, children }: { level: HeadingLevel; id: 
  * The Tap Pad: counters, then the full-width Wall key, then the undo cluster, all in thumb reach; the tap log grows below
  * so the cluster never moves. Shortcuts work while focus is inside the pad (not in editable fields): Space starts or taps
  * the wall, 1 and 2 add to the counters, Shift + 1 / 2 undo a counter, Backspace undoes the last wall tap. One status
- * line announces each completed Length and each undo.
+ * line announces each completed Length and each undo. Once the Swim ends the keys give way to a compact count summary,
+ * so the ended pad is a result beside the Review sheet rather than a disabled instrument.
  */
 export function TapPad({
   capture,
@@ -217,9 +218,21 @@ export function TapPad({
 }) {
   const titleId = useId();
   const hintId = useId();
+  const padRef = useRef<HTMLElement>(null);
+  const previousStatus = useRef(capture.status);
   const { status, lengths, walls, lengthData, current, flash } = capture;
   const live = status === 'live';
   const counts = lengthData[current];
+
+  // Ending removes the keys (and End Swim); Resume removes itself. When the control that had focus disappears, focus
+  // lands on the control that continues the task: Resume after the end, the Wall key after resuming.
+  useEffect(() => {
+    const was = previousStatus.current;
+    previousStatus.current = status;
+    if (was === status || (document.activeElement && document.activeElement !== document.body)) return;
+    if (status === 'ended') padRef.current?.querySelector<HTMLElement>('[data-action="resume"]')?.focus();
+    else if (status === 'live' && was === 'ended') padRef.current?.querySelector<HTMLElement>('[data-tap="wall"]')?.focus();
+  }, [status]);
 
   const cells: LengthCell[] = lengthData.map((length, index) => ({
     number: length.number,
@@ -255,7 +268,7 @@ export function TapPad({
   const lastWall = walls.at(-1);
 
   return (
-    <section className="sb-tap-pad" data-state={live ? 'live' : undefined} data-phase={status} aria-labelledby={titleId} onKeyDown={onKeyDown}>
+    <section ref={padRef} className="sb-tap-pad" data-state={live ? 'live' : undefined} data-phase={status} aria-labelledby={titleId} onKeyDown={onKeyDown}>
       <div className="sb-tap-pad-head">
         <Heading level={headingLevel} id={titleId} className="sb-heading-md">
           Tap Pad · {swimLabel}
@@ -275,48 +288,68 @@ export function TapPad({
         caption={[`Length ${current + 1} of ${lengths}`, `${poolLength} m pool`, live ? 'running split' : status === 'ended' ? 'final time' : 'ready']}
       />
       <LengthStrip label="Lengths and splits" cells={cells} unit="seconds" />
-      <div className="sb-tap-keys" role="group" aria-label={`Tap keys, ${swimLabel}`} aria-describedby={hintId}>
-        {FOCUS.map((kind, index) => (
+      {status === 'ended' ? (
+        <dl className="sb-tap-summary">
+          {FOCUS.map((kind) => (
+            <div key={kind}>
+              <dt className="sb-label">{METRIC_LABEL[kind]}</dt>
+              <dd className="sb-numeral" data-size="lg" data-tone="metric">
+                {lengthData.reduce((sum, length) => sum + length[kind], 0)}
+              </dd>
+            </div>
+          ))}
+          <div>
+            <dt className="sb-label">Lengths</dt>
+            <dd>
+              <span className="sb-numeral" data-size="lg">
+                {walls.length}
+              </span>{' '}
+              <span className="sb-body-sm">of {lengths}</span>
+            </dd>
+          </div>
+        </dl>
+      ) : (
+        <div className="sb-tap-keys" role="group" aria-label={`Tap keys, ${swimLabel}`} aria-describedby={hintId}>
+          {FOCUS.map((kind, index) => (
+            <button
+              key={kind}
+              type="button"
+              className="sb-tap-key"
+              data-kind="counter"
+              data-tap={kind}
+              data-flash={flash?.startsWith(`${kind}-`) ? 'true' : undefined}
+              disabled={!live}
+              onClick={() => capture.tap(kind)}
+              aria-label={`Add ${NOUN[kind]}, now ${counts[kind]}`}
+            >
+              <span className="sb-numeral" data-size="lg">
+                {counts[kind]}
+              </span>
+              <span className="sb-tap-key-label">{METRIC_LABEL[kind]}</span>
+              <kbd className="sb-kbd">{index + 1}</kbd>
+            </button>
+          ))}
           <button
-            key={kind}
             type="button"
             className="sb-tap-key"
-            data-kind="counter"
-            data-tap={kind}
-            data-flash={flash?.startsWith(`${kind}-`) ? 'true' : undefined}
-            disabled={!live}
-            onClick={() => capture.tap(kind)}
-            aria-label={`Add ${NOUN[kind]}, now ${counts[kind]}`}
+            data-kind="wall"
+            data-tap="wall"
+            data-action={live ? undefined : 'start-swim'}
+            data-flash={flash?.startsWith('wall-') ? 'true' : undefined}
+            onClick={() => (live ? capture.tap('wall') : capture.start())}
           >
-            <span className="sb-numeral" data-size="lg">
-              {counts[kind]}
-            </span>
-            <span className="sb-tap-key-label">{METRIC_LABEL[kind]}</span>
-            <kbd className="sb-kbd">{index + 1}</kbd>
+            <Icon name={live ? 'wall' : 'play'} />
+            <span className="sb-tap-key-label">{live ? 'Wall tap' : 'Start Swim'}</span>
+            <span className="sb-body-sm">{live ? (walls.length + 1 >= lengths ? 'Finish touch' : `Ends Length ${current + 1}`) : 'Then tap here at every wall'}</span>
+            <kbd className="sb-kbd">Space</kbd>
           </button>
-        ))}
-        <button
-          type="button"
-          className="sb-tap-key"
-          data-kind="wall"
-          data-tap="wall"
-          data-action={status === 'ready' ? 'start-swim' : undefined}
-          data-flash={flash?.startsWith('wall-') ? 'true' : undefined}
-          disabled={status === 'ended'}
-          onClick={() => (status === 'ready' ? capture.start() : capture.tap('wall'))}
-        >
-          <Icon name={status === 'ready' ? 'play' : 'wall'} />
-          <span className="sb-tap-key-label">{status === 'ready' ? 'Start Swim' : status === 'ended' ? 'Swim ended' : 'Wall tap'}</span>
-          <span className="sb-body-sm">
-            {status === 'ready' ? 'Then tap here at every wall' : live ? (walls.length + 1 >= lengths ? 'Finish touch' : `Ends Length ${current + 1}`) : `${walls.length} of ${lengths} Lengths`}
-          </span>
-          <kbd className="sb-kbd">Space</kbd>
-        </button>
-      </div>
+        </div>
+      )}
+      {/* Keys keep React from reusing Resume's node as "Undo wall tap" (focus would silently move onto a different action). */}
       <div className="sb-action-row">
         {status === 'ended' ? (
           <>
-            <button type="button" className="sb-button" data-variant="secondary" data-action="resume" onClick={capture.resume}>
+            <button key="resume" type="button" className="sb-button" data-variant="secondary" data-action="resume" onClick={capture.resume}>
               <Icon name="play" /> Resume
             </button>
             {reviewHref ? (
@@ -331,7 +364,7 @@ export function TapPad({
           </>
         ) : (
           <>
-            <button type="button" className="sb-button" data-variant="secondary" disabled={!live || !lastWall} onClick={() => capture.undo('wall')}>
+            <button key="undo-wall" type="button" className="sb-button" data-variant="secondary" disabled={!live || !lastWall} onClick={() => capture.undo('wall')}>
               <Icon name="undo" /> Undo wall tap
             </button>
             {FOCUS.map((kind) => (
@@ -346,10 +379,12 @@ export function TapPad({
       <p className="sb-tap-status" role="status">
         {capture.message}
       </p>
-      <p id={hintId} className="sb-tap-hint sb-body-sm sb-muted">
-        Keys: <kbd className="sb-kbd">Space</kbd> wall, <kbd className="sb-kbd">1</kbd> <kbd className="sb-kbd">2</kbd> counters, <kbd className="sb-kbd">Shift</kbd> +{' '}
-        <kbd className="sb-kbd">1</kbd> / <kbd className="sb-kbd">2</kbd> undo a counter, <kbd className="sb-kbd">Backspace</kbd> undo the wall tap.
-      </p>
+      {status === 'ended' ? null : (
+        <p id={hintId} className="sb-tap-hint sb-body-sm sb-muted">
+          Keys: <kbd className="sb-kbd">Space</kbd> wall, <kbd className="sb-kbd">1</kbd> <kbd className="sb-kbd">2</kbd> counters, <kbd className="sb-kbd">Shift</kbd> +{' '}
+          <kbd className="sb-kbd">1</kbd> / <kbd className="sb-kbd">2</kbd> undo a counter, <kbd className="sb-kbd">Backspace</kbd> undo the wall tap.
+        </p>
+      )}
       {log.length ? (
         <div className="sb-stack" data-gap="tight">
           <span className="sb-label">Last taps</span>
@@ -412,6 +447,8 @@ export type ReviewSwim = { title: string; time: string; lengths: { number: numbe
 export function ReviewSheet({ swim, headingLevel, label, compact = false }: { swim: ReviewSwim; headingLevel: HeadingLevel; label: string; compact?: boolean }) {
   const titleId = useId();
   const [selected, setSelected] = useState(() => Math.max(1, swim.lengths.filter((length) => length.split).length));
+  // The Length toolbar is one tab stop: the cell last focused keeps tabindex 0, the rest -1 (APG toolbar, roving focus).
+  const [rovingNumber, setRovingNumber] = useState(selected);
   const [corrections, setCorrections] = useState<Record<string, number>>({});
   const [saveState, setSaveState] = useState<'unsaved' | 'saved' | 'changed'>('unsaved');
   const edited = () => setSaveState((state) => (state === 'saved' ? 'changed' : state));
@@ -427,11 +464,23 @@ export function ReviewSheet({ swim, headingLevel, label, compact = false }: { sw
   }, [signature]);
 
   const length = swim.lengths.find((candidate) => candidate.number === selected) ?? swim.lengths[0];
+  const tabStop = swim.lengths.some((candidate) => candidate.number === rovingNumber) ? rovingNumber : length.number;
   const valueOf = (kind: FocusId) => corrections[`${length.number}-${kind}`] ?? length[kind];
   const correct = (kind: FocusId, value: number) => {
     setCorrections((current) => ({ ...current, [`${length.number}-${kind}`]: value }));
     edited();
   };
+
+  /** Left/Right move between Lengths (wrapping), Home/End jump to the first/last; Enter and Space select (native buttons). */
+  function onLengthKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const cells = [...event.currentTarget.querySelectorAll<HTMLButtonElement>('button.sb-length-cell')];
+    const from = cells.indexOf(event.target as HTMLButtonElement);
+    const moves: Record<string, number | undefined> = { ArrowRight: from + 1, ArrowLeft: from - 1 + cells.length, Home: 0, End: cells.length - 1 };
+    const to = moves[event.key];
+    if (from < 0 || to === undefined) return;
+    event.preventDefault();
+    cells[to % cells.length].focus();
+  }
 
   const saveMessage = {
     unsaved: 'Not saved yet.',
@@ -458,7 +507,7 @@ export function ReviewSheet({ swim, headingLevel, label, compact = false }: { sw
       </div>
       <div className="sb-review-section">
         <span className="sb-label">Check the counts</span>
-        <div className="sb-length-strip" role="group" aria-label="Choose a Length to check">
+        <div className="sb-length-strip" role="toolbar" aria-label="Choose a Length to check" onKeyDown={onLengthKeyDown}>
           {swim.lengths.map((candidate) => (
             <button
               key={candidate.number}
@@ -466,6 +515,8 @@ export function ReviewSheet({ swim, headingLevel, label, compact = false }: { sw
               className="sb-length-cell"
               data-state={candidate.split ? 'done' : 'upcoming'}
               aria-pressed={candidate.number === length.number}
+              tabIndex={candidate.number === tabStop ? 0 : -1}
+              onFocus={() => setRovingNumber(candidate.number)}
               onClick={() => setSelected(candidate.number)}
             >
               <span className="sb-length-cell-number">L{candidate.number}</span>
@@ -509,7 +560,8 @@ export function ReviewSheet({ swim, headingLevel, label, compact = false }: { sw
 
 /**
  * /specimen: one Swim shared by the Tap Pad and the Review sheet. The slim app bar holds the Swimmer (locked while
- * recording) and End Swim. On phones Capture shows alone while recording; the Review sheet follows once the Swim ends.
+ * recording) and End Swim. Before and while recording the screen is one centred Capture region at every width; once the
+ * Swim ends it becomes the out-and-back pair: the ended Tap Pad as a compact result beside (or above) the Review sheet.
  */
 export function CaptureSpecimen({ meta }: { meta: ReactNode }) {
   const capture = useCapture();
@@ -534,8 +586,8 @@ export function CaptureSpecimen({ meta }: { meta: ReactNode }) {
   );
 
   function openReview() {
-    // Move focus to the sheet's first control (or the waiting heading) so keyboard users land where the review starts.
-    reviewRef.current?.querySelector<HTMLElement>('button, [tabindex="-1"]')?.focus();
+    // Land keyboard users on the sheet's first stop, the Length toolbar's current cell.
+    reviewRef.current?.querySelector<HTMLElement>('[role="toolbar"] [tabindex="0"]')?.focus();
     reviewRef.current?.scrollIntoView({ block: 'start' });
   }
 
@@ -568,21 +620,14 @@ export function CaptureSpecimen({ meta }: { meta: ReactNode }) {
           <div className="sb-capture-pad">
             <TapPad capture={capture} headingLevel={2} endInHead={false} onReview={openReview} />
           </div>
-          <div className="sb-pair-axis" aria-hidden="true" />
-          <div className="sb-capture-review" ref={reviewRef}>
-            {status === 'ended' ? (
-              <ReviewSheet key={capture.startedAt} swim={swim} headingLevel={2} label="Review sheet for this Swim" />
-            ) : (
-              <section className="sb-review-sheet" aria-labelledby="review-waiting">
-                <h2 id="review-waiting" className="sb-heading-md" tabIndex={-1}>
-                  Review sheet
-                </h2>
-                <p className="sb-body-sm sb-muted">
-                  Opens when this Swim ends: finish the last Length, or choose End Swim. It shows the Lengths and counts captured on the Tap Pad.
-                </p>
-              </section>
-            )}
-          </div>
+          {status === 'ended' ? (
+            <>
+              <div className="sb-pair-axis" aria-hidden="true" />
+              <div className="sb-capture-review" ref={reviewRef}>
+                <ReviewSheet key={capture.startedAt} swim={swim} headingLevel={2} label="Review sheet for this Swim" />
+              </div>
+            </>
+          ) : null}
         </div>
       </main>
     </div>

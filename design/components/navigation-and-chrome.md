@@ -15,6 +15,7 @@ The frame around every Splitbook page: app bar, side navigation (desk), bottom n
 
 - Anatomy: Splitbook wordmark (text, links home), current Swimmer via the Profile switcher, page actions, account menu.
 - Tokens: `background`, `foreground`, `border` (bottom rule), `--sb-layer-*` for stickiness.
+- Sticky by default (`data-static="true"` for examples inside a page). A page under the sticky bar sets `scroll-padding-block-start` to the bar's height (`--sb-control-size-lg` plus `--sb-space-6`), so a focused control or a scrolled-to target never lands underneath it.
 - Landmark: `<header>` with the nav inside `<nav aria-label="Main">`.
 - The wordmark is "Splitbook" in words. No other brand marks.
 

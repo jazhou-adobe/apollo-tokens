@@ -33,8 +33,8 @@ Every route accepts `?theme=<value>` and, for worlds, `?palette=<id>` (applied b
 
 | Route | Shows |
 |---|---|
-| `/design` | The system: foundations (colour roles with live contrast read-outs, type and numerals, spacing, radius and elevation, the Deck knob), core components, domain widgets (a working Tap Pad, Length strip, split read-out, rating, fault flag, chips, Review sheet, Swim/Session/Set rows, Metric and Technique trends, Profile switcher, Configuration list and publish bar), watcher, admin, and system blueprints, and the agent recipe. The sidebar holds the theme, colour, and density switches and an index. |
-| `/specimen` | One Capture screen: a Tap Pad and a Review sheet sharing one preview Swim (Capture alone on phones while recording; Review once the Swim ends). World gallery frames open it mid-Swim at Deck sizing. |
+| `/design` | The system. It opens on the chosen design itself (a live Length rail, running split and counts) straight after the theme controls, then foundations (colour roles with live contrast read-outs, type and numerals, spacing, radius and elevation, the Deck knob), core components, domain widgets (a working Tap Pad, Length strip, split read-out, rating, fault flag, chips, Review sheet, Swim/Session/Set rows, Metric and Technique trends, Profile switcher, Configuration list and publish bar), watcher, admin, and system blueprints, and the agent recipe. The sidebar holds the theme, colour, and density switches and an index. |
+| `/specimen` | One Capture screen: a Tap Pad and a Review sheet sharing one preview Swim. While ready or recording it is the Tap Pad alone, centred at every width; once the Swim ends the ended Tap Pad (a compact result) pairs with the Review sheet. World gallery frames open it mid-Swim at Deck sizing. |
 | `/overview` | Every theme on one screen as live `/tile` thumbnails. |
 | `/tile` | The thumbnail composition `/overview` frames. |
 | `/worlds` | The seeded-world gallery. Empty until worlds are registered. |

@@ -727,6 +727,11 @@
 .sb-app-bar[data-static='true'] {
   position: static;
 }
+/* A page under the sticky app bar reserves the bar's height when it scrolls to a target or a focused control, so focus
+   (for example in the Review sheet's Length toolbar) never lands underneath it. */
+html:has(.sb-app-bar:not([data-static='true'])) {
+  scroll-padding-block-start: calc(var(--sb-control-size-lg) + var(--sb-space-6));
+}
 .sb-wordmark {
   display: inline-flex;
   align-items: center;
@@ -1168,8 +1173,9 @@ a.sb-list-row:hover {
 .sb-tap-pad {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--sb-density-gap);
-  padding: var(--sb-density-inset);
+  /* The instrument composition below sets the pad's rhythm: chrome rows close together, the keys set off by density-gap. */
+  gap: var(--sb-space-2);
+  padding: var(--sb-space-3);
   border: var(--sb-border-width-thick) solid var(--sb-border);
   border-radius: var(--sb-radius-lg);
   background: var(--sb-tap-pad);
@@ -1260,7 +1266,9 @@ a.sb-list-row:hover {
   background: var(--sb-live);
   color: var(--sb-live-foreground);
 }
+/* Counters keep a narrow inline padding so the metric name has the key's full width to wrap between its words. */
 .sb-tap-key[data-kind='counter'] {
+  padding-inline: var(--sb-space-1);
   border-color: var(--sb-metric);
 }
 .sb-tap-key[data-kind='counter'] .sb-numeral {
@@ -1275,10 +1283,13 @@ a.sb-list-row:hover {
   font-size: var(--sb-type-label-size);
   line-height: var(--sb-type-label-line-height);
   font-weight: var(--sb-type-label-weight);
-  /* Labels wrap between words ("Underwater / kicks") and stay inside the key; a single long word may break as a last resort. */
+  /* Labels wrap only between words ("Underwater / kicks"), never inside one and never hyphenated; balance keeps the two
+     lines even. The counter's narrow inline padding gives the label the key's width, so no word needs breaking. */
   max-inline-size: 100%;
   text-align: center;
-  overflow-wrap: break-word;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
   text-wrap: balance;
 }
 /* One flash when a tap lands; never loops. The changed number and the tap log carry the meaning. */
@@ -1307,13 +1318,17 @@ a.sb-list-row:hover {
   min-block-size: calc(var(--sb-type-body-size) * var(--sb-type-body-line-height) * 2);
   font-weight: var(--sb-type-label-weight);
 }
-/* Keyboard shortcuts are a desk feature: the hint and key caps show from md. */
+/* Keyboard shortcuts are a desk feature: the hint and key caps show from md. A cap sits in its key's top corner, so it
+   adds no row to the key. */
 .sb-tap-key .sb-kbd,
 .sb-tap-hint {
   display: none;
 }
 @media (min-width: 48rem) {
   .sb-tap-key .sb-kbd {
+    position: absolute;
+    inset-block-start: var(--sb-space-2);
+    inset-inline-end: var(--sb-space-2);
     display: inline-block;
   }
   .sb-tap-hint {
@@ -1328,6 +1343,53 @@ a.sb-list-row:hover {
   padding-block: var(--sb-space-1);
   border-block-end: var(--sb-border-width-thin) solid var(--sb-border);
   font-variant-numeric: tabular-nums;
+}
+/* Ended: the keys give way to the Swim's counts, so the pad reads as a compact result beside the Review sheet. One equal
+   column per figure; labels wrap between words and the figures share a bottom line. */
+.sb-tap-summary {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: var(--sb-density-gap);
+  margin: 0;
+}
+.sb-tap-summary > div {
+  display: grid;
+  align-content: end;
+  gap: var(--sb-space-1);
+}
+.sb-tap-summary dd {
+  margin: 0;
+}
+/*
+ * The instrument composition, at every width: the counters, the Wall key and the whole undo cluster share the first
+ * screen while recording (390 × 844 at Deck sizing included). The chrome rows (head, read-out, Length strip) sit close
+ * and the head title is label size, filling the row beside the status mark and wrapping inside itself before it pushes
+ * the mark down; the keys keep their full size and --sb-density-gap on every side, so a reach for Wall never lands on
+ * undo. The undo cluster is one row directly under the Wall key: undo wall tap, then one per counter, each its icon
+ * over "Undo" and what it undoes. Once ended, Resume and "Review this Swim" share a row.
+ */
+.sb-tap-pad > .sb-tap-keys {
+  margin-block: calc(var(--sb-density-gap) - var(--sb-space-2));
+}
+.sb-tap-pad-head > :first-child {
+  flex: 1 1 0;
+  font-size: var(--sb-type-label-size);
+  line-height: var(--sb-type-label-line-height);
+}
+.sb-tap-pad > .sb-action-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+.sb-tap-pad:not([data-phase='ended']) > .sb-action-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.sb-tap-pad:not([data-phase='ended']) > .sb-action-row > .sb-button {
+  flex-direction: column;
+  gap: var(--sb-space-1);
+  padding-inline: var(--sb-space-1);
+  text-wrap: balance;
 }
 
 /* ---------- Split read-out: the running split, the largest numeral on screen ---------- */

@@ -24,7 +24,7 @@ Deck. Pick what this Swim is and what to watch.
 
 Deck. The Tap Pad, nothing else. See the worked example in [screen-generation-rules.md](../agent-contract/screen-generation-rules.md#worked-example-live-capture).
 
-- Regions: slim app bar (Swim title, Swimmer name read-only, End Swim); `.sb-tap-pad` filling the viewport: status, split read-out, Focus-metric counters, Length strip, Wall key, undo tray.
+- Regions: slim app bar (Swimmer name read-only, End Swim; the page title in one short line under it); `.sb-tap-pad` as one centred region at every width: status, split read-out, Length strip, Focus-metric counters, Wall key, undo cluster. Counters, Wall key and undo cluster share the first screen while recording (390 × 844 at Deck sizing included); the status line and tap log sit below. No Review panel waits beside it.
 - States: ready, recording, ended, saving offline. No empty state (setup is required to arrive here). Error never interrupts recording: taps are kept on the device and the status line says so.
 - Deck vs Light: Deck only. No dialogs, toasts or sheets while recording.
 
@@ -32,7 +32,7 @@ Deck. The Tap Pad, nothing else. See the worked example in [screen-generation-ru
 
 Deck. Completed straight after a Swim.
 
-- Regions: Swim summary (left / top) ↔ Review form (right / below) on the T-line axis; form sections Lengths, Technique, Faults, Context; bottom tray "Done" and "Next Swim".
+- Regions: appears when the Swim ends, on the same screen. Swim summary (the ended Tap Pad: final time, Length strip, count summary, Resume) left / top ↔ Review form right / below on the T-line axis; form sections Lengths, Technique, Faults, Context; bottom tray "Done" and "Next Swim".
 - States: in progress, saved, saving offline, section error (only that section shows an alert), nothing to review ("This template has no Review items. Done.").
 - Deck vs Light: Deck at the pool. Opened later from Swim detail ("Edit review"), it renders in Light with the same anatomy.
 

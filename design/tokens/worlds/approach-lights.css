@@ -257,13 +257,21 @@ html[data-theme="splitbook-approach-lights"][data-palette="original"] {
  * Skin. Intensity budget:
  *   identity  - the light chain: numbered Length bulbs in the dark light bar. Lamps appear nowhere else, so every
  *               light on screen means a Length swum, being swum, or still to come.
- *   function  - buttons, fields, chips, tabs, nav, menus, overlays, progress, tables: the world's plate shape, worn-in
- *               bevels and unlit structural rules, restrained.
+ *   function  - the world's plate shape, built from three constructions and nothing else:
+ *                 key:       a worn bottom bevel that sinks when pressed. Only pressable keys carry it: buttons, icon
+ *                            buttons and Tap Pad keys. Selection controls (chips, switches, rating steps, fault flags,
+ *                            the Profile switcher) sit flat in their frame.
+ *                 well:      a flat field recessed by an inset top edge: inputs, selects, text areas, the switch track,
+ *                            the formula preview.
+ *                 rule:      one structural rule for navigation and grouping, --sb-border-width-thick solid --sb-border:
+ *                            dividers, section heads, the app bar, trays, bottom nav and tab rails, Set brackets, table
+ *                            heads, Review sheet sections. Never dashed (dashed means a Length still to come).
  *   reading   - Review sheet, prose, labels, captions, form values and numerals being read: sentence case in the reading
  *               face, quiet, opaque, no texture behind text.
  * Type: the condensed face sets headings, numerals and short identifiers (L1, the wordmark); capitals are kept for the
  * wordmark and the live status mark only. Mono is for code and metric keys.
- * Glow appears only on live state: the recording Tap Pad and its read-out, and the bulb of the Length being swum now.
+ * Luminous depth belongs to one element: the bulb of the Length being swum now. Recording is otherwise carried by solid
+ * construction (the live frame, the read-out plate, the Wall key plate), with no halo around the pad or the read-out.
  * ================================================================================================================== */
 
 /* ---------- Page ---------- */
@@ -291,10 +299,9 @@ html[data-theme="splitbook-approach-lights"] .sb-live-mark {
 }
 html[data-theme="splitbook-approach-lights"] .sb-live-mark[data-state='live']::before {
   border-color: var(--sb-live-foreground);
-  box-shadow: 0 0 0.5rem var(--sb-live-foreground);
 }
 
-/* ---------- Structural rules: unlit, solid, never a run of lights ---------- */
+/* ---------- Structural rule: one thick, solid, unlit rule for navigation and grouping; never a run of lights ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-divider {
   border-block-start-width: var(--sb-border-width-thick);
 }
@@ -304,7 +311,12 @@ html[data-theme="splitbook-approach-lights"] .sb-section-head {
 }
 html[data-theme="splitbook-approach-lights"] .sb-app-bar {
   border-block-end-width: var(--sb-border-width-thick);
-  box-shadow: var(--sb-elevation-raised);
+}
+html[data-theme="splitbook-approach-lights"] .sb-bottom-nav {
+  border-block-start-width: var(--sb-border-width-thick);
+}
+html[data-theme="splitbook-approach-lights"] .sb-tabs [role='tablist'] {
+  border-block-end-width: var(--sb-border-width-thick);
 }
 /* The T-line between paired panels: a plain unlit rule with a square cap, like a painted deck line. */
 html[data-theme="splitbook-approach-lights"] .sb-pair-axis {
@@ -314,21 +326,17 @@ html[data-theme="splitbook-approach-lights"] .sb-pair-axis {
 html[data-theme="splitbook-approach-lights"] .sb-pair-axis::before {
   background: var(--sb-border);
 }
-/* A Set is bracketed by an unlit rule, square-ended like a deck marking. */
+/* A Set is bracketed by the same rule, square-ended like a deck marking. */
 html[data-theme="splitbook-approach-lights"] .sb-set-group {
+  border-inline-start-width: var(--sb-border-width-thick);
   border-inline-start-color: var(--sb-border);
   border-start-start-radius: 0;
   border-end-start-radius: 0;
 }
 
-/* ---------- Containers: worn-in plates set proud of the deck ---------- */
-html[data-theme="splitbook-approach-lights"] .sb-panel,
-html[data-theme="splitbook-approach-lights"] .sb-shelf {
-  box-shadow: inset 0 var(--sb-border-width-thin) 0 0 var(--sb-surface-card);
-}
+/* ---------- Containers: plain plates; the tray is set off by the structural rule ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-tray {
   border-block-start-width: var(--sb-border-width-thick);
-  box-shadow: var(--sb-elevation-raised);
 }
 
 /* ---------- Links ---------- */
@@ -337,7 +345,7 @@ html[data-theme="splitbook-approach-lights"] .sb-link {
   text-underline-offset: 0.2em;
 }
 
-/* ---------- Buttons: tactile keys with a worn bottom bevel; pressing sinks the bevel ---------- */
+/* ---------- Keys: buttons carry the worn bottom bevel; pressing sinks it ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-button,
 html[data-theme="splitbook-approach-lights"] .sb-icon-button {
   box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-shadow);
@@ -355,7 +363,7 @@ html[data-theme="splitbook-approach-lights"] .sb-skip-link {
   border-radius: var(--sb-radius-sm);
 }
 
-/* ---------- Fields: recessed wells; values stay a quiet opaque plane ---------- */
+/* ---------- Wells: fields sit flat and recessed; values stay a quiet opaque plane ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-input,
 html[data-theme="splitbook-approach-lights"] .sb-textarea,
 html[data-theme="splitbook-approach-lights"] .sb-select {
@@ -367,15 +375,15 @@ html[data-theme="splitbook-approach-lights"] .sb-textarea:focus-visible,
 html[data-theme="splitbook-approach-lights"] .sb-select:focus-visible {
   border-color: var(--sb-ring);
 }
-/* Switch: a cockpit toggle with a squared track and thumb. Selection controls stay quiet (ink on the accent tint), so
- * the primary fill is left to the view's principal action. On/off is carried by the thumb's position and its word. */
+/* Switch: a squared track recessed like a field, with a flat squared thumb. Selection controls stay quiet (ink on the
+ * accent tint), so the primary fill is left to the view's principal action. On/off is carried by the thumb's position
+ * and its word. */
 html[data-theme="splitbook-approach-lights"] .sb-switch-track {
   border-radius: var(--sb-radius-md);
   box-shadow: inset 0 var(--sb-border-width-thick) 0 0 var(--sb-shadow);
 }
 html[data-theme="splitbook-approach-lights"] .sb-switch-thumb {
   border-radius: var(--sb-radius-sm);
-  box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-shadow);
 }
 html[data-theme="splitbook-approach-lights"] .sb-switch[aria-checked='true'] .sb-switch-track {
   border-color: var(--sb-foreground);
@@ -386,35 +394,26 @@ html[data-theme="splitbook-approach-lights"] .sb-radio input {
   accent-color: var(--sb-foreground);
 }
 
-/* ---------- Chips and badges: machined plates ---------- */
-html[data-theme="splitbook-approach-lights"] .sb-chip {
-  box-shadow: inset 0 calc(var(--sb-border-width-thin) * -2) 0 0 var(--sb-shadow);
-}
+/* ---------- Chips and badges: flat squared plates ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-badge {
   border-radius: var(--sb-radius-sm);
 }
 
-/* ---------- Alerts and toasts: full frame, a round signal mark ---------- */
-html[data-theme="splitbook-approach-lights"] .sb-alert {
-  box-shadow: var(--sb-elevation-raised);
-}
+/* ---------- Alerts and toasts: a flat full frame, a round signal mark ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-alert-mark {
   border-radius: var(--sb-radius-pill);
 }
 
-/* ---------- Navigation: the current page carries an ink frame and a heavy bottom edge ---------- */
+/* ---------- Navigation: the current page keeps the core's ink frame, squared ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-side-nav a[aria-current='page'],
 html[data-theme="splitbook-approach-lights"] .sb-bottom-nav a[aria-current='page'] {
   border-radius: var(--sb-radius-sm);
-  box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-foreground);
 }
 
-/* ---------- Overlays: heavy plates with a header rule ---------- */
+/* ---------- Overlays: heavy squared plates ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-dialog,
 html[data-theme="splitbook-approach-lights"] .sb-sheet {
   border-width: var(--sb-border-width-thick);
-  border-block-start-width: var(--sb-border-width-heavy);
-  border-block-start-color: var(--sb-foreground);
 }
 html[data-theme="splitbook-approach-lights"] .sb-popover,
 html[data-theme="splitbook-approach-lights"] .sb-menu {
@@ -448,7 +447,6 @@ html[data-theme="splitbook-approach-lights"] .sb-avatar {
 }
 html[data-theme="splitbook-approach-lights"] .sb-kbd {
   border-radius: var(--sb-radius-sm);
-  border-block-end-width: var(--sb-border-width-heavy);
 }
 
 /* =====================================================================================================================
@@ -456,14 +454,10 @@ html[data-theme="splitbook-approach-lights"] .sb-kbd {
  * ================================================================================================================== */
 
 /* ---------- Tap Pad: the capture console ---------- */
-/* Recording: the live frame and read-out carry the glow that belongs to live state. */
+/* Recording: the live frame alone marks the pad (no outer ring, no halo); the read-out and Wall key keep their solid
+   live plates, so the current bulb is the one luminous element on screen. */
 html[data-theme="splitbook-approach-lights"] .sb-tap-pad[data-state='live'] {
-  box-shadow:
-    var(--sb-elevation-raised),
-    0 0 1.25rem -0.25rem var(--sb-live);
-}
-html[data-theme="splitbook-approach-lights"] .sb-split-readout[data-state='live'] .sb-split-readout-value {
-  box-shadow: 0 0 1rem -0.25rem var(--sb-live);
+  outline: 0;
 }
 html[data-theme="splitbook-approach-lights"] .sb-tap-key {
   border-radius: var(--sb-radius-md);
@@ -472,8 +466,8 @@ html[data-theme="splitbook-approach-lights"] .sb-tap-key {
 html[data-theme="splitbook-approach-lights"] .sb-tap-key:active {
   box-shadow: inset 0 var(--sb-border-width-thick) 0 0 var(--sb-shadow);
 }
-html[data-theme="splitbook-approach-lights"] .sb-tap-log li {
-  border-block-end-style: dashed;
+html[data-theme="splitbook-approach-lights"] .sb-tap-key:disabled {
+  box-shadow: none;
 }
 
 /* ---------- Signature: the Length strip is an approach light chain ----------
@@ -581,27 +575,22 @@ html[data-theme="splitbook-approach-lights"] .sb-tap-pad .sb-length-cell[data-st
   animation: approach-lights-ignite var(--sb-motion-flash) var(--sb-easing-enter) 1 both;
 }
 
-/* ---------- Rating: squared steps; selection keeps the core's ink treatment and check ---------- */
+/* ---------- Rating: flat squared steps; selection keeps the core's ink treatment and check ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-rating-step {
   border-radius: var(--sb-radius-md);
-  box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-shadow);
 }
 
-/* ---------- Fault flag: an observer's note, pressed in like a toggled plate once noted ---------- */
+/* ---------- Fault flag: an observer's note on a flat squared plate; the fill, word and flag carry "noted" ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-fault-flag {
   border-radius: var(--sb-radius-sm);
 }
-html[data-theme="splitbook-approach-lights"] .sb-fault-flag[aria-pressed='true'],
-html[data-theme="splitbook-approach-lights"] .sb-fault-flag[data-state='noted'] {
-  box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-shadow);
-}
 
-/* ---------- Review sheet: a quiet, opaque reading plane; sections split by a plain dashed rule, no texture ---------- */
+/* ---------- Review sheet: a quiet, opaque reading plane; sections split by the structural rule, no texture ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-review-sheet {
   box-shadow: var(--sb-elevation-raised);
 }
 html[data-theme="splitbook-approach-lights"] .sb-review-section {
-  border-block-start-style: dashed;
+  border-block-start-width: var(--sb-border-width-thick);
 }
 
 /* ---------- Trends: a plain line and the core dial with a housing-dark hub ---------- */
@@ -614,11 +603,10 @@ html[data-theme="splitbook-approach-lights"] .sb-dial-hub {
 /* ---------- Profile switcher, Admin console ---------- */
 html[data-theme="splitbook-approach-lights"] .sb-profile-switcher button[aria-haspopup='menu'] {
   border-radius: var(--sb-radius-md);
-  box-shadow: inset 0 calc(var(--sb-border-width-thick) * -1) 0 0 var(--sb-shadow);
 }
 html[data-theme="splitbook-approach-lights"] .sb-publish-bar {
   border-radius: var(--sb-radius-sm);
-  border-block-start-width: var(--sb-border-width-heavy);
+  border-block-start-width: var(--sb-border-width-thick);
   box-shadow: var(--sb-elevation-overlay);
 }
 html[data-theme="splitbook-approach-lights"] .sb-formula-preview {

@@ -114,7 +114,8 @@ Worlds are **used future**: real carrier, cockpit and flight-deck conventions pu
 
 - Allowed: matte surfaces, stencil and condensed type, stitched seams, edge hazard markings, lit indicators with numerals, plot marks.
 - Banned: gradient text, decorative glass or blur, glow everywhere, scanlines, noise grain, neon-on-black reading surfaces.
-- Glow only on **live** state (the recording Tap Pad, the running split).
+- Glow only on **live** state (the recording Tap Pad, the running split), and sparingly: Approach Lights reserves luminous depth for the one current Length bulb, so the recording pad and read-out keep solid plates without halos.
+- Material comes from construction, not ornament. In Approach Lights a bottom bevel marks a pressable key (buttons, icon buttons, Tap Pad keys) and nothing else; fields are flat recessed wells; navigation and grouping share one structural rule (`border-width-thick`, solid `border`).
 - Reading planes (the Review sheet, tables, trend summaries, form fields) stay opaque and high contrast.
 - A world changes how Splitbook looks, never how it behaves: same components, copy, states, voice and gates. Worlds may override only type, shape and depth tokens; never motion, density, spacing, layout or component sizes ([governance.md](../governance.md#adding-a-world)).
 - Status is never colour alone in any world: every lit bulb, jersey colour and plot mark carries a numeral or label.

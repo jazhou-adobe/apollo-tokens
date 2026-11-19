@@ -19,11 +19,7 @@ export default function DesignPreviewPage() {
   return (
     <PreviewShell current="/design" sections={SECTIONS}>
       <section className="sb-hero" aria-labelledby="page-title">
-        <span className="sb-kicker">Pace Clock · Splitbook design system</span>
-        <h1 id="page-title" className="sb-display">
-          Better before faster.
-        </h1>
-        {/* A real component first, so the opening screen shows the system rather than describing it. */}
+        {/* The chosen design first, straight after the theme controls: the live Length rail, then the running split and the counts. */}
         <div className="sb-card sb-hero-specimen">
           <div className="sb-row" data-justify="between">
             <span className="sb-live-mark" data-state="live">
@@ -31,16 +27,33 @@ export default function DesignPreviewPage() {
             </span>
             <Illustrative />
           </div>
-          <SplitReadout value="47.12" live caption={['Length 3 of 4', 'running split']} />
           <LengthStrip
             label="Lengths so far"
             unit="seconds"
             cells={[...LENGTHS.slice(0, 2).map((length) => ({ number: length.number, value: length.split, state: 'done' as const })), { number: 3, state: 'current' }, { number: 4, state: 'upcoming' }]}
           />
+          <SplitReadout value="47.12" live caption={['Length 3 of 4', 'running split']} />
+          <dl className="sb-hero-counts">
+            <div>
+              <dt className="sb-label">Underwater kicks</dt>
+              <dd className="sb-numeral" data-size="lg" data-tone="metric">
+                4
+              </dd>
+            </div>
+            <div>
+              <dt className="sb-label">Strokes</dt>
+              <dd className="sb-numeral" data-size="lg" data-tone="metric">
+                6
+              </dd>
+            </div>
+          </dl>
           <a className="sb-link sb-body-sm" href={withBase('/specimen?demo=midswim')}>
             Open the live Capture specimen
           </a>
         </div>
+        <h1 id="page-title" className="sb-display">
+          Better before faster.
+        </h1>
         <p className="sb-body-lg sb-measure">
           Chalk-tile white, ink, and the four hands of the pool&apos;s pace clock, each with one job. Big tabular numerals carry the story; counts and technique lead and
           times follow. Switch theme in the sidebar to see every example re-render from the same tokens.
