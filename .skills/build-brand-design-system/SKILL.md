@@ -245,5 +245,5 @@ Example prompts:
 
 1. Replace MathGo, NaplanGo, and the learner audience with your brand, your apps, and your audiences. Keep one age or role setting if you have distinct audiences, as Junior is for MathGo.
 2. Replace the maths widgets with your own domain widgets. Keep the core containers, primitives, overlays, and system states.
-3. Name tokens `--<brand>-*`, worlds `<brand>-<slug>`, and the handoff skill `apply-<brand>-theme`.
+3. Name tokens `--<brand>-*`, worlds `<brand>-<slug>`, and the handoff skill `apply-<brand>-theme`. In Apollo, each brand's design system lives at `brands/<slug>/design` in the `apollo-tokens` repo, registered in `preview-hub/brands.json`, and one `apply-apollo-theme` skill serves every brand.
 4. Run Phases 1 to 9 in order. Repeat Phase 4 after each large change.

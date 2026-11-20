@@ -55,7 +55,7 @@ The same rule applies to every world ([Worlds](#worlds)).
 - "Hurry, time is running out!"
 - "Great job! All done!"
 - "Error" with no cause or next step.
-- "Ticket", "request", "inbox", "dashboard", "user", "operator" ([GLOSSARY](../../../hermes-hub/GLOSSARY.md) lists these as words to avoid).
+- "Ticket", "request", "inbox", "dashboard", "user", "operator" ([GLOSSARY](https://github.com/jazhou-adobe/hermes-hub/blob/main/GLOSSARY.md) lists these as words to avoid).
 - Status shown by colour alone, or a status adjective before the status word ("Urgent pending Round").
 
 ## Principles
@@ -70,7 +70,7 @@ The same rule applies to every world ([Worlds](#worlds)).
 
 ## Domain vocabulary
 
-Use the [GLOSSARY](../../../hermes-hub/GLOSSARY.md) terms exactly, capitalised: **Hub**, **Command Center**, **Agent**, **Human**, **Hub Skill**, **Round**, **Question**, **Answer**, **Unanswered Policy**. The design layer adds these words:
+Use the [GLOSSARY](https://github.com/jazhou-adobe/hermes-hub/blob/main/GLOSSARY.md) terms exactly, capitalised: **Hub**, **Command Center**, **Agent**, **Human**, **Hub Skill**, **Round**, **Question**, **Answer**, **Unanswered Policy**. The design layer adds these words:
 
 | Term | Meaning | Class |
 |---|---|---|

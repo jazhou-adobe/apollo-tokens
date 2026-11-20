@@ -1,4 +1,5 @@
 #!/bin/sh
-# Apollo hub and skill checks. Installed by `npm install` (prepare script sets core.hooksPath).
+# Hub, skill and every brand's fast gates (validator, validator tests, type check). Installed by `npm install`
+# (prepare sets core.hooksPath). Builds run in each brand's `npm run check`.
 set -e
 npm run --silent check

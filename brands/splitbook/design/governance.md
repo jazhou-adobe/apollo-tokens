@@ -55,7 +55,7 @@ Artifacts are versioned by repository history. Record changes as Added, Changed,
 
 ## Adoption
 
-**Adoption skill available; first adoption not yet done.** Sub-apps adopt this system by copying, through the `apply-apollo-theme` skill in the `apollo-tokens` repo (`.skills/apply-apollo-theme/`). Its manifest script reads this folder and lists the `<html>` attributes, files to copy and `next/font` calls for any theme, world and colour option; the default for new apps is `splitbook-approach-lights`. Until the product adopts it:
+**Adoption skill available; first adoption not yet done.** Sub-apps adopt this system by copying, through the `apply-apollo-theme` skill at the repository root (`.skills/apply-apollo-theme/`). Its manifest script reads this folder and lists the `<html>` attributes, files to copy and `next/font` calls for any theme, world and colour option; the default for new apps is `splitbook-approach-lights`. Until the product adopts it:
 
 - Nothing here is consumed by the Splitbook product yet.
 - Copy only what the manifest lists; never `preview/splitbook-preview.css`, `app/`, `research/`, `archive/` or `validation/`.

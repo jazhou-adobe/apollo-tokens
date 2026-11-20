@@ -1,13 +1,15 @@
 {
-  "name": "apollo-preview-hub",
+  "name": "apollo-tokens",
   "private": true,
   "type": "module",
-  "description": "One server for every brand's design-system preview, mapped by path (/splitbook, /hermes).",
+  "description": "Apollo brand design systems (brands/<slug>/design) and the preview hub that serves them all on one port.",
   "scripts": {
     "preview": "node preview-hub/server.mjs",
     "preview:stop": "node preview-hub/server.mjs --stop",
     "smoke": "node preview-hub/smoke.mjs",
-    "check": "node --check preview-hub/server.mjs && node --check preview-hub/smoke.mjs && node .skills/apply-apollo-theme/scripts/theme-manifest.mjs splitbook > /dev/null && node .skills/apply-apollo-theme/scripts/theme-manifest.mjs hermes > /dev/null",
+    "check:hub": "node --check preview-hub/server.mjs && node --check preview-hub/smoke.mjs && node .skills/apply-apollo-theme/scripts/theme-manifest.mjs splitbook > /dev/null && node .skills/apply-apollo-theme/scripts/theme-manifest.mjs hermes > /dev/null",
+    "check": "npm run check:hub && npm --prefix brands/splitbook/design run check:fast && npm --prefix brands/hermes/design run check:fast",
+    "postinstall": "npm --prefix brands/splitbook/design install && npm --prefix brands/hermes/design install",
     "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {

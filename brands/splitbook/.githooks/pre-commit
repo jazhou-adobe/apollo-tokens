@@ -1,6 +1,0 @@
-#!/bin/sh
-# Design-system gates (validator, validator tests, type check). Installed by `npm install` in design/
-# (prepare script sets core.hooksPath). The build runs in `npm run check`, not here.
-set -e
-cd "$(git rev-parse --show-toplevel)/design"
-npm run --silent check:fast

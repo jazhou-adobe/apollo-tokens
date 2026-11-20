@@ -21,7 +21,7 @@ A new or retired world touches `tokens/worlds/<slug>.{json,css}`, `WORLD_FILES` 
 
 ## Checks before you hand off
 
-Run `npm run check` (validator, its tests, type check, build; the pre-commit hook runs all but the build). Then, from `../../apollo-tokens`, run `npm run smoke -- splitbook` against the hub (`npm run preview`), and check changed pages by keyboard and with reduced motion. Dev-server errors: `../../apollo-tokens/preview-hub/logs/splitbook.log`.
+Run `npm run check` (validator, its tests, type check, build; the pre-commit hook runs all but the build). Then, from the repository root (`../../..`), run `npm run smoke -- splitbook` against the hub (`npm run preview`), and check changed pages by keyboard and with reduced motion. Dev-server errors: `../../../preview-hub/logs/splitbook.log`.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

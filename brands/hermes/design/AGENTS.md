@@ -9,7 +9,7 @@ Read [brief.md](brief.md) first; it outranks every other file here. Then [tokens
 - The holder frames a strip on every side. Never a thin coloured side stripe on a card.
 - Copy uses the glossary (Hub, Command Center, Agent, Human, Round, Question, Answer, Unanswered Policy) in the dispatcher voice: status word first, no exclamation marks, no emoji. Label fixture data as illustrative.
 - New or retired world: `tokens/worlds/<slug>.{json,css}`, its faces in `app/fonts.ts`, its slug in `WORLD_SLUGS` in `preview/themes.ts`; the validator fails on any registry or font mismatch. Retired worlds move to `archive/worlds/<slug>/`.
-- Before handing back: `npm run check` (validator, its tests, type check, build; the pre-commit hook runs all but the build). Then, from `../../apollo-tokens`, `npm run smoke -- hermes` against the hub (`npm run preview`). Dev-server errors: `../../apollo-tokens/preview-hub/logs/hermes.log`.
+- Before handing back: `npm run check` (validator, its tests, type check, build; the pre-commit hook runs all but the build). Then, from the repository root (`../../..`), `npm run smoke -- hermes` against the hub (`npm run preview`). Dev-server errors: `../../../preview-hub/logs/hermes.log`.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

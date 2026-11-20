@@ -6,14 +6,14 @@ tags: [apollo, splitbook, hermes, design-system, theme, tokens, nextjs]
 
 # Apply an Apollo brand theme
 
-Repository-local skill. Input: a **brand**, optionally a **theme** and a world **colour option**. Output: a Next.js 16 / React 19 / Tailwind 4 app that renders in that theme using design-system files copied from the brand's master repo. The design system is shared by copying, never by package or git dependency.
+Repository-local skill. Input: a **brand**, optionally a **theme** and a world **colour option**. Output: a Next.js 16 / React 19 / Tailwind 4 app that renders in that theme using design-system files copied from the brand's design folder in this repo. The design system is shared by copying, never by package or git dependency.
 
 Brands are registered in `preview-hub/brands.json` (slug, label, design folder, token prefix, default theme):
 
 | Brand | Design folder | Tokens | Core themes | World (default for new apps) | Colour options | Densities |
 |---|---|---|---|---|---|---|
-| `splitbook` | `../splitbook-master/design` | `--sb-*` | `splitbook-light`, `splitbook-deck` | `splitbook-approach-lights` (Approach Lights) | default Deck Daylight; `blue-hour`, `fresnel-sand`, `original` (Sodium Night) | `deck` (Capture sizing), `compact` (Admin console) |
-| `hermes` | `../hermes-master/design` | `--hh-*` | `hermes-dark`, `hermes-light` | `hermes-flight-director` (Flight Director 2169) | default Console slate; `night-watch`, `day-shift`, `original` | `compact` (dense triage), `glance` (phone) |
+| `splitbook` | `brands/splitbook/design` | `--sb-*` | `splitbook-light`, `splitbook-deck` | `splitbook-approach-lights` (Approach Lights) | default Deck Daylight; `blue-hour`, `fresnel-sand`, `original` (Sodium Night) | `deck` (Capture sizing), `compact` (Admin console) |
+| `hermes` | `brands/hermes/design` | `--hh-*` | `hermes-dark`, `hermes-light` | `hermes-flight-director` (Flight Director 2169) | default Console slate; `night-watch`, `day-shift`, `original` | `compact` (dense triage), `glance` (phone) |
 
 The table is a summary; the manifest script reads the brand's files directly and is the source of truth.
 

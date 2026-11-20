@@ -30,7 +30,7 @@ A contribution updates every layer it touches:
 9. Is the copy in the Dispatcher voice and the glossary's terms?
 10. Does `npm run validate` pass?
 
-The `design-reviewer` agent (shared by every Apollo brand, in `apollo-tokens/.omp/agents/design-reviewer.md`) applies this checklist and the side-stripe, glass and glow bans.
+The `design-reviewer` agent (shared by every Apollo brand, in `.omp/agents/design-reviewer.md` at the repository root) applies this checklist and the side-stripe, glass and glow bans.
 
 ## Adding a world
 
@@ -50,7 +50,7 @@ Versioned by repository history. If a package is published, keep a changelog wit
 
 ## Adoption
 
-**Adoption skill available; first adoption not yet done.** Sub-apps adopt this system by copying, through the `apply-apollo-theme` skill in the `apollo-tokens` repo (`.skills/apply-apollo-theme/`). Its manifest script reads this folder and lists the `<html>` attributes, files to copy and `next/font` calls for any theme, world and colour option; the default for new apps is `hermes-flight-director`. Until the Hub adopts it:
+**Adoption skill available; first adoption not yet done.** Sub-apps adopt this system by copying, through the `apply-apollo-theme` skill at the repository root (`.skills/apply-apollo-theme/`). Its manifest script reads this folder and lists the `<html>` attributes, files to copy and `next/font` calls for any theme, world and colour option; the default for new apps is `hermes-flight-director`. Until the Hub adopts it:
 
 - Do not copy files into `hermes-hub` piecemeal; copy only what the manifest lists, never `preview/hermes-preview.css`, `app/`, `research/`, `archive/` or `validation/`.
 - Record any gap found while building the Hub UI as a contribution here, not a one-off exception in the Hub.
