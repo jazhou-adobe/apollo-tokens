@@ -1,0 +1,300 @@
+/*
+ * Splitbook runtime tokens (Pace Clock). Source of truth: tokens.json; validation/validate-design-system.mjs fails on drift.
+ * Theme contract: html[data-theme="<theme>"]; the light block also matches :root.
+ * Density contract: [data-density="compact"] on the Admin console only.
+ * Raw visual values are allowed only in this token layer.
+ */
+
+/* Theme-independent tokens: primitives, type scale, density, elevation, layout, layers, component contracts. */
+:root {
+  --sb-space-1: 0.25rem;
+  --sb-space-2: 0.5rem;
+  --sb-space-3: 0.75rem;
+  --sb-space-4: 1rem;
+  --sb-space-5: 1.25rem;
+  --sb-space-6: 1.5rem;
+  --sb-space-8: 2rem;
+  --sb-space-10: 2.5rem;
+  --sb-space-12: 3rem;
+  --sb-space-16: 4rem;
+  --sb-radius-sm: 0.25rem;
+  --sb-radius-md: 0.375rem;
+  --sb-radius-lg: 0.625rem;
+  --sb-radius-pill: 999px;
+  --sb-border-width-thin: 1px;
+  --sb-border-width-thick: 2px;
+  --sb-border-width-heavy: 4px;
+  --sb-font-sans: var(--font-atkinson-next), ui-sans-serif, system-ui, sans-serif;
+  --sb-font-display: var(--font-schibsted-grotesk), 'Arial Narrow', Arial, sans-serif;
+  --sb-font-mono: var(--font-atkinson-mono), ui-monospace, monospace;
+  --sb-font-weight-regular: 400;
+  --sb-font-weight-bold: 700;
+  --sb-font-weight-heavy: 800;
+  --sb-motion-fast: 120ms;
+  --sb-motion-standard: 180ms;
+  --sb-motion-panel: 240ms;
+  --sb-motion-flash: 320ms;
+  --sb-motion-pulse: 1400ms;
+  --sb-motion-stagger: 40ms;
+  --sb-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --sb-easing-enter: cubic-bezier(0, 0, 0, 1);
+  --sb-easing-exit: cubic-bezier(0.3, 0, 1, 1);
+  --sb-easing-linear: cubic-bezier(0, 0, 1, 1);
+  --sb-easing-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --sb-opacity-disabled: 0.55;
+  --sb-opacity-ghost: 0.5;
+  --sb-type-display-family: var(--sb-font-display);
+  --sb-type-display-size: 2.5rem;
+  --sb-type-display-line-height: 1.05;
+  --sb-type-display-weight: var(--sb-font-weight-heavy);
+  --sb-type-heading-lg-family: var(--sb-font-display);
+  --sb-type-heading-lg-size: 1.75rem;
+  --sb-type-heading-lg-line-height: 1.15;
+  --sb-type-heading-lg-weight: var(--sb-font-weight-bold);
+  --sb-type-heading-md-family: var(--sb-font-display);
+  --sb-type-heading-md-size: 1.25rem;
+  --sb-type-heading-md-line-height: 1.25;
+  --sb-type-heading-md-weight: var(--sb-font-weight-bold);
+  --sb-type-body-lg-family: var(--sb-font-sans);
+  --sb-type-body-lg-size: 1.125rem;
+  --sb-type-body-lg-line-height: 1.55;
+  --sb-type-body-lg-weight: var(--sb-font-weight-regular);
+  --sb-type-body-family: var(--sb-font-sans);
+  --sb-type-body-size: 1rem;
+  --sb-type-body-line-height: 1.5;
+  --sb-type-body-weight: var(--sb-font-weight-regular);
+  --sb-type-body-sm-family: var(--sb-font-sans);
+  --sb-type-body-sm-size: 0.875rem;
+  --sb-type-body-sm-line-height: 1.45;
+  --sb-type-body-sm-weight: var(--sb-font-weight-regular);
+  --sb-type-label-family: var(--sb-font-sans);
+  --sb-type-label-size: 0.875rem;
+  --sb-type-label-line-height: 1.3;
+  --sb-type-label-weight: var(--sb-font-weight-bold);
+  --sb-type-code-family: var(--sb-font-mono);
+  --sb-type-code-size: 0.875rem;
+  --sb-type-code-line-height: 1.45;
+  --sb-type-code-weight: var(--sb-font-weight-regular);
+  --sb-type-numeral-xl-family: var(--sb-font-display);
+  --sb-type-numeral-xl-size: 4.5rem;
+  --sb-type-numeral-xl-line-height: 1;
+  --sb-type-numeral-xl-weight: var(--sb-font-weight-heavy);
+  --sb-type-numeral-lg-family: var(--sb-font-display);
+  --sb-type-numeral-lg-size: 2.5rem;
+  --sb-type-numeral-lg-line-height: 1;
+  --sb-type-numeral-lg-weight: var(--sb-font-weight-heavy);
+  --sb-type-numeral-md-family: var(--sb-font-display);
+  --sb-type-numeral-md-size: 1.5rem;
+  --sb-type-numeral-md-line-height: 1.1;
+  --sb-type-numeral-md-weight: var(--sb-font-weight-bold);
+  --sb-density-inset: 1.25rem;
+  --sb-density-gap: 1rem;
+  --sb-density-control-padding-block: 0.625rem;
+  --sb-density-control-padding-inline: 1rem;
+  --sb-density-row-height: 3.25rem;
+  --sb-elevation-raised: 0 1px 2px 0 var(--sb-shadow);
+  --sb-elevation-overlay: 0 12px 32px -8px var(--sb-shadow);
+  --sb-layout-sidebar-width: 17rem;
+  --sb-layout-content-max: 76rem;
+  --sb-layout-measure: 40rem;
+  --sb-layout-capture-max: 30rem;
+  --sb-layout-thumbnail-width: 80rem;
+  --sb-layout-thumbnail-height: 50rem;
+  --sb-layer-raised: 10;
+  --sb-layer-sticky: 20;
+  --sb-layer-dropdown: 30;
+  --sb-layer-overlay: 40;
+  --sb-layer-popover: 50;
+  --sb-layer-toast: 60;
+  --sb-layer-tooltip: 70;
+  --sb-layer-skip-link: 80;
+  --sb-button-min-target: 3rem;
+  --sb-control-size-sm: calc(var(--sb-button-min-target) * 0.75);
+  --sb-control-size-lg: calc(var(--sb-button-min-target) * 1.25);
+  --sb-focus-ring-width: 3px;
+  --sb-focus-ring-offset: 2px;
+  --sb-tap-key-size: 4.5rem;
+  --sb-rating-step-size: 3rem;
+  --sb-length-cell-size: 3rem;
+  --sb-progress-track-height: 0.5rem;
+  --sb-chart-height: 12rem;
+  --sb-dial-size: 11rem;
+  --sb-icon-size: 1.25em;
+  --sb-avatar-size-sm: 2rem;
+  --sb-avatar-size-md: 2.75rem;
+  --sb-avatar-size-lg: 4rem;
+  --sb-overlay-dialog-width: 30rem;
+  --sb-overlay-sheet-width: 26rem;
+  --sb-overlay-popover-width: 20rem;
+  --sb-overlay-tooltip-width: 16rem;
+  --sb-overlay-menu-width: 15rem;
+  --sb-press-scale: 0.97;
+  --sb-enter-scale: 0.97;
+  --sb-enter-offset: var(--sb-space-2);
+}
+
+/* Pace Clock, Light (default): chalk-tile white, ink, and four hand colours with one job each. */
+:root,
+html[data-theme="splitbook-light"] {
+  color-scheme: light;
+  --sb-background: #f4f5f1;
+  --sb-foreground: #121517;
+  --sb-surface-card: #ffffff;
+  --sb-surface-card-foreground: #121517;
+  --sb-surface-panel: #eaece7;
+  --sb-surface-panel-foreground: #121517;
+  --sb-surface-shelf: #e3e8eb;
+  --sb-surface-shelf-foreground: #121517;
+  --sb-surface-tray: #fafaf7;
+  --sb-surface-tray-foreground: #121517;
+  --sb-primary: #121517;
+  --sb-primary-foreground: #ffffff;
+  --sb-secondary: #ffffff;
+  --sb-secondary-foreground: #121517;
+  --sb-muted: #e6e8e3;
+  --sb-muted-foreground: #4a5055;
+  --sb-accent: #dde4e8;
+  --sb-accent-foreground: #121517;
+  --sb-destructive: #9b1c14;
+  --sb-destructive-foreground: #ffffff;
+  --sb-border: #6c7479;
+  --sb-input: #ffffff;
+  --sb-ring: #121517;
+  --sb-success: #155e55;
+  --sb-success-foreground: #ffffff;
+  --sb-warning: #f1c232;
+  --sb-warning-foreground: #1e1700;
+  --sb-info: #2b4864;
+  --sb-info-foreground: #ffffff;
+  --sb-live: #c4241a;
+  --sb-live-foreground: #ffffff;
+  --sb-metric: #1a55b5;
+  --sb-metric-foreground: #ffffff;
+  --sb-improvement: #1a7438;
+  --sb-improvement-foreground: #ffffff;
+  --sb-fault: #a14a00;
+  --sb-fault-foreground: #ffffff;
+  --sb-tap-pad: #fdfdfb;
+  --sb-tap-pad-foreground: #121517;
+  --sb-shadow: #1215172b;
+  --sb-scrim: #121517a6;
+  --sb-chart-1: #1a55b5;
+  --sb-chart-2: #1a7438;
+  --sb-chart-3: #a14a00;
+  --sb-chart-4: #6b3c9c;
+  --sb-chart-5: #4a5055;
+}
+
+/* Pace Clock, Deck: positive polarity for glare (near-black ink on white reading planes, 7:1 text), the live state as a
+   near-black LED pace-clock plate with safety-yellow figures, and the Deck size knob. Capture opts in. */
+html[data-theme="splitbook-deck"] {
+  color-scheme: light;
+  --sb-background: #f6f7f3;
+  --sb-foreground: #0b0d0e;
+  --sb-surface-card: #ffffff;
+  --sb-surface-card-foreground: #0b0d0e;
+  --sb-surface-panel: #eef0ec;
+  --sb-surface-panel-foreground: #0b0d0e;
+  --sb-surface-shelf: #e7ecef;
+  --sb-surface-shelf-foreground: #0b0d0e;
+  --sb-surface-tray: #ffffff;
+  --sb-surface-tray-foreground: #0b0d0e;
+  --sb-primary: #0b0d0e;
+  --sb-primary-foreground: #ffffff;
+  --sb-secondary: #ffffff;
+  --sb-secondary-foreground: #0b0d0e;
+  --sb-muted: #eceeea;
+  --sb-muted-foreground: #353b3f;
+  --sb-accent: #dfe6ea;
+  --sb-accent-foreground: #0b0d0e;
+  --sb-destructive: #8c1a12;
+  --sb-destructive-foreground: #ffffff;
+  --sb-border: #454d52;
+  --sb-input: #ffffff;
+  --sb-ring: #0b0d0e;
+  --sb-success: #0c4f47;
+  --sb-success-foreground: #ffffff;
+  --sb-warning: #f2dfa8;
+  --sb-warning-foreground: #0b0d0e;
+  --sb-info: #1f3a55;
+  --sb-info-foreground: #ffffff;
+  --sb-live: #0a0c0d;
+  --sb-live-foreground: #ffd21a;
+  --sb-metric: #0e3f8c;
+  --sb-metric-foreground: #ffffff;
+  --sb-improvement: #0d5529;
+  --sb-improvement-foreground: #ffffff;
+  --sb-fault: #773300;
+  --sb-fault-foreground: #ffffff;
+  --sb-tap-pad: #ffffff;
+  --sb-tap-pad-foreground: #0b0d0e;
+  --sb-shadow: #0b0d0e33;
+  --sb-scrim: #0b0d0eb3;
+  --sb-chart-1: #0e3f8c;
+  --sb-chart-2: #0d5529;
+  --sb-chart-3: #773300;
+  --sb-chart-4: #5a2d8a;
+  --sb-chart-5: #353b3f;
+  --sb-button-min-target: 3.5rem;
+  --sb-tap-key-size: 6rem;
+  --sb-rating-step-size: 3.75rem;
+  --sb-length-cell-size: 3.75rem;
+  --sb-density-inset: 1.75rem;
+  --sb-density-gap: 1.25rem;
+  --sb-density-control-padding-block: 0.875rem;
+  --sb-density-row-height: 3.75rem;
+  --sb-type-body-size: 1.125rem;
+  --sb-type-label-size: 1rem;
+  --sb-type-numeral-xl-size: 6rem;
+  --sb-type-numeral-lg-size: 3rem;
+  --sb-type-numeral-md-size: 1.75rem;
+}
+
+/* Admin console density. Still above the 24 CSS px target floor; never used on Capture or watcher pages. */
+[data-density="compact"] {
+  --sb-density-inset: 0.75rem;
+  --sb-density-gap: 0.5rem;
+  --sb-density-control-padding-block: 0.375rem;
+  --sb-density-control-padding-inline: 0.75rem;
+  --sb-density-row-height: 2.25rem;
+  --sb-button-min-target: 2rem;
+  /* Redeclared so the calc resolves against the compact target; a root-level calc inherits the root's result. */
+  --sb-control-size-sm: calc(var(--sb-button-min-target) * 0.75);
+  --sb-control-size-lg: calc(var(--sb-button-min-target) * 1.25);
+  --sb-type-body-size: 0.875rem;
+  --sb-type-body-line-height: 1.45;
+}
+
+/* The Deck size knob on its own, for Capture in any theme or world. Same values as splitbook-deck. The :root form outranks
+   a world's theme block, so a world's type overrides cannot undo Deck sizing on the root. */
+:root[data-density="deck"],
+[data-density="deck"] {
+  --sb-button-min-target: 3.5rem;
+  /* Redeclared so the calc resolves against the Deck target in a nested region. */
+  --sb-control-size-sm: calc(var(--sb-button-min-target) * 0.75);
+  --sb-control-size-lg: calc(var(--sb-button-min-target) * 1.25);
+  --sb-tap-key-size: 6rem;
+  --sb-rating-step-size: 3.75rem;
+  --sb-length-cell-size: 3.75rem;
+  --sb-density-inset: 1.75rem;
+  --sb-density-gap: 1.25rem;
+  --sb-density-control-padding-block: 0.875rem;
+  --sb-density-row-height: 3.75rem;
+  --sb-type-body-size: 1.125rem;
+  --sb-type-label-size: 1rem;
+  --sb-type-numeral-xl-size: 6rem;
+  --sb-type-numeral-lg-size: 3rem;
+  --sb-type-numeral-md-size: 1.75rem;
+}
+
+/* Reduced motion: every duration collapses, so state changes stay instant and visible without movement. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --sb-motion-fast: 1ms;
+    --sb-motion-standard: 1ms;
+    --sb-motion-panel: 1ms;
+    --sb-motion-flash: 1ms;
+    --sb-motion-pulse: 1ms;
+    --sb-motion-stagger: 1ms;
+  }
+}

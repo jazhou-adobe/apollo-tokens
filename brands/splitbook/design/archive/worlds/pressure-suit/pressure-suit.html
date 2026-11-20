@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="en" data-theme="splitbook-pressure-suit" data-palette="sage-nomex">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pressure Suit · Splitbook world preview</title>
+<!--
+  Splitbook world preview (Phase 2, quick look): pressure-suit → theme value splitbook-pressure-suit.
+  Four colour options, in contract order: recommended default, two alternatives, original.
+  Contrast (WCAG ratio, truncated, never rounded up). Gates from design/brief.md: every role/role-foreground >= 4.5;
+  muted-foreground on background, surfaces, muted, tap-pad >= 4.5; border and ring vs surfaces, input, tap-pad >= 3;
+  live/metric/improvement/fault vs surface-card and tap-pad >= 3; chart-* vs surface-card and surface-panel >= 3.
+  Extra checks for this preview: the stitch helper vs card/panel/tap-pad >= 3 (seams act as boundaries), and
+  live/metric/improvement/fault used as text on surface-card >= 4.5.
+  sage-nomex (Sage Nomex): all gates pass, lowest 3.25
+    foreground/background 12.13; surface-card-foreground/surface-card 15.04; surface-panel-foreground/surface-panel 10.78; surface-shelf-foreground/surface-shelf 13.59; surface-tray-foreground/surface-tray 10.99; primary-foreground/primary 8.39; secondary-foreground/secondary 9.08; muted-foreground/muted 6.98; accent-foreground/accent 8.32; destructive-foreground/destructive 8.15; success-foreground/success 6.42; warning-foreground/warning 7.12; info-foreground/info 8.66; live-foreground/live 5.98; metric-foreground/metric 8.66; improvement-foreground/improvement 6.42; fault-foreground/fault 7.12; tap-pad-foreground/tap-pad 10.09; muted-fg/background 6.54; muted-fg/surface-card 8.1; muted-fg/surface-panel 5.81; muted-fg/surface-shelf 7.32; muted-fg/surface-tray 5.92; muted-fg/muted 6.98; muted-fg/tap-pad 5.43; border/background 3.91; border/surface-card 4.84; border/surface-panel 3.47; border/surface-shelf 4.38; border/surface-tray 3.54; border/input 5.07; border/tap-pad 3.25; ring/background 6.22; ring/surface-card 7.71; ring/surface-panel 5.53; ring/surface-shelf 6.97; ring/surface-tray 5.63; ring/input 8.07; ring/tap-pad 5.17; live/surface-card 5.33; live/tap-pad 3.57; metric/surface-card 7.71; metric/tap-pad 5.17; improvement/surface-card 5.72; improvement/tap-pad 3.84; fault/surface-card 6.35; fault/tap-pad 4.26; chart-1/surface-card 7.71; chart-1/surface-panel 5.53; chart-2/surface-card 5.33; chart-2/surface-panel 3.82; chart-3/surface-card 5.72; chart-3/surface-panel 4.1; chart-4/surface-card 7.08; chart-4/surface-panel 5.08; chart-5/surface-card 6.35; chart-5/surface-panel 4.55; stitch/surface-card 5.63; stitch/surface-panel 4.04; stitch/tap-pad 3.78; live as text/surface-card 5.33; metric as text/surface-card 7.71; improvement as text/surface-card 5.72; fault as text/surface-card 6.35
+  eva-white (EVA White): all gates pass, lowest 3.33
+    foreground/background 14.22; surface-card-foreground/surface-card 17.82; surface-panel-foreground/surface-panel 12.43; surface-shelf-foreground/surface-shelf 15.6; surface-tray-foreground/surface-tray 13.18; primary-foreground/primary 11.23; secondary-foreground/secondary 10.89; muted-foreground/muted 6.88; accent-foreground/accent 9.42; destructive-foreground/destructive 7.81; success-foreground/success 6.6; warning-foreground/warning 7.12; info-foreground/info 8.17; live-foreground/live 5.6; metric-foreground/metric 8.17; improvement-foreground/improvement 6.6; fault-foreground/fault 7.12; tap-pad-foreground/tap-pad 12.06; muted-fg/background 6.51; muted-fg/surface-card 8.16; muted-fg/surface-panel 5.69; muted-fg/surface-shelf 7.14; muted-fg/surface-tray 6.03; muted-fg/muted 6.88; muted-fg/tap-pad 5.52; border/background 3.93; border/surface-card 4.93; border/surface-panel 3.44; border/surface-shelf 4.31; border/surface-tray 3.65; border/input 4.8; border/tap-pad 3.33; ring/background 8.96; ring/surface-card 11.23; ring/surface-panel 7.83; ring/surface-shelf 9.83; ring/surface-tray 8.31; ring/input 10.93; ring/tap-pad 7.6; live/surface-card 5.6; live/tap-pad 3.79; metric/surface-card 8.17; metric/tap-pad 5.53; improvement/surface-card 6.6; improvement/tap-pad 4.47; fault/surface-card 7.12; fault/tap-pad 4.82; chart-1/surface-card 8.17; chart-1/surface-panel 5.7; chart-2/surface-card 5.6; chart-2/surface-panel 3.9; chart-3/surface-card 6.6; chart-3/surface-panel 4.6; chart-4/surface-card 7.95; chart-4/surface-panel 5.54; chart-5/surface-card 7.12; chart-5/surface-panel 4.97; stitch/surface-card 5.63; stitch/surface-panel 3.92; stitch/tap-pad 3.81; live as text/surface-card 5.6; metric as text/surface-card 8.17; improvement as text/surface-card 6.6; fault as text/surface-card 7.12
+  midnight-jacket (Midnight Jacket): all gates pass, lowest 3.19
+    foreground/background 12.21; surface-card-foreground/surface-card 10.39; surface-panel-foreground/surface-panel 8.94; surface-shelf-foreground/surface-shelf 11.29; surface-tray-foreground/surface-tray 9.78; primary-foreground/primary 10.86; secondary-foreground/secondary 7.41; muted-foreground/muted 6.51; accent-foreground/accent 8.53; destructive-foreground/destructive 6.57; success-foreground/success 8.65; warning-foreground/warning 8.94; info-foreground/info 8.17; live-foreground/live 7.41; metric-foreground/metric 8.17; improvement-foreground/improvement 8.65; fault-foreground/fault 8.94; tap-pad-foreground/tap-pad 9.08; muted-fg/background 7.89; muted-fg/surface-card 6.71; muted-fg/surface-panel 5.78; muted-fg/surface-shelf 7.29; muted-fg/surface-tray 6.32; muted-fg/muted 6.51; muted-fg/tap-pad 5.87; border/background 4.35; border/surface-card 3.7; border/surface-panel 3.19; border/surface-shelf 4.02; border/surface-tray 3.48; border/input 4.08; border/tap-pad 3.24; ring/background 10.86; ring/surface-card 9.24; ring/surface-panel 7.96; ring/surface-shelf 10.05; ring/surface-tray 8.7; ring/input 10.18; ring/tap-pad 8.08; live/surface-card 6.3; live/tap-pad 5.51; metric/surface-card 6.95; metric/tap-pad 6.08; improvement/surface-card 7.36; improvement/tap-pad 6.43; fault/surface-card 7.6; fault/tap-pad 6.65; chart-1/surface-card 6.95; chart-1/surface-panel 5.98; chart-2/surface-card 6.3; chart-2/surface-panel 5.43; chart-3/surface-card 7.36; chart-3/surface-panel 6.34; chart-4/surface-card 6.76; chart-4/surface-panel 5.82; chart-5/surface-card 7.6; chart-5/surface-panel 6.55; stitch/surface-card 4.49; stitch/surface-panel 3.87; stitch/tap-pad 3.92; live as text/surface-card 6.3; metric as text/surface-card 6.95; improvement as text/surface-card 7.36; fault as text/surface-card 7.6
+  original (International Orange): all gates pass, lowest 3.56
+    foreground/background 13.53; surface-card-foreground/surface-card 16.07; surface-panel-foreground/surface-panel 11.27; surface-shelf-foreground/surface-shelf 14.89; surface-tray-foreground/surface-tray 12.27; primary-foreground/primary 12.49; secondary-foreground/secondary 10.36; muted-foreground/muted 8.68; accent-foreground/accent 12.49; destructive-foreground/destructive 8.24; success-foreground/success 7.64; warning-foreground/warning 8.6; info-foreground/info 9.06; live-foreground/live 7.76; metric-foreground/metric 9.06; improvement-foreground/improvement 7.64; fault-foreground/fault 9.79; tap-pad-foreground/tap-pad 8.07; muted-fg/background 8.31; muted-fg/surface-card 9.86; muted-fg/surface-panel 6.92; muted-fg/surface-shelf 9.14; muted-fg/surface-tray 7.53; muted-fg/muted 8.68; muted-fg/tap-pad 4.95; border/background 6.53; border/surface-card 7.75; border/surface-panel 5.44; border/surface-shelf 7.19; border/surface-tray 5.92; border/input 8.01; border/tap-pad 3.89; ring/background 10.52; ring/surface-card 12.49; ring/surface-panel 8.76; ring/surface-shelf 11.57; ring/surface-tray 9.53; ring/input 12.9; ring/tap-pad 6.27; live/surface-card 7.22; live/tap-pad 3.62; metric/surface-card 8.42; metric/tap-pad 4.23; improvement/surface-card 7.1; improvement/tap-pad 3.56; fault/surface-card 9.1; fault/tap-pad 4.57; chart-1/surface-card 8.42; chart-1/surface-panel 5.91; chart-2/surface-card 7.22; chart-2/surface-panel 5.06; chart-3/surface-card 7.1; chart-3/surface-panel 4.98; chart-4/surface-card 8.8; chart-4/surface-panel 6.17; chart-5/surface-card 9.1; chart-5/surface-panel 6.38; stitch/surface-card 7.75; stitch/surface-panel 5.44; stitch/tap-pad 3.89; live as text/surface-card 7.22; metric as text/surface-card 8.42; improvement as text/surface-card 7.1; fault as text/surface-card 9.1
+  Fonts: Archivo (variable width, display numerals and name tapes), Atkinson Hyperlegible (body).
+  Mission patches mark identity only (Swimmer, Session). They are never earned or awarded.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ---------- Colour options (46 roles + world helpers) ---------- */
+html[data-theme="splitbook-pressure-suit"],
+html[data-theme="splitbook-pressure-suit"][data-palette="sage-nomex"] {
+  color-scheme: light;
+  --sb-background: #DEDBCB;
+  --sb-foreground: #1B1E16;
+  --sb-surface-card: #F4F2E8;
+  --sb-surface-card-foreground: #1B1E16;
+  --sb-surface-panel: #CDD1B9;
+  --sb-surface-panel-foreground: #1B1E16;
+  --sb-surface-shelf: #E9E7DA;
+  --sb-surface-shelf-foreground: #1B1E16;
+  --sb-surface-tray: #D4D1BF;
+  --sb-surface-tray-foreground: #1B1E16;
+  --sb-primary: #3F4A2E;
+  --sb-primary-foreground: #F4F2E8;
+  --sb-secondary: #BCC1A4;
+  --sb-secondary-foreground: #1B1E16;
+  --sb-muted: #E4E2D4;
+  --sb-muted-foreground: #474A3A;
+  --sb-accent: #2C4A5E;
+  --sb-accent-foreground: #F4F2E8;
+  --sb-destructive: #9B1C1C;
+  --sb-destructive-foreground: #FFFFFF;
+  --sb-border: #686C53;
+  --sb-input: #F8F7F1;
+  --sb-ring: #1F4E79;
+  --sb-success: #2E6B34;
+  --sb-success-foreground: #FFFFFF;
+  --sb-warning: #7C4E00;
+  --sb-warning-foreground: #FFFFFF;
+  --sb-info: #1F4E79;
+  --sb-info-foreground: #FFFFFF;
+  --sb-live: #B4380A;
+  --sb-live-foreground: #FFFFFF;
+  --sb-metric: #1F4E79;
+  --sb-metric-foreground: #FFFFFF;
+  --sb-improvement: #2E6B34;
+  --sb-improvement-foreground: #FFFFFF;
+  --sb-fault: #7C4E00;
+  --sb-fault-foreground: #FFFFFF;
+  --sb-tap-pad: #C6CBAE;
+  --sb-tap-pad-foreground: #1B1E16;
+  --sb-shadow: #3A3D2C;
+  --sb-scrim: #1B1E16;
+  --sb-chart-1: #1F4E79;
+  --sb-chart-2: #B4380A;
+  --sb-chart-3: #2E6B34;
+  --sb-chart-4: #6A3E85;
+  --sb-chart-5: #7C4E00;
+  --pressure-suit-pad-hi: #FBFAF4;
+  --pressure-suit-pad-lo: #9EA285;
+  --pressure-suit-stitch: #5E6249;
+  --pressure-suit-patch: #2C4A5E;
+  --pressure-suit-patch-foreground: #F4F2E8;
+}
+html[data-theme="splitbook-pressure-suit"][data-palette="eva-white"] {
+  color-scheme: light;
+  --sb-background: #E3E6E9;
+  --sb-foreground: #14181D;
+  --sb-surface-card: #FFFFFF;
+  --sb-surface-card-foreground: #14181D;
+  --sb-surface-panel: #D3D8DE;
+  --sb-surface-panel-foreground: #14181D;
+  --sb-surface-shelf: #EEF0F2;
+  --sb-surface-shelf-foreground: #14181D;
+  --sb-surface-tray: #DADEE3;
+  --sb-surface-tray-foreground: #14181D;
+  --sb-primary: #1D3B66;
+  --sb-primary-foreground: #FFFFFF;
+  --sb-secondary: #C4CBD4;
+  --sb-secondary-foreground: #14181D;
+  --sb-muted: #E9ECEF;
+  --sb-muted-foreground: #47505D;
+  --sb-accent: #7A2E14;
+  --sb-accent-foreground: #FFFFFF;
+  --sb-destructive: #A11B1B;
+  --sb-destructive-foreground: #FFFFFF;
+  --sb-border: #68717F;
+  --sb-input: #FBFCFD;
+  --sb-ring: #1D3B66;
+  --sb-success: #1F6A39;
+  --sb-success-foreground: #FFFFFF;
+  --sb-warning: #7A4F00;
+  --sb-warning-foreground: #FFFFFF;
+  --sb-info: #1D4F8F;
+  --sb-info-foreground: #FFFFFF;
+  --sb-live: #BC3A0C;
+  --sb-live-foreground: #FFFFFF;
+  --sb-metric: #1D4F8F;
+  --sb-metric-foreground: #FFFFFF;
+  --sb-improvement: #1F6A39;
+  --sb-improvement-foreground: #FFFFFF;
+  --sb-fault: #7A4F00;
+  --sb-fault-foreground: #FFFFFF;
+  --sb-tap-pad: #CFD5DD;
+  --sb-tap-pad-foreground: #14181D;
+  --sb-shadow: #2A3038;
+  --sb-scrim: #14181D;
+  --sb-chart-1: #1D4F8F;
+  --sb-chart-2: #BC3A0C;
+  --sb-chart-3: #1F6A39;
+  --sb-chart-4: #6A3E85;
+  --sb-chart-5: #7A4F00;
+  --pressure-suit-pad-hi: #FFFFFF;
+  --pressure-suit-pad-lo: #A3ABB6;
+  --pressure-suit-stitch: #5F6876;
+  --pressure-suit-patch: #1D3B66;
+  --pressure-suit-patch-foreground: #FFFFFF;
+}
+html[data-theme="splitbook-pressure-suit"][data-palette="midnight-jacket"] {
+  color-scheme: dark;
+  --sb-background: #1F2631;
+  --sb-foreground: #ECE6D6;
+  --sb-surface-card: #29323F;
+  --sb-surface-card-foreground: #ECE6D6;
+  --sb-surface-panel: #323C4B;
+  --sb-surface-panel-foreground: #ECE6D6;
+  --sb-surface-shelf: #242C38;
+  --sb-surface-shelf-foreground: #ECE6D6;
+  --sb-surface-tray: #2D3644;
+  --sb-surface-tray-foreground: #ECE6D6;
+  --sb-primary: #E6D9BA;
+  --sb-primary-foreground: #1F2631;
+  --sb-secondary: #3D485A;
+  --sb-secondary-foreground: #ECE6D6;
+  --sb-muted: #2B3442;
+  --sb-muted-foreground: #B6BBC4;
+  --sb-accent: #A3C6E6;
+  --sb-accent-foreground: #1F2631;
+  --sb-destructive: #F2907F;
+  --sb-destructive-foreground: #1F2631;
+  --sb-border: #7F8A9B;
+  --sb-input: #232B37;
+  --sb-ring: #E6D9BA;
+  --sb-success: #93D29D;
+  --sb-success-foreground: #1F2631;
+  --sb-warning: #E9C25E;
+  --sb-warning-foreground: #1F2631;
+  --sb-info: #93C3EE;
+  --sb-info-foreground: #1F2631;
+  --sb-live: #FF9D5E;
+  --sb-live-foreground: #1F2631;
+  --sb-metric: #93C3EE;
+  --sb-metric-foreground: #1F2631;
+  --sb-improvement: #93D29D;
+  --sb-improvement-foreground: #1F2631;
+  --sb-fault: #E9C25E;
+  --sb-fault-foreground: #1F2631;
+  --sb-tap-pad: #313B4A;
+  --sb-tap-pad-foreground: #ECE6D6;
+  --sb-shadow: #0C1016;
+  --sb-scrim: #0C1016;
+  --sb-chart-1: #93C3EE;
+  --sb-chart-2: #FF9D5E;
+  --sb-chart-3: #93D29D;
+  --sb-chart-4: #CDB0E8;
+  --sb-chart-5: #E9C25E;
+  --pressure-suit-pad-hi: #44505F;
+  --pressure-suit-pad-lo: #141A22;
+  --pressure-suit-stitch: #8F99A8;
+  --pressure-suit-patch: #E6D9BA;
+  --pressure-suit-patch-foreground: #1F2631;
+}
+html[data-theme="splitbook-pressure-suit"][data-palette="original"] {
+  color-scheme: light;
+  --sb-background: #EEE2D2;
+  --sb-foreground: #1E1A16;
+  --sb-surface-card: #FBF6EE;
+  --sb-surface-card-foreground: #1E1A16;
+  --sb-surface-panel: #F2C9A8;
+  --sb-surface-panel-foreground: #1E1A16;
+  --sb-surface-shelf: #F5EDE2;
+  --sb-surface-shelf-foreground: #1E1A16;
+  --sb-surface-tray: #E7D7C3;
+  --sb-surface-tray-foreground: #1E1A16;
+  --sb-primary: #22303F;
+  --sb-primary-foreground: #FBF6EE;
+  --sb-secondary: #E2C3A6;
+  --sb-secondary-foreground: #1E1A16;
+  --sb-muted: #F1E7DA;
+  --sb-muted-foreground: #4A3C2F;
+  --sb-accent: #22303F;
+  --sb-accent-foreground: #FBF6EE;
+  --sb-destructive: #9A1B1B;
+  --sb-destructive-foreground: #FFFFFF;
+  --sb-border: #5E4A3A;
+  --sb-input: #FDFAF5;
+  --sb-ring: #22303F;
+  --sb-success: #245F2C;
+  --sb-success-foreground: #FFFFFF;
+  --sb-warning: #6A4400;
+  --sb-warning-foreground: #FFFFFF;
+  --sb-info: #1E4A7A;
+  --sb-info-foreground: #FFFFFF;
+  --sb-live: #A01F17;
+  --sb-live-foreground: #FFFFFF;
+  --sb-metric: #1E4A7A;
+  --sb-metric-foreground: #FFFFFF;
+  --sb-improvement: #245F2C;
+  --sb-improvement-foreground: #FFFFFF;
+  --sb-fault: #5E3D00;
+  --sb-fault-foreground: #FFFFFF;
+  --sb-tap-pad: #EE9F6A;
+  --sb-tap-pad-foreground: #1E1A16;
+  --sb-shadow: #4A2E1A;
+  --sb-scrim: #1E1A16;
+  --sb-chart-1: #1E4A7A;
+  --sb-chart-2: #A01F17;
+  --sb-chart-3: #245F2C;
+  --sb-chart-4: #5B347A;
+  --sb-chart-5: #5E3D00;
+  --pressure-suit-pad-hi: #FFF8EE;
+  --pressure-suit-pad-lo: #B8673A;
+  --pressure-suit-stitch: #5E4A3A;
+  --pressure-suit-patch: #22303F;
+  --pressure-suit-patch-foreground: #FBF6EE;
+}
+
+/* ---------- World overrides: type, shape, depth only ---------- */
+html[data-theme="splitbook-pressure-suit"] {
+  --sb-font-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --sb-font-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --sb-radius-sm: 8px;
+  --sb-radius-md: 14px;
+  --sb-radius-lg: 22px;
+  --sb-radius-pill: 999px;
+  --sb-border-width-seam: 1.5px;
+  --sb-elevation-pad: 5px;          /* pad thickness: the only depth cue */
+  --sb-elevation-pad-pressed: 1px;
+  /* System-wide tokens the world does not change (shown here so the preview runs) */
+  --sb-button-min-target: 3.5rem;   /* Deck on Capture */
+  --sb-tap-key-size: 5.5rem;
+  --sb-rating-step-size: 3.25rem;
+  --sb-length-cell-size: 4.25rem;
+  --sb-focus-ring-width: 3px;
+  --sb-focus-ring-offset: 3px;
+  --sb-motion-fast: 110ms;
+  --sb-motion-base: 260ms;
+  --sb-ease-out: cubic-bezier(.2,.8,.2,1);
+  --sb-ease-spring: cubic-bezier(.3,1.5,.5,1);
+  --sb-press-scale: .955;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="splitbook-pressure-suit"] { --sb-motion-fast: 1ms; --sb-motion-base: 1ms; }
+}
+
+/* ---------- Page ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--sb-background);
+  color: var(--sb-foreground);
+  font: 400 15px/1.45 var(--sb-font-sans);
+  min-height: 100vh;
+}
+.ps-mono, .ps-num { font-family: var(--sb-font-display); font-variant-numeric: tabular-nums; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+:focus-visible { outline: var(--sb-focus-ring-width) solid var(--sb-ring); outline-offset: var(--sb-focus-ring-offset); }
+
+/* Name tape: stitched label strip */
+.ps-tape {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 750 11px/1 var(--sb-font-display); font-stretch: 125%;
+  letter-spacing: .14em; text-transform: uppercase;
+  padding: 7px 11px; border-radius: 5px;
+  background: var(--sb-surface-panel); color: var(--sb-surface-panel-foreground);
+  outline: var(--sb-border-width-seam) dashed var(--pressure-suit-stitch); outline-offset: -4px;
+}
+
+/* Mission patch: identity marker, merrowed edge + inner stitch */
+.ps-patch {
+  position: relative; flex: none;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--pressure-suit-patch); color: var(--pressure-suit-patch-foreground);
+  border: 3px solid var(--pressure-suit-stitch);
+  font: 800 14px/1 var(--sb-font-display); font-stretch: 112%; letter-spacing: .04em;
+}
+.ps-patch::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; border: var(--sb-border-width-seam) dashed var(--pressure-suit-patch-foreground); }
+
+/* ---------- The pad (shared by every pressable) ---------- */
+.ps-press {
+  --pad-face: var(--sb-surface-card);
+  --pad-ink: var(--sb-surface-card-foreground);
+  --pad-seam: var(--pressure-suit-stitch);
+  --pad-edge: color-mix(in srgb, var(--pad-face) 40%, var(--pressure-suit-pad-lo));
+  position: relative;
+  appearance: none; font: inherit; cursor: pointer;
+  background: var(--pad-face); color: var(--pad-ink);
+  border: 2px solid var(--sb-border);
+  border-radius: var(--sb-radius-md);
+  box-shadow:
+    inset 0 2px 0 color-mix(in srgb, var(--pressure-suit-pad-hi) 70%, var(--pad-face)),
+    inset 0 -6px 0 color-mix(in srgb, var(--pad-face) 72%, var(--pressure-suit-pad-lo)),
+    0 var(--sb-elevation-pad) 0 var(--pad-edge);
+  transform-origin: 50% 100%;
+  transition: box-shadow var(--sb-motion-fast) var(--sb-ease-out), transform var(--sb-motion-fast) var(--sb-ease-out);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+}
+.ps-press::after { /* stitched seam inside the pad */
+  content: ""; position: absolute; inset: 5px; pointer-events: none;
+  border-radius: calc(var(--sb-radius-md) - 5px);
+  border: var(--sb-border-width-seam) dashed var(--pad-seam);
+  transition: inset var(--sb-motion-fast) var(--sb-ease-out);
+}
+/* Compressed: thickness collapses into the panel, face shades from above, seam pulls in */
+.ps-press.is-compressed,
+.ps-press.is-set {
+  box-shadow:
+    inset 0 5px 0 color-mix(in srgb, var(--pad-face) 62%, var(--pressure-suit-pad-lo)),
+    inset 0 -1px 0 color-mix(in srgb, var(--pressure-suit-pad-hi) 50%, var(--pad-face)),
+    0 var(--sb-elevation-pad-pressed) 0 var(--pad-edge);
+}
+.ps-press.is-compressed::after, .ps-press.is-set::after { inset: 8px 7px 6px; }
+@media (prefers-reduced-motion: no-preference) {
+  .ps-press.is-compressed { transform: translateY(calc(var(--sb-elevation-pad) - var(--sb-elevation-pad-pressed))) scale(.99, var(--sb-press-scale)); }
+  .ps-press.is-set { transform: translateY(calc(var(--sb-elevation-pad) - var(--sb-elevation-pad-pressed))); }
+  .ps-press.is-rebound { animation: pressure-suit-rebound var(--sb-motion-base) var(--sb-ease-out); }
+}
+@keyframes pressure-suit-rebound {
+  0%   { transform: translateY(4px) scale(.99, .955); }
+  55%  { transform: translateY(-1px) scale(1, 1.012); }
+  100% { transform: none; }
+}
+
+/* ---------- Header ---------- */
+.ps-header {
+  display: grid; grid-template-columns: 1fr auto; gap: 8px 24px; align-items: center;
+  padding: 12px 28px 11px;
+  background: var(--sb-surface-shelf); color: var(--sb-surface-shelf-foreground);
+  border-bottom: 2px solid var(--sb-border);
+}
+.ps-header-title { display: flex; gap: 14px; align-items: center; }
+.ps-header h1 { margin: 0; font: 800 28px/1 var(--sb-font-display); font-stretch: 118%; letter-spacing: .01em; }
+.ps-header h1 small { display: block; margin-top: 5px; font: 600 12px/1 var(--sb-font-display); font-stretch: 100%; color: var(--sb-muted-foreground); letter-spacing: .04em; }
+.ps-header-text { grid-column: 1 / -1; }
+.ps-header p { margin: 0; font-size: 13.5px; line-height: 1.4; }
+.ps-header p + p { margin-top: 2px; }
+.ps-header b { font-weight: 700; }
+.ps-pals { display: grid; grid-template-columns: repeat(4, auto); gap: 10px; margin: 0; padding: 0 0 5px; border: 0; }
+.ps-pal {
+  --sb-radius-md: 12px;
+  display: flex; align-items: center; gap: 10px; text-align: left;
+  min-height: 48px; padding: 6px 14px 9px 12px;
+}
+.ps-pal-swatches { display: flex; }
+.ps-swatch { width: 16px; height: 22px; border: 1.5px solid var(--sb-border); margin-right: -4px; border-radius: 5px; }
+.ps-pal-text { display: grid; gap: 2px; padding-left: 6px; }
+.ps-pal-name { font: 700 13px/1.1 var(--sb-font-display); font-stretch: 108%; }
+.ps-pal-tag { font-size: 11px; line-height: 1.1; color: var(--sb-muted-foreground); }
+.ps-pal[aria-checked="true"] .ps-pal-name::before { content: "\25CF  "; }
+
+/* ---------- Stage ---------- */
+.ps-stage { display: grid; grid-template-columns: 404px 1fr; gap: 26px; padding: 14px 28px 20px; align-items: start; }
+.ps-caption { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 9px; font-size: 12.5px; color: var(--sb-muted-foreground); }
+
+/* ---------- Phone: live Capture (Deck sizes) ---------- */
+.ps-phone {
+  width: 404px; height: 704px; overflow: hidden;
+  border: 7px solid var(--sb-surface-tray); outline: 2px solid var(--sb-border);
+  border-radius: 38px; background: var(--sb-background);
+  display: flex; flex-direction: column; gap: 10px; padding: 12px 12px 14px;
+}
+.ps-cap-top { display: flex; align-items: center; gap: 10px; }
+.ps-cap-who { flex: 1; min-width: 0; }
+.ps-cap-who strong { display: block; font: 750 16px/1.15 var(--sb-font-display); font-stretch: 106%; }
+.ps-cap-who span { font-size: 12.5px; color: var(--sb-muted-foreground); }
+.ps-rec {
+  display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border-radius: var(--sb-radius-pill);
+  background: var(--sb-live); color: var(--sb-live-foreground);
+  font: 800 12px/1 var(--sb-font-display); letter-spacing: .1em; text-transform: uppercase;
+}
+.ps-rec::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: currentColor; }
+.ps-rec[data-state="stopped"] { background: var(--sb-muted); color: var(--sb-foreground); outline: 2px solid var(--sb-border); }
+.ps-rec[data-state="stopped"]::before { border-radius: 2px; }
+
+.ps-split {
+  background: var(--sb-surface-card); color: var(--sb-surface-card-foreground);
+  border: 2px solid var(--sb-border); border-radius: var(--sb-radius-lg);
+  padding: 10px 16px 12px; position: relative;
+}
+.ps-split::after { content: ""; position: absolute; inset: 5px; border-radius: calc(var(--sb-radius-lg) - 5px); border: var(--sb-border-width-seam) dashed var(--pressure-suit-stitch); pointer-events: none; }
+.ps-split-row { display: flex; justify-content: space-between; align-items: baseline; }
+.ps-split-label { font: 700 11px/1 var(--sb-font-display); letter-spacing: .12em; text-transform: uppercase; color: var(--sb-muted-foreground); }
+.ps-split-value { font: 750 76px/0.95 var(--sb-font-display); font-stretch: 88%; font-variant-numeric: tabular-nums; color: var(--sb-live); letter-spacing: -.01em; margin-top: 4px; }
+.ps-split[data-state="stopped"] .ps-split-value { color: var(--sb-surface-card-foreground); }
+.ps-split-sub { font-size: 13px; }
+.ps-split-sub .ps-num { font-weight: 700; }
+
+.ps-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin: 0; padding: 0; list-style: none; }
+.ps-cell {
+  min-height: var(--sb-length-cell-size); border-radius: var(--sb-radius-sm);
+  border: 2px solid var(--sb-border); background: var(--sb-surface-card); color: var(--sb-surface-card-foreground);
+  padding: 6px 7px; display: grid; align-content: space-between;
+}
+.ps-cell-n { font: 700 11px/1 var(--sb-font-display); letter-spacing: .08em; text-transform: uppercase; color: var(--sb-muted-foreground); display: flex; justify-content: space-between; }
+.ps-cell-t { font: 750 19px/1 var(--sb-font-display); font-variant-numeric: tabular-nums; }
+.ps-cell-c { font-size: 11px; line-height: 1.2; color: var(--sb-muted-foreground); }
+.ps-cell[data-state="todo"] { background: var(--sb-muted); border-style: dashed; }
+.ps-cell[data-state="todo"] .ps-cell-t { color: var(--sb-muted-foreground); font-weight: 500; }
+.ps-cell[data-state="now"] { border-color: var(--sb-live); border-width: 3px; padding: 5px 6px; }
+.ps-cell[data-state="now"] .ps-cell-n { color: var(--sb-live); }
+.ps-cell[data-state="now"] .ps-cell-t { color: var(--sb-live); }
+
+.ps-tappad {
+  background: var(--sb-tap-pad); color: var(--sb-tap-pad-foreground);
+  border: 2px solid var(--sb-border); border-radius: var(--sb-radius-lg);
+  padding: 12px 12px 15px; display: grid; gap: 12px; flex: 1; grid-template-rows: auto 1fr;
+  /* Quilting: only in the gaps between keys, never behind text */
+  background-image:
+    repeating-linear-gradient(45deg, transparent 0 21px, color-mix(in srgb, var(--pressure-suit-stitch) 30%, transparent) 21px 22.5px),
+    repeating-linear-gradient(-45deg, transparent 0 21px, color-mix(in srgb, var(--pressure-suit-stitch) 30%, transparent) 21px 22.5px);
+}
+.ps-wall {
+  --pad-face: var(--sb-live); --pad-ink: var(--sb-live-foreground);
+  --pad-seam: color-mix(in srgb, var(--sb-live-foreground) 65%, var(--sb-live));
+  --sb-radius-md: 20px;
+  min-height: calc(var(--sb-tap-key-size) + 8px); width: 100%;
+  display: grid; grid-template-columns: 1fr auto; align-items: center; text-align: left; padding: 10px 22px 14px;
+}
+.ps-wall strong { display: block; font: 800 27px/1 var(--sb-font-display); font-stretch: 112%; letter-spacing: .02em; text-transform: uppercase; }
+.ps-wall span { font-size: 13px; }
+.ps-wall .ps-wall-glyph { font: 800 32px/1 var(--sb-font-display); }
+.ps-wall[disabled] { --pad-face: var(--sb-muted); --pad-ink: var(--sb-muted-foreground); --pad-seam: var(--sb-border); cursor: default; }
+.ps-counters { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ps-counter {
+  --pad-face: var(--sb-surface-card); --sb-radius-md: 18px;
+  min-height: calc(var(--sb-tap-key-size) + 22px); padding: 10px 14px 14px; text-align: left;
+  display: grid; grid-template-rows: auto 1fr auto; gap: 2px;
+}
+.ps-counter-name { font: 750 12px/1.15 var(--sb-font-display); letter-spacing: .06em; text-transform: uppercase; }
+.ps-counter-val { font: 800 50px/1 var(--sb-font-display); font-stretch: 90%; font-variant-numeric: tabular-nums; color: var(--sb-metric); }
+.ps-counter-foot { display: flex; justify-content: space-between; font-size: 12px; color: var(--sb-muted-foreground); }
+.ps-counter-foot b { font: 800 16px/1 var(--sb-font-display); color: var(--sb-surface-card-foreground); }
+.ps-cap-actions { display: grid; grid-template-columns: 1.35fr 1fr; gap: 10px; margin-top: auto; }
+.ps-cap-actions .ps-press { min-height: var(--sb-button-min-target); padding: 6px 12px 10px; font-weight: 700; font-size: 14px; line-height: 1.15; }
+.ps-undo { --pad-face: var(--sb-surface-card); text-align: left; }
+.ps-undo small { display: block; font-weight: 400; font-size: 11.5px; color: var(--sb-muted-foreground); }
+.ps-undo[disabled] { opacity: 1; color: var(--sb-muted-foreground); cursor: default; }
+.ps-end { --pad-face: var(--sb-primary); --pad-ink: var(--sb-primary-foreground); --pad-seam: color-mix(in srgb, var(--sb-primary-foreground) 55%, var(--sb-primary)); }
+
+/* ---------- Desktop: Review sheet + Technique trend ---------- */
+.ps-desk {
+  border: 2px solid var(--sb-border); border-radius: var(--sb-radius-lg);
+  background: var(--sb-surface-tray); color: var(--sb-surface-tray-foreground);
+  padding: 14px; display: grid; grid-template-columns: 1.42fr 1fr; gap: 14px;
+}
+.ps-sheet, .ps-trend {
+  background: var(--sb-surface-card); color: var(--sb-surface-card-foreground);
+  border: 2px solid var(--sb-border); border-radius: var(--sb-radius-lg); padding: 16px 18px 16px;
+}
+.ps-sheet-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.ps-sheet-head h2, .ps-trend h2 { margin: 6px 0 0; font: 800 21px/1.1 var(--sb-font-display); font-stretch: 108%; }
+.ps-sheet-head p, .ps-trend .ps-sub { margin: 2px 0 0; font-size: 13px; color: var(--sb-muted-foreground); }
+.ps-counts { display: flex; gap: 8px; margin: 0 0 12px; padding: 0; list-style: none; }
+.ps-counts li { flex: 1; border-radius: var(--sb-radius-sm); background: var(--sb-muted); color: var(--sb-foreground); padding: 7px 9px; font-size: 11.5px; line-height: 1.25; color: var(--sb-muted-foreground); }
+.ps-counts b { display: block; font: 750 17px/1.1 var(--sb-font-display); font-variant-numeric: tabular-nums; color: var(--sb-foreground); }
+.ps-rating { border: 0; margin: 0 0 12px; padding: 0; }
+.ps-rating legend { display: flex; justify-content: space-between; width: 100%; padding: 0; margin-bottom: 7px; }
+.ps-rating-name { font: 750 14px/1.2 var(--sb-font-display); font-stretch: 104%; }
+.ps-rating-hint { font-size: 12px; color: var(--sb-muted-foreground); }
+.ps-rate-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; }
+.ps-rate-step { --sb-radius-md: 14px; min-height: var(--sb-rating-step-size); display: grid; place-items: center; padding-bottom: 4px; }
+.ps-rate-step input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.ps-rate-num { font: 800 22px/1 var(--sb-font-display); font-variant-numeric: tabular-nums; }
+.ps-rate-step:has(input:checked) { --pad-face: var(--sb-metric); --pad-ink: var(--sb-metric-foreground); --pad-seam: color-mix(in srgb, var(--sb-metric-foreground) 60%, var(--sb-metric)); }
+.ps-rate-step:has(input:checked) .ps-rate-num::after { content: " \2713"; font-size: 16px; }
+.ps-rate-step:has(input:focus-visible) { outline: var(--sb-focus-ring-width) solid var(--sb-ring); outline-offset: var(--sb-focus-ring-offset); }
+.ps-cue { margin: 7px 0 0; font-size: 13px; min-height: 1.4em; }
+.ps-cue b { display: inline-grid; place-items: center; min-width: 22px; height: 22px; border-radius: 6px; background: var(--sb-metric); color: var(--sb-metric-foreground); font: 800 13px/1 var(--sb-font-display); margin-right: 6px; }
+
+.ps-faults { border-top: var(--sb-border-width-seam) dashed var(--pressure-suit-stitch); padding-top: 10px; margin-top: 4px; }
+.ps-faults-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.ps-faults-head span:last-child { font-size: 12px; color: var(--sb-muted-foreground); }
+.ps-fault-list { display: flex; gap: 10px; flex-wrap: wrap; }
+.ps-fault { --sb-radius-md: 12px; min-height: 48px; display: inline-flex; align-items: center; gap: 9px; padding: 6px 14px 10px 11px; font-size: 13.5px; text-align: left; }
+.ps-fault svg { width: 18px; height: 18px; flex: none; }
+.ps-fault .ps-fault-state { font: 750 11px/1 var(--sb-font-display); letter-spacing: .08em; text-transform: uppercase; padding: 4px 6px; border-radius: 5px; background: var(--sb-muted); color: var(--sb-muted-foreground); }
+.ps-fault[aria-pressed="true"] { --pad-face: var(--sb-fault); --pad-ink: var(--sb-fault-foreground); --pad-seam: color-mix(in srgb, var(--sb-fault-foreground) 55%, var(--sb-fault)); }
+.ps-fault[aria-pressed="true"] .ps-fault-state { background: var(--sb-fault-foreground); color: var(--sb-fault); }
+.ps-fault .flag-fill { fill: none; }
+.ps-fault[aria-pressed="true"] .flag-fill { fill: currentColor; }
+
+.ps-trend { display: grid; align-content: start; gap: 8px; }
+.ps-dial { display: block; width: 100%; max-width: 300px; margin: 2px auto 0; }
+.ps-dial .track { stroke: var(--sb-muted); }
+.ps-dial .seam { stroke: var(--pressure-suit-stitch); }
+.ps-dial .fill { stroke: var(--sb-metric); }
+.ps-dial .tick { stroke: var(--sb-border); }
+.ps-dial .lbl { fill: var(--sb-muted-foreground); font: 700 13px var(--sb-font-display); }
+.ps-dial .needle { stroke: var(--sb-foreground); }
+.ps-dial .hub { fill: var(--sb-foreground); }
+.ps-dial .val { fill: var(--sb-foreground); font: 800 34px var(--sb-font-display); font-variant-numeric: tabular-nums; }
+.ps-dial .valsub { fill: var(--sb-muted-foreground); font: 600 14px var(--sb-font-sans); }
+.ps-line .grid { stroke: var(--sb-border); stroke-dasharray: 3 4; }
+.ps-line .ln { stroke: var(--sb-metric); }
+.ps-line .pt { fill: var(--sb-surface-card); stroke: var(--sb-metric); }
+.ps-line .pt-lbl { fill: var(--sb-surface-card-foreground); font: 800 11px var(--sb-font-display); }
+.ps-line .ax { fill: var(--sb-muted-foreground); font: 600 10.5px var(--sb-font-sans); }
+.ps-gain { display: flex; gap: 9px; align-items: flex-start; padding: 9px 11px; border-radius: var(--sb-radius-sm); border: 2px solid var(--sb-improvement); font-size: 13px; line-height: 1.35; }
+.ps-gain::before { content: "\25B2"; color: var(--sb-improvement); font-size: 13px; line-height: 1.35; }
+.ps-gain b { color: var(--sb-improvement); }
+.ps-result { font-size: 12.5px; color: var(--sb-muted-foreground); margin: 0; }
+.ps-illus { font: 700 10.5px/1 var(--sb-font-display); letter-spacing: .1em; text-transform: uppercase; padding: 4px 7px; border-radius: 5px; border: 1.5px dashed var(--sb-border); color: var(--sb-muted-foreground); }
+</style>
+</head>
+<body>
+<header class="ps-header">
+  <div class="ps-header-title">
+    <span class="ps-patch" aria-hidden="true">PS</span>
+    <h1>Pressure Suit <small>Splitbook world · splitbook-pressure-suit · Phase 2 preview · illustrative data</small></h1>
+  </div>
+  <fieldset class="ps-pals" role="radiogroup" aria-label="Colour option">
+    <legend class="sr-only">Colour option</legend>
+        <button type="button" class="ps-press ps-pal" role="radio" aria-checked="true" data-set-palette="sage-nomex">
+          <span class="ps-pal-swatches" aria-hidden="true"><span class="ps-swatch" style="background:#DEDBCB" title="background #DEDBCB"></span><span class="ps-swatch" style="background:#C6CBAE" title="tap-pad #C6CBAE"></span><span class="ps-swatch" style="background:#B4380A" title="live #B4380A"></span></span>
+          <span class="ps-pal-text"><span class="ps-pal-name">Sage Nomex</span><span class="ps-pal-tag">Recommended</span></span>
+        </button>
+        <button type="button" class="ps-press ps-pal" role="radio" aria-checked="false" data-set-palette="eva-white">
+          <span class="ps-pal-swatches" aria-hidden="true"><span class="ps-swatch" style="background:#E3E6E9" title="background #E3E6E9"></span><span class="ps-swatch" style="background:#CFD5DD" title="tap-pad #CFD5DD"></span><span class="ps-swatch" style="background:#BC3A0C" title="live #BC3A0C"></span></span>
+          <span class="ps-pal-text"><span class="ps-pal-name">EVA White</span><span class="ps-pal-tag">Alternative</span></span>
+        </button>
+        <button type="button" class="ps-press ps-pal" role="radio" aria-checked="false" data-set-palette="midnight-jacket">
+          <span class="ps-pal-swatches" aria-hidden="true"><span class="ps-swatch" style="background:#1F2631" title="background #1F2631"></span><span class="ps-swatch" style="background:#313B4A" title="tap-pad #313B4A"></span><span class="ps-swatch" style="background:#FF9D5E" title="live #FF9D5E"></span></span>
+          <span class="ps-pal-text"><span class="ps-pal-name">Midnight Jacket</span><span class="ps-pal-tag">Alternative</span></span>
+        </button>
+        <button type="button" class="ps-press ps-pal" role="radio" aria-checked="false" data-set-palette="original">
+          <span class="ps-pal-swatches" aria-hidden="true"><span class="ps-swatch" style="background:#EEE2D2" title="background #EEE2D2"></span><span class="ps-swatch" style="background:#EE9F6A" title="tap-pad #EE9F6A"></span><span class="ps-swatch" style="background:#A01F17" title="live #A01F17"></span></span>
+          <span class="ps-pal-text"><span class="ps-pal-name">International Orange</span><span class="ps-pal-tag">Original colours</span></span>
+        </button>
+  </fieldset>
+  <div class="ps-header-text">
+    <p><b>Idea.</b> Padded flight-suit panels: rounded quilted pads, stitched seams and mission-patch badges. Depth comes from padding, not glow.</p>
+    <p><b>Signature.</b> Buttons compress like a suit pad. Press and hold any pad: it squashes, its seam pulls in, and it springs back when you let go. A chosen rating or a noted fault stays pressed in.</p>
+  </div>
+</header>
+
+<main class="ps-stage">
+  <section aria-labelledby="cap-title">
+    <p class="ps-caption"><span id="cap-title">Live Capture · phone, 390 px · Deck sizes</span><span class="ps-illus">Illustrative</span></p>
+    <div class="ps-phone">
+      <div class="ps-cap-top">
+        <span class="ps-patch" aria-hidden="true">MK</span>
+        <div class="ps-cap-who"><strong>Mia K.</strong><span>100 m freestyle · 25 m pool</span></div>
+        <span class="ps-rec" id="rec" data-state="live">Recording</span>
+      </div>
+
+      <div class="ps-split" id="split" data-state="live">
+        <div class="ps-split-row"><span class="ps-split-label">Running split</span><span class="ps-split-label" id="split-len">Length 2 of 4</span></div>
+        <div class="ps-split-value" id="split-value" aria-live="off">0:41.0</div>
+        <div class="ps-split-sub" id="split-sub">This Length so far <span class="ps-num" id="split-this">18.2</span> s</div>
+      </div>
+
+      <ol class="ps-strip" id="strip" aria-label="Length strip"></ol>
+
+      <div class="ps-tappad" role="group" aria-label="Tap Pad">
+        <button type="button" class="ps-press ps-wall" id="wall">
+          <span><strong>Wall tap</strong><span id="wall-sub">Ends Length 2 and records its split</span></span>
+          <span class="ps-wall-glyph" aria-hidden="true">&#x21E5;</span>
+        </button>
+        <div class="ps-counters">
+          <button type="button" class="ps-press ps-counter" id="c-kicks" data-metric="kicks">
+            <span class="ps-counter-name">Underwater kicks</span>
+            <span class="ps-counter-val" id="v-kicks">5</span>
+            <span class="ps-counter-foot"><span>off this wall</span><b aria-hidden="true">+1</b></span>
+          </button>
+          <button type="button" class="ps-press ps-counter" id="c-strokes" data-metric="strokes">
+            <span class="ps-counter-name">Strokes</span>
+            <span class="ps-counter-val" id="v-strokes">9</span>
+            <span class="ps-counter-foot"><span>this Length</span><b aria-hidden="true">+1</b></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="ps-cap-actions">
+        <button type="button" class="ps-press ps-undo" id="undo">Undo last tap<small id="undo-sub">+1 Strokes, Length 2</small></button>
+        <button type="button" class="ps-press ps-end" id="end">End Swim<br><span style="font-weight:400;font-size:12px">then Review sheet</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="desk-title">
+    <p class="ps-caption"><span id="desk-title">Desktop · Review sheet and Technique trend</span><span class="ps-illus">Illustrative</span></p>
+    <div class="ps-desk">
+      <form class="ps-sheet" onsubmit="return false">
+        <div class="ps-sheet-head">
+          <span class="ps-patch" aria-hidden="true">MK</span>
+          <div>
+            <span class="ps-tape">Review sheet</span>
+            <h2>100 m freestyle · Swim 3</h2>
+            <p>Mia K. · Tue 18 Nov · 25 m pool · rate technique while it's fresh</p>
+          </div>
+        </div>
+        <ul class="ps-counts" aria-label="Counts per Length">
+          <li><b>6 · 5 · 5 · 4</b>underwater kicks per wall</li>
+          <li><b>15 · 16 · 16 · 17</b>strokes per Length</li>
+          <li><b>1:35.4</b>time, as the result</li>
+        </ul>
+        <fieldset class="ps-rating" data-cues='["Head lifts forward on every breath; hips drop.", "Head lifts on most breaths.", "Eyes mostly down; lifts on some breaths.", "Eyes down; one goggle stays in the water on most breaths.", "Still head; one goggle in the water on every breath."]'>
+              <legend><span class="ps-rating-name">Head position</span><span class="ps-rating-hint">1 = needs work · 5 = consistent</span></legend>
+              <div class="ps-rate-steps"><label class="ps-press ps-rate-step"><input type="radio" name="head" value="1" data-cue-target="head-cue"><span class="ps-rate-num">1</span></label><label class="ps-press ps-rate-step"><input type="radio" name="head" value="2" data-cue-target="head-cue"><span class="ps-rate-num">2</span></label><label class="ps-press ps-rate-step"><input type="radio" name="head" value="3" data-cue-target="head-cue"><span class="ps-rate-num">3</span></label><label class="ps-press ps-rate-step"><input type="radio" name="head" value="4" checked data-cue-target="head-cue"><span class="ps-rate-num">4</span></label><label class="ps-press ps-rate-step"><input type="radio" name="head" value="5" data-cue-target="head-cue"><span class="ps-rate-num">5</span></label></div>
+              <p class="ps-cue" id="head-cue" aria-live="polite"><b>4</b> Eyes down; one goggle stays in the water on most breaths.</p>
+            </fieldset>
+        <fieldset class="ps-rating" data-cues='["Arms apart and head up off the wall.", "Hands together, head up.", "Hands stacked, head between the arms, some bend at the hips.", "Tight streamline, held most of the glide.", "Tight streamline held all the way to the breakout (the first stroke as the head comes up)."]'>
+              <legend><span class="ps-rating-name">Streamline off the wall</span><span class="ps-rating-hint">1 = needs work · 5 = consistent</span></legend>
+              <div class="ps-rate-steps"><label class="ps-press ps-rate-step"><input type="radio" name="stream" value="1" data-cue-target="stream-cue"><span class="ps-rate-num">1</span></label><label class="ps-press ps-rate-step"><input type="radio" name="stream" value="2" data-cue-target="stream-cue"><span class="ps-rate-num">2</span></label><label class="ps-press ps-rate-step"><input type="radio" name="stream" value="3" checked data-cue-target="stream-cue"><span class="ps-rate-num">3</span></label><label class="ps-press ps-rate-step"><input type="radio" name="stream" value="4" data-cue-target="stream-cue"><span class="ps-rate-num">4</span></label><label class="ps-press ps-rate-step"><input type="radio" name="stream" value="5" data-cue-target="stream-cue"><span class="ps-rate-num">5</span></label></div>
+              <p class="ps-cue" id="stream-cue" aria-live="polite"><b>3</b> Hands stacked, head between the arms, some bend at the hips.</p>
+            </fieldset>
+        <div class="ps-faults" role="group" aria-labelledby="faults-title">
+          <div class="ps-faults-head"><span class="ps-rating-name" id="faults-title">Faults you noticed</span><span>Your notes as an observer, not a referee's call</span></div>
+          <div class="ps-fault-list">
+            <button type="button" class="ps-press ps-fault" aria-pressed="true">
+              <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2v15" stroke="currentColor" stroke-width="2" fill="none"/><path class="flag-fill" d="M4.5 3h10l-2.5 3.5 2.5 3.5h-10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+              Surfaced past 15 m <span class="ps-fault-state">Noted</span>
+            </button>
+            <button type="button" class="ps-press ps-fault" aria-pressed="false">
+              <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2v15" stroke="currentColor" stroke-width="2" fill="none"/><path class="flag-fill" d="M4.5 3h10l-2.5 3.5 2.5 3.5h-10z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+              No wall touch at a turn <span class="ps-fault-state">Not noted</span>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <section class="ps-trend" aria-labelledby="trend-title">
+        <div>
+          <span class="ps-tape">Technique trend</span>
+          <h2 id="trend-title">Head position</h2>
+          <p class="ps-sub">Average rating over the last 4 Sessions, on the 1–5 scale</p>
+        </div>
+        <svg class="ps-dial" viewBox="-24 -16 288 192" role="img" aria-label="Dial: head position average 3.8 of 5, up from 3.0 in September">
+          <path class="seam" d="M10 128 A110 110 0 0 1 230 128" fill="none" stroke-width="1.5" stroke-dasharray="5 5"/>
+          <path class="track" d="M24 128 A96 96 0 0 1 216 128" fill="none" stroke-width="16"/>
+          <path class="fill" d="M24 128 A96 96 0 0 1 176.4 50.3" fill="none" stroke-width="16"/>
+          <g class="tick" stroke-width="2.5">
+            <line x1="36" y1="128" x2="12" y2="128"/><line x1="60.6" y1="68.6" x2="43.6" y2="51.6"/><line x1="120" y1="44" x2="120" y2="20"/><line x1="179.4" y1="68.6" x2="196.4" y2="51.6"/><line x1="204" y1="128" x2="228" y2="128"/>
+          </g>
+          <g class="lbl" text-anchor="middle"><text x="-6" y="133">1</text><text x="31" y="44">2</text><text x="120" y="9">3</text><text x="209" y="44">4</text><text x="246" y="133">5</text></g>
+          <line class="needle" x1="120" y1="128" x2="163.5" y2="68.1" stroke-width="3.5" stroke-linecap="round"/>
+          <circle class="hub" cx="120" cy="128" r="6"/>
+          <text class="val" x="120" y="170" text-anchor="middle">3.8 <tspan class="valsub">of 5 · was 3.0 in Sep</tspan></text>
+        </svg>
+        <svg class="ps-line" viewBox="0 0 340 128" role="img" aria-label="Line: head position rating per Session, Sep 2 to Nov 18: 3, 3, 2, 3, 4, 3, 4, 4">
+          <g class="grid" stroke-width="1"><line x1="22" y1="16" x2="330" y2="16"/><line x1="22" y1="56" x2="330" y2="56"/><line x1="22" y1="96" x2="330" y2="96"/></g>
+          <text class="ax" x="4" y="20">5</text><text class="ax" x="4" y="60">3</text><text class="ax" x="4" y="100">1</text>
+          <polyline class="ln" fill="none" stroke-width="2.5" points="34,56 76,56 118,76 160,56 202,36 244,56 286,36 322,36"/>
+          <g class="pt" stroke-width="2.5"><circle cx="34" cy="56" r="9"/><circle cx="76" cy="56" r="9"/><circle cx="118" cy="76" r="9"/><circle cx="160" cy="56" r="9"/><circle cx="202" cy="36" r="9"/><circle cx="244" cy="56" r="9"/><circle cx="286" cy="36" r="9"/><circle cx="322" cy="36" r="9"/></g>
+          <g class="pt-lbl" text-anchor="middle"><text x="34" y="60">3</text><text x="76" y="60">3</text><text x="118" y="80">2</text><text x="160" y="60">3</text><text x="202" y="40">4</text><text x="244" y="60">3</text><text x="286" y="40">4</text><text x="322" y="40">4</text></g>
+          <g class="ax" text-anchor="middle"><text x="34" y="122">Sep 2</text><text x="118" y="122">Sep 30</text><text x="202" y="122">Oct 28</text><text x="322" y="122">Nov 18</text></g>
+        </svg>
+        <p class="ps-gain"><span><b>Steadier head.</b> Rated 4 in 3 of the last 4 Sessions, up from mostly 3s in September. One more kick off every wall too: 5 now, 4 then.</span></p>
+        <p class="ps-result">Times as the result: 100 m in 1:35.4, 0.9 s quicker than September.</p>
+      </section>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const root = document.documentElement;
+
+  /* Colour options */
+  const palBtns = [...document.querySelectorAll('[data-set-palette]')];
+  palBtns.forEach((b) => b.addEventListener('click', () => {
+    root.dataset.palette = b.dataset.setPalette;
+    palBtns.forEach((o) => o.setAttribute('aria-checked', String(o === b)));
+    syncSet();
+  }));
+
+  /* Signature: pads compress under the finger and spring back */
+  const held = new Set();
+  const compress = (pad) => { pad.classList.remove('is-rebound'); pad.classList.add('is-compressed'); held.add(pad); };
+  const release = () => {
+    held.forEach((pad) => {
+      pad.classList.remove('is-compressed');
+      void pad.offsetWidth;
+      pad.classList.add('is-rebound');
+    });
+    held.clear();
+  };
+  document.addEventListener('pointerdown', (e) => {
+    const pad = e.target.closest('.ps-press');
+    if (pad && !pad.disabled) compress(pad);
+  });
+  ['pointerup', 'pointercancel'].forEach((t) => document.addEventListener(t, release));
+  document.addEventListener('keydown', (e) => {
+    if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) {
+      const pad = e.target.closest && e.target.closest('.ps-press');
+      if (pad && !pad.disabled) compress(pad);
+    }
+  });
+  document.addEventListener('keyup', (e) => { if (e.key === ' ' || e.key === 'Enter') release(); });
+  document.addEventListener('animationend', (e) => {
+    if (e.animationName === 'pressure-suit-rebound') e.target.classList.remove('is-rebound');
+  });
+
+  /* Persistent pressed-in state for chosen ratings and noted faults */
+  const syncSet = () => {
+    document.querySelectorAll('.ps-rate-step').forEach((l) => l.classList.toggle('is-set', l.querySelector('input').checked));
+    document.querySelectorAll('.ps-fault').forEach((f) => f.classList.toggle('is-set', f.getAttribute('aria-pressed') === 'true'));
+    palBtns.forEach((p) => p.classList.toggle('is-set', p.getAttribute('aria-checked') === 'true'));
+  };
+  document.querySelectorAll('.ps-rating').forEach((fs) => {
+    const cues = JSON.parse(fs.dataset.cues);
+    fs.addEventListener('change', (e) => {
+      const v = Number(e.target.value);
+      const cue = document.getElementById(e.target.dataset.cueTarget);
+      cue.innerHTML = '';
+      const b = document.createElement('b'); b.textContent = v;
+      cue.append(b, ' ' + cues[v - 1]);
+      syncSet();
+    });
+  });
+  document.querySelectorAll('.ps-fault').forEach((f) => f.addEventListener('click', () => {
+    const on = f.getAttribute('aria-pressed') !== 'true';
+    f.setAttribute('aria-pressed', String(on));
+    f.querySelector('.ps-fault-state').textContent = on ? 'Noted' : 'Not noted';
+    syncSet();
+  }));
+  syncSet();
+
+  /* Live Capture (illustrative): wall taps, Focus-metric counters, undo for every tap */
+  const LENGTHS = 4;
+  const state = {
+    start: performance.now() - 41000,
+    current: 1,                 // 0-based index of the Length in progress
+    splits: [22.8],             // cumulative seconds at each wall tap
+    kicks: [6, 5, 0, 0],
+    strokes: [15, 9, 0, 0],
+    undo: [{ type: 'strokes', len: 1 }],
+    stoppedAt: null,
+  };
+  const $ = (id) => document.getElementById(id);
+  const fmt = (s) => { const m = Math.floor(s / 60); const r = s - m * 60; return m + ':' + r.toFixed(1).padStart(4, '0'); };
+  const elapsed = () => ((state.stoppedAt ?? performance.now()) - state.start) / 1000;
+  const label = { kicks: 'Underwater kicks', strokes: 'Strokes' };
+
+  function renderStrip() {
+    const strip = $('strip');
+    strip.innerHTML = '';
+    for (let i = 0; i < LENGTHS; i++) {
+      const li = document.createElement('li');
+      li.className = 'ps-cell';
+      const done = i < state.splits.length;
+      const now = i === state.current && state.stoppedAt === null;
+      li.dataset.state = done ? 'done' : now ? 'now' : 'todo';
+      const t = done ? (state.splits[i] - (state.splits[i - 1] || 0)).toFixed(1) : now ? 'now' : '—';
+      li.innerHTML = `<span class="ps-cell-n"><span>L${i + 1}</span><span>${done ? '\u2713' : now ? '\u25CF' : ''}</span></span>
+        <span class="ps-cell-t">${t}</span>
+        <span class="ps-cell-c">${done || now ? `${state.kicks[i]} k · ${state.strokes[i]} s` : 'to swim'}</span>`;
+      li.setAttribute('aria-label', `Length ${i + 1}: ${done ? 'split ' + t + ' seconds' : now ? 'in progress' : 'not yet swum'}`);
+      strip.append(li);
+    }
+  }
+  function render() {
+    const live = state.stoppedAt === null;
+    const i = Math.min(state.current, LENGTHS - 1);
+    $('v-kicks').textContent = state.kicks[i];
+    $('v-strokes').textContent = state.strokes[i];
+    $('split-len').textContent = live ? `Length ${state.current + 1} of ${LENGTHS}` : 'Swim finished';
+    $('split').dataset.state = live ? 'live' : 'stopped';
+    $('rec').dataset.state = live ? 'live' : 'stopped';
+    $('rec').textContent = live ? 'Recording' : 'Stopped';
+    $('wall').disabled = !live;
+    $('wall-sub').textContent = live
+      ? (state.current === LENGTHS - 1 ? 'Final touch: ends the Swim' : `Ends Length ${state.current + 1} and records its split`)
+      : 'Swim finished: rate it on the Review sheet';
+    ['c-kicks', 'c-strokes'].forEach((id) => { $(id).disabled = !live; });
+    const last = state.undo[state.undo.length - 1];
+    $('undo').disabled = !last;
+    $('undo-sub').textContent = !last ? 'Nothing to undo'
+      : last.type === 'wall' ? `Wall tap at end of Length ${last.len + 1}`
+      : last.type === 'end' ? 'End Swim'
+      : `+1 ${label[last.type]}, Length ${last.len + 1}`;
+    renderStrip();
+    tick();
+  }
+  function tick() {
+    const e = elapsed();
+    $('split-value').textContent = fmt(e);
+    const prev = state.splits[state.splits.length - 1] || 0;
+    $('split-sub').innerHTML = state.stoppedAt === null
+      ? `This Length so far <span class="ps-num">${(e - prev).toFixed(1)}</span> s`
+      : `100 m in <span class="ps-num">${fmt(e)}</span>, shown as the result`;
+  }
+  setInterval(() => { if (state.stoppedAt === null) tick(); }, 100);
+
+  function stop() { state.stoppedAt = performance.now(); }
+  $('wall').addEventListener('click', () => {
+    if (state.stoppedAt !== null) return;
+    const len = state.current;
+    state.splits.push(elapsed());
+    state.undo.push({ type: 'wall', len });
+    if (len === LENGTHS - 1) stop(); else state.current++;
+    render();
+  });
+  document.querySelectorAll('.ps-counter').forEach((c) => c.addEventListener('click', () => {
+    if (state.stoppedAt !== null) return;
+    const m = c.dataset.metric;
+    state[m][state.current]++;
+    state.undo.push({ type: m, len: state.current });
+    render();
+  }));
+  $('end').addEventListener('click', () => {
+    if (state.stoppedAt !== null) return;
+    stop(); state.undo.push({ type: 'end', len: state.current }); render();
+  });
+  $('undo').addEventListener('click', () => {
+    const last = state.undo.pop();
+    if (!last) return;
+    // The tap is superseded, never erased: a real Capture event log keeps it.
+    if (last.type === 'wall') {
+      state.splits.pop();
+      state.current = last.len;
+      if (state.stoppedAt !== null) { state.start += performance.now() - state.stoppedAt; state.stoppedAt = null; }
+    } else if (last.type === 'end') {
+      state.start += performance.now() - state.stoppedAt; state.stoppedAt = null;
+    } else {
+      state[last.type][last.len] = Math.max(0, state[last.type][last.len] - 1);
+    }
+    render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

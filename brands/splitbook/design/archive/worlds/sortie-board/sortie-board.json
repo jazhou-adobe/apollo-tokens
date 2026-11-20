@@ -1,0 +1,326 @@
+{
+  "label": "Sortie Board",
+  "order": 3,
+  "$description": "A briefing-room launch schedule: Swims, Sessions and Sets set as aligned, ruled board rows with callsign-style Swim IDs and figures in fixed columns, on matte slate. The board is the structure, not a costume: extra-condensed type is kept for headings, everything read or typed stays open and in sentence case.",
+  "signature": "A Swim prints in as a sortie row. Each wall tap types its Length into the Length strip in one short flash; the finish touch feeds the whole strip through on a paper band, column by column, and stamps it Printed as a completed record. Undo takes the line back off the board.",
+  "colorScheme": "dark",
+  "color": {
+    "background": { "$type": "color", "$value": "#22282e" },
+    "foreground": { "$type": "color", "$value": "#ece7da" },
+    "surface-card": { "$type": "color", "$value": "#2f373f" },
+    "surface-card-foreground": { "$type": "color", "$value": "#f1ecdf" },
+    "surface-panel": { "$type": "color", "$value": "#283037" },
+    "surface-panel-foreground": { "$type": "color", "$value": "#ece7da" },
+    "surface-shelf": { "$type": "color", "$value": "#252b32" },
+    "surface-shelf-foreground": { "$type": "color", "$value": "#ece7da" },
+    "surface-tray": { "$type": "color", "$value": "#313a43" },
+    "surface-tray-foreground": { "$type": "color", "$value": "#f1ecdf" },
+    "primary": { "$type": "color", "$value": "#ece7da" },
+    "primary-foreground": { "$type": "color", "$value": "#1e2328" },
+    "secondary": { "$type": "color", "$value": "#343d46" },
+    "secondary-foreground": { "$type": "color", "$value": "#ece7da" },
+    "muted": { "$type": "color", "$value": "#38414a" },
+    "muted-foreground": { "$type": "color", "$value": "#b7bcb8" },
+    "accent": { "$type": "color", "$value": "#3f4952" },
+    "accent-foreground": { "$type": "color", "$value": "#f1ecdf" },
+    "destructive": { "$type": "color", "$value": "#ff9c8f" },
+    "destructive-foreground": { "$type": "color", "$value": "#1e2328" },
+    "border": { "$type": "color", "$value": "#8a949d" },
+    "input": { "$type": "color", "$value": "#262d34" },
+    "ring": { "$type": "color", "$value": "#f0c64f" },
+    "success": { "$type": "color", "$value": "#86cfc0" },
+    "success-foreground": { "$type": "color", "$value": "#0e2220" },
+    "warning": { "$type": "color", "$value": "#dcd49c" },
+    "warning-foreground": { "$type": "color", "$value": "#22201a" },
+    "info": { "$type": "color", "$value": "#9db8d3" },
+    "info-foreground": { "$type": "color", "$value": "#111c27" },
+    "live": { "$type": "color", "$value": "#f27452" },
+    "live-foreground": { "$type": "color", "$value": "#1a1310" },
+    "metric": { "$type": "color", "$value": "#82b8e6" },
+    "metric-foreground": { "$type": "color", "$value": "#0f1d2a" },
+    "improvement": { "$type": "color", "$value": "#7ecb93" },
+    "improvement-foreground": { "$type": "color", "$value": "#0f2216" },
+    "fault": { "$type": "color", "$value": "#e9ba4a" },
+    "fault-foreground": { "$type": "color", "$value": "#221a05" },
+    "tap-pad": { "$type": "color", "$value": "#2a3239" },
+    "tap-pad-foreground": { "$type": "color", "$value": "#f4efe2" },
+    "shadow": { "$type": "color", "$value": "#0b0e1166" },
+    "scrim": { "$type": "color", "$value": "#0b0e11b3" },
+    "chart-1": { "$type": "color", "$value": "#82b8e6" },
+    "chart-2": { "$type": "color", "$value": "#7ecb93" },
+    "chart-3": { "$type": "color", "$value": "#e9ba4a" },
+    "chart-4": { "$type": "color", "$value": "#c7a6e8" },
+    "chart-5": { "$type": "color", "$value": "#b7bcb8" }
+  },
+  "overrides": {
+    "font-sans": {
+      "$type": "fontFamily",
+      "$value": "var(--font-ibm-plex-sans), ui-sans-serif, system-ui, sans-serif",
+      "$description": "IBM Plex Sans (400, 700): the open reading face for body text, labels, controls and every form field, so the board's width contrast comes from its headings and figures, not from squeezing what people read."
+    },
+    "font-display": {
+      "$type": "fontFamily",
+      "$value": "var(--font-sofia-sans-extra-condensed), 'Arial Narrow', sans-serif",
+      "$description": "Sofia Sans Extra Condensed (700, 800): board titles only (display and headings), in sentence case."
+    },
+    "font-mono": {
+      "$type": "fontFamily",
+      "$value": "var(--font-ibm-plex-mono), ui-monospace, monospace",
+      "$description": "IBM Plex Mono (400, 700): short identifiers only: callsign-style Swim IDs, Length numbers, the recording and Printed marks, metric keys and formulas."
+    },
+    "type-display-size": {
+      "$type": "dimension",
+      "$value": "3rem",
+      "$description": "Extra-condensed letters set larger so the board title carries the same weight as the core display."
+    },
+    "type-display-line-height": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Tight schedule-board leading for the board title; 1 leaves room for sentence-case descenders."
+    },
+    "type-heading-lg-size": {
+      "$type": "dimension",
+      "$value": "2.125rem",
+      "$description": "Condensed section heads set larger to hold their place on the board."
+    },
+    "type-heading-lg-line-height": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Board headings sit on one tight line."
+    },
+    "type-heading-md-size": {
+      "$type": "dimension",
+      "$value": "1.5rem",
+      "$description": "Card and widget heads in the condensed face, set a step larger than the core."
+    },
+    "type-heading-md-line-height": {
+      "$type": "number",
+      "$value": 1.1,
+      "$description": "Tight leading for condensed heads."
+    },
+    "type-numeral-xl-family": {
+      "$type": "fontFamily",
+      "$value": "var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif",
+      "$description": "The running split in IBM Plex Sans Condensed tabular figures (400, 700), like the time column of a launch schedule."
+    },
+    "type-numeral-xl-size": {
+      "$type": "dimension",
+      "$value": "5rem",
+      "$description": "Condensed figures set larger; the split read-out still caps the size to fit a phone column."
+    },
+    "type-numeral-xl-weight": {
+      "$type": "fontWeight",
+      "$value": 700,
+      "$description": "Plex Sans Condensed Bold, the heaviest loaded cut of the numeral face."
+    },
+    "type-numeral-lg-family": {
+      "$type": "fontFamily",
+      "$value": "var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif",
+      "$description": "Counts on Tap Pad keys and read-outs in Plex Sans Condensed tabular figures."
+    },
+    "type-numeral-lg-weight": {
+      "$type": "fontWeight",
+      "$value": 700,
+      "$description": "Plex Sans Condensed Bold, a loaded cut."
+    },
+    "type-numeral-md-family": {
+      "$type": "fontFamily",
+      "$value": "var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif",
+      "$description": "Length splits, rating numbers and the board's figure columns in Plex Sans Condensed tabular figures."
+    },
+    "radius-sm": {
+      "$type": "dimension",
+      "$value": "0.125rem",
+      "$description": "Board slots and typeset tags are nearly square."
+    },
+    "radius-md": {
+      "$type": "dimension",
+      "$value": "0.1875rem",
+      "$description": "Buttons, inputs and cards: the eased corner of a cut acrylic plate."
+    },
+    "radius-lg": {
+      "$type": "dimension",
+      "$value": "0.3125rem",
+      "$description": "Panels, sheets and the Tap Pad: a mounted board panel, barely rounded."
+    },
+    "radius-pill": {
+      "$type": "dimension",
+      "$value": "0.25rem",
+      "$description": "No pills on the board: avatars, switches, rating steps and progress tracks become squared plates. Circles drawn in SVG (the trend dial) are unaffected."
+    },
+    "elevation-raised": {
+      "$type": "shadow",
+      "$value": "0 1px 0 0 var(--sb-shadow), 0 2px 0 0 var(--sb-shadow)",
+      "$description": "A plate screwed to the board: two hard contact lines, no blur, no glow."
+    },
+    "elevation-overlay": {
+      "$type": "shadow",
+      "$value": "0 2px 0 0 var(--sb-shadow), 0 18px 32px -14px var(--sb-shadow)",
+      "$description": "A briefing card lifted off the board: one hard edge plus a short soft drop."
+    }
+  },
+  "palette": {
+    "label": "Ready Room: matte slate, chalk type, signal orange"
+  },
+  "palettes": [
+    {
+      "id": "haze-gray",
+      "label": "Haze Gray: light ship-gray board, ink type, built for glare",
+      "colorScheme": "light",
+      "color": {
+        "background": { "$type": "color", "$value": "#d2d6d8" },
+        "foreground": { "$type": "color", "$value": "#12171c" },
+        "surface-card": { "$type": "color", "$value": "#ebecea" },
+        "surface-card-foreground": { "$type": "color", "$value": "#12171c" },
+        "surface-panel": { "$type": "color", "$value": "#dde0e1" },
+        "surface-panel-foreground": { "$type": "color", "$value": "#12171c" },
+        "surface-shelf": { "$type": "color", "$value": "#c9ced1" },
+        "surface-shelf-foreground": { "$type": "color", "$value": "#12171c" },
+        "surface-tray": { "$type": "color", "$value": "#e4e6e5" },
+        "surface-tray-foreground": { "$type": "color", "$value": "#12171c" },
+        "primary": { "$type": "color", "$value": "#1b2129" },
+        "primary-foreground": { "$type": "color", "$value": "#f3f3f0" },
+        "secondary": { "$type": "color", "$value": "#f3f3f0" },
+        "secondary-foreground": { "$type": "color", "$value": "#12171c" },
+        "muted": { "$type": "color", "$value": "#c5cacd" },
+        "muted-foreground": { "$type": "color", "$value": "#3b444c" },
+        "accent": { "$type": "color", "$value": "#bfc8cf" },
+        "accent-foreground": { "$type": "color", "$value": "#12171c" },
+        "destructive": { "$type": "color", "$value": "#9e1f1a" },
+        "destructive-foreground": { "$type": "color", "$value": "#ffffff" },
+        "border": { "$type": "color", "$value": "#5c6770" },
+        "input": { "$type": "color", "$value": "#f7f7f4" },
+        "ring": { "$type": "color", "$value": "#1c4f8c" },
+        "success": { "$type": "color", "$value": "#1d5e58" },
+        "success-foreground": { "$type": "color", "$value": "#ffffff" },
+        "warning": { "$type": "color", "$value": "#e3be3b" },
+        "warning-foreground": { "$type": "color", "$value": "#1d1600" },
+        "info": { "$type": "color", "$value": "#2e4d6b" },
+        "info-foreground": { "$type": "color", "$value": "#ffffff" },
+        "live": { "$type": "color", "$value": "#b0271d" },
+        "live-foreground": { "$type": "color", "$value": "#ffffff" },
+        "metric": { "$type": "color", "$value": "#1c5a9c" },
+        "metric-foreground": { "$type": "color", "$value": "#ffffff" },
+        "improvement": { "$type": "color", "$value": "#1f6a3d" },
+        "improvement-foreground": { "$type": "color", "$value": "#ffffff" },
+        "fault": { "$type": "color", "$value": "#875200" },
+        "fault-foreground": { "$type": "color", "$value": "#ffffff" },
+        "tap-pad": { "$type": "color", "$value": "#f3f3f0" },
+        "tap-pad-foreground": { "$type": "color", "$value": "#0e1216" },
+        "shadow": { "$type": "color", "$value": "#12171c2e" },
+        "scrim": { "$type": "color", "$value": "#12171ca6" },
+        "chart-1": { "$type": "color", "$value": "#1c5a9c" },
+        "chart-2": { "$type": "color", "$value": "#1f6a3d" },
+        "chart-3": { "$type": "color", "$value": "#875200" },
+        "chart-4": { "$type": "color", "$value": "#6a3e98" },
+        "chart-5": { "$type": "color", "$value": "#4a535b" }
+      }
+    },
+    {
+      "id": "grease-board",
+      "label": "Grease Board: olive slate, cream type, grease-pencil yellow",
+      "colorScheme": "dark",
+      "color": {
+        "background": { "$type": "color", "$value": "#20241e" },
+        "foreground": { "$type": "color", "$value": "#eeead6" },
+        "surface-card": { "$type": "color", "$value": "#2e342b" },
+        "surface-card-foreground": { "$type": "color", "$value": "#f2eedb" },
+        "surface-panel": { "$type": "color", "$value": "#272c25" },
+        "surface-panel-foreground": { "$type": "color", "$value": "#eeead6" },
+        "surface-shelf": { "$type": "color", "$value": "#242920" },
+        "surface-shelf-foreground": { "$type": "color", "$value": "#eeead6" },
+        "surface-tray": { "$type": "color", "$value": "#31372d" },
+        "surface-tray-foreground": { "$type": "color", "$value": "#f2eedb" },
+        "primary": { "$type": "color", "$value": "#f2d15a" },
+        "primary-foreground": { "$type": "color", "$value": "#1d200f" },
+        "secondary": { "$type": "color", "$value": "#333a2f" },
+        "secondary-foreground": { "$type": "color", "$value": "#eeead6" },
+        "muted": { "$type": "color", "$value": "#384034" },
+        "muted-foreground": { "$type": "color", "$value": "#bcbda9" },
+        "accent": { "$type": "color", "$value": "#424b3c" },
+        "accent-foreground": { "$type": "color", "$value": "#f2eedb" },
+        "destructive": { "$type": "color", "$value": "#ff9a8a" },
+        "destructive-foreground": { "$type": "color", "$value": "#1e120c" },
+        "border": { "$type": "color", "$value": "#8e957f" },
+        "input": { "$type": "color", "$value": "#242920" },
+        "ring": { "$type": "color", "$value": "#f2d15a" },
+        "success": { "$type": "color", "$value": "#8dd3c0" },
+        "success-foreground": { "$type": "color", "$value": "#0e211c" },
+        "warning": { "$type": "color", "$value": "#e2dda0" },
+        "warning-foreground": { "$type": "color", "$value": "#201d08" },
+        "info": { "$type": "color", "$value": "#a3c1d6" },
+        "info-foreground": { "$type": "color", "$value": "#101c24" },
+        "live": { "$type": "color", "$value": "#ff8357" },
+        "live-foreground": { "$type": "color", "$value": "#1e120c" },
+        "metric": { "$type": "color", "$value": "#93c5e4" },
+        "metric-foreground": { "$type": "color", "$value": "#0f1c24" },
+        "improvement": { "$type": "color", "$value": "#a9d58c" },
+        "improvement-foreground": { "$type": "color", "$value": "#15220c" },
+        "fault": { "$type": "color", "$value": "#f0be55" },
+        "fault-foreground": { "$type": "color", "$value": "#231a06" },
+        "tap-pad": { "$type": "color", "$value": "#293026" },
+        "tap-pad-foreground": { "$type": "color", "$value": "#f4f0dd" },
+        "shadow": { "$type": "color", "$value": "#0a0c0866" },
+        "scrim": { "$type": "color", "$value": "#0a0c08b3" },
+        "chart-1": { "$type": "color", "$value": "#93c5e4" },
+        "chart-2": { "$type": "color", "$value": "#a9d58c" },
+        "chart-3": { "$type": "color", "$value": "#f0be55" },
+        "chart-4": { "$type": "color", "$value": "#d0b0e8" },
+        "chart-5": { "$type": "color", "$value": "#bcbda9" }
+      }
+    },
+    {
+      "id": "original",
+      "label": "Original: navy ready-room board, white letters, yellow grease pencil",
+      "colorScheme": "dark",
+      "color": {
+        "background": { "$type": "color", "$value": "#152338" },
+        "foreground": { "$type": "color", "$value": "#f2f2ec" },
+        "surface-card": { "$type": "color", "$value": "#20324d" },
+        "surface-card-foreground": { "$type": "color", "$value": "#f5f5ef" },
+        "surface-panel": { "$type": "color", "$value": "#1a2a42" },
+        "surface-panel-foreground": { "$type": "color", "$value": "#f2f2ec" },
+        "surface-shelf": { "$type": "color", "$value": "#172740" },
+        "surface-shelf-foreground": { "$type": "color", "$value": "#f2f2ec" },
+        "surface-tray": { "$type": "color", "$value": "#233652" },
+        "surface-tray-foreground": { "$type": "color", "$value": "#f5f5ef" },
+        "primary": { "$type": "color", "$value": "#ffd447" },
+        "primary-foreground": { "$type": "color", "$value": "#14202f" },
+        "secondary": { "$type": "color", "$value": "#263a57" },
+        "secondary-foreground": { "$type": "color", "$value": "#f2f2ec" },
+        "muted": { "$type": "color", "$value": "#293c59" },
+        "muted-foreground": { "$type": "color", "$value": "#b9c2cf" },
+        "accent": { "$type": "color", "$value": "#2e4566" },
+        "accent-foreground": { "$type": "color", "$value": "#f5f5ef" },
+        "destructive": { "$type": "color", "$value": "#ff9c8c" },
+        "destructive-foreground": { "$type": "color", "$value": "#14202f" },
+        "border": { "$type": "color", "$value": "#8494ac" },
+        "input": { "$type": "color", "$value": "#182840" },
+        "ring": { "$type": "color", "$value": "#ffd447" },
+        "success": { "$type": "color", "$value": "#7fd4c4" },
+        "success-foreground": { "$type": "color", "$value": "#0c1f1c" },
+        "warning": { "$type": "color", "$value": "#ede6b0" },
+        "warning-foreground": { "$type": "color", "$value": "#14202f" },
+        "info": { "$type": "color", "$value": "#a8c4e6" },
+        "info-foreground": { "$type": "color", "$value": "#0c1a2b" },
+        "live": { "$type": "color", "$value": "#ff7b5c" },
+        "live-foreground": { "$type": "color", "$value": "#1a0f0b" },
+        "metric": { "$type": "color", "$value": "#8cc6ff" },
+        "metric-foreground": { "$type": "color", "$value": "#0c1a2b" },
+        "improvement": { "$type": "color", "$value": "#83d69c" },
+        "improvement-foreground": { "$type": "color", "$value": "#0e2416" },
+        "fault": { "$type": "color", "$value": "#ffc857" },
+        "fault-foreground": { "$type": "color", "$value": "#231906" },
+        "tap-pad": { "$type": "color", "$value": "#1c2d46" },
+        "tap-pad-foreground": { "$type": "color", "$value": "#f7f7f1" },
+        "shadow": { "$type": "color", "$value": "#070d1773" },
+        "scrim": { "$type": "color", "$value": "#070d17b8" },
+        "chart-1": { "$type": "color", "$value": "#8cc6ff" },
+        "chart-2": { "$type": "color", "$value": "#83d69c" },
+        "chart-3": { "$type": "color", "$value": "#ffc857" },
+        "chart-4": { "$type": "color", "$value": "#d6b4f5" },
+        "chart-5": { "$type": "color", "$value": "#b9c2cf" }
+      }
+    }
+  ]
+}

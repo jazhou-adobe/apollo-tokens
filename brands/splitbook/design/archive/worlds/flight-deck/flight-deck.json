@@ -1,0 +1,838 @@
+{
+  "label": "Flight Deck",
+  "order": 2,
+  "$description": "Carrier deck markings pushed forward in time: non-skid deck plates and cockpit type, with a single black-and-yellow hazard band on the Wall action and stencil kept for short titles. Deck-crew jersey colours give each metric family a role colour (green counts, yellow timing, purple rates, white technique, red fault notes), always beside a label.",
+  "signature": "A wall tap fires a catapult-style split flash: in one flash interval the shuttle runs the track under the running split and a live streak lights behind it. Only the finish touch holds the live frame a little longer.",
+  "colorScheme": "dark",
+  "color": {
+    "background": {
+      "$type": "color",
+      "$value": "#1E2224"
+    },
+    "foreground": {
+      "$type": "color",
+      "$value": "#F2EFE6"
+    },
+    "surface-card": {
+      "$type": "color",
+      "$value": "#2A2F32"
+    },
+    "surface-card-foreground": {
+      "$type": "color",
+      "$value": "#F2EFE6"
+    },
+    "surface-panel": {
+      "$type": "color",
+      "$value": "#252A2D"
+    },
+    "surface-panel-foreground": {
+      "$type": "color",
+      "$value": "#F2EFE6"
+    },
+    "surface-shelf": {
+      "$type": "color",
+      "$value": "#202527"
+    },
+    "surface-shelf-foreground": {
+      "$type": "color",
+      "$value": "#F2EFE6"
+    },
+    "surface-tray": {
+      "$type": "color",
+      "$value": "#2E3437"
+    },
+    "surface-tray-foreground": {
+      "$type": "color",
+      "$value": "#F2EFE6"
+    },
+    "primary": {
+      "$type": "color",
+      "$value": "#F2EFE6"
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": "#141719"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "#343A3E"
+    },
+    "secondary-foreground": {
+      "$type": "color",
+      "$value": "#F2EFE6"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "#343A3E"
+    },
+    "muted-foreground": {
+      "$type": "color",
+      "$value": "#B9BDB8"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "#3E464B"
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": "#FFFFFF"
+    },
+    "destructive": {
+      "$type": "color",
+      "$value": "#FF8A80"
+    },
+    "destructive-foreground": {
+      "$type": "color",
+      "$value": "#141719"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "#7C858A"
+    },
+    "input": {
+      "$type": "color",
+      "$value": "#1A1E20"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "#F2EFE6"
+    },
+    "success": {
+      "$type": "color",
+      "$value": "#7FD6B8"
+    },
+    "success-foreground": {
+      "$type": "color",
+      "$value": "#141719"
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "#E8A87C"
+    },
+    "warning-foreground": {
+      "$type": "color",
+      "$value": "#141719"
+    },
+    "info": {
+      "$type": "color",
+      "$value": "#A9C7E8"
+    },
+    "info-foreground": {
+      "$type": "color",
+      "$value": "#141719"
+    },
+    "live": {
+      "$type": "color",
+      "$value": "#FFD21F"
+    },
+    "live-foreground": {
+      "$type": "color",
+      "$value": "#141719"
+    },
+    "metric": {
+      "$type": "color",
+      "$value": "#4CC38A"
+    },
+    "metric-foreground": {
+      "$type": "color",
+      "$value": "#0E1A13"
+    },
+    "improvement": {
+      "$type": "color",
+      "$value": "#79C4F2"
+    },
+    "improvement-foreground": {
+      "$type": "color",
+      "$value": "#0B1620"
+    },
+    "fault": {
+      "$type": "color",
+      "$value": "#FF6B5E"
+    },
+    "fault-foreground": {
+      "$type": "color",
+      "$value": "#1A0B09"
+    },
+    "tap-pad": {
+      "$type": "color",
+      "$value": "#141719"
+    },
+    "tap-pad-foreground": {
+      "$type": "color",
+      "$value": "#F7F4EA"
+    },
+    "shadow": {
+      "$type": "color",
+      "$value": "#05060799"
+    },
+    "scrim": {
+      "$type": "color",
+      "$value": "#050607CC"
+    },
+    "chart-1": {
+      "$type": "color",
+      "$value": "#4CC38A"
+    },
+    "chart-2": {
+      "$type": "color",
+      "$value": "#B79CFF"
+    },
+    "chart-3": {
+      "$type": "color",
+      "$value": "#FFD21F"
+    },
+    "chart-4": {
+      "$type": "color",
+      "$value": "#F2EFE6"
+    },
+    "chart-5": {
+      "$type": "color",
+      "$value": "#FF6B5E"
+    }
+  },
+  "overrides": {
+    "font-sans": {
+      "$type": "fontFamily",
+      "$value": "var(--font-b612), ui-sans-serif, system-ui, sans-serif",
+      "$description": "B612 (400, 700), the face drawn for cockpit displays: body text, labels, controls, and every numeral read-out. Equal-width digits and a narrow colon."
+    },
+    "font-display": {
+      "$type": "fontFamily",
+      "$value": "var(--font-big-shoulders-stencil), 'Arial Narrow', Arial, sans-serif",
+      "$description": "Big Shoulders Stencil (700, 800): punctuation only, for the display line, the wordmark and short panel titles, in sentence case. Never for numerals, buttons, labels or reading text."
+    },
+    "type-heading-lg-family": {
+      "$type": "fontFamily",
+      "$value": "var(--sb-font-sans)",
+      "$description": "Page headings stay in B612, the operational face; stencil is kept for short panel titles (heading-md) and the display line."
+    },
+    "type-numeral-xl-family": {
+      "$type": "fontFamily",
+      "$value": "var(--sb-font-sans)",
+      "$description": "Numerals stay in B612, never stencil: the running split must read at a glance."
+    },
+    "type-numeral-xl-weight": {
+      "$type": "fontWeight",
+      "$value": "var(--sb-font-weight-bold)",
+      "$description": "B612 ships 700 only, so heavy numerals would be synthesised."
+    },
+    "type-numeral-lg-family": {
+      "$type": "fontFamily",
+      "$value": "var(--sb-font-sans)",
+      "$description": "Counter and read-out numerals in B612."
+    },
+    "type-numeral-lg-weight": {
+      "$type": "fontWeight",
+      "$value": "var(--sb-font-weight-bold)",
+      "$description": "B612 ships 700 only."
+    },
+    "type-numeral-md-family": {
+      "$type": "fontFamily",
+      "$value": "var(--sb-font-sans)",
+      "$description": "Row and cell numerals in B612."
+    },
+    "radius-sm": {
+      "$type": "dimension",
+      "$value": "0.125rem",
+      "$description": "Stamped-plate corner: chips, badges, Length cells, rating steps."
+    },
+    "radius-md": {
+      "$type": "dimension",
+      "$value": "0.1875rem",
+      "$description": "Buttons, inputs, cards: barely eased steel corners."
+    },
+    "radius-lg": {
+      "$type": "dimension",
+      "$value": "0.25rem",
+      "$description": "Panels, sheets and the Tap Pad: deck plates, not soft cards."
+    },
+    "elevation-raised": {
+      "$type": "shadow",
+      "$value": "0 2px 0 0 var(--sb-shadow)",
+      "$description": "A hard ledge under a plate set proud of the deck; no soft blur."
+    },
+    "elevation-overlay": {
+      "$type": "shadow",
+      "$value": "0 18px 36px -14px var(--sb-shadow)",
+      "$description": "Dialogs, sheets, popovers, menus and toasts lift off the deck."
+    }
+  },
+  "palette": {
+    "label": "Non-skid"
+  },
+  "palettes": [
+    {
+      "id": "primer",
+      "label": "Primer (day deck)",
+      "colorScheme": "light",
+      "color": {
+        "background": {
+          "$type": "color",
+          "$value": "#E3E1DA"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "surface-card": {
+          "$type": "color",
+          "$value": "#F7F6F2"
+        },
+        "surface-card-foreground": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "surface-panel": {
+          "$type": "color",
+          "$value": "#EDEBE5"
+        },
+        "surface-panel-foreground": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "surface-shelf": {
+          "$type": "color",
+          "$value": "#E9E7E0"
+        },
+        "surface-shelf-foreground": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "surface-tray": {
+          "$type": "color",
+          "$value": "#F1EFEA"
+        },
+        "surface-tray-foreground": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "primary-foreground": {
+          "$type": "color",
+          "$value": "#F7F6F2"
+        },
+        "secondary": {
+          "$type": "color",
+          "$value": "#DAD7CF"
+        },
+        "secondary-foreground": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "#DAD7CF"
+        },
+        "muted-foreground": {
+          "$type": "color",
+          "$value": "#474B4F"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#CFCBC1"
+        },
+        "accent-foreground": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "destructive": {
+          "$type": "color",
+          "$value": "#9E1B14"
+        },
+        "destructive-foreground": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "#6E747A"
+        },
+        "input": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "ring": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "#1E6B5C"
+        },
+        "success-foreground": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "#F0C987"
+        },
+        "warning-foreground": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "info": {
+          "$type": "color",
+          "$value": "#2F5D86"
+        },
+        "info-foreground": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "live": {
+          "$type": "color",
+          "$value": "#23282C"
+        },
+        "live-foreground": {
+          "$type": "color",
+          "$value": "#FFD21F"
+        },
+        "metric": {
+          "$type": "color",
+          "$value": "#1F7A4A"
+        },
+        "metric-foreground": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "improvement": {
+          "$type": "color",
+          "$value": "#1D5FA8"
+        },
+        "improvement-foreground": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "fault": {
+          "$type": "color",
+          "$value": "#B3261E"
+        },
+        "fault-foreground": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "tap-pad": {
+          "$type": "color",
+          "$value": "#FBFAF6"
+        },
+        "tap-pad-foreground": {
+          "$type": "color",
+          "$value": "#15171A"
+        },
+        "shadow": {
+          "$type": "color",
+          "$value": "#15171A33"
+        },
+        "scrim": {
+          "$type": "color",
+          "$value": "#15171AB3"
+        },
+        "chart-1": {
+          "$type": "color",
+          "$value": "#1F7A4A"
+        },
+        "chart-2": {
+          "$type": "color",
+          "$value": "#6B3FB8"
+        },
+        "chart-3": {
+          "$type": "color",
+          "$value": "#8A6100"
+        },
+        "chart-4": {
+          "$type": "color",
+          "$value": "#4A4E52"
+        },
+        "chart-5": {
+          "$type": "color",
+          "$value": "#B3261E"
+        }
+      }
+    },
+    {
+      "id": "night-recovery",
+      "label": "Night recovery",
+      "colorScheme": "dark",
+      "color": {
+        "background": {
+          "$type": "color",
+          "$value": "#10161D"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "#E9EEF2"
+        },
+        "surface-card": {
+          "$type": "color",
+          "$value": "#18212B"
+        },
+        "surface-card-foreground": {
+          "$type": "color",
+          "$value": "#E9EEF2"
+        },
+        "surface-panel": {
+          "$type": "color",
+          "$value": "#141C25"
+        },
+        "surface-panel-foreground": {
+          "$type": "color",
+          "$value": "#E9EEF2"
+        },
+        "surface-shelf": {
+          "$type": "color",
+          "$value": "#121920"
+        },
+        "surface-shelf-foreground": {
+          "$type": "color",
+          "$value": "#E9EEF2"
+        },
+        "surface-tray": {
+          "$type": "color",
+          "$value": "#1C2631"
+        },
+        "surface-tray-foreground": {
+          "$type": "color",
+          "$value": "#E9EEF2"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#E9EEF2"
+        },
+        "primary-foreground": {
+          "$type": "color",
+          "$value": "#10161D"
+        },
+        "secondary": {
+          "$type": "color",
+          "$value": "#222D38"
+        },
+        "secondary-foreground": {
+          "$type": "color",
+          "$value": "#E9EEF2"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "#222D38"
+        },
+        "muted-foreground": {
+          "$type": "color",
+          "$value": "#A7B3BE"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#2C3946"
+        },
+        "accent-foreground": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "destructive": {
+          "$type": "color",
+          "$value": "#FF8C80"
+        },
+        "destructive-foreground": {
+          "$type": "color",
+          "$value": "#10161D"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "#6D7C8A"
+        },
+        "input": {
+          "$type": "color",
+          "$value": "#0D131A"
+        },
+        "ring": {
+          "$type": "color",
+          "$value": "#E9EEF2"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "#6FD8BE"
+        },
+        "success-foreground": {
+          "$type": "color",
+          "$value": "#10161D"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "#E8B08A"
+        },
+        "warning-foreground": {
+          "$type": "color",
+          "$value": "#10161D"
+        },
+        "info": {
+          "$type": "color",
+          "$value": "#A6C8EE"
+        },
+        "info-foreground": {
+          "$type": "color",
+          "$value": "#10161D"
+        },
+        "live": {
+          "$type": "color",
+          "$value": "#FFB547"
+        },
+        "live-foreground": {
+          "$type": "color",
+          "$value": "#10161D"
+        },
+        "metric": {
+          "$type": "color",
+          "$value": "#5FD39A"
+        },
+        "metric-foreground": {
+          "$type": "color",
+          "$value": "#0A1A12"
+        },
+        "improvement": {
+          "$type": "color",
+          "$value": "#8CC8FF"
+        },
+        "improvement-foreground": {
+          "$type": "color",
+          "$value": "#0A1420"
+        },
+        "fault": {
+          "$type": "color",
+          "$value": "#FF7A6E"
+        },
+        "fault-foreground": {
+          "$type": "color",
+          "$value": "#1A0B09"
+        },
+        "tap-pad": {
+          "$type": "color",
+          "$value": "#0B1016"
+        },
+        "tap-pad-foreground": {
+          "$type": "color",
+          "$value": "#F1F4F6"
+        },
+        "shadow": {
+          "$type": "color",
+          "$value": "#02040799"
+        },
+        "scrim": {
+          "$type": "color",
+          "$value": "#020407CC"
+        },
+        "chart-1": {
+          "$type": "color",
+          "$value": "#5FD39A"
+        },
+        "chart-2": {
+          "$type": "color",
+          "$value": "#C3A6FF"
+        },
+        "chart-3": {
+          "$type": "color",
+          "$value": "#FFC93C"
+        },
+        "chart-4": {
+          "$type": "color",
+          "$value": "#E9EEF2"
+        },
+        "chart-5": {
+          "$type": "color",
+          "$value": "#FF7A6E"
+        }
+      }
+    },
+    {
+      "id": "original",
+      "label": "Original (haze grey)",
+      "colorScheme": "dark",
+      "color": {
+        "background": {
+          "$type": "color",
+          "$value": "#3B4349"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "#F4F2EC"
+        },
+        "surface-card": {
+          "$type": "color",
+          "$value": "#465058"
+        },
+        "surface-card-foreground": {
+          "$type": "color",
+          "$value": "#F4F2EC"
+        },
+        "surface-panel": {
+          "$type": "color",
+          "$value": "#404950"
+        },
+        "surface-panel-foreground": {
+          "$type": "color",
+          "$value": "#F4F2EC"
+        },
+        "surface-shelf": {
+          "$type": "color",
+          "$value": "#3E464C"
+        },
+        "surface-shelf-foreground": {
+          "$type": "color",
+          "$value": "#F4F2EC"
+        },
+        "surface-tray": {
+          "$type": "color",
+          "$value": "#4B555D"
+        },
+        "surface-tray-foreground": {
+          "$type": "color",
+          "$value": "#F4F2EC"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#F4F2EC"
+        },
+        "primary-foreground": {
+          "$type": "color",
+          "$value": "#1B1F22"
+        },
+        "secondary": {
+          "$type": "color",
+          "$value": "#515B63"
+        },
+        "secondary-foreground": {
+          "$type": "color",
+          "$value": "#F4F2EC"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "#515B63"
+        },
+        "muted-foreground": {
+          "$type": "color",
+          "$value": "#DADCD8"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#5A656E"
+        },
+        "accent-foreground": {
+          "$type": "color",
+          "$value": "#FFFFFF"
+        },
+        "destructive": {
+          "$type": "color",
+          "$value": "#FFC2A8"
+        },
+        "destructive-foreground": {
+          "$type": "color",
+          "$value": "#1B1F22"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "#A7AFB4"
+        },
+        "input": {
+          "$type": "color",
+          "$value": "#353C41"
+        },
+        "ring": {
+          "$type": "color",
+          "$value": "#F4F2EC"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "#8FE0C8"
+        },
+        "success-foreground": {
+          "$type": "color",
+          "$value": "#1B1F22"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "#F2C79A"
+        },
+        "warning-foreground": {
+          "$type": "color",
+          "$value": "#1B1F22"
+        },
+        "info": {
+          "$type": "color",
+          "$value": "#B9D6F2"
+        },
+        "info-foreground": {
+          "$type": "color",
+          "$value": "#1B1F22"
+        },
+        "live": {
+          "$type": "color",
+          "$value": "#FFD21F"
+        },
+        "live-foreground": {
+          "$type": "color",
+          "$value": "#1B1F22"
+        },
+        "metric": {
+          "$type": "color",
+          "$value": "#6BD69E"
+        },
+        "metric-foreground": {
+          "$type": "color",
+          "$value": "#0E1A13"
+        },
+        "improvement": {
+          "$type": "color",
+          "$value": "#94D0FF"
+        },
+        "improvement-foreground": {
+          "$type": "color",
+          "$value": "#0B1620"
+        },
+        "fault": {
+          "$type": "color",
+          "$value": "#FFB3AC"
+        },
+        "fault-foreground": {
+          "$type": "color",
+          "$value": "#1A0B09"
+        },
+        "tap-pad": {
+          "$type": "color",
+          "$value": "#2B3237"
+        },
+        "tap-pad-foreground": {
+          "$type": "color",
+          "$value": "#F4F2EC"
+        },
+        "shadow": {
+          "$type": "color",
+          "$value": "#12151766"
+        },
+        "scrim": {
+          "$type": "color",
+          "$value": "#121517CC"
+        },
+        "chart-1": {
+          "$type": "color",
+          "$value": "#6BD69E"
+        },
+        "chart-2": {
+          "$type": "color",
+          "$value": "#C9B2FF"
+        },
+        "chart-3": {
+          "$type": "color",
+          "$value": "#FFD21F"
+        },
+        "chart-4": {
+          "$type": "color",
+          "$value": "#F4F2EC"
+        },
+        "chart-5": {
+          "$type": "color",
+          "$value": "#FFB3AC"
+        }
+      }
+    }
+  ]
+}

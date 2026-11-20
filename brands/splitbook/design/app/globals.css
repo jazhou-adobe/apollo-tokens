@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+@import '../tokens/themes.css';
+@import '../tokens/tailwind-theme.css';
+@import '../preview/splitbook-components.css' layer(components);
+@import '../preview/splitbook-preview.css' layer(components);
+/* Seeded worlds (tokens/worlds/*): unlayered like themes.css, every rule scoped to html[data-theme="splitbook-<slug>"].
+   Register a world by importing its stylesheet here, one line per world, e.g.
+   @import '../tokens/worlds/approach-lights.css'; */
+@import '../tokens/worlds/approach-lights.css';
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--sb-background);
+    color: var(--sb-foreground);
+    font-family: var(--sb-type-body-family);
+    font-size: var(--sb-type-body-size);
+    line-height: var(--sb-type-body-line-height);
+    font-weight: var(--sb-type-body-weight);
+    transition:
+      background-color var(--sb-motion-standard) var(--sb-easing-standard),
+      color var(--sb-motion-standard) var(--sb-easing-standard);
+  }
+
+  :focus-visible {
+    outline: var(--sb-focus-ring-width) solid var(--sb-ring);
+    outline-offset: var(--sb-focus-ring-offset);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    margin: 0;
+  }
+
+  code {
+    font-family: var(--sb-type-code-family);
+    font-size: var(--sb-type-code-size);
+    overflow-wrap: anywhere;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}

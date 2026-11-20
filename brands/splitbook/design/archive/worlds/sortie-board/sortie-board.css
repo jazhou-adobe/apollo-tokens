@@ -1,0 +1,770 @@
+/*
+ * Seeded world: Sortie Board (splitbook-sortie-board).
+ * Idea: a briefing-room launch schedule. The board is the structure: Swim, Session and Set rows sit in aligned, ruled
+ * columns (identifier, Length state, counts, completion), with callsign-style Swim IDs on matte slate.
+ * Type: Sofia Sans Extra Condensed for board titles only, IBM Plex Sans for everything read or typed, IBM Plex Sans
+ * Condensed for figures, IBM Plex Mono for short identifiers. Sentence case throughout; capitals only on short status
+ * and identity marks (the recording mark, the Printed stamp, the wordmark, month codes).
+ * Signature: a Swim prints in as a sortie row. A wall tap types its Length cell in with one --sb-motion-flash step
+ * sequence (.sb-tap-pad .sb-length-cell[data-state='done']); the finish touch (the Tap Pad no longer live, every cell
+ * done) feeds the whole strip through on a paper band column by column and stamps it Printed. Undo of the finish
+ * reopens the Swim and takes the stamp off.
+ * Intensity budget: identity (app bar, sidebar, hero, section heads, Tap Pad, Length strip, board rows) carries the
+ * double rules and the print; function keeps squared plates and hard contact shadows in the reading face; reading
+ * planes (Review sheet, field text, prose) stay opaque and plain. Glow appears on live state only. Orange is the
+ * recording hand only. Faces load in app/fonts.ts.
+ */
+
+html[data-theme="splitbook-sortie-board"] {
+  color-scheme: dark;
+  scrollbar-color: var(--sb-border) var(--sb-background);
+  --sb-background: #22282e;
+  --sb-foreground: #ece7da;
+  --sb-surface-card: #2f373f;
+  --sb-surface-card-foreground: #f1ecdf;
+  --sb-surface-panel: #283037;
+  --sb-surface-panel-foreground: #ece7da;
+  --sb-surface-shelf: #252b32;
+  --sb-surface-shelf-foreground: #ece7da;
+  --sb-surface-tray: #313a43;
+  --sb-surface-tray-foreground: #f1ecdf;
+  --sb-primary: #ece7da;
+  --sb-primary-foreground: #1e2328;
+  --sb-secondary: #343d46;
+  --sb-secondary-foreground: #ece7da;
+  --sb-muted: #38414a;
+  --sb-muted-foreground: #b7bcb8;
+  --sb-accent: #3f4952;
+  --sb-accent-foreground: #f1ecdf;
+  --sb-destructive: #ff9c8f;
+  --sb-destructive-foreground: #1e2328;
+  --sb-border: #8a949d;
+  --sb-input: #262d34;
+  --sb-ring: #f0c64f;
+  --sb-success: #86cfc0;
+  --sb-success-foreground: #0e2220;
+  --sb-warning: #dcd49c;
+  --sb-warning-foreground: #22201a;
+  --sb-info: #9db8d3;
+  --sb-info-foreground: #111c27;
+  --sb-live: #f27452;
+  --sb-live-foreground: #1a1310;
+  --sb-metric: #82b8e6;
+  --sb-metric-foreground: #0f1d2a;
+  --sb-improvement: #7ecb93;
+  --sb-improvement-foreground: #0f2216;
+  --sb-fault: #e9ba4a;
+  --sb-fault-foreground: #221a05;
+  --sb-tap-pad: #2a3239;
+  --sb-tap-pad-foreground: #f4efe2;
+  --sb-shadow: #0b0e1166;
+  --sb-scrim: #0b0e11b3;
+  --sb-chart-1: #82b8e6;
+  --sb-chart-2: #7ecb93;
+  --sb-chart-3: #e9ba4a;
+  --sb-chart-4: #c7a6e8;
+  --sb-chart-5: #b7bcb8;
+  --sb-font-sans: var(--font-ibm-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --sb-font-display: var(--font-sofia-sans-extra-condensed), 'Arial Narrow', sans-serif;
+  --sb-font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  --sb-type-display-size: 3rem;
+  --sb-type-display-line-height: 1;
+  --sb-type-heading-lg-size: 2.125rem;
+  --sb-type-heading-lg-line-height: 1;
+  --sb-type-heading-md-size: 1.5rem;
+  --sb-type-heading-md-line-height: 1.1;
+  --sb-type-numeral-xl-family: var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif;
+  --sb-type-numeral-xl-size: 5rem;
+  --sb-type-numeral-xl-weight: 700;
+  --sb-type-numeral-lg-family: var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif;
+  --sb-type-numeral-lg-weight: 700;
+  --sb-type-numeral-md-family: var(--font-ibm-plex-sans-condensed), 'Arial Narrow', sans-serif;
+  --sb-radius-sm: 0.125rem;
+  --sb-radius-md: 0.1875rem;
+  --sb-radius-lg: 0.3125rem;
+  --sb-radius-pill: 0.25rem;
+  --sb-elevation-raised: 0 1px 0 0 var(--sb-shadow), 0 2px 0 0 var(--sb-shadow);
+  --sb-elevation-overlay: 0 2px 0 0 var(--sb-shadow), 0 18px 32px -14px var(--sb-shadow);
+  /* World helpers: the paper band a completed row feeds through on (ink on it reads at 10:1 or better in every colour
+     option) and the hairline ruled between board rows (decorative; real boundaries use the border role). */
+  --sortie-board-strip: #e2d4a4;
+  --sortie-board-strip-ink: #22282e;
+  --sortie-board-rule: #3e4750;
+}
+
+html[data-theme="splitbook-sortie-board"][data-palette="haze-gray"] {
+  color-scheme: light;
+  --sb-background: #d2d6d8;
+  --sb-foreground: #12171c;
+  --sb-surface-card: #ebecea;
+  --sb-surface-card-foreground: #12171c;
+  --sb-surface-panel: #dde0e1;
+  --sb-surface-panel-foreground: #12171c;
+  --sb-surface-shelf: #c9ced1;
+  --sb-surface-shelf-foreground: #12171c;
+  --sb-surface-tray: #e4e6e5;
+  --sb-surface-tray-foreground: #12171c;
+  --sb-primary: #1b2129;
+  --sb-primary-foreground: #f3f3f0;
+  --sb-secondary: #f3f3f0;
+  --sb-secondary-foreground: #12171c;
+  --sb-muted: #c5cacd;
+  --sb-muted-foreground: #3b444c;
+  --sb-accent: #bfc8cf;
+  --sb-accent-foreground: #12171c;
+  --sb-destructive: #9e1f1a;
+  --sb-destructive-foreground: #ffffff;
+  --sb-border: #5c6770;
+  --sb-input: #f7f7f4;
+  --sb-ring: #1c4f8c;
+  --sb-success: #1d5e58;
+  --sb-success-foreground: #ffffff;
+  --sb-warning: #e3be3b;
+  --sb-warning-foreground: #1d1600;
+  --sb-info: #2e4d6b;
+  --sb-info-foreground: #ffffff;
+  --sb-live: #b0271d;
+  --sb-live-foreground: #ffffff;
+  --sb-metric: #1c5a9c;
+  --sb-metric-foreground: #ffffff;
+  --sb-improvement: #1f6a3d;
+  --sb-improvement-foreground: #ffffff;
+  --sb-fault: #875200;
+  --sb-fault-foreground: #ffffff;
+  --sb-tap-pad: #f3f3f0;
+  --sb-tap-pad-foreground: #0e1216;
+  --sb-shadow: #12171c2e;
+  --sb-scrim: #12171ca6;
+  --sb-chart-1: #1c5a9c;
+  --sb-chart-2: #1f6a3d;
+  --sb-chart-3: #875200;
+  --sb-chart-4: #6a3e98;
+  --sb-chart-5: #4a535b;
+  --sortie-board-strip: #2e3a46;
+  --sortie-board-strip-ink: #f3f3f0;
+  --sortie-board-rule: #c3c8cb;
+}
+
+html[data-theme="splitbook-sortie-board"][data-palette="grease-board"] {
+  color-scheme: dark;
+  --sb-background: #20241e;
+  --sb-foreground: #eeead6;
+  --sb-surface-card: #2e342b;
+  --sb-surface-card-foreground: #f2eedb;
+  --sb-surface-panel: #272c25;
+  --sb-surface-panel-foreground: #eeead6;
+  --sb-surface-shelf: #242920;
+  --sb-surface-shelf-foreground: #eeead6;
+  --sb-surface-tray: #31372d;
+  --sb-surface-tray-foreground: #f2eedb;
+  --sb-primary: #f2d15a;
+  --sb-primary-foreground: #1d200f;
+  --sb-secondary: #333a2f;
+  --sb-secondary-foreground: #eeead6;
+  --sb-muted: #384034;
+  --sb-muted-foreground: #bcbda9;
+  --sb-accent: #424b3c;
+  --sb-accent-foreground: #f2eedb;
+  --sb-destructive: #ff9a8a;
+  --sb-destructive-foreground: #1e120c;
+  --sb-border: #8e957f;
+  --sb-input: #242920;
+  --sb-ring: #f2d15a;
+  --sb-success: #8dd3c0;
+  --sb-success-foreground: #0e211c;
+  --sb-warning: #e2dda0;
+  --sb-warning-foreground: #201d08;
+  --sb-info: #a3c1d6;
+  --sb-info-foreground: #101c24;
+  --sb-live: #ff8357;
+  --sb-live-foreground: #1e120c;
+  --sb-metric: #93c5e4;
+  --sb-metric-foreground: #0f1c24;
+  --sb-improvement: #a9d58c;
+  --sb-improvement-foreground: #15220c;
+  --sb-fault: #f0be55;
+  --sb-fault-foreground: #231a06;
+  --sb-tap-pad: #293026;
+  --sb-tap-pad-foreground: #f4f0dd;
+  --sb-shadow: #0a0c0866;
+  --sb-scrim: #0a0c08b3;
+  --sb-chart-1: #93c5e4;
+  --sb-chart-2: #a9d58c;
+  --sb-chart-3: #f0be55;
+  --sb-chart-4: #d0b0e8;
+  --sb-chart-5: #bcbda9;
+  --sortie-board-strip: #d8e0c4;
+  --sortie-board-strip-ink: #20241e;
+  --sortie-board-rule: #3d4538;
+}
+
+html[data-theme="splitbook-sortie-board"][data-palette="original"] {
+  color-scheme: dark;
+  --sb-background: #152338;
+  --sb-foreground: #f2f2ec;
+  --sb-surface-card: #20324d;
+  --sb-surface-card-foreground: #f5f5ef;
+  --sb-surface-panel: #1a2a42;
+  --sb-surface-panel-foreground: #f2f2ec;
+  --sb-surface-shelf: #172740;
+  --sb-surface-shelf-foreground: #f2f2ec;
+  --sb-surface-tray: #233652;
+  --sb-surface-tray-foreground: #f5f5ef;
+  --sb-primary: #ffd447;
+  --sb-primary-foreground: #14202f;
+  --sb-secondary: #263a57;
+  --sb-secondary-foreground: #f2f2ec;
+  --sb-muted: #293c59;
+  --sb-muted-foreground: #b9c2cf;
+  --sb-accent: #2e4566;
+  --sb-accent-foreground: #f5f5ef;
+  --sb-destructive: #ff9c8c;
+  --sb-destructive-foreground: #14202f;
+  --sb-border: #8494ac;
+  --sb-input: #182840;
+  --sb-ring: #ffd447;
+  --sb-success: #7fd4c4;
+  --sb-success-foreground: #0c1f1c;
+  --sb-warning: #ede6b0;
+  --sb-warning-foreground: #14202f;
+  --sb-info: #a8c4e6;
+  --sb-info-foreground: #0c1a2b;
+  --sb-live: #ff7b5c;
+  --sb-live-foreground: #1a0f0b;
+  --sb-metric: #8cc6ff;
+  --sb-metric-foreground: #0c1a2b;
+  --sb-improvement: #83d69c;
+  --sb-improvement-foreground: #0e2416;
+  --sb-fault: #ffc857;
+  --sb-fault-foreground: #231906;
+  --sb-tap-pad: #1c2d46;
+  --sb-tap-pad-foreground: #f7f7f1;
+  --sb-shadow: #070d1773;
+  --sb-scrim: #070d17b8;
+  --sb-chart-1: #8cc6ff;
+  --sb-chart-2: #83d69c;
+  --sb-chart-3: #ffc857;
+  --sb-chart-4: #d6b4f5;
+  --sb-chart-5: #b9c2cf;
+  --sortie-board-strip: #f2f2ec;
+  --sortie-board-strip-ink: #152338;
+  --sortie-board-rule: #2c4263;
+}
+
+/* =====================================================================================================================
+ * Identity: the board's edges, the hero, section heads. Double typeset rules; board titles in the condensed face.
+ * ================================================================================================================== */
+html[data-theme="splitbook-sortie-board"] ::selection {
+  background: var(--sb-primary);
+  color: var(--sb-primary-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-display,
+html[data-theme="splitbook-sortie-board"] .sb-heading-lg,
+html[data-theme="splitbook-sortie-board"] .sb-heading-md {
+  letter-spacing: 0.01em;
+}
+/* The wordmark is an identity mark, so it may take capitals. */
+html[data-theme="splitbook-sortie-board"] .sb-wordmark {
+  font-family: var(--sb-type-display-family);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-brand strong {
+  font-family: var(--sb-type-display-family);
+  font-size: var(--sb-type-heading-lg-size);
+  font-weight: var(--sb-font-weight-heavy);
+}
+/* The board header: a double typeset rule under the app bar and beside the sidebar, the way a schedule is ruled off. */
+html[data-theme="splitbook-sortie-board"] .sb-app-bar {
+  border-block-end: var(--sb-border-width-heavy) double var(--sb-border);
+  background: var(--sb-surface-panel);
+  color: var(--sb-surface-panel-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-sidebar {
+  border-block-end: var(--sb-border-width-heavy) double var(--sb-border);
+}
+@media (min-width: 64rem) {
+  html[data-theme="splitbook-sortie-board"] .sb-sidebar {
+    border-block-end: 0;
+    border-inline-end: var(--sb-border-width-heavy) double var(--sb-border);
+  }
+}
+html[data-theme="splitbook-sortie-board"] .sb-hero {
+  padding-block: var(--sb-space-4);
+  border-block: var(--sb-border-width-heavy) double var(--sb-border);
+}
+html[data-theme="splitbook-sortie-board"] .sb-section-head {
+  border-block-start: var(--sb-border-width-heavy) double var(--sb-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-divider[data-variant='axis'],
+html[data-theme="splitbook-sortie-board"] .sb-pair-axis {
+  border-color: var(--sb-foreground);
+}
+
+/* =====================================================================================================================
+ * Function: plates on the board. Squared corners, hard contact shadows, the open reading face in sentence case.
+ * ================================================================================================================== */
+html[data-theme="splitbook-sortie-board"] .sb-tray {
+  border-block-start-width: var(--sb-border-width-thick);
+}
+html[data-theme="splitbook-sortie-board"] .sb-button,
+html[data-theme="splitbook-sortie-board"] .sb-icon-button {
+  border-width: var(--sb-border-width-thick);
+  border-radius: var(--sb-radius-sm);
+  box-shadow: var(--sb-elevation-raised);
+}
+html[data-theme="splitbook-sortie-board"] .sb-button:active,
+html[data-theme="splitbook-sortie-board"] .sb-icon-button:active,
+html[data-theme="splitbook-sortie-board"] .sb-button[data-variant='ghost'] {
+  box-shadow: none;
+}
+html[data-theme="splitbook-sortie-board"] .sb-button[data-variant='secondary']:hover,
+html[data-theme="splitbook-sortie-board"] .sb-icon-button:hover {
+  border-color: var(--sb-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-link,
+html[data-theme="splitbook-sortie-board"] .sb-button[data-variant='ghost'] {
+  text-decoration-thickness: var(--sb-border-width-thin);
+  text-underline-offset: var(--sb-space-1);
+}
+
+/* Fields: recessed wells in the board. The field text stays the plain reading face. */
+html[data-theme="splitbook-sortie-board"] .sb-input,
+html[data-theme="splitbook-sortie-board"] .sb-textarea,
+html[data-theme="splitbook-sortie-board"] .sb-select {
+  border-radius: var(--sb-radius-sm);
+  box-shadow: inset 0 2px 0 0 var(--sb-shadow);
+}
+html[data-theme="splitbook-sortie-board"] .sb-switch-track {
+  border-radius: var(--sb-radius-sm);
+  background: var(--sb-input);
+}
+html[data-theme="splitbook-sortie-board"] .sb-switch-thumb {
+  border-radius: var(--sb-radius-sm);
+  box-shadow: var(--sb-elevation-raised);
+}
+
+/* Chips: tags pinned to the board. Selected takes the primary plate and keeps its check mark. */
+html[data-theme="splitbook-sortie-board"] .sb-chip {
+  border-width: var(--sb-border-width-thick);
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-chip:has(input:checked),
+html[data-theme="splitbook-sortie-board"] .sb-chip[aria-pressed='true'],
+html[data-theme="splitbook-sortie-board"] .sb-chip[aria-checked='true'] {
+  border-color: var(--sb-primary);
+  background: var(--sb-primary);
+  color: var(--sb-primary-foreground);
+  box-shadow: var(--sb-elevation-raised);
+}
+html[data-theme="splitbook-sortie-board"] .sb-badge {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-kbd {
+  box-shadow: var(--sb-elevation-raised);
+}
+
+/* Alerts and toasts: a full-frame briefing slip with a squared mark; never a side stripe. */
+html[data-theme="splitbook-sortie-board"] .sb-alert,
+html[data-theme="splitbook-sortie-board"] .sb-toast,
+html[data-theme="splitbook-sortie-board"] .sb-alert-mark {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-toast {
+  border-style: double;
+  border-width: var(--sb-border-width-heavy);
+}
+
+/* Navigation: the current page is a framed plate with a printed cue mark, not a side stripe. */
+html[data-theme="splitbook-sortie-board"] .sb-side-nav a,
+html[data-theme="splitbook-sortie-board"] .sb-bottom-nav a {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-side-nav a[aria-current='page'],
+html[data-theme="splitbook-sortie-board"] .sb-bottom-nav a[aria-current='page'] {
+  border-width: var(--sb-border-width-thick);
+  border-color: var(--sb-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-side-nav a[aria-current='page']::after {
+  content: '◂' / '';
+  margin-inline-start: auto;
+}
+html[data-theme="splitbook-sortie-board"] .sb-bottom-nav {
+  border-block-start: var(--sb-border-width-heavy) double var(--sb-border);
+}
+html[data-theme="splitbook-sortie-board"] .sb-breadcrumbs li + li::before {
+  content: '›' / '';
+}
+html[data-theme="splitbook-sortie-board"] .sb-tabs [role='tablist'] {
+  border-block-end-width: var(--sb-border-width-thick);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tabs [role='tab'][aria-selected='true'] {
+  background: var(--sb-surface-panel);
+  color: var(--sb-surface-panel-foreground);
+}
+
+/* Overlays: briefing cards lifted off the board. Opaque, squared, double-ruled edges. */
+html[data-theme="splitbook-sortie-board"] .sb-dialog,
+html[data-theme="splitbook-sortie-board"] .sb-sheet {
+  border: var(--sb-border-width-heavy) double var(--sb-border);
+  border-radius: var(--sb-radius-md);
+}
+html[data-theme="splitbook-sortie-board"] .sb-popover,
+html[data-theme="splitbook-sortie-board"] .sb-menu {
+  border-width: var(--sb-border-width-thick);
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-menu [role^='menuitem'] {
+  border-radius: 0;
+}
+html[data-theme="splitbook-sortie-board"] .sb-menu li + li {
+  border-block-start: var(--sb-border-width-thin) solid var(--sortie-board-rule);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tooltip {
+  border: var(--sb-border-width-thin) solid var(--sb-background);
+  border-radius: var(--sb-radius-sm);
+  box-shadow: var(--sb-elevation-raised);
+}
+
+/* Feedback: the progress track is a schedule ruler with a tick every tenth; the fill is chalk. */
+html[data-theme="splitbook-sortie-board"] .sb-progress-track {
+  border-radius: var(--sb-radius-sm);
+  background-color: var(--sb-input);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 calc(10% - var(--sb-border-width-thin)),
+    var(--sb-border) calc(10% - var(--sb-border-width-thin)) 10%
+  );
+}
+html[data-theme="splitbook-sortie-board"] .sb-progress-fill {
+  border-inline-end: var(--sb-border-width-thick) solid var(--sb-background);
+}
+html[data-theme="splitbook-sortie-board"] .sb-spinner {
+  border-radius: 50%;
+}
+
+/* Tables and lists: the board itself. Column heads on a muted band, ruled rows, figures in condensed tabular columns. */
+html[data-theme="splitbook-sortie-board"] .sb-table-wrap,
+html[data-theme="splitbook-sortie-board"] .sb-list {
+  border-width: var(--sb-border-width-thick);
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-table thead th {
+  border-block-end: var(--sb-border-width-heavy) double var(--sb-border);
+  background: var(--sb-muted);
+  color: var(--sb-surface-card-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-table tbody th,
+html[data-theme="splitbook-sortie-board"] .sb-table tbody td {
+  border-block-start-color: var(--sortie-board-rule);
+}
+html[data-theme="splitbook-sortie-board"] .sb-table td[data-numeric='true'] {
+  font-family: var(--sb-type-numeral-md-family);
+}
+html[data-theme="splitbook-sortie-board"] .sb-table tbody tr:hover {
+  background: var(--sb-surface-panel);
+  color: var(--sb-surface-panel-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-list > li + li {
+  border-block-start-color: var(--sortie-board-rule);
+}
+html[data-theme="splitbook-sortie-board"] .sb-empty-state {
+  border-radius: var(--sb-radius-sm);
+}
+/* Initials are an identity mark: a squared callsign patch. */
+html[data-theme="splitbook-sortie-board"] .sb-avatar {
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-type-code-family);
+}
+
+/* =====================================================================================================================
+ * Domain widgets
+ * ================================================================================================================== */
+
+/* Tap Pad: a mounted board panel. Live keeps the core frame and adds the only glow in the world. */
+html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-state='live'] {
+  box-shadow:
+    var(--sb-elevation-raised),
+    0 0 var(--sb-space-6) color-mix(in srgb, var(--sb-live) 32%, transparent);
+}
+/* The recording mark is a short status word: mono capitals. */
+html[data-theme="splitbook-sortie-board"] .sb-live-mark {
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-type-code-family);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+html[data-theme="splitbook-sortie-board"] .sb-live-mark::before {
+  border-radius: 50%;
+}
+html[data-theme="splitbook-sortie-board"] .sb-live-mark[data-state='live'] {
+  box-shadow: 0 0 var(--sb-space-3) color-mix(in srgb, var(--sb-live) 55%, transparent);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-key {
+  box-shadow: var(--sb-elevation-raised);
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-key:active {
+  box-shadow: none;
+}
+
+/* Length strip: the Swim's sortie line. Cells fill the width as shared-rule columns; the Length number is an
+   identifier in mono, the split a condensed figure. */
+html[data-theme="splitbook-sortie-board"] .sb-length-strip {
+  gap: 0;
+}
+/* Inside the Tap Pad the sortie line bleeds a hair into the panel's inset, so four Deck-sized Length cells stay on
+   one line at phone width instead of wrapping into a second row. */
+html[data-theme="splitbook-sortie-board"] .sb-tap-pad .sb-length-strip {
+  margin-inline: calc(var(--sb-space-1) * -1);
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell {
+  position: relative;
+  flex: 1 1 0;
+  border-radius: 0;
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell + .sb-length-cell {
+  margin-inline-start: calc(var(--sb-border-width-thick) * -1);
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell:first-child {
+  border-start-start-radius: var(--sb-radius-sm);
+  border-end-start-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell:last-child {
+  border-start-end-radius: var(--sb-radius-sm);
+  border-end-end-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell-number {
+  font-family: var(--sb-type-code-family);
+}
+html[data-theme="splitbook-sortie-board"] .sb-length-cell[data-state='current'] {
+  z-index: 1;
+  box-shadow: 0 0 var(--sb-space-3) color-mix(in srgb, var(--sb-live) 40%, transparent);
+}
+
+/* Rating, Fault flag and Review sheet: squared plates on a quiet, opaque writing plane. Selection colours come from
+   the core (ink with a check), never the metric hand. */
+html[data-theme="splitbook-sortie-board"] .sb-rating-step,
+html[data-theme="splitbook-sortie-board"] .sb-fault-flag {
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-review-section {
+  border-block-start-color: var(--sb-border);
+}
+
+/* ---------- Board rows: Swims, Sessions and Sets in aligned schedule columns ---------- */
+/* Swim row: the Swim ID in mono as the row identifier, then its figures in fixed-width columns so every row in a list
+   lines up. The first row of a list carries the column heads above its figures; later rows keep their labels for
+   screen readers only, as a printed schedule does. */
+html[data-theme="splitbook-sortie-board"] .sb-swim-row-title {
+  font-family: var(--sb-type-code-family);
+}
+html[data-theme="splitbook-sortie-board"] .sb-swim-row-figures .sb-numeral {
+  font-family: var(--sb-type-numeral-md-family);
+}
+html[data-theme="splitbook-sortie-board"] .sb-swim-row-figures .sb-figure {
+  position: relative;
+  align-self: end;
+}
+html[data-theme="splitbook-sortie-board"] .sb-list > li:first-child .sb-swim-row-figures .sb-figure-label {
+  order: -1;
+  padding-block-end: var(--sb-space-1);
+  border-block-end: var(--sb-border-width-thin) solid var(--sb-border);
+}
+html[data-theme="splitbook-sortie-board"] .sb-list > li + li .sb-swim-row-figures .sb-figure-label {
+  position: absolute;
+  inline-size: var(--sb-border-width-thin);
+  block-size: var(--sb-border-width-thin);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (min-width: 48rem) {
+  html[data-theme="splitbook-sortie-board"] .sb-swim-row-figures {
+    display: grid;
+    grid-template-columns: repeat(3, calc(var(--sb-space-16) * 2));
+    justify-content: end;
+  }
+}
+/* Session row: the date is a fixed-width board slot with a mono month code, so every title starts on one line. */
+html[data-theme="splitbook-sortie-board"] .sb-session-date {
+  inline-size: calc(var(--sb-button-min-target) + var(--sb-space-4));
+  box-sizing: border-box;
+  border-radius: var(--sb-radius-sm);
+  background: var(--sb-surface-panel);
+  color: var(--sb-surface-panel-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-session-date .sb-body-sm {
+  font-family: var(--sb-type-code-family);
+  text-transform: uppercase;
+}
+@media (min-width: 48rem) {
+  html[data-theme="splitbook-sortie-board"] .sb-session-row .sb-list-row-meta {
+    display: grid;
+    grid-template-columns: minmax(0, calc(var(--sb-space-16) * 4)) minmax(0, 1fr);
+  }
+}
+/* A Set is a section of the board: framed, with its prescription on a header band. No side rule. */
+html[data-theme="splitbook-sortie-board"] .sb-set-group {
+  gap: 0;
+  padding: 0;
+  border: var(--sb-border-width-thick) solid var(--sb-border);
+  border-radius: var(--sb-radius-sm);
+  background: var(--sb-surface-card);
+  color: var(--sb-surface-card-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-set-group-head {
+  padding: var(--sb-space-2) var(--sb-density-inset);
+  border-block-end: var(--sb-border-width-heavy) double var(--sb-border);
+  background: var(--sb-muted);
+  color: var(--sb-surface-card-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-set-group-head .sb-muted {
+  color: var(--sb-muted-foreground);
+}
+html[data-theme="splitbook-sortie-board"] .sb-set-group > .sb-list {
+  border: 0;
+  border-radius: 0;
+}
+
+/* Trends: plotted on the board's ruled grid. */
+html[data-theme="splitbook-sortie-board"] .sb-trend-grid {
+  stroke-dasharray: 1 3;
+}
+html[data-theme="splitbook-sortie-board"] .sb-trend-path {
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+}
+html[data-theme="splitbook-sortie-board"] .sb-dial-hand {
+  stroke-linecap: square;
+}
+
+/* Profile switcher: a squared plate. */
+html[data-theme="splitbook-sortie-board"] .sb-profile-switcher button[aria-haspopup='menu'] {
+  border-width: var(--sb-border-width-thick);
+  border-radius: var(--sb-radius-sm);
+  box-shadow: var(--sb-elevation-raised);
+}
+
+/* Admin console: the publish bar is the double-ruled foot of the schedule. */
+html[data-theme="splitbook-sortie-board"] .sb-publish-bar {
+  border: var(--sb-border-width-heavy) double var(--sb-foreground);
+  border-radius: var(--sb-radius-sm);
+}
+html[data-theme="splitbook-sortie-board"] .sb-formula-preview {
+  border-radius: var(--sb-radius-sm);
+}
+
+/* =====================================================================================================================
+ * Signature: a Swim prints in as a sortie row.
+ * 1. Wall tap (frequent input): the new Length cell types in with one --sb-motion-flash step sequence and nothing
+ *    else. Hook: .sb-tap-pad .sb-length-cell[data-state='done'].
+ * 2. Swim completion (once per Swim): the Tap Pad's phase is ended and every cell in its strip is done. The whole
+ *    strip prints again column by column on a paper band (--sb-motion-pulse, staggered by --sb-motion-stagger), and a
+ *    Printed stamp lands under the row. Resume or undo of the finish puts the Tap Pad back in the live phase, so the
+ *    completion selector stops matching and the stamp comes off. Ending early leaves cells undone: no stamp.
+ * Bounded (one run each, never infinite), on --sb-motion-* durations, and only under no-preference: with reduced
+ * motion the row simply appears printed. The stamp's word is decorative (empty alt text); the Tap Pad's own status
+ * word ("Swim ended") carries the meaning.
+ * ================================================================================================================== */
+/* The completed record makes room under its cells for the stamp, so it never squeezes or wraps the row. */
+html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-phase='ended'] .sb-length-strip:not(:has(.sb-length-cell:not([data-state='done']))) {
+  position: relative;
+  padding-block-end: calc(var(--sb-space-8) + var(--sb-space-2));
+}
+html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-phase='ended'] .sb-length-strip:not(:has(.sb-length-cell:not([data-state='done'])))::after {
+  content: 'Printed' / '';
+  position: absolute;
+  inset-block-end: var(--sb-space-1);
+  inset-inline-end: var(--sb-space-2);
+  padding: var(--sb-space-1) var(--sb-space-2);
+  border: var(--sb-border-width-thick) solid currentColor;
+  border-radius: var(--sb-radius-sm);
+  font-family: var(--sb-type-code-family);
+  font-size: var(--sb-type-code-size);
+  font-weight: var(--sb-font-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  rotate: -4deg;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad .sb-length-cell[data-state='done'] {
+    animation: sortie-board-print var(--sb-motion-flash) steps(6, end) both;
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-phase='ended'] .sb-length-strip:not(:has(.sb-length-cell:not([data-state='done']))) .sb-length-cell {
+    animation:
+      sortie-board-print var(--sb-motion-flash) steps(6, end) both,
+      sortie-board-feed var(--sb-motion-pulse) var(--sb-easing-standard) both;
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-phase='ended'] .sb-length-strip:not(:has(.sb-length-cell:not([data-state='done']))) .sb-length-cell-number {
+    animation: sortie-board-feed-ink var(--sb-motion-pulse) var(--sb-easing-standard) both;
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-phase='ended'] .sb-length-strip:not(:has(.sb-length-cell:not([data-state='done']))) .sb-length-cell:nth-child(2) {
+    animation-delay: var(--sb-motion-stagger), var(--sb-motion-stagger);
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-phase='ended'] .sb-length-strip:not(:has(.sb-length-cell:not([data-state='done']))) .sb-length-cell:nth-child(3) {
+    animation-delay: calc(var(--sb-motion-stagger) * 2), calc(var(--sb-motion-stagger) * 2);
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-phase='ended'] .sb-length-strip:not(:has(.sb-length-cell:not([data-state='done']))) .sb-length-cell:nth-child(4) {
+    animation-delay: calc(var(--sb-motion-stagger) * 3), calc(var(--sb-motion-stagger) * 3);
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-phase='ended'] .sb-length-strip:not(:has(.sb-length-cell:not([data-state='done']))) .sb-length-cell:nth-child(n + 5) {
+    animation-delay: calc(var(--sb-motion-stagger) * 4), calc(var(--sb-motion-stagger) * 4);
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-phase='ended'] .sb-length-strip:not(:has(.sb-length-cell:not([data-state='done']))) {
+    animation: sortie-board-feed-row var(--sb-motion-pulse) var(--sb-easing-standard) both;
+  }
+  html[data-theme="splitbook-sortie-board"] .sb-tap-pad[data-phase='ended'] .sb-length-strip:not(:has(.sb-length-cell:not([data-state='done'])))::after {
+    animation: sortie-board-stamp var(--sb-motion-panel) var(--sb-easing-enter) var(--sb-motion-flash) both;
+  }
+}
+
+@keyframes sortie-board-print {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes sortie-board-feed {
+  0%,
+  55% {
+    background-color: var(--sortie-board-strip);
+    color: var(--sortie-board-strip-ink);
+  }
+  100% {
+    background-color: var(--sb-surface-card);
+    color: var(--sb-surface-card-foreground);
+  }
+}
+@keyframes sortie-board-feed-ink {
+  0%,
+  55% {
+    color: var(--sortie-board-strip-ink);
+  }
+  100% {
+    color: var(--sb-muted-foreground);
+  }
+}
+@keyframes sortie-board-feed-row {
+  0%,
+  55% {
+    outline: var(--sb-border-width-heavy) solid var(--sortie-board-strip);
+    outline-offset: var(--sb-border-width-thick);
+  }
+  100% {
+    outline: var(--sb-border-width-heavy) solid transparent;
+    outline-offset: var(--sb-border-width-thick);
+  }
+}
+@keyframes sortie-board-stamp {
+  from {
+    opacity: 0;
+    scale: var(--sb-enter-scale);
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}

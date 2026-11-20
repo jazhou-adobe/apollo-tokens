@@ -1,0 +1,110 @@
+/*
+ * Tailwind v4 bridge for Splitbook tokens. Import after tailwindcss and tokens/themes.css.
+ * Default palettes, radii, shadows, type sizes, and breakpoints are reset so only semantic Splitbook utilities exist
+ * (bg-surface-card, text-muted-foreground, border-border, bg-live, text-metric, rounded-md, shadow-raised, text-body,
+ * text-numeral-xl, md:grid-cols-2, gap-4 on the --sb-space-1 rail). Tailwind v3 apps map the same --sb-* variables in
+ * tailwind.config theme.extend.
+ */
+@theme {
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --text-*: initial;
+  --breakpoint-*: initial;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+}
+
+@theme inline {
+  --spacing: var(--sb-space-1);
+  --font-sans: var(--sb-font-sans);
+  --font-display: var(--sb-font-display);
+  --font-mono: var(--sb-font-mono);
+  --color-background: var(--sb-background);
+  --color-foreground: var(--sb-foreground);
+  --color-surface-card: var(--sb-surface-card);
+  --color-surface-card-foreground: var(--sb-surface-card-foreground);
+  --color-surface-panel: var(--sb-surface-panel);
+  --color-surface-panel-foreground: var(--sb-surface-panel-foreground);
+  --color-surface-shelf: var(--sb-surface-shelf);
+  --color-surface-shelf-foreground: var(--sb-surface-shelf-foreground);
+  --color-surface-tray: var(--sb-surface-tray);
+  --color-surface-tray-foreground: var(--sb-surface-tray-foreground);
+  --color-primary: var(--sb-primary);
+  --color-primary-foreground: var(--sb-primary-foreground);
+  --color-secondary: var(--sb-secondary);
+  --color-secondary-foreground: var(--sb-secondary-foreground);
+  --color-muted: var(--sb-muted);
+  --color-muted-foreground: var(--sb-muted-foreground);
+  --color-accent: var(--sb-accent);
+  --color-accent-foreground: var(--sb-accent-foreground);
+  --color-destructive: var(--sb-destructive);
+  --color-destructive-foreground: var(--sb-destructive-foreground);
+  --color-border: var(--sb-border);
+  --color-input: var(--sb-input);
+  --color-ring: var(--sb-ring);
+  --color-success: var(--sb-success);
+  --color-success-foreground: var(--sb-success-foreground);
+  --color-warning: var(--sb-warning);
+  --color-warning-foreground: var(--sb-warning-foreground);
+  --color-info: var(--sb-info);
+  --color-info-foreground: var(--sb-info-foreground);
+  --color-live: var(--sb-live);
+  --color-live-foreground: var(--sb-live-foreground);
+  --color-metric: var(--sb-metric);
+  --color-metric-foreground: var(--sb-metric-foreground);
+  --color-improvement: var(--sb-improvement);
+  --color-improvement-foreground: var(--sb-improvement-foreground);
+  --color-fault: var(--sb-fault);
+  --color-fault-foreground: var(--sb-fault-foreground);
+  --color-tap-pad: var(--sb-tap-pad);
+  --color-tap-pad-foreground: var(--sb-tap-pad-foreground);
+  --color-shadow: var(--sb-shadow);
+  --color-scrim: var(--sb-scrim);
+  --color-chart-1: var(--sb-chart-1);
+  --color-chart-2: var(--sb-chart-2);
+  --color-chart-3: var(--sb-chart-3);
+  --color-chart-4: var(--sb-chart-4);
+  --color-chart-5: var(--sb-chart-5);
+  --radius-sm: var(--sb-radius-sm);
+  --radius-md: var(--sb-radius-md);
+  --radius-lg: var(--sb-radius-lg);
+  --radius-pill: var(--sb-radius-pill);
+  --shadow-raised: var(--sb-elevation-raised);
+  --shadow-overlay: var(--sb-elevation-overlay);
+  --text-display: var(--sb-type-display-size);
+  --text-display--line-height: var(--sb-type-display-line-height);
+  --text-display--font-weight: var(--sb-type-display-weight);
+  --text-heading-lg: var(--sb-type-heading-lg-size);
+  --text-heading-lg--line-height: var(--sb-type-heading-lg-line-height);
+  --text-heading-lg--font-weight: var(--sb-type-heading-lg-weight);
+  --text-heading-md: var(--sb-type-heading-md-size);
+  --text-heading-md--line-height: var(--sb-type-heading-md-line-height);
+  --text-heading-md--font-weight: var(--sb-type-heading-md-weight);
+  --text-body-lg: var(--sb-type-body-lg-size);
+  --text-body-lg--line-height: var(--sb-type-body-lg-line-height);
+  --text-body-lg--font-weight: var(--sb-type-body-lg-weight);
+  --text-body: var(--sb-type-body-size);
+  --text-body--line-height: var(--sb-type-body-line-height);
+  --text-body--font-weight: var(--sb-type-body-weight);
+  --text-body-sm: var(--sb-type-body-sm-size);
+  --text-body-sm--line-height: var(--sb-type-body-sm-line-height);
+  --text-body-sm--font-weight: var(--sb-type-body-sm-weight);
+  --text-label: var(--sb-type-label-size);
+  --text-label--line-height: var(--sb-type-label-line-height);
+  --text-label--font-weight: var(--sb-type-label-weight);
+  --text-code: var(--sb-type-code-size);
+  --text-code--line-height: var(--sb-type-code-line-height);
+  --text-code--font-weight: var(--sb-type-code-weight);
+  --text-numeral-xl: var(--sb-type-numeral-xl-size);
+  --text-numeral-xl--line-height: var(--sb-type-numeral-xl-line-height);
+  --text-numeral-xl--font-weight: var(--sb-type-numeral-xl-weight);
+  --text-numeral-lg: var(--sb-type-numeral-lg-size);
+  --text-numeral-lg--line-height: var(--sb-type-numeral-lg-line-height);
+  --text-numeral-lg--font-weight: var(--sb-type-numeral-lg-weight);
+  --text-numeral-md: var(--sb-type-numeral-md-size);
+  --text-numeral-md--line-height: var(--sb-type-numeral-md-line-height);
+  --text-numeral-md--font-weight: var(--sb-type-numeral-md-weight);
+}
