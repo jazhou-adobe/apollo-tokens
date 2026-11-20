@@ -1,0 +1,535 @@
+/*
+ * Starship Hermes: the courier god as a ship's emblem.
+ * Terracotta and soot; a Greek-key meander on the two outside vertical edges only; Marcellus SC engraved into the
+ * ship's identity (display lettering, the ship's name); Instrument Sans for every operational label; IBM Plex Mono for
+ * serials, timers and code. Reading planes stay parchment in every colour option.
+ * Signature: a winged-sandal dispatch seal is struck on the departing strip and beside the Answered confirmation.
+ * Every decorative colour derives from a role or a per-palette --starship-* helper, so each colour option recolours the
+ * meander, bevels and seal. Design source: research/world-previews/starship.html.
+ */
+
+/* Soot & Terracotta (recommended) */
+html[data-theme="hermes-starship"] {
+  color-scheme: dark;
+  --hh-background: #15110e;
+  --hh-foreground: #ede4d6;
+  --hh-surface-card: #201a15;
+  --hh-surface-card-foreground: #ede4d6;
+  --hh-surface-panel: #29211b;
+  --hh-surface-panel-foreground: #ede4d6;
+  --hh-surface-shelf: #1b1612;
+  --hh-surface-shelf-foreground: #ede4d6;
+  --hh-surface-tray: #30271f;
+  --hh-surface-tray-foreground: #ede4d6;
+  --hh-primary: #cf6a43;
+  --hh-primary-foreground: #160d08;
+  --hh-secondary: #3a3028;
+  --hh-secondary-foreground: #ede4d6;
+  --hh-muted: #2a221c;
+  --hh-muted-foreground: #b8aa97;
+  --hh-accent: #d8a55e;
+  --hh-accent-foreground: #1a1109;
+  --hh-destructive: #ee7b6c;
+  --hh-destructive-foreground: #1a0b08;
+  --hh-border: #8c7a68;
+  --hh-input: #1b1612;
+  --hh-ring: #bc714d;
+  --hh-success: #7cbf86;
+  --hh-success-foreground: #0d1a0f;
+  --hh-warning: #e2ac52;
+  --hh-warning-foreground: #1a1206;
+  --hh-info: #86b9c9;
+  --hh-info-foreground: #0c171b;
+  --hh-strip: #f1e7d5;
+  --hh-strip-foreground: #1d150f;
+  --hh-pending: #a8762a;
+  --hh-pending-foreground: #120b03;
+  --hh-answered: #5d8793;
+  --hh-answered-foreground: #071114;
+  --hh-expired: #86807a;
+  --hh-expired-foreground: #0f0e0d;
+  --hh-recommended: #4f8c55;
+  --hh-recommended-foreground: #061008;
+  --hh-live: #86d6a2;
+  --hh-live-foreground: #08170e;
+  --hh-code: #0f0c0a;
+  --hh-code-foreground: #e6ddcf;
+  --hh-diff-add: #1f3622;
+  --hh-diff-remove: #431c17;
+  --hh-agent-1: #e08a5c;
+  --hh-agent-2: #d9b45e;
+  --hh-agent-3: #8cc08a;
+  --hh-agent-4: #7fb3c9;
+  --hh-agent-5: #b79ad6;
+  --hh-agent-6: #d98fa8;
+  --hh-shadow: #000000;
+  --hh-scrim: #0a0806;
+  --hh-chart-1: #cf6a43;
+  --hh-chart-2: #d8a55e;
+  --hh-chart-3: #7cbf86;
+  --hh-chart-4: #86b9c9;
+  --hh-chart-5: #b79ad6;
+  --hh-font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --hh-font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+  --hh-font-condensed: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --hh-font-weight-heavy: 700;
+  --hh-type-display-family: var(--font-marcellus-sc), 'Times New Roman', serif;
+  --hh-type-display-weight: var(--hh-font-weight-regular);
+  --hh-radius-md: 0.1875rem;
+  --hh-radius-lg: 0.3125rem;
+  --hh-elevation-raised: 0 0.25rem 0.75rem -0.375rem var(--hh-shadow);
+  --hh-elevation-overlay: 0 0.75rem 2rem -0.5rem var(--hh-shadow);
+  --starship-bevel-hi: rgba(255, 238, 214, 0.07);
+  --starship-bevel-lo: rgba(0, 0, 0, 0.45);
+  --starship-sandal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 40'%3E%3Cpath d='M17 22C11 21 5 18 1 12C7 14 12 15 18 17ZM18 18C13 15 9 10 8 3C12 8 16 11 21 14ZM21 15C19 10 19 6 21 0C24 5 25 10 24 15ZM8 31C8 28.5 11 27 15 27L50 27C56 27 60 29 60 31.5C60 34 56 35.5 50 35.5L14 35.5C10 35.5 8 33.5 8 31Z'/%3E%3Cpath d='M15 27C15 21 18 17.5 23.5 16.5C28 14 33 14 36 16M22 27L31 17.5M29 27L37 19.5M37 27L43 22.5M45 27L47 25' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  --starship-meander-v: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M15 0V16M15 2H2V14H12V5H5V11H9' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E");
+  scrollbar-color: var(--hh-border) var(--hh-surface-shelf);
+}
+
+/* Kiln Day */
+html[data-theme="hermes-starship"][data-palette="kiln-day"] {
+  color-scheme: light;
+  --hh-background: #ebe2d3;
+  --hh-foreground: #1e1712;
+  --hh-surface-card: #f7f1e7;
+  --hh-surface-card-foreground: #1e1712;
+  --hh-surface-panel: #e4d9c7;
+  --hh-surface-panel-foreground: #1e1712;
+  --hh-surface-shelf: #f0e8db;
+  --hh-surface-shelf-foreground: #1e1712;
+  --hh-surface-tray: #ddd0bc;
+  --hh-surface-tray-foreground: #1e1712;
+  --hh-primary: #a3431f;
+  --hh-primary-foreground: #fff8f0;
+  --hh-secondary: #d6c8b2;
+  --hh-secondary-foreground: #1e1712;
+  --hh-muted: #e2d7c5;
+  --hh-muted-foreground: #56483a;
+  --hh-accent: #7a5310;
+  --hh-accent-foreground: #fff8ec;
+  --hh-destructive: #a8281c;
+  --hh-destructive-foreground: #fff5f2;
+  --hh-border: #7c6a57;
+  --hh-input: #fbf7f0;
+  --hh-ring: #a3431f;
+  --hh-success: #2f6b39;
+  --hh-success-foreground: #f4fbf4;
+  --hh-warning: #8a5a0c;
+  --hh-warning-foreground: #fff9ee;
+  --hh-info: #2c6476;
+  --hh-info-foreground: #f2f9fb;
+  --hh-strip: #fffbf3;
+  --hh-strip-foreground: #1e1712;
+  --hh-pending: #8a5a0c;
+  --hh-pending-foreground: #fff9ee;
+  --hh-answered: #3b6a78;
+  --hh-answered-foreground: #f2f9fb;
+  --hh-expired: #6e6862;
+  --hh-expired-foreground: #fbfaf8;
+  --hh-recommended: #2f6b39;
+  --hh-recommended-foreground: #f4fbf4;
+  --hh-live: #2a7046;
+  --hh-live-foreground: #f2fbf5;
+  --hh-code: #241c16;
+  --hh-code-foreground: #efe6d8;
+  --hh-diff-add: #20402a;
+  --hh-diff-remove: #4e2019;
+  --hh-agent-1: #a3431f;
+  --hh-agent-2: #7a5a10;
+  --hh-agent-3: #3d6b3a;
+  --hh-agent-4: #2f6478;
+  --hh-agent-5: #6a4c8c;
+  --hh-agent-6: #984060;
+  --hh-shadow: #3a2a1c;
+  --hh-scrim: #1e1712;
+  --hh-chart-1: #a3431f;
+  --hh-chart-2: #7a5a10;
+  --hh-chart-3: #3d6b3a;
+  --hh-chart-4: #2f6478;
+  --hh-chart-5: #6a4c8c;
+  --starship-bevel-hi: rgba(255, 255, 255, 0.75);
+  --starship-bevel-lo: rgba(58, 38, 20, 0.2);
+}
+
+/* Patina Watch */
+html[data-theme="hermes-starship"][data-palette="patina-watch"] {
+  color-scheme: dark;
+  --hh-background: #101415;
+  --hh-foreground: #e3e6e1;
+  --hh-surface-card: #182022;
+  --hh-surface-card-foreground: #e3e6e1;
+  --hh-surface-panel: #1e2729;
+  --hh-surface-panel-foreground: #e3e6e1;
+  --hh-surface-shelf: #141a1b;
+  --hh-surface-shelf-foreground: #e3e6e1;
+  --hh-surface-tray: #232d2f;
+  --hh-surface-tray-foreground: #e3e6e1;
+  --hh-primary: #5fb3a0;
+  --hh-primary-foreground: #061210;
+  --hh-secondary: #2c3739;
+  --hh-secondary-foreground: #e3e6e1;
+  --hh-muted: #1f282a;
+  --hh-muted-foreground: #a5b0ad;
+  --hh-accent: #d2774e;
+  --hh-accent-foreground: #150a05;
+  --hh-destructive: #ee7f72;
+  --hh-destructive-foreground: #1a0a08;
+  --hh-border: #6f8582;
+  --hh-input: #141a1b;
+  --hh-ring: #518e7f;
+  --hh-success: #82c48c;
+  --hh-success-foreground: #0a170c;
+  --hh-warning: #e0b05a;
+  --hh-warning-foreground: #191105;
+  --hh-info: #8bbfd0;
+  --hh-info-foreground: #0a161a;
+  --hh-strip: #e9e6dc;
+  --hh-strip-foreground: #151a1a;
+  --hh-pending: #a3782e;
+  --hh-pending-foreground: #110b03;
+  --hh-answered: #4f8796;
+  --hh-answered-foreground: #041012;
+  --hh-expired: #7f8381;
+  --hh-expired-foreground: #0d0f0f;
+  --hh-recommended: #4b8a5a;
+  --hh-recommended-foreground: #050f07;
+  --hh-live: #8fdcb0;
+  --hh-live-foreground: #06160d;
+  --hh-code: #0b0f10;
+  --hh-code-foreground: #dfe5e2;
+  --hh-diff-add: #1c3824;
+  --hh-diff-remove: #40201c;
+  --hh-agent-1: #d2774e;
+  --hh-agent-2: #d6b665;
+  --hh-agent-3: #8cc79a;
+  --hh-agent-4: #80b8d1;
+  --hh-agent-5: #b8a0db;
+  --hh-agent-6: #dd94ad;
+  --hh-shadow: #000000;
+  --hh-scrim: #050808;
+  --hh-chart-1: #5fb3a0;
+  --hh-chart-2: #d2774e;
+  --hh-chart-3: #d6b665;
+  --hh-chart-4: #80b8d1;
+  --hh-chart-5: #b8a0db;
+  --starship-bevel-hi: rgba(220, 255, 245, 0.07);
+  --starship-bevel-lo: rgba(0, 0, 0, 0.45);
+}
+
+/* Original · red-figure */
+html[data-theme="hermes-starship"][data-palette="original"] {
+  color-scheme: dark;
+  --hh-background: #0e0b09;
+  --hh-foreground: #f0e2d2;
+  --hh-surface-card: #1a1410;
+  --hh-surface-card-foreground: #f0e2d2;
+  --hh-surface-panel: #221a14;
+  --hh-surface-panel-foreground: #f0e2d2;
+  --hh-surface-shelf: #15100d;
+  --hh-surface-shelf-foreground: #f0e2d2;
+  --hh-surface-tray: #2a2019;
+  --hh-surface-tray-foreground: #f0e2d2;
+  --hh-primary: #d4744a;
+  --hh-primary-foreground: #100906;
+  --hh-secondary: #3a2c22;
+  --hh-secondary-foreground: #f0e2d2;
+  --hh-muted: #241b15;
+  --hh-muted-foreground: #c3ac94;
+  --hh-accent: #e9c58e;
+  --hh-accent-foreground: #140d06;
+  --hh-destructive: #f28b7a;
+  --hh-destructive-foreground: #180806;
+  --hh-border: #9c6446;
+  --hh-input: #15100d;
+  --hh-ring: #ad6340;
+  --hh-success: #86c48f;
+  --hh-success-foreground: #0a160c;
+  --hh-warning: #ecbb63;
+  --hh-warning-foreground: #171005;
+  --hh-info: #90c3d2;
+  --hh-info-foreground: #08151a;
+  --hh-strip: #efe2cc;
+  --hh-strip-foreground: #1a0f09;
+  --hh-pending: #a8762a;
+  --hh-pending-foreground: #120b03;
+  --hh-answered: #5d8793;
+  --hh-answered-foreground: #071114;
+  --hh-expired: #86807a;
+  --hh-expired-foreground: #0f0e0d;
+  --hh-recommended: #4f8c55;
+  --hh-recommended-foreground: #061008;
+  --hh-live: #93e0ad;
+  --hh-live-foreground: #07160c;
+  --hh-code: #0b0807;
+  --hh-code-foreground: #ecdfcf;
+  --hh-diff-add: #1f3522;
+  --hh-diff-remove: #45201a;
+  --hh-agent-1: #e8935f;
+  --hh-agent-2: #e2c06a;
+  --hh-agent-3: #95cc93;
+  --hh-agent-4: #8cc0d5;
+  --hh-agent-5: #c2a6df;
+  --hh-agent-6: #e59ab2;
+  --hh-shadow: #000000;
+  --hh-scrim: #070504;
+  --hh-chart-1: #d4744a;
+  --hh-chart-2: #e2c06a;
+  --hh-chart-3: #95cc93;
+  --hh-chart-4: #8cc0d5;
+  --hh-chart-5: #c2a6df;
+  --starship-bevel-hi: rgba(255, 228, 196, 0.08);
+  --starship-bevel-lo: rgba(0, 0, 0, 0.5);
+}
+
+/* ================= Skin =================
+ * Intensity budget. Material is concentrated in the ship's identity: the meander on the two outside vertical edges,
+ * the app bar (terracotta keel, engraved name, winged-sandal emblem), engraved display lettering, and the dispatch
+ * seal. Function keeps the core anatomy and boundaries with one restrained inset bevel on keys. Reading and writing
+ * planes (strip paper, Questions, options, attachments, diffs, inputs, notes) are untouched: flat, opaque parchment.
+ * Lettering: Marcellus SC for identity only; Instrument Sans for every operational label in sentence case; IBM Plex
+ * Mono for serials, timers and code.
+ */
+
+/* ---------- Identity: meander on the outside vertical edges ---------- */
+/* Drawn beneath the page content (body is the stacking context), so it shows only in the outer gutters and never
+ * crosses a reading or action surface; full-bleed bars and panels simply cover it. It scrolls with the page. */
+html[data-theme="hermes-starship"] body {
+  position: relative;
+  isolation: isolate;
+}
+
+html[data-theme="hermes-starship"] body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--hh-primary);
+  opacity: 0.8;
+  -webkit-mask:
+    var(--starship-meander-v) left top / 0.625rem 0.625rem repeat-y,
+    var(--starship-meander-v) right top / 0.625rem 0.625rem repeat-y;
+  mask:
+    var(--starship-meander-v) left top / 0.625rem 0.625rem repeat-y,
+    var(--starship-meander-v) right top / 0.625rem 0.625rem repeat-y;
+}
+
+/* The specimen frame paints the same background as the page; letting the page show through keeps the edges visible. */
+html[data-theme="hermes-starship"] .hh-specimen {
+  background: transparent;
+}
+
+html[data-theme="hermes-starship"] ::selection {
+  background: var(--hh-primary);
+  color: var(--hh-primary-foreground);
+}
+
+/* ---------- Identity: engraved lettering ---------- */
+html[data-theme="hermes-starship"] .hh-display,
+html[data-theme="hermes-starship"] .hh-app-bar-brand,
+html[data-theme="hermes-starship"] .hh-sidebar-brand > .hh-heading-lg {
+  font-family: var(--hh-type-display-family);
+  font-weight: var(--hh-type-display-weight);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  text-shadow: 0 0.0625rem 0 var(--starship-bevel-hi);
+}
+
+/* ---------- Identity: app bar ---------- */
+html[data-theme="hermes-starship"] .hh-app-bar {
+  border-bottom: var(--hh-border-width-thick) solid var(--hh-primary);
+  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi);
+}
+
+/* The winged sandal replaces the generic bay icon as the ship's emblem. */
+html[data-theme="hermes-starship"] .hh-app-bar-brand > .hh-icon {
+  display: none;
+}
+
+html[data-theme="hermes-starship"] .hh-app-bar-brand::before,
+html[data-theme="hermes-starship"] .hh-sidebar-brand > .hh-heading-lg::before {
+  content: '';
+  flex: none;
+  width: 1.75rem;
+  height: 1.125rem;
+  background: var(--hh-primary);
+  -webkit-mask: var(--starship-sandal) center / contain no-repeat;
+  mask: var(--starship-sandal) center / contain no-repeat;
+}
+
+html[data-theme="hermes-starship"] .hh-sidebar-brand > .hh-heading-lg {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hh-space-2);
+}
+
+/* ---------- Function: operational titles in sentence case ---------- */
+/* Round titles and screen headings are long, typed by Agents and read at speed: the operational face, as written. Only
+ * the short status legends (holder tabs, badges, the recommended marker) stay in capitals. */
+html[data-theme="hermes-starship"] .hh-strip-header,
+html[data-theme="hermes-starship"] .hh-heading-lg {
+  text-transform: none;
+}
+
+/* ---------- Function: keys with one inset bevel ---------- */
+html[data-theme="hermes-starship"] .hh-button,
+html[data-theme="hermes-starship"] .hh-icon-button {
+  box-shadow: inset 0 0.0625rem 0 var(--starship-bevel-hi), inset 0 -0.0625rem 0 var(--starship-bevel-lo);
+}
+
+/* Pressed keys sit into the plate; the core's thick border still marks the state. */
+html[data-theme="hermes-starship"] .hh-button[aria-pressed='true'] {
+  box-shadow: inset 0 0.125rem 0 var(--starship-bevel-lo);
+}
+
+html[data-theme="hermes-starship"] .hh-button[data-variant='ghost'],
+html[data-theme="hermes-starship"] .hh-icon-button[data-variant='ghost'] {
+  box-shadow: none;
+}
+
+html[data-theme="hermes-starship"] .hh-link {
+  text-decoration-color: var(--hh-primary);
+}
+
+html[data-theme="hermes-starship"] .hh-checkbox input,
+html[data-theme="hermes-starship"] .hh-radio input {
+  accent-color: var(--hh-primary);
+}
+
+html[data-theme="hermes-starship"] .hh-tab[aria-selected='true'] {
+  border-bottom-color: var(--hh-primary);
+}
+
+/* The current page keeps its accent fill and heavier label; the square marker turns into a diamond. */
+html[data-theme="hermes-starship"] .hh-side-nav a[aria-current='page']::before,
+html[data-theme="hermes-starship"] .hh-bottom-nav a[aria-current='page']::before {
+  transform: rotate(45deg);
+}
+
+html[data-theme="hermes-starship"] .hh-breadcrumbs li + li::before {
+  content: '›' / '';
+}
+
+html[data-theme="hermes-starship"] .hh-spinner {
+  border-top-color: var(--hh-primary);
+}
+
+/* Shapes only, no added frames: hull-port avatars and diamond callsign marks (the callsign text still names the Agent). */
+html[data-theme="hermes-starship"] .hh-avatar {
+  clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
+  border-radius: 0;
+}
+
+html[data-theme="hermes-starship"] .hh-callsign-mark {
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+/* ================= Signature: the winged-sandal dispatch seal =================
+ * When a Round is sent back, the seal is struck twice: on the departing strip itself (beside the Round's callsign and
+ * time, while the holder already reads Answered and "Delivered"), and beside the Answered badge in the reserved
+ * bay-status confirmation. The sandal glides in from the left and settles, the roundel stamps around it, and only then
+ * does the strip leave the bay. Everything runs once and settles monotonically (no overshoot), uses --hh-motion-*
+ * durations (1ms under reduced motion), and adds no glow and no text: the status words stay the core's. */
+
+/* 1. The departing strip: hold while the seal is struck, then glide out. Replaces the core fade, same duration. */
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] {
+  animation: starship-depart var(--hh-motion-signature) var(--hh-easing-standard) 1 both;
+}
+
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] .hh-strip-paper {
+  position: relative;
+}
+
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] .hh-strip-paper::before,
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] .hh-strip-paper::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  inset-inline-end: var(--hh-space-3);
+  box-sizing: border-box;
+  width: 3.25rem;
+  height: 2.25rem;
+  margin-top: -1.125rem;
+}
+
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] .hh-strip-paper::before {
+  border: var(--hh-border-width-thick) solid var(--hh-answered);
+  border-radius: var(--hh-radius-pill);
+  background: var(--hh-strip);
+  transform: rotate(-6deg);
+  animation: starship-stamp var(--hh-motion-fast) var(--hh-easing-enter) var(--hh-motion-standard) 1 both;
+}
+
+html[data-theme="hermes-starship"] .hh-strip[data-state='departing'] .hh-strip-paper::after {
+  background: var(--hh-answered);
+  -webkit-mask: var(--starship-sandal) center / 70% auto no-repeat;
+  mask: var(--starship-sandal) center / 70% auto no-repeat;
+  transform: rotate(-6deg);
+  animation: starship-dispatch var(--hh-motion-standard) var(--hh-easing-enter) 1 both;
+}
+
+/* 2. The confirmation in the bay-status region keeps the seal after the strip has gone. */
+html[data-theme="hermes-starship"] .hh-toast:has(> .hh-badge[data-tone='answered']) {
+  position: relative;
+}
+
+html[data-theme="hermes-starship"] .hh-toast:has(> .hh-badge[data-tone='answered'])::before {
+  content: '';
+  flex: none;
+  align-self: flex-start;
+  box-sizing: border-box;
+  width: 3.25rem;
+  height: 2.25rem;
+  border: var(--hh-border-width-thick) solid var(--hh-answered);
+  border-radius: var(--hh-radius-pill);
+  transform: rotate(-6deg);
+  animation: starship-stamp var(--hh-motion-panel) var(--hh-easing-enter) var(--hh-motion-standard) 1 both;
+}
+
+html[data-theme="hermes-starship"] .hh-toast:has(> .hh-badge[data-tone='answered'])::after {
+  content: '';
+  position: absolute;
+  top: var(--hh-space-3);
+  inset-inline-start: var(--hh-density-inset);
+  width: 3.25rem;
+  height: 2.25rem;
+  background: var(--hh-answered);
+  -webkit-mask: var(--starship-sandal) center / 70% auto no-repeat;
+  mask: var(--starship-sandal) center / 70% auto no-repeat;
+  transform: rotate(-6deg);
+  animation: starship-dispatch var(--hh-motion-signature) var(--hh-easing-enter) 1 both;
+}
+
+@keyframes starship-depart {
+  from,
+  55% {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(var(--hh-enter-offset));
+  }
+}
+
+@keyframes starship-dispatch {
+  from {
+    opacity: 0;
+    transform: translateX(-1.5rem) rotate(-14deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-6deg);
+  }
+}
+
+@keyframes starship-stamp {
+  from {
+    opacity: 0;
+    transform: rotate(-6deg) scale(1.3);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-6deg);
+  }
+}

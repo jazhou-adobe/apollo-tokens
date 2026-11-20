@@ -1,0 +1,1015 @@
+{
+  "label": "Starship Hermes",
+  "order": 3,
+  "$description": "The courier god as a ship's emblem. Engraved hull lettering and a meander on the outside vertical edges, in terracotta and soot, with parchment reading planes.",
+  "signature": "When a Round is sent back, a winged-sandal dispatch seal is struck on its departing strip, then the strip leaves the bay; the seal stays beside the Answered status in the bay confirmation.",
+  "colorScheme": "dark",
+  "palette": {
+    "label": "Soot & Terracotta"
+  },
+  "overrides": {
+    "font-sans": {
+      "$type": "fontFamily",
+      "$value": "var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif",
+      "$description": "Instrument Sans (variable 400–700): reading text, Questions, labels, controls, strip headers and headings. The one operational face"
+    },
+    "font-mono": {
+      "$type": "fontFamily",
+      "$value": "var(--font-ibm-plex-mono), ui-monospace, monospace",
+      "$description": "IBM Plex Mono (400, 500, 600, 700): callsigns, Round ids, timers and code, like stencilled hull serials"
+    },
+    "font-condensed": {
+      "$type": "fontFamily",
+      "$value": "var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif",
+      "$description": "One operational face: strip headers, headings and status words use Instrument Sans, the reading face, so the ship's classical lettering stays reserved for identity"
+    },
+    "font-weight-heavy": {
+      "$type": "fontWeight",
+      "$value": 700,
+      "$description": "Instrument Sans stops at 700, so the heaviest named weight is 700 and nothing is synthesised"
+    },
+    "type-display-family": {
+      "$type": "fontFamily",
+      "$value": "var(--font-marcellus-sc), 'Times New Roman', serif",
+      "$description": "Marcellus SC, the restricted identity face: display lettering and the ship's name only, engraved into the hull plate"
+    },
+    "type-display-weight": {
+      "$type": "fontWeight",
+      "$value": "var(--hh-font-weight-regular)",
+      "$description": "Marcellus SC ships one weight; the engraving reads from a soft highlight, never synthesised bold"
+    },
+    "radius-md": {
+      "$type": "dimension",
+      "$value": "0.1875rem",
+      "$description": "Controls and plates: machined, barely eased corners"
+    },
+    "radius-lg": {
+      "$type": "dimension",
+      "$value": "0.3125rem",
+      "$description": "Dialogs, sheets and frames: hull plates with a slightly larger ease"
+    },
+    "elevation-raised": {
+      "$type": "shadow",
+      "$value": "0 0.25rem 0.75rem -0.375rem var(--hh-shadow)",
+      "$description": "Soft contact depth under cards and strips; no hard offset edge. Decorative only"
+    },
+    "elevation-overlay": {
+      "$type": "shadow",
+      "$value": "0 0.75rem 2rem -0.5rem var(--hh-shadow)",
+      "$description": "Dialogs, sheets, popovers, menus: soft lift off the hull. Decorative only"
+    }
+  },
+  "color": {
+    "background": {
+      "$type": "color",
+      "$value": "#15110e"
+    },
+    "foreground": {
+      "$type": "color",
+      "$value": "#ede4d6"
+    },
+    "surface-card": {
+      "$type": "color",
+      "$value": "#201a15"
+    },
+    "surface-card-foreground": {
+      "$type": "color",
+      "$value": "#ede4d6"
+    },
+    "surface-panel": {
+      "$type": "color",
+      "$value": "#29211b"
+    },
+    "surface-panel-foreground": {
+      "$type": "color",
+      "$value": "#ede4d6"
+    },
+    "surface-shelf": {
+      "$type": "color",
+      "$value": "#1b1612"
+    },
+    "surface-shelf-foreground": {
+      "$type": "color",
+      "$value": "#ede4d6"
+    },
+    "surface-tray": {
+      "$type": "color",
+      "$value": "#30271f"
+    },
+    "surface-tray-foreground": {
+      "$type": "color",
+      "$value": "#ede4d6"
+    },
+    "primary": {
+      "$type": "color",
+      "$value": "#cf6a43"
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": "#160d08"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "#3a3028"
+    },
+    "secondary-foreground": {
+      "$type": "color",
+      "$value": "#ede4d6"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "#2a221c"
+    },
+    "muted-foreground": {
+      "$type": "color",
+      "$value": "#b8aa97"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "#d8a55e"
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": "#1a1109"
+    },
+    "destructive": {
+      "$type": "color",
+      "$value": "#ee7b6c"
+    },
+    "destructive-foreground": {
+      "$type": "color",
+      "$value": "#1a0b08"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "#8c7a68"
+    },
+    "input": {
+      "$type": "color",
+      "$value": "#1b1612"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "#bc714d"
+    },
+    "success": {
+      "$type": "color",
+      "$value": "#7cbf86"
+    },
+    "success-foreground": {
+      "$type": "color",
+      "$value": "#0d1a0f"
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "#e2ac52"
+    },
+    "warning-foreground": {
+      "$type": "color",
+      "$value": "#1a1206"
+    },
+    "info": {
+      "$type": "color",
+      "$value": "#86b9c9"
+    },
+    "info-foreground": {
+      "$type": "color",
+      "$value": "#0c171b"
+    },
+    "strip": {
+      "$type": "color",
+      "$value": "#f1e7d5"
+    },
+    "strip-foreground": {
+      "$type": "color",
+      "$value": "#1d150f"
+    },
+    "pending": {
+      "$type": "color",
+      "$value": "#a8762a"
+    },
+    "pending-foreground": {
+      "$type": "color",
+      "$value": "#120b03"
+    },
+    "answered": {
+      "$type": "color",
+      "$value": "#5d8793"
+    },
+    "answered-foreground": {
+      "$type": "color",
+      "$value": "#071114"
+    },
+    "expired": {
+      "$type": "color",
+      "$value": "#86807a"
+    },
+    "expired-foreground": {
+      "$type": "color",
+      "$value": "#0f0e0d"
+    },
+    "recommended": {
+      "$type": "color",
+      "$value": "#4f8c55"
+    },
+    "recommended-foreground": {
+      "$type": "color",
+      "$value": "#061008"
+    },
+    "live": {
+      "$type": "color",
+      "$value": "#86d6a2"
+    },
+    "live-foreground": {
+      "$type": "color",
+      "$value": "#08170e"
+    },
+    "code": {
+      "$type": "color",
+      "$value": "#0f0c0a"
+    },
+    "code-foreground": {
+      "$type": "color",
+      "$value": "#e6ddcf"
+    },
+    "diff-add": {
+      "$type": "color",
+      "$value": "#1f3622"
+    },
+    "diff-remove": {
+      "$type": "color",
+      "$value": "#431c17"
+    },
+    "agent-1": {
+      "$type": "color",
+      "$value": "#e08a5c"
+    },
+    "agent-2": {
+      "$type": "color",
+      "$value": "#d9b45e"
+    },
+    "agent-3": {
+      "$type": "color",
+      "$value": "#8cc08a"
+    },
+    "agent-4": {
+      "$type": "color",
+      "$value": "#7fb3c9"
+    },
+    "agent-5": {
+      "$type": "color",
+      "$value": "#b79ad6"
+    },
+    "agent-6": {
+      "$type": "color",
+      "$value": "#d98fa8"
+    },
+    "shadow": {
+      "$type": "color",
+      "$value": "#000000"
+    },
+    "scrim": {
+      "$type": "color",
+      "$value": "#0a0806"
+    },
+    "chart-1": {
+      "$type": "color",
+      "$value": "#cf6a43"
+    },
+    "chart-2": {
+      "$type": "color",
+      "$value": "#d8a55e"
+    },
+    "chart-3": {
+      "$type": "color",
+      "$value": "#7cbf86"
+    },
+    "chart-4": {
+      "$type": "color",
+      "$value": "#86b9c9"
+    },
+    "chart-5": {
+      "$type": "color",
+      "$value": "#b79ad6"
+    }
+  },
+  "palettes": [
+    {
+      "id": "kiln-day",
+      "label": "Kiln Day",
+      "colorScheme": "light",
+      "color": {
+        "background": {
+          "$type": "color",
+          "$value": "#ebe2d3"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "#1e1712"
+        },
+        "surface-card": {
+          "$type": "color",
+          "$value": "#f7f1e7"
+        },
+        "surface-card-foreground": {
+          "$type": "color",
+          "$value": "#1e1712"
+        },
+        "surface-panel": {
+          "$type": "color",
+          "$value": "#e4d9c7"
+        },
+        "surface-panel-foreground": {
+          "$type": "color",
+          "$value": "#1e1712"
+        },
+        "surface-shelf": {
+          "$type": "color",
+          "$value": "#f0e8db"
+        },
+        "surface-shelf-foreground": {
+          "$type": "color",
+          "$value": "#1e1712"
+        },
+        "surface-tray": {
+          "$type": "color",
+          "$value": "#ddd0bc"
+        },
+        "surface-tray-foreground": {
+          "$type": "color",
+          "$value": "#1e1712"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#a3431f"
+        },
+        "primary-foreground": {
+          "$type": "color",
+          "$value": "#fff8f0"
+        },
+        "secondary": {
+          "$type": "color",
+          "$value": "#d6c8b2"
+        },
+        "secondary-foreground": {
+          "$type": "color",
+          "$value": "#1e1712"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "#e2d7c5"
+        },
+        "muted-foreground": {
+          "$type": "color",
+          "$value": "#56483a"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#7a5310"
+        },
+        "accent-foreground": {
+          "$type": "color",
+          "$value": "#fff8ec"
+        },
+        "destructive": {
+          "$type": "color",
+          "$value": "#a8281c"
+        },
+        "destructive-foreground": {
+          "$type": "color",
+          "$value": "#fff5f2"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "#7c6a57"
+        },
+        "input": {
+          "$type": "color",
+          "$value": "#fbf7f0"
+        },
+        "ring": {
+          "$type": "color",
+          "$value": "#a3431f"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "#2f6b39"
+        },
+        "success-foreground": {
+          "$type": "color",
+          "$value": "#f4fbf4"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "#8a5a0c"
+        },
+        "warning-foreground": {
+          "$type": "color",
+          "$value": "#fff9ee"
+        },
+        "info": {
+          "$type": "color",
+          "$value": "#2c6476"
+        },
+        "info-foreground": {
+          "$type": "color",
+          "$value": "#f2f9fb"
+        },
+        "strip": {
+          "$type": "color",
+          "$value": "#fffbf3"
+        },
+        "strip-foreground": {
+          "$type": "color",
+          "$value": "#1e1712"
+        },
+        "pending": {
+          "$type": "color",
+          "$value": "#8a5a0c"
+        },
+        "pending-foreground": {
+          "$type": "color",
+          "$value": "#fff9ee"
+        },
+        "answered": {
+          "$type": "color",
+          "$value": "#3b6a78"
+        },
+        "answered-foreground": {
+          "$type": "color",
+          "$value": "#f2f9fb"
+        },
+        "expired": {
+          "$type": "color",
+          "$value": "#6e6862"
+        },
+        "expired-foreground": {
+          "$type": "color",
+          "$value": "#fbfaf8"
+        },
+        "recommended": {
+          "$type": "color",
+          "$value": "#2f6b39"
+        },
+        "recommended-foreground": {
+          "$type": "color",
+          "$value": "#f4fbf4"
+        },
+        "live": {
+          "$type": "color",
+          "$value": "#2a7046"
+        },
+        "live-foreground": {
+          "$type": "color",
+          "$value": "#f2fbf5"
+        },
+        "code": {
+          "$type": "color",
+          "$value": "#241c16"
+        },
+        "code-foreground": {
+          "$type": "color",
+          "$value": "#efe6d8"
+        },
+        "diff-add": {
+          "$type": "color",
+          "$value": "#20402a"
+        },
+        "diff-remove": {
+          "$type": "color",
+          "$value": "#4e2019"
+        },
+        "agent-1": {
+          "$type": "color",
+          "$value": "#a3431f"
+        },
+        "agent-2": {
+          "$type": "color",
+          "$value": "#7a5a10"
+        },
+        "agent-3": {
+          "$type": "color",
+          "$value": "#3d6b3a"
+        },
+        "agent-4": {
+          "$type": "color",
+          "$value": "#2f6478"
+        },
+        "agent-5": {
+          "$type": "color",
+          "$value": "#6a4c8c"
+        },
+        "agent-6": {
+          "$type": "color",
+          "$value": "#984060"
+        },
+        "shadow": {
+          "$type": "color",
+          "$value": "#3a2a1c"
+        },
+        "scrim": {
+          "$type": "color",
+          "$value": "#1e1712"
+        },
+        "chart-1": {
+          "$type": "color",
+          "$value": "#a3431f"
+        },
+        "chart-2": {
+          "$type": "color",
+          "$value": "#7a5a10"
+        },
+        "chart-3": {
+          "$type": "color",
+          "$value": "#3d6b3a"
+        },
+        "chart-4": {
+          "$type": "color",
+          "$value": "#2f6478"
+        },
+        "chart-5": {
+          "$type": "color",
+          "$value": "#6a4c8c"
+        }
+      }
+    },
+    {
+      "id": "patina-watch",
+      "label": "Patina Watch",
+      "colorScheme": "dark",
+      "color": {
+        "background": {
+          "$type": "color",
+          "$value": "#101415"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "#e3e6e1"
+        },
+        "surface-card": {
+          "$type": "color",
+          "$value": "#182022"
+        },
+        "surface-card-foreground": {
+          "$type": "color",
+          "$value": "#e3e6e1"
+        },
+        "surface-panel": {
+          "$type": "color",
+          "$value": "#1e2729"
+        },
+        "surface-panel-foreground": {
+          "$type": "color",
+          "$value": "#e3e6e1"
+        },
+        "surface-shelf": {
+          "$type": "color",
+          "$value": "#141a1b"
+        },
+        "surface-shelf-foreground": {
+          "$type": "color",
+          "$value": "#e3e6e1"
+        },
+        "surface-tray": {
+          "$type": "color",
+          "$value": "#232d2f"
+        },
+        "surface-tray-foreground": {
+          "$type": "color",
+          "$value": "#e3e6e1"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#5fb3a0"
+        },
+        "primary-foreground": {
+          "$type": "color",
+          "$value": "#061210"
+        },
+        "secondary": {
+          "$type": "color",
+          "$value": "#2c3739"
+        },
+        "secondary-foreground": {
+          "$type": "color",
+          "$value": "#e3e6e1"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "#1f282a"
+        },
+        "muted-foreground": {
+          "$type": "color",
+          "$value": "#a5b0ad"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#d2774e"
+        },
+        "accent-foreground": {
+          "$type": "color",
+          "$value": "#150a05"
+        },
+        "destructive": {
+          "$type": "color",
+          "$value": "#ee7f72"
+        },
+        "destructive-foreground": {
+          "$type": "color",
+          "$value": "#1a0a08"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "#6f8582"
+        },
+        "input": {
+          "$type": "color",
+          "$value": "#141a1b"
+        },
+        "ring": {
+          "$type": "color",
+          "$value": "#518e7f"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "#82c48c"
+        },
+        "success-foreground": {
+          "$type": "color",
+          "$value": "#0a170c"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "#e0b05a"
+        },
+        "warning-foreground": {
+          "$type": "color",
+          "$value": "#191105"
+        },
+        "info": {
+          "$type": "color",
+          "$value": "#8bbfd0"
+        },
+        "info-foreground": {
+          "$type": "color",
+          "$value": "#0a161a"
+        },
+        "strip": {
+          "$type": "color",
+          "$value": "#e9e6dc"
+        },
+        "strip-foreground": {
+          "$type": "color",
+          "$value": "#151a1a"
+        },
+        "pending": {
+          "$type": "color",
+          "$value": "#a3782e"
+        },
+        "pending-foreground": {
+          "$type": "color",
+          "$value": "#110b03"
+        },
+        "answered": {
+          "$type": "color",
+          "$value": "#4f8796"
+        },
+        "answered-foreground": {
+          "$type": "color",
+          "$value": "#041012"
+        },
+        "expired": {
+          "$type": "color",
+          "$value": "#7f8381"
+        },
+        "expired-foreground": {
+          "$type": "color",
+          "$value": "#0d0f0f"
+        },
+        "recommended": {
+          "$type": "color",
+          "$value": "#4b8a5a"
+        },
+        "recommended-foreground": {
+          "$type": "color",
+          "$value": "#050f07"
+        },
+        "live": {
+          "$type": "color",
+          "$value": "#8fdcb0"
+        },
+        "live-foreground": {
+          "$type": "color",
+          "$value": "#06160d"
+        },
+        "code": {
+          "$type": "color",
+          "$value": "#0b0f10"
+        },
+        "code-foreground": {
+          "$type": "color",
+          "$value": "#dfe5e2"
+        },
+        "diff-add": {
+          "$type": "color",
+          "$value": "#1c3824"
+        },
+        "diff-remove": {
+          "$type": "color",
+          "$value": "#40201c"
+        },
+        "agent-1": {
+          "$type": "color",
+          "$value": "#d2774e"
+        },
+        "agent-2": {
+          "$type": "color",
+          "$value": "#d6b665"
+        },
+        "agent-3": {
+          "$type": "color",
+          "$value": "#8cc79a"
+        },
+        "agent-4": {
+          "$type": "color",
+          "$value": "#80b8d1"
+        },
+        "agent-5": {
+          "$type": "color",
+          "$value": "#b8a0db"
+        },
+        "agent-6": {
+          "$type": "color",
+          "$value": "#dd94ad"
+        },
+        "shadow": {
+          "$type": "color",
+          "$value": "#000000"
+        },
+        "scrim": {
+          "$type": "color",
+          "$value": "#050808"
+        },
+        "chart-1": {
+          "$type": "color",
+          "$value": "#5fb3a0"
+        },
+        "chart-2": {
+          "$type": "color",
+          "$value": "#d2774e"
+        },
+        "chart-3": {
+          "$type": "color",
+          "$value": "#d6b665"
+        },
+        "chart-4": {
+          "$type": "color",
+          "$value": "#80b8d1"
+        },
+        "chart-5": {
+          "$type": "color",
+          "$value": "#b8a0db"
+        }
+      }
+    },
+    {
+      "id": "original",
+      "label": "Original · red-figure",
+      "colorScheme": "dark",
+      "color": {
+        "background": {
+          "$type": "color",
+          "$value": "#0e0b09"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "#f0e2d2"
+        },
+        "surface-card": {
+          "$type": "color",
+          "$value": "#1a1410"
+        },
+        "surface-card-foreground": {
+          "$type": "color",
+          "$value": "#f0e2d2"
+        },
+        "surface-panel": {
+          "$type": "color",
+          "$value": "#221a14"
+        },
+        "surface-panel-foreground": {
+          "$type": "color",
+          "$value": "#f0e2d2"
+        },
+        "surface-shelf": {
+          "$type": "color",
+          "$value": "#15100d"
+        },
+        "surface-shelf-foreground": {
+          "$type": "color",
+          "$value": "#f0e2d2"
+        },
+        "surface-tray": {
+          "$type": "color",
+          "$value": "#2a2019"
+        },
+        "surface-tray-foreground": {
+          "$type": "color",
+          "$value": "#f0e2d2"
+        },
+        "primary": {
+          "$type": "color",
+          "$value": "#d4744a"
+        },
+        "primary-foreground": {
+          "$type": "color",
+          "$value": "#100906"
+        },
+        "secondary": {
+          "$type": "color",
+          "$value": "#3a2c22"
+        },
+        "secondary-foreground": {
+          "$type": "color",
+          "$value": "#f0e2d2"
+        },
+        "muted": {
+          "$type": "color",
+          "$value": "#241b15"
+        },
+        "muted-foreground": {
+          "$type": "color",
+          "$value": "#c3ac94"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#e9c58e"
+        },
+        "accent-foreground": {
+          "$type": "color",
+          "$value": "#140d06"
+        },
+        "destructive": {
+          "$type": "color",
+          "$value": "#f28b7a"
+        },
+        "destructive-foreground": {
+          "$type": "color",
+          "$value": "#180806"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "#9c6446"
+        },
+        "input": {
+          "$type": "color",
+          "$value": "#15100d"
+        },
+        "ring": {
+          "$type": "color",
+          "$value": "#ad6340"
+        },
+        "success": {
+          "$type": "color",
+          "$value": "#86c48f"
+        },
+        "success-foreground": {
+          "$type": "color",
+          "$value": "#0a160c"
+        },
+        "warning": {
+          "$type": "color",
+          "$value": "#ecbb63"
+        },
+        "warning-foreground": {
+          "$type": "color",
+          "$value": "#171005"
+        },
+        "info": {
+          "$type": "color",
+          "$value": "#90c3d2"
+        },
+        "info-foreground": {
+          "$type": "color",
+          "$value": "#08151a"
+        },
+        "strip": {
+          "$type": "color",
+          "$value": "#efe2cc"
+        },
+        "strip-foreground": {
+          "$type": "color",
+          "$value": "#1a0f09"
+        },
+        "pending": {
+          "$type": "color",
+          "$value": "#a8762a"
+        },
+        "pending-foreground": {
+          "$type": "color",
+          "$value": "#120b03"
+        },
+        "answered": {
+          "$type": "color",
+          "$value": "#5d8793"
+        },
+        "answered-foreground": {
+          "$type": "color",
+          "$value": "#071114"
+        },
+        "expired": {
+          "$type": "color",
+          "$value": "#86807a"
+        },
+        "expired-foreground": {
+          "$type": "color",
+          "$value": "#0f0e0d"
+        },
+        "recommended": {
+          "$type": "color",
+          "$value": "#4f8c55"
+        },
+        "recommended-foreground": {
+          "$type": "color",
+          "$value": "#061008"
+        },
+        "live": {
+          "$type": "color",
+          "$value": "#93e0ad"
+        },
+        "live-foreground": {
+          "$type": "color",
+          "$value": "#07160c"
+        },
+        "code": {
+          "$type": "color",
+          "$value": "#0b0807"
+        },
+        "code-foreground": {
+          "$type": "color",
+          "$value": "#ecdfcf"
+        },
+        "diff-add": {
+          "$type": "color",
+          "$value": "#1f3522"
+        },
+        "diff-remove": {
+          "$type": "color",
+          "$value": "#45201a"
+        },
+        "agent-1": {
+          "$type": "color",
+          "$value": "#e8935f"
+        },
+        "agent-2": {
+          "$type": "color",
+          "$value": "#e2c06a"
+        },
+        "agent-3": {
+          "$type": "color",
+          "$value": "#95cc93"
+        },
+        "agent-4": {
+          "$type": "color",
+          "$value": "#8cc0d5"
+        },
+        "agent-5": {
+          "$type": "color",
+          "$value": "#c2a6df"
+        },
+        "agent-6": {
+          "$type": "color",
+          "$value": "#e59ab2"
+        },
+        "shadow": {
+          "$type": "color",
+          "$value": "#000000"
+        },
+        "scrim": {
+          "$type": "color",
+          "$value": "#070504"
+        },
+        "chart-1": {
+          "$type": "color",
+          "$value": "#d4744a"
+        },
+        "chart-2": {
+          "$type": "color",
+          "$value": "#e2c06a"
+        },
+        "chart-3": {
+          "$type": "color",
+          "$value": "#95cc93"
+        },
+        "chart-4": {
+          "$type": "color",
+          "$value": "#8cc0d5"
+        },
+        "chart-5": {
+          "$type": "color",
+          "$value": "#c2a6df"
+        }
+      }
+    }
+  ]
+}

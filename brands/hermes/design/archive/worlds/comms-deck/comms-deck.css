@@ -1,0 +1,581 @@
+/*
+ * Comms Deck (hermes-comms-deck): a ship's comms console. Agents are numbered channels on a jack field; each pending
+ * Round is a lit channel lamp. Signature: answering patches the channel, and the lamp goes dark.
+ *
+ * Layout of this file: the theme block (recommended "Bakelite Olive" colours, documented overrides, --comms-deck-*
+ * helpers), one block per colour option, then the skin.
+ * Identity comes from channel addressing and patch state, not from ornament:
+ *   identity  - channel numbers on every callsign, channel lamps (lit / patched / dark) on holders and status badges,
+ *               the patch signature, and one casing detail: the app bar's two panel screws.
+ *   function  - keys (buttons), wells (inputs), switches, chips, tabs, menus, dialogs: bakelite shape and an inset
+ *               bevel, sentence-case labels in the reading face, thin boundaries.
+ *   reading   - strip paper, Questions, options, attachments, diffs, notes: opaque, flat, high contrast.
+ * Halos appear only on live state (the connection lamp and live values). Pending lamps are filled but never glow. Every
+ * lamp sits beside a status word.
+ * Helpers: --comms-deck-lamp-hot (lit lamp filament), --comms-deck-bevel (worn top highlight), --comms-deck-socket (jack
+ * socket), --comms-deck-screw (app bar screws).
+ */
+
+html[data-theme="hermes-comms-deck"] {
+  color-scheme: dark;
+  --hh-background: #13150e;
+  --hh-foreground: #ece6d1;
+  --hh-surface-card: #1d2016;
+  --hh-surface-card-foreground: #ece6d1;
+  --hh-surface-panel: #2a2e1f;
+  --hh-surface-panel-foreground: #ece6d1;
+  --hh-surface-shelf: #24281b;
+  --hh-surface-shelf-foreground: #ece6d1;
+  --hh-surface-tray: #191c13;
+  --hh-surface-tray-foreground: #ece6d1;
+  --hh-primary: #c99a3c;
+  --hh-primary-foreground: #14110a;
+  --hh-secondary: #34382a;
+  --hh-secondary-foreground: #ece6d1;
+  --hh-muted: #34382a;
+  --hh-muted-foreground: #bdb9a1;
+  --hh-accent: #9cc0b0;
+  --hh-accent-foreground: #0e100a;
+  --hh-destructive: #cf5a44;
+  --hh-destructive-foreground: #120504;
+  --hh-border: #868468;
+  --hh-input: #0f110b;
+  --hh-ring: #388ba4;
+  --hh-success: #6bb35a;
+  --hh-success-foreground: #071006;
+  --hh-warning: #d9a03a;
+  --hh-warning-foreground: #120c02;
+  --hh-info: #7fb3c4;
+  --hh-info-foreground: #06100f;
+  --hh-strip: #eee6cc;
+  --hh-strip-foreground: #1b1911;
+  --hh-pending: #b87111;
+  --hh-pending-foreground: #110b02;
+  --hh-answered: #4c8a98;
+  --hh-answered-foreground: #06100f;
+  --hh-expired: #818273;
+  --hh-expired-foreground: #0e0e0a;
+  --hh-recommended: #46914b;
+  --hh-recommended-foreground: #050f06;
+  --hh-live: #62b552;
+  --hh-live-foreground: #061005;
+  --hh-code: #0e100a;
+  --hh-code-foreground: #ddd7bf;
+  --hh-diff-add: #213a20;
+  --hh-diff-remove: #47221b;
+  --hh-agent-1: #e0a640;
+  --hh-agent-2: #6fb7c9;
+  --hh-agent-3: #c995d6;
+  --hh-agent-4: #a3c96c;
+  --hh-agent-5: #e5876f;
+  --hh-agent-6: #c2bc9c;
+  --hh-shadow: #0306028c;
+  --hh-scrim: #070805cc;
+  --hh-chart-1: #6fb7c9;
+  --hh-chart-2: #e0a640;
+  --hh-chart-3: #a3c96c;
+  --hh-chart-4: #c995d6;
+  --hh-chart-5: #e5876f;
+  --comms-deck-lamp-hot: #ffd88a;
+  --comms-deck-bevel: #ffffff1f;
+  --comms-deck-socket: #050603;
+  --comms-deck-screw: #4d523c;
+  --hh-font-sans: var(--font-source-sans-3), ui-sans-serif, system-ui, sans-serif;
+  --hh-font-mono: var(--font-chivo-mono), ui-monospace, monospace;
+  --hh-font-condensed: var(--font-chivo), 'Arial Narrow', sans-serif;
+  --hh-radius-sm: 0.1875rem;
+  --hh-radius-md: 0.3125rem;
+  --hh-elevation-raised: inset 0 0.0625rem 0 var(--comms-deck-bevel), 0 0.125rem 0.3125rem var(--hh-shadow);
+  --hh-elevation-overlay: inset 0 0.0625rem 0 var(--comms-deck-bevel), 0 0.75rem 1.75rem var(--hh-shadow);
+  --hh-elevation-live: 0 0 0.5rem var(--hh-live);
+  scrollbar-color: var(--hh-border) var(--hh-surface-tray);
+}
+
+/* Night Watch */
+html[data-theme="hermes-comms-deck"][data-palette="night-watch"] {
+  color-scheme: dark;
+  --hh-background: #07151a;
+  --hh-foreground: #e2ecec;
+  --hh-surface-card: #0b222a;
+  --hh-surface-card-foreground: #e2ecec;
+  --hh-surface-panel: #11303a;
+  --hh-surface-panel-foreground: #e2ecec;
+  --hh-surface-shelf: #0e2932;
+  --hh-surface-shelf-foreground: #e2ecec;
+  --hh-surface-tray: #061116;
+  --hh-surface-tray-foreground: #e2ecec;
+  --hh-primary: #8fc9cf;
+  --hh-primary-foreground: #061416;
+  --hh-secondary: #173b46;
+  --hh-secondary-foreground: #e2ecec;
+  --hh-muted: #173b46;
+  --hh-muted-foreground: #a7c4c9;
+  --hh-accent: #c6d99a;
+  --hh-accent-foreground: #0a1206;
+  --hh-destructive: #d9604f;
+  --hh-destructive-foreground: #140504;
+  --hh-border: #69878f;
+  --hh-input: #05100f;
+  --hh-ring: #ad7721;
+  --hh-success: #58b77a;
+  --hh-success-foreground: #04110a;
+  --hh-warning: #d9a33f;
+  --hh-warning-foreground: #120c02;
+  --hh-info: #74c0d8;
+  --hh-info-foreground: #04111a;
+  --hh-strip: #e7e8df;
+  --hh-strip-foreground: #12191b;
+  --hh-pending: #b57416;
+  --hh-pending-foreground: #120b02;
+  --hh-answered: #438ba5;
+  --hh-answered-foreground: #04111a;
+  --hh-expired: #7b828e;
+  --hh-expired-foreground: #0d0f14;
+  --hh-recommended: #3b925d;
+  --hh-recommended-foreground: #031009;
+  --hh-live: #58b77a;
+  --hh-live-foreground: #04110a;
+  --hh-code: #040c0e;
+  --hh-code-foreground: #d6e4e4;
+  --hh-diff-add: #173523;
+  --hh-diff-remove: #42202a;
+  --hh-agent-1: #e3a94b;
+  --hh-agent-2: #74c0d8;
+  --hh-agent-3: #c49ae6;
+  --hh-agent-4: #9ccc78;
+  --hh-agent-5: #ec8a7a;
+  --hh-agent-6: #b8c2d2;
+  --hh-shadow: #0105078c;
+  --hh-scrim: #030a0dcc;
+  --hh-chart-1: #74c0d8;
+  --hh-chart-2: #e3a94b;
+  --hh-chart-3: #9ccc78;
+  --hh-chart-4: #c49ae6;
+  --hh-chart-5: #ec8a7a;
+  --comms-deck-lamp-hot: #ffd58c;
+  --comms-deck-bevel: #ffffff1a;
+  --comms-deck-socket: #020708;
+  --comms-deck-screw: #2b4d59;
+}
+
+/* Day Watch */
+html[data-theme="hermes-comms-deck"][data-palette="day-watch"] {
+  color-scheme: light;
+  --hh-background: #d6cfba;
+  --hh-foreground: #1b1a14;
+  --hh-surface-card: #e4ddc9;
+  --hh-surface-card-foreground: #1b1a14;
+  --hh-surface-panel: #c8c0a8;
+  --hh-surface-panel-foreground: #1b1a14;
+  --hh-surface-shelf: #ddd5c0;
+  --hh-surface-shelf-foreground: #1b1a14;
+  --hh-surface-tray: #bfb69c;
+  --hh-surface-tray-foreground: #1b1a14;
+  --hh-primary: #2f3a26;
+  --hh-primary-foreground: #f4efe0;
+  --hh-secondary: #cfc7b0;
+  --hh-secondary-foreground: #1b1a14;
+  --hh-muted: #bdb59c;
+  --hh-muted-foreground: #3b3829;
+  --hh-accent: #24506a;
+  --hh-accent-foreground: #f2f6f8;
+  --hh-destructive: #9c2f1d;
+  --hh-destructive-foreground: #fff5f2;
+  --hh-border: #5f5a46;
+  --hh-input: #f4efe1;
+  --hh-ring: #1e5f86;
+  --hh-success: #22672c;
+  --hh-success-foreground: #f3fbf3;
+  --hh-warning: #8a5a00;
+  --hh-warning-foreground: #fff8ec;
+  --hh-info: #1d5f73;
+  --hh-info-foreground: #f2fbfc;
+  --hh-strip: #fbf8ef;
+  --hh-strip-foreground: #191812;
+  --hh-pending: #8a4f00;
+  --hh-pending-foreground: #fff8ec;
+  --hh-answered: #1f5e6c;
+  --hh-answered-foreground: #f2fbfc;
+  --hh-expired: #5a5a52;
+  --hh-expired-foreground: #fafaf6;
+  --hh-recommended: #22672c;
+  --hh-recommended-foreground: #f3fbf3;
+  --hh-live: #1d6b33;
+  --hh-live-foreground: #f3fbf3;
+  --hh-code: #23251c;
+  --hh-code-foreground: #e9e4d0;
+  --hh-diff-add: #1f3d1f;
+  --hh-diff-remove: #4b2219;
+  --hh-agent-1: #7d4d00;
+  --hh-agent-2: #1d5f73;
+  --hh-agent-3: #6c3c85;
+  --hh-agent-4: #3e6119;
+  --hh-agent-5: #923a24;
+  --hh-agent-6: #4f4b3a;
+  --hh-shadow: #4a44304d;
+  --hh-scrim: #1b1a14b3;
+  --hh-chart-1: #1d5f73;
+  --hh-chart-2: #7d4d00;
+  --hh-chart-3: #3e6119;
+  --hh-chart-4: #6c3c85;
+  --hh-chart-5: #923a24;
+  --comms-deck-lamp-hot: #f6b24a;
+  --comms-deck-bevel: #ffffff8c;
+  --comms-deck-socket: #3a3628;
+  --comms-deck-screw: #a39a7d;
+}
+
+/* Original */
+html[data-theme="hermes-comms-deck"][data-palette="original"] {
+  color-scheme: dark;
+  --hh-background: #111519;
+  --hh-foreground: #e8e2d0;
+  --hh-surface-card: #1a1f25;
+  --hh-surface-card-foreground: #e8e2d0;
+  --hh-surface-panel: #151a1f;
+  --hh-surface-panel-foreground: #e8e2d0;
+  --hh-surface-shelf: #1e242b;
+  --hh-surface-shelf-foreground: #e8e2d0;
+  --hh-surface-tray: #0d1014;
+  --hh-surface-tray-foreground: #e8e2d0;
+  --hh-primary: #e9c46a;
+  --hh-primary-foreground: #15181c;
+  --hh-secondary: #262d35;
+  --hh-secondary-foreground: #e8e2d0;
+  --hh-muted: #20262d;
+  --hh-muted-foreground: #a7adb4;
+  --hh-accent: #d9773a;
+  --hh-accent-foreground: #0b0d10;
+  --hh-destructive: #e36a5f;
+  --hh-destructive-foreground: #0b0d10;
+  --hh-border: #7a828b;
+  --hh-input: #0e1216;
+  --hh-ring: #c8622a;
+  --hh-success: #5bb878;
+  --hh-success-foreground: #0b0d10;
+  --hh-warning: #e0a33a;
+  --hh-warning-foreground: #0b0d10;
+  --hh-info: #7bb4d6;
+  --hh-info-foreground: #0b0d10;
+  --hh-strip: #f2ead6;
+  --hh-strip-foreground: #1a1a17;
+  --hh-pending: #b17419;
+  --hh-pending-foreground: #0b0d10;
+  --hh-answered: #59879f;
+  --hh-answered-foreground: #0b0d10;
+  --hh-expired: #7a8289;
+  --hh-expired-foreground: #0b0d10;
+  --hh-recommended: #319251;
+  --hh-recommended-foreground: #0b0d10;
+  --hh-live: #4fd6e8;
+  --hh-live-foreground: #06232a;
+  --hh-code: #0b0e12;
+  --hh-code-foreground: #d6dccf;
+  --hh-diff-add: #14301f;
+  --hh-diff-remove: #3a1a1b;
+  --hh-agent-1: #e3c05a;
+  --hh-agent-2: #5fbf72;
+  --hh-agent-3: #e5675c;
+  --hh-agent-4: #b48ae0;
+  --hh-agent-5: #6fa8e8;
+  --hh-agent-6: #c49a6c;
+  --hh-shadow: #0000008c;
+  --hh-scrim: #05070acc;
+  --hh-chart-1: #6fa8e8;
+  --hh-chart-2: #e3c05a;
+  --hh-chart-3: #5fbf72;
+  --hh-chart-4: #b48ae0;
+  --hh-chart-5: #e5675c;
+  --comms-deck-lamp-hot: #ffd27a;
+  --comms-deck-bevel: #ffffff1a;
+  --comms-deck-socket: #05070a;
+  --comms-deck-screw: #3a424c;
+}
+
+/* ================= Skin ================= */
+
+/* ---------- Lettering: Chivo for identity and Round titles, sentence case for everything operational ---------- */
+
+html[data-theme="hermes-comms-deck"] .hh-strip-header {
+  letter-spacing: var(--hh-letter-spacing-none);
+  text-transform: none;
+}
+
+html[data-theme="hermes-comms-deck"] ::selection {
+  background: var(--hh-primary);
+  color: var(--hh-primary-foreground);
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-strip-paper, .hh-round) ::selection {
+  background: var(--hh-strip-foreground);
+  color: var(--hh-strip);
+}
+
+/* ---------- The one casing detail: two panel screws on the app bar ---------- */
+
+html[data-theme="hermes-comms-deck"] .hh-app-bar {
+  background-color: var(--hh-surface-panel);
+  background-image:
+    radial-gradient(circle at 0.375rem 50%, var(--comms-deck-screw) 0 0.125rem, var(--comms-deck-socket) 0.125rem 0.1875rem, transparent 0.1875rem),
+    radial-gradient(circle at calc(100% - 0.375rem) 50%, var(--comms-deck-screw) 0 0.125rem, var(--comms-deck-socket) 0.125rem 0.1875rem, transparent 0.1875rem);
+  background-repeat: no-repeat;
+  color: var(--hh-surface-panel-foreground);
+  box-shadow: inset 0 calc(var(--hh-border-width-thin) * -1) 0 var(--comms-deck-bevel);
+}
+
+/* ---------- Channel addressing: every callsign is a numbered channel with its jack ---------- */
+
+html[data-theme="hermes-comms-deck"] .hh-callsign {
+  border-color: var(--agent-colour);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-callsign::before {
+  content: 'Ch 0' attr(data-agent);
+  padding-inline-end: var(--hh-space-2);
+  border-inline-end: var(--hh-border-width-thin) solid var(--agent-colour);
+  font-weight: var(--hh-font-weight-bold);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-callsign-mark {
+  border-radius: var(--hh-radius-pill);
+  background: radial-gradient(circle, var(--comms-deck-socket) 0 16%, var(--agent-colour) 22%);
+}
+
+/* The empty jack positions of a clear bay: a dark socket in each slot. */
+html[data-theme="hermes-comms-deck"] .hh-strip-bay-slot {
+  background-image: radial-gradient(circle at var(--hh-space-6) 50%, var(--comms-deck-socket) 0 0.375rem, var(--hh-border) 0.375rem 0.5rem, transparent 0.5rem);
+  background-repeat: no-repeat;
+}
+
+/* ---------- Channel lamps: lit while a Round waits, patched once answered, dark when it expires ----------
+ * Drawn before the status word on pending, answered and expired badges and on every strip holder's tab, so the word
+ * always names the state. Lit lamps are filled, never haloed: halos belong to live state only. */
+
+html[data-theme="hermes-comms-deck"] :is(.hh-badge[data-tone='pending'], .hh-badge[data-tone='answered'], .hh-badge[data-tone='expired'], .hh-strip > .hh-strip-tab > :first-child)::before {
+  content: '';
+  display: inline-block;
+  flex: none;
+  width: 0.875em;
+  height: 0.875em;
+  margin-inline-end: var(--hh-space-1);
+  border-radius: var(--hh-radius-pill);
+  vertical-align: -0.0625em;
+}
+
+html[data-theme="hermes-comms-deck"] .hh-badge::before {
+  margin-inline-end: 0;
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-badge[data-tone='pending'], .hh-strip[data-status='pending'] > .hh-strip-tab > :first-child)::before {
+  background: radial-gradient(circle at 38% 34%, var(--hh-strip) 0 14%, var(--comms-deck-lamp-hot) 30% 100%);
+  box-shadow: 0 0 0 var(--hh-border-width-thin) var(--hh-pending-foreground);
+}
+
+/* Patched: the plug is seated in the jack and the lamp is dark. */
+html[data-theme="hermes-comms-deck"] :is(.hh-badge[data-tone='answered'], .hh-strip[data-status='answered'] > .hh-strip-tab > :first-child)::before {
+  background: radial-gradient(circle, var(--hh-answered) 0 30%, var(--hh-answered-foreground) 36%);
+}
+
+/* Expired or cancelled: a dark lamp with nothing in the jack. */
+html[data-theme="hermes-comms-deck"] :is(.hh-badge[data-tone='expired'], .hh-strip[data-status='expired'] > .hh-strip-tab > :first-child)::before {
+  background: var(--hh-expired-foreground);
+}
+
+/* ---------- Signature: answering patches the channel, and the lamp goes dark ----------
+ * The channel lamp changes state in place. On the departing strip (the core keeps it mounted for --hh-motion-signature)
+ * the lamp steps lit → patched (the plug drops into the jack) → dark while the strip holds still, then the strip fades
+ * out in place. On the Answered confirmation, the newest answered-log row and the phone's sent screen, the plug seats
+ * while the lit lamp over it fades out. Durations are --hh-motion-signature, so reduced motion shows the final state. */
+
+html[data-theme="hermes-comms-deck"] .hh-strip[data-state='departing'] {
+  animation: comms-deck-strip-out var(--hh-motion-signature) var(--hh-easing-exit) both;
+}
+
+html[data-theme="hermes-comms-deck"] .hh-strip[data-state='departing'] > .hh-strip-tab > :first-child::before {
+  animation: comms-deck-channel-out var(--hh-motion-signature) var(--hh-easing-standard) both;
+}
+
+@keyframes comms-deck-strip-out {
+  0%,
+  65% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-toast, .hh-phone-body[role='status'], .hh-answered-log tbody tr:first-child) .hh-badge[data-tone='answered'] {
+  position: relative;
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-toast, .hh-phone-body[role='status'], .hh-answered-log tbody tr:first-child) .hh-badge[data-tone='answered']::before {
+  animation: comms-deck-plug-in var(--hh-motion-signature) var(--hh-easing-enter) both;
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-toast, .hh-phone-body[role='status'], .hh-answered-log tbody tr:first-child) .hh-badge[data-tone='answered']::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: var(--hh-space-2);
+  top: 50%;
+  width: 0.875em;
+  height: 0.875em;
+  margin-top: -0.4375em;
+  border-radius: var(--hh-radius-pill);
+  background: radial-gradient(circle at 38% 34%, var(--hh-strip) 0 14%, var(--comms-deck-lamp-hot) 30% 100%);
+  opacity: 0;
+  pointer-events: none;
+  animation: comms-deck-lamp-out var(--hh-motion-signature) var(--hh-easing-standard) both;
+}
+
+@keyframes comms-deck-channel-out {
+  0%,
+  18% {
+    background: radial-gradient(circle at 38% 34%, var(--hh-strip) 0 14%, var(--comms-deck-lamp-hot) 30% 100%);
+    transform: none;
+  }
+  19% {
+    background: radial-gradient(circle, var(--hh-strip) 0 30%, var(--hh-strip-foreground) 36%);
+    transform: translateY(-0.375em);
+  }
+  34%,
+  44% {
+    background: radial-gradient(circle, var(--hh-strip) 0 30%, var(--hh-strip-foreground) 36%);
+    transform: none;
+  }
+  45%,
+  100% {
+    background: var(--comms-deck-socket);
+    transform: none;
+  }
+}
+
+@keyframes comms-deck-plug-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.875em);
+  }
+  60%,
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes comms-deck-lamp-out {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* ---------- Selected Answers read as a patched connection; native radio and checkbox shapes stay ---------- */
+
+html[data-theme="hermes-comms-deck"] .hh-option input:checked {
+  background: var(--hh-strip-foreground);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-option input:checked::before {
+  background: var(--hh-strip);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-option:has(input:checked) .hh-option-text > :first-child {
+  font-weight: var(--hh-font-weight-bold);
+}
+
+/* ---------- Function: bakelite keys and recessed wells (inset bevels only, no external offsets) ---------- */
+
+html[data-theme="hermes-comms-deck"] :is(.hh-button, .hh-icon-button) {
+  box-shadow:
+    inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel),
+    inset 0 calc(var(--hh-border-width-thick) * -1) 0 var(--hh-shadow);
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-button, .hh-icon-button):active:not(:disabled, [aria-disabled='true']),
+html[data-theme="hermes-comms-deck"] .hh-button[aria-pressed='true'] {
+  box-shadow: inset 0 var(--hh-border-width-thick) var(--hh-space-1) var(--hh-shadow);
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-button, .hh-icon-button)[data-variant='ghost'] {
+  box-shadow: none;
+}
+
+html[data-theme="hermes-comms-deck"] .hh-kbd {
+  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-input, .hh-select, .hh-textarea) {
+  box-shadow: inset 0 var(--hh-border-width-thick) 0 var(--hh-shadow);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-switch-track {
+  background: var(--hh-input);
+  box-shadow: inset 0 var(--hh-border-width-thick) 0 var(--hh-shadow);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-switch-thumb {
+  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-switch[aria-checked='true'] .hh-switch-track {
+  background: var(--hh-accent);
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-chip, .hh-segmented label) {
+  box-shadow: inset 0 var(--hh-border-width-thin) 0 var(--comms-deck-bevel);
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-chip[aria-pressed='true'], .hh-segmented label:has(input:checked)) {
+  box-shadow: inset 0 var(--hh-border-width-thick) 0 var(--hh-shadow);
+}
+
+/* Tabs are channel selectors: the selected one shows a filled indicator (no halo) as well as the underline. */
+html[data-theme="hermes-comms-deck"] .hh-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hh-space-2);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-tab::before {
+  content: '';
+  flex: none;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: var(--hh-radius-pill);
+  box-shadow: inset 0 0 0 var(--hh-border-width-thin) var(--hh-border);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-tab[aria-selected='true']::before {
+  background: var(--hh-accent);
+  box-shadow: inset 0 0 0 var(--hh-border-width-thin) var(--hh-accent);
+}
+
+/* The current page is the selected channel: a round indicator, a heavier label and the accent plate. */
+html[data-theme="hermes-comms-deck"] :is(.hh-side-nav, .hh-bottom-nav) a[aria-current='page']::before {
+  border-radius: var(--hh-radius-pill);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-breadcrumbs li + li::before {
+  content: '›';
+}
+
+html[data-theme="hermes-comms-deck"] :is(.hh-avatar, .hh-avatar[data-size='sm']) {
+  border-radius: var(--hh-radius-pill);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-spinner {
+  border-top-color: var(--hh-primary);
+}
+
+/* Attachment heads are label plates; the code plane under them stays flat and opaque. */
+html[data-theme="hermes-comms-deck"] .hh-attachment-head {
+  background: var(--hh-surface-shelf);
+  color: var(--hh-surface-shelf-foreground);
+}
+
+html[data-theme="hermes-comms-deck"] .hh-connection[data-state='offline'] .hh-connection-lamp {
+  background: var(--comms-deck-socket);
+}

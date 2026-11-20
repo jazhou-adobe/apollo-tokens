@@ -1,0 +1,639 @@
+/*
+ * Preview-only layout: the /design shell, sidebar index, foundation specimens, blueprint frames, /overview, /worlds,
+ * /specimen, and /tile. Product screens never import this file; they compose hermes-components.css.
+ */
+
+/* ---------- Shell ---------- */
+
+.hh-shell {
+  display: grid;
+  min-height: 100dvh;
+}
+
+.hh-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hh-space-5);
+  min-width: 0;
+  padding: var(--hh-density-inset);
+  background: var(--hh-surface-tray);
+  color: var(--hh-surface-tray-foreground);
+  border-bottom: var(--hh-border-width-thin) solid var(--hh-border);
+}
+
+.hh-sidebar-brand {
+  display: grid;
+  gap: var(--hh-space-1);
+}
+
+.hh-main {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hh-space-12);
+  width: 100%;
+  min-width: 0;
+  max-width: var(--hh-layout-content-max);
+  margin: 0 auto;
+  padding: var(--hh-space-6) var(--hh-density-inset) var(--hh-space-12);
+}
+
+.hh-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hh-space-5);
+  min-width: 0;
+  scroll-margin-top: var(--hh-space-6);
+}
+
+.hh-section-head {
+  display: grid;
+  gap: var(--hh-space-2);
+  padding-bottom: var(--hh-space-3);
+  border-bottom: var(--hh-border-width-thick) solid var(--hh-border);
+}
+
+.hh-section-head > * {
+  margin: 0;
+}
+
+.hh-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hh-space-3);
+  min-width: 0;
+  scroll-margin-top: var(--hh-space-6);
+}
+
+.hh-subsection > h3,
+.hh-subsection > h4 {
+  margin: 0;
+}
+
+.hh-kicker {
+  font-family: var(--hh-type-mono-sm-family);
+  font-size: var(--hh-type-mono-sm-size);
+  line-height: var(--hh-type-mono-sm-line-height);
+  font-weight: var(--hh-type-mono-sm-weight);
+  letter-spacing: var(--hh-letter-spacing-caps);
+  text-transform: uppercase;
+  color: var(--hh-muted-foreground);
+}
+
+.hh-hero {
+  display: grid;
+  gap: var(--hh-space-4);
+}
+
+.hh-hero > * {
+  margin: 0;
+}
+
+.hh-specimen-note {
+  font-size: var(--hh-type-body-sm-size);
+  color: var(--hh-muted-foreground);
+}
+
+/* /specimen: the page title and its one-line preview note share a row, so the queue starts high on a phone. */
+.hh-specimen-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--hh-space-1) var(--hh-space-3);
+  min-width: 0;
+}
+
+.hh-specimen-title > * {
+  margin: 0;
+}
+
+.hh-toc-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hh-space-2);
+  min-height: var(--hh-button-min-target);
+  padding: 0 var(--hh-density-control-padding-inline);
+  border: var(--hh-border-width-thin) solid var(--hh-border);
+  border-radius: var(--hh-radius-md);
+  background: var(--hh-secondary);
+  color: var(--hh-secondary-foreground);
+  font: inherit;
+  font-weight: var(--hh-font-weight-bold);
+  cursor: pointer;
+}
+
+.hh-toc-wrap[data-open='false'] .hh-toc-panel {
+  display: none;
+}
+
+.hh-toc-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hh-space-4);
+  margin-top: var(--hh-space-3);
+}
+
+.hh-toc ul {
+  display: grid;
+  gap: var(--hh-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hh-toc ul ul {
+  margin: var(--hh-space-1) 0 var(--hh-space-2) var(--hh-space-3);
+}
+
+.hh-toc a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hh-space-2);
+  padding: var(--hh-space-1) var(--hh-space-2);
+  border-radius: var(--hh-radius-sm);
+  color: inherit;
+  text-decoration: none;
+  font-size: var(--hh-type-body-sm-size);
+}
+
+.hh-toc a:hover {
+  background: var(--hh-muted);
+  color: var(--hh-foreground);
+  text-decoration: underline;
+}
+
+.hh-toc-count {
+  font-family: var(--hh-font-mono);
+  font-size: var(--hh-type-mono-sm-size);
+  color: var(--hh-muted-foreground);
+}
+
+.hh-switchers {
+  display: grid;
+  gap: var(--hh-space-3);
+}
+
+.hh-segmented {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: var(--hh-space-1);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.hh-segmented label {
+  display: grid;
+  place-items: center;
+  min-height: var(--hh-control-size-sm);
+  padding: 0 var(--hh-space-2);
+  border: var(--hh-border-width-thin) solid var(--hh-border);
+  border-radius: var(--hh-radius-sm);
+  font-size: var(--hh-type-label-size);
+  font-weight: var(--hh-type-label-weight);
+  cursor: pointer;
+}
+
+.hh-segmented label:has(input:checked) {
+  background: var(--hh-accent);
+  border-color: var(--hh-accent);
+  color: var(--hh-accent-foreground);
+}
+
+.hh-segmented label:has(input:focus-visible) {
+  outline: var(--hh-focus-ring-width) solid var(--hh-ring);
+  outline-offset: var(--hh-focus-ring-offset);
+}
+
+/* ---------- Foundations ---------- */
+
+.hh-swatch-grid {
+  display: grid;
+  gap: var(--hh-space-3);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--hh-overlay-tooltip-width)), 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hh-swatch {
+  display: grid;
+  grid-template-rows: var(--hh-space-12) auto;
+  min-width: 0;
+  overflow: hidden;
+  border: var(--hh-border-width-thin) solid var(--hh-border);
+  border-radius: var(--hh-radius-md);
+  background: var(--hh-surface-card);
+  color: var(--hh-surface-card-foreground);
+}
+
+.hh-swatch-chip {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--hh-space-3);
+  border-bottom: var(--hh-border-width-thin) solid var(--hh-border);
+  font-weight: var(--hh-font-weight-bold);
+}
+
+.hh-swatch-meta {
+  display: grid;
+  align-content: start;
+  gap: var(--hh-space-1);
+  padding: var(--hh-space-2) var(--hh-space-3);
+  font-size: var(--hh-type-body-sm-size);
+}
+
+.hh-swatch-meta code {
+  font-size: var(--hh-type-mono-sm-size);
+}
+
+.hh-ratio {
+  font-family: var(--hh-font-mono);
+  font-size: var(--hh-type-mono-sm-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.hh-type-specimen {
+  display: grid;
+  gap: var(--hh-space-1);
+  padding: var(--hh-space-3) 0;
+  border-bottom: var(--hh-border-width-thin) solid var(--hh-border);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.hh-scale-row {
+  display: grid;
+  grid-template-columns: minmax(0, var(--hh-avatar-size-md)) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--hh-space-3);
+}
+
+.hh-scale-bar {
+  height: var(--hh-space-3);
+  background: var(--hh-foreground);
+}
+
+.hh-radius-demo,
+.hh-elevation-demo {
+  display: grid;
+  place-items: center;
+  min-height: var(--hh-space-12);
+  padding: var(--hh-space-3);
+  border: var(--hh-border-width-thin) solid var(--hh-border);
+  background: var(--hh-surface-card);
+  color: var(--hh-surface-card-foreground);
+  text-align: center;
+}
+
+.hh-density-compare {
+  display: grid;
+  gap: var(--hh-density-gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--hh-layout-gallery-column-min)), 1fr));
+  align-items: start;
+}
+
+.hh-density-column {
+  display: grid;
+  gap: var(--hh-density-gap);
+  min-width: 0;
+  padding: var(--hh-density-inset);
+  border: var(--hh-border-width-thin) dashed var(--hh-border);
+  border-radius: var(--hh-radius-md);
+}
+
+/* ---------- Component specimens ---------- */
+
+.hh-demo-grid {
+  display: grid;
+  gap: var(--hh-space-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--hh-layout-gallery-column-min)), 1fr));
+  align-items: start;
+}
+
+.hh-demo {
+  display: grid;
+  gap: var(--hh-space-3);
+  align-content: start;
+  min-width: 0;
+}
+
+.hh-demo-label {
+  font-family: var(--hh-type-mono-sm-family);
+  font-size: var(--hh-type-mono-sm-size);
+  color: var(--hh-muted-foreground);
+}
+
+/* ---------- Blueprints ---------- */
+
+.hh-blueprint {
+  display: grid;
+  min-width: 0;
+  overflow: hidden;
+  border: var(--hh-border-width-thick) solid var(--hh-border);
+  border-radius: var(--hh-radius-lg);
+  background: var(--hh-background);
+  color: var(--hh-foreground);
+}
+
+.hh-blueprint-body {
+  display: grid;
+  gap: var(--hh-density-gap);
+  min-width: 0;
+  padding: var(--hh-density-inset);
+}
+
+.hh-phone-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hh-space-6);
+  align-items: flex-start;
+}
+
+.hh-phone-frame {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: min(100%, var(--hh-layout-phone-frame-width));
+  min-height: var(--hh-layout-thumbnail-width);
+  overflow: hidden;
+  border: var(--hh-border-width-heavy) solid var(--hh-border);
+  border-radius: var(--hh-radius-lg);
+  background: var(--hh-background);
+  color: var(--hh-foreground);
+}
+
+.hh-phone-body {
+  display: grid;
+  gap: var(--hh-density-gap);
+  align-content: start;
+  min-width: 0;
+  padding: var(--hh-density-inset);
+}
+
+.hh-system-grid {
+  display: grid;
+  gap: var(--hh-space-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--hh-layout-gallery-column-min)), 1fr));
+  align-items: start;
+}
+
+.hh-recipe {
+  margin: 0;
+  padding-inline-start: var(--hh-space-6);
+  display: grid;
+  gap: var(--hh-space-2);
+}
+
+/* ---------- /overview ---------- */
+
+.hh-overview {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hh-space-5);
+  min-height: 100dvh;
+  padding: var(--hh-density-inset);
+}
+
+.hh-overview-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--hh-space-4);
+}
+
+.hh-overview-head > * {
+  margin: 0;
+}
+
+.hh-overview-grid {
+  display: grid;
+  gap: var(--hh-space-5);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--hh-layout-gallery-column-min)), 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hh-overview-tile {
+  display: grid;
+  gap: var(--hh-space-2);
+  min-width: 0;
+}
+
+.hh-overview-frame {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: var(--hh-border-width-thin) solid var(--hh-border);
+  border-radius: var(--hh-radius-md);
+  background: var(--hh-surface-panel);
+}
+
+.hh-overview-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--hh-layout-thumbnail-width);
+  height: var(--hh-layout-thumbnail-height);
+  border: 0;
+  transform-origin: 0 0;
+  transform: scale(var(--overview-scale, 0));
+  pointer-events: none;
+}
+
+.hh-overview-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hh-space-2);
+}
+
+.hh-overview-chips {
+  display: flex;
+  gap: var(--hh-space-1);
+}
+
+.hh-overview-chip {
+  display: inline-grid;
+  place-items: center;
+  min-width: var(--hh-control-size-sm);
+  min-height: var(--hh-control-size-sm);
+  border: var(--hh-border-width-thin) solid var(--hh-border);
+  border-radius: var(--hh-radius-sm);
+  cursor: pointer;
+}
+
+.hh-overview-chip:has(input:checked) {
+  border-width: var(--hh-border-width-thick);
+  border-color: var(--hh-foreground);
+}
+
+.hh-overview-chip:has(input:focus-visible) {
+  outline: var(--hh-focus-ring-width) solid var(--hh-ring);
+  outline-offset: var(--hh-focus-ring-offset);
+}
+
+.hh-palette-swatches {
+  display: inline-flex;
+}
+
+.hh-palette-swatches > span {
+  width: var(--hh-space-3);
+  height: var(--hh-space-5);
+}
+
+/* ---------- /worlds ---------- */
+
+.hh-gallery {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hh-space-8);
+  width: 100%;
+  max-width: var(--hh-layout-content-max);
+  margin: 0 auto;
+  padding: var(--hh-space-8) var(--hh-density-inset);
+}
+
+.hh-gallery-grid {
+  display: grid;
+  gap: var(--hh-space-6);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--hh-layout-gallery-column-min)), 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hh-world-card {
+  display: grid;
+  gap: var(--hh-space-4);
+  align-content: start;
+  min-width: 0;
+  padding: var(--hh-density-inset);
+  border: var(--hh-border-width-thin) solid var(--hh-border);
+  border-radius: var(--hh-radius-md);
+  background: var(--hh-surface-card);
+  color: var(--hh-surface-card-foreground);
+}
+
+.hh-world-frame {
+  width: 100%;
+  height: var(--hh-layout-specimen-frame-height);
+  border: var(--hh-border-width-thin) solid var(--hh-border);
+  border-radius: var(--hh-radius-md);
+  background: var(--hh-background);
+}
+
+.hh-world-compare-grid {
+  display: grid;
+  gap: var(--hh-space-3);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--hh-overlay-tooltip-width)), 1fr));
+  margin: var(--hh-space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- /specimen and /tile ---------- */
+
+.hh-specimen {
+  box-sizing: border-box;
+  display: grid;
+  gap: var(--hh-density-gap);
+  min-height: 100dvh;
+  align-content: start;
+  background: var(--hh-background);
+}
+
+/* The specimen's app bar scrolls away, so it never sits over the Round sheet's head or its Back to pending control. */
+.hh-specimen > .hh-app-bar {
+  position: static;
+}
+
+.hh-specimen-body {
+  display: grid;
+  gap: var(--hh-density-gap);
+  min-width: 0;
+  padding: var(--hh-density-inset);
+}
+
+.hh-thumb {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--hh-space-3);
+  width: var(--hh-layout-thumbnail-width);
+  height: var(--hh-layout-thumbnail-height);
+  overflow: hidden;
+  padding: var(--hh-space-5);
+  background: var(--hh-background);
+  color: var(--hh-foreground);
+}
+
+.hh-thumb-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--hh-space-3);
+}
+
+.hh-thumb-head > * {
+  margin: 0;
+}
+
+.hh-thumb-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--hh-space-4);
+  min-height: 0;
+}
+
+/* ---------- Breakpoints ---------- */
+
+@media (min-width: 48rem) {
+  .hh-main {
+    padding-inline: var(--hh-space-8);
+  }
+}
+
+/* Phone and tablet: theme, colour, and density sit together without their explanations, the index folds behind
+   "On this page", and the first specimen follows directly. */
+@media (max-width: 64rem) {
+  .hh-sidebar {
+    gap: var(--hh-space-3);
+  }
+
+  .hh-sidebar .hh-hint {
+    display: none;
+  }
+}
+
+@media (min-width: 64rem) {
+  .hh-shell {
+    grid-template-columns: var(--hh-layout-sidebar-width) minmax(0, 1fr);
+  }
+
+  .hh-sidebar {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    border-bottom: 0;
+    border-inline-end: var(--hh-border-width-thin) solid var(--hh-border);
+  }
+
+  .hh-toc-toggle {
+    display: none;
+  }
+
+  .hh-toc-wrap[data-open='false'] .hh-toc-panel {
+    display: flex;
+  }
+}

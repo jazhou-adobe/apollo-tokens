@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en" data-theme="hermes-flight-director" data-palette="console-slate">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hermes Hub · World preview · Flight Director 2169</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=IBM+Plex+Mono:wght@400;500;600&family=Michroma&display=swap" rel="stylesheet">
+<!--
+  Contrast check (WCAG 2 ratios, truncated to 2 decimals; Python script over every --hh-* hex role in each palette block).
+  58 roles per palette (56 hex + shadow/scrim rgba). Minimum ratio per gate; all gates pass in all 4 colour options.
+  [console-slate]
+    role/role-foreground (>=4.5): min 4.64 (recommended/recommended-foreground)
+    code-foreground on diff-add/remove (>=4.5): min 10.32 (code-foreground/diff-add)
+    muted-foreground on bg/surfaces/muted (>=4.5): min 6.01 (muted-foreground/surface-tray)
+    border, ring vs surfaces/strip/input (>=3): min 3.04 (border/strip)
+    holders vs strip and background (>=3): min 3.15 (answered/strip)
+    agent-*, chart-* vs card/panel/background (>=3): min 6.12 (agent-5/surface-panel)
+    preview extras: live on live-foreground well 13.53; strip-foreground on strip 13.86; success-fg on success (GO) 10.11; destructive-fg on destructive (NO-GO) 6.97
+  [night-watch]
+    role/role-foreground (>=4.5): min 4.54 (recommended/recommended-foreground)
+    code-foreground on diff-add/remove (>=4.5): min 10.26 (code-foreground/diff-add)
+    muted-foreground on bg/surfaces/muted (>=4.5): min 6.57 (muted-foreground/surface-tray)
+    border, ring vs surfaces/strip/input (>=3): min 3.03 (border/strip)
+    holders vs strip and background (>=3): min 3.13 (recommended/strip)
+    agent-*, chart-* vs card/panel/background (>=3): min 7.39 (agent-5/surface-panel)
+    preview extras: live on live-foreground well 12.63; strip-foreground on strip 13.21; success-fg on success (GO) 10.53; destructive-fg on destructive (NO-GO) 7.17
+  [day-shift]
+    role/role-foreground (>=4.5): min 5.43 (expired/expired-foreground)
+    code-foreground on diff-add/remove (>=4.5): min 10.41 (code-foreground/diff-add)
+    muted-foreground on bg/surfaces/muted (>=4.5): min 4.94 (muted-foreground/surface-shelf)
+    border, ring vs surfaces/strip/input (>=3): min 3.61 (border/surface-shelf)
+    holders vs strip and background (>=3): min 3.55 (expired/background)
+    agent-*, chart-* vs card/panel/background (>=3): min 3.48 (agent-4/background)
+    preview extras: live on live-foreground well 12.72; strip-foreground on strip 17.77; success-fg on success (GO) 6.51; destructive-fg on destructive (NO-GO) 6.76
+  [original]
+    role/role-foreground (>=4.5): min 4.98 (recommended/recommended-foreground)
+    code-foreground on diff-add/remove (>=4.5): min 10.13 (code-foreground/diff-add)
+    muted-foreground on bg/surfaces/muted (>=4.5): min 5.84 (muted-foreground/surface-tray)
+    border, ring vs surfaces/strip/input (>=3): min 3.08 (border/strip)
+    holders vs strip and background (>=3): min 3.14 (recommended/strip)
+    agent-*, chart-* vs card/panel/background (>=3): min 5.65 (agent-5/surface-panel)
+    preview extras: live on live-foreground well 14.86; strip-foreground on strip 14.36; success-fg on success (GO) 11.14; destructive-fg on destructive (NO-GO) 6.87
+-->
+<style>
+/* ---------- World type, shape, depth (world-overridable tokens only) ---------- */
+:root {
+  --hh-font-wide: "Michroma", "Eurostile", "Microgramma", "Arial Black", sans-serif;
+  --hh-font-sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --hh-font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --hh-radius-sm: 2px;
+  --hh-radius-md: 3px;
+  --hh-radius-lg: 6px;
+  --hh-strip-holder-width: 3px;
+  --hh-timer-track-height: 4px;
+  --hh-callsign-chip-height: 22px;
+  --hh-option-row-min-height: 36px;
+  --hh-button-min-target: 32px;
+  --hh-kbd-size: 18px;
+  --hh-code-max-height: 220px;
+}
+
+/* ---------- Colour options: recommended, two alternatives, original ---------- */
+html[data-theme="hermes-flight-director"][data-palette="console-slate"] {
+  color-scheme: dark;
+  --hh-background: #101519; --hh-foreground: #e4e1d7;
+  --hh-surface-card: #1a2228; --hh-surface-card-foreground: #e4e1d7;
+  --hh-surface-panel: #20292f; --hh-surface-panel-foreground: #ebe8de;
+  --hh-surface-shelf: #151c21; --hh-surface-shelf-foreground: #e4e1d7;
+  --hh-surface-tray: #252f36; --hh-surface-tray-foreground: #eeebe2;
+  --hh-primary: #e6dcc0; --hh-primary-foreground: #16181a;
+  --hh-secondary: #2f3b43; --hh-secondary-foreground: #eceee9;
+  --hh-muted: #1c2429; --hh-muted-foreground: #a3aeb2;
+  --hh-accent: #33424b; --hh-accent-foreground: #f0ede4;
+  --hh-destructive: #e8806a; --hh-destructive-foreground: #1b0d09;
+  --hh-border: #76838a; --hh-input: #0c1114; --hh-ring: #5f8399;
+  --hh-success: #86d39e; --hh-success-foreground: #0b1a10;
+  --hh-warning: #e3b55a; --hh-warning-foreground: #1a1205;
+  --hh-info: #8cbcdc; --hh-info-foreground: #0b1620;
+  --hh-strip: #ebe3cd; --hh-strip-foreground: #1a1812;
+  --hh-pending: #a87420; --hh-pending-foreground: #0e0a03;
+  --hh-answered: #5f8399; --hh-answered-foreground: #050b0f;
+  --hh-expired: #7a7d80; --hh-expired-foreground: #050505;
+  --hh-recommended: #468a58; --hh-recommended-foreground: #04100a;
+  --hh-live: #7df0a8; --hh-live-foreground: #07120c;
+  --hh-code: #0b1013; --hh-code-foreground: #d6dfda;
+  --hh-diff-add: #163120; --hh-diff-remove: #3a1b19;
+  --hh-agent-1: #e2a65c; --hh-agent-2: #7fb6e2; --hh-agent-3: #c79ce2;
+  --hh-agent-4: #93d18c; --hh-agent-5: #e88e8e; --hh-agent-6: #d6cf6c;
+  --hh-shadow: rgba(0, 0, 0, 0.55); --hh-scrim: rgba(6, 9, 11, 0.72);
+  --hh-chart-1: #7fb6e2; --hh-chart-2: #e2a65c; --hh-chart-3: #93d18c; --hh-chart-4: #c79ce2; --hh-chart-5: #e88e8e;
+}
+html[data-theme="hermes-flight-director"][data-palette="night-watch"] {
+  color-scheme: dark;
+  --hh-background: #0f0c0b; --hh-foreground: #ece0d2;
+  --hh-surface-card: #1c1715; --hh-surface-card-foreground: #ece0d2;
+  --hh-surface-panel: #231d1a; --hh-surface-panel-foreground: #f0e5d8;
+  --hh-surface-shelf: #161210; --hh-surface-shelf-foreground: #ece0d2;
+  --hh-surface-tray: #2a2320; --hh-surface-tray-foreground: #f3e9dd;
+  --hh-primary: #e9c9a0; --hh-primary-foreground: #1a1008;
+  --hh-secondary: #3a2f2a; --hh-secondary-foreground: #f3e9dd;
+  --hh-muted: #1f1916; --hh-muted-foreground: #b8a698;
+  --hh-accent: #43352e; --hh-accent-foreground: #f6ece0;
+  --hh-destructive: #ef7f6a; --hh-destructive-foreground: #1d0b07;
+  --hh-border: #8a7a70; --hh-input: #0a0807; --hh-ring: #a07058;
+  --hh-success: #8fd6a4; --hh-success-foreground: #0b1a10;
+  --hh-warning: #e8b860; --hh-warning-foreground: #1a1205;
+  --hh-info: #9cc0dc; --hh-info-foreground: #0b1620;
+  --hh-strip: #e8dcc4; --hh-strip-foreground: #1c160e;
+  --hh-pending: #a3701f; --hh-pending-foreground: #0e0a03;
+  --hh-answered: #5a7e92; --hh-answered-foreground: #050b0f;
+  --hh-expired: #7c7874; --hh-expired-foreground: #050505;
+  --hh-recommended: #46885a; --hh-recommended-foreground: #04100a;
+  --hh-live: #6fe6c8; --hh-live-foreground: #06110e;
+  --hh-code: #0c0a09; --hh-code-foreground: #e4dcd2;
+  --hh-diff-add: #1a3122; --hh-diff-remove: #3d1c18;
+  --hh-agent-1: #e6a865; --hh-agent-2: #86b8e6; --hh-agent-3: #cfa2e6;
+  --hh-agent-4: #99d493; --hh-agent-5: #ee9590; --hh-agent-6: #dcd274;
+  --hh-shadow: rgba(0, 0, 0, 0.6); --hh-scrim: rgba(8, 5, 4, 0.74);
+  --hh-chart-1: #86b8e6; --hh-chart-2: #e6a865; --hh-chart-3: #99d493; --hh-chart-4: #cfa2e6; --hh-chart-5: #ee9590;
+}
+html[data-theme="hermes-flight-director"][data-palette="day-shift"] {
+  color-scheme: light;
+  --hh-background: #d4d1c6; --hh-foreground: #1a1c1d;
+  --hh-surface-card: #ecebe5; --hh-surface-card-foreground: #1a1c1d;
+  --hh-surface-panel: #e2e0d8; --hh-surface-panel-foreground: #1a1c1d;
+  --hh-surface-shelf: #c9c6ba; --hh-surface-shelf-foreground: #16181a;
+  --hh-surface-tray: #f4f3ee; --hh-surface-tray-foreground: #1a1c1d;
+  --hh-primary: #23343e; --hh-primary-foreground: #f4f1e8;
+  --hh-secondary: #c3c8c8; --hh-secondary-foreground: #1a1c1d;
+  --hh-muted: #dddbd2; --hh-muted-foreground: #474e52;
+  --hh-accent: #b9c6cc; --hh-accent-foreground: #14181a;
+  --hh-destructive: #a8301e; --hh-destructive-foreground: #ffffff;
+  --hh-border: #5f625f; --hh-input: #fbfaf6; --hh-ring: #1d5f8a;
+  --hh-success: #1f6b3a; --hh-success-foreground: #ffffff;
+  --hh-warning: #8a5a08; --hh-warning-foreground: #ffffff;
+  --hh-info: #1d5a80; --hh-info-foreground: #ffffff;
+  --hh-strip: #fdfcf8; --hh-strip-foreground: #17150f;
+  --hh-pending: #8a5a10; --hh-pending-foreground: #ffffff;
+  --hh-answered: #2e6a84; --hh-answered-foreground: #ffffff;
+  --hh-expired: #686a6c; --hh-expired-foreground: #ffffff;
+  --hh-recommended: #1e6e3c; --hh-recommended-foreground: #ffffff;
+  --hh-live: #7df0a8; --hh-live-foreground: #0b1a12;
+  --hh-code: #14191c; --hh-code-foreground: #d9e1dc;
+  --hh-diff-add: #17321f; --hh-diff-remove: #3c1b19;
+  --hh-agent-1: #9a4f00; --hh-agent-2: #2563a8; --hh-agent-3: #7a3fa0;
+  --hh-agent-4: #2f7a2a; --hh-agent-5: #b0353a; --hh-agent-6: #6b6400;
+  --hh-shadow: rgba(40, 36, 28, 0.28); --hh-scrim: rgba(20, 22, 24, 0.55);
+  --hh-chart-1: #2563a8; --hh-chart-2: #9a4f00; --hh-chart-3: #2f7a2a; --hh-chart-4: #7a3fa0; --hh-chart-5: #b0353a;
+}
+html[data-theme="hermes-flight-director"][data-palette="original"] {
+  color-scheme: dark;
+  --hh-background: #131c22; --hh-foreground: #e2e6e2;
+  --hh-surface-card: #1d2930; --hh-surface-card-foreground: #e2e6e2;
+  --hh-surface-panel: #24333d; --hh-surface-panel-foreground: #e8ece8;
+  --hh-surface-shelf: #18232a; --hh-surface-shelf-foreground: #e2e6e2;
+  --hh-surface-tray: #27363f; --hh-surface-tray-foreground: #eef1ee;
+  --hh-primary: #e9e0c2; --hh-primary-foreground: #141a1e;
+  --hh-secondary: #33454f; --hh-secondary-foreground: #eef1ee;
+  --hh-muted: #1f2b33; --hh-muted-foreground: #a6b4b9;
+  --hh-accent: #3a4f5b; --hh-accent-foreground: #f1f3f0;
+  --hh-destructive: #ec7b62; --hh-destructive-foreground: #1b0c08;
+  --hh-border: #77858c; --hh-input: #0e151a; --hh-ring: #5e86a0;
+  --hh-success: #7ee09a; --hh-success-foreground: #0a1a0f;
+  --hh-warning: #e6b84e; --hh-warning-foreground: #1a1205;
+  --hh-info: #88bde0; --hh-info-foreground: #0a1620;
+  --hh-strip: #efe7cf; --hh-strip-foreground: #1a1812;
+  --hh-pending: #ab7620; --hh-pending-foreground: #0e0a03;
+  --hh-answered: #5c869e; --hh-answered-foreground: #050b0f;
+  --hh-expired: #7b7f82; --hh-expired-foreground: #050505;
+  --hh-recommended: #47905a; --hh-recommended-foreground: #04100a;
+  --hh-live: #66ff99; --hh-live-foreground: #06120a;
+  --hh-code: #0c1216; --hh-code-foreground: #d6e0da;
+  --hh-diff-add: #173322; --hh-diff-remove: #3b1a19;
+  --hh-agent-1: #e8aa5c; --hh-agent-2: #80bde8; --hh-agent-3: #cba0e8;
+  --hh-agent-4: #94d98e; --hh-agent-5: #f0918c; --hh-agent-6: #dcd46c;
+  --hh-shadow: rgba(0, 0, 0, 0.55); --hh-scrim: rgba(5, 9, 12, 0.72);
+  --hh-chart-1: #80bde8; --hh-chart-2: #e8aa5c; --hh-chart-3: #94d98e; --hh-chart-4: #cba0e8; --hh-chart-5: #f0918c;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--hh-background); color: var(--hh-foreground); font: 400 14px/1.45 var(--hh-font-sans); -webkit-font-smoothing: antialiased; }
+body { height: 100vh; min-height: 880px; display: grid; grid-template-rows: auto minmax(0, 1fr); }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; }
+:focus-visible { outline: 2px solid var(--hh-ring); outline-offset: 2px; }
+.wide { font-family: var(--hh-font-wide); font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; }
+.mono { font-family: var(--hh-font-mono); font-variant-numeric: tabular-nums; }
+.lbl { font-family: var(--hh-font-wide); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hh-muted-foreground); }
+.illus { font-family: var(--hh-font-mono); font-size: 10.5px; color: var(--hh-muted-foreground); border: 1px dashed var(--hh-border); padding: 1px 6px; border-radius: var(--hh-radius-sm); white-space: nowrap; }
+
+/* Live readout: a dark CRT well; phosphor only here */
+.hh-readout { display: inline-flex; align-items: center; gap: 6px; background: var(--hh-live-foreground); color: var(--hh-live); font-family: var(--hh-font-mono); font-weight: 500; font-variant-numeric: tabular-nums; padding: 1px 7px; border-radius: var(--hh-radius-sm); text-shadow: 0 0 6px color-mix(in srgb, var(--hh-live) 55%, transparent); box-shadow: inset 0 1px 2px var(--hh-shadow); white-space: nowrap; }
+.hh-readout[data-state="idle"] { color: var(--hh-muted-foreground); text-shadow: none; background: var(--hh-input); }
+
+/* ---------- World header ---------- */
+.fd-head { display: grid; grid-template-columns: auto 1fr auto; gap: 28px; align-items: center; padding: 14px 24px 12px; background: var(--hh-surface-shelf); color: var(--hh-surface-shelf-foreground); border-bottom: 1px solid var(--hh-border); }
+.fd-head h1 { font-family: var(--hh-font-wide); font-weight: 400; font-size: 19px; letter-spacing: 0.05em; line-height: 1.15; }
+.fd-head .sub { margin-top: 4px; font-family: var(--hh-font-mono); font-size: 11px; color: var(--hh-muted-foreground); }
+.fd-head dl { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; font-size: 13px; max-width: 640px; }
+.fd-head dt { padding-top: 3px; }
+.fd-switch { display: flex; gap: 6px; align-items: stretch; }
+.fd-switch legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.fd-switch button { display: grid; gap: 5px; justify-items: start; padding: 6px 9px 7px; min-width: 104px; background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); text-align: left; }
+.fd-switch button[aria-pressed="true"] { border-color: var(--hh-foreground); box-shadow: inset 0 0 0 1px var(--hh-foreground); }
+.fd-switch .sw { display: flex; gap: 3px; }
+.fd-switch .sw i { width: 16px; height: 10px; border: 1px solid var(--hh-border); }
+.fd-switch .nm { font-family: var(--hh-font-wide); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; }
+.fd-switch .st { font-family: var(--hh-font-mono); font-size: 10px; color: var(--hh-muted-foreground); }
+
+/* ---------- Layout ---------- */
+.fd-main { display: grid; grid-template-columns: minmax(0, 1fr) 406px; gap: 22px; padding: 12px 24px 16px; min-height: 0; }
+.fd-cap { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.fd-cc { display: grid; grid-template-rows: auto auto auto minmax(0, 1fr); min-height: 0; }
+
+/* App bar */
+.hh-app-bar { display: flex; align-items: center; gap: 14px; height: 38px; padding: 0 12px; background: var(--hh-surface-tray); color: var(--hh-surface-tray-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-md) var(--hh-radius-md) 0 0; }
+.hh-app-bar .brand { font-family: var(--hh-font-wide); font-size: 12px; letter-spacing: 0.1em; }
+.hh-app-bar .loop { font-family: var(--hh-font-mono); font-size: 12px; color: var(--hh-muted-foreground); }
+.hh-app-bar .sp { flex: 1; }
+.hh-app-bar .stat { display: inline-flex; align-items: center; gap: 6px; }
+.hh-connection .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--hh-live); box-shadow: 0 0 6px var(--hh-live); }
+
+/* Console banks */
+.fd-banks { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; padding: 10px; background: var(--hh-surface-shelf); border: 1px solid var(--hh-border); border-top: 0; }
+.hh-console { position: relative; display: grid; gap: 6px; padding: 8px 10px 9px; background-color: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm);
+  background-image: radial-gradient(circle at 5px 5px, var(--hh-border) 1.3px, transparent 1.8px), radial-gradient(circle at calc(100% - 5px) 5px, var(--hh-border) 1.3px, transparent 1.8px);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--hh-surface-panel-foreground) 9%, transparent), 0 2px 0 var(--hh-shadow); }
+.hh-console[data-state="on-loop"] { border-color: var(--hh-ring); box-shadow: inset 0 0 0 1px var(--hh-ring), 0 2px 0 var(--hh-shadow); }
+.hh-console .row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.hh-console .pos { font-family: var(--hh-font-wide); font-size: 8.5px; letter-spacing: 0.12em; text-transform: uppercase; }
+.hh-console .meta { font-family: var(--hh-font-mono); font-size: 10px; color: var(--hh-muted-foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Callsign chip */
+.hh-callsign { display: inline-flex; align-items: center; gap: 6px; height: var(--hh-callsign-chip-height); padding: 0 7px 0 0; background: var(--hh-surface-tray); color: var(--hh-surface-tray-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); font-family: var(--hh-font-mono); font-size: 11px; font-weight: 500; white-space: nowrap; overflow: hidden; max-width: 100%; }
+.hh-console .hh-callsign { font-size: 10px; gap: 5px; padding-right: 5px; }
+.hh-callsign::before { content: ""; flex: none; width: 8px; align-self: stretch; background: var(--a); }
+
+/* Desk: strip bay + open Round */
+.fd-desk { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 12px; min-height: 0; margin-top: 12px; }
+.hh-strip-bay { display: grid; align-content: start; gap: 12px; min-height: 0; overflow: auto; padding: 8px 6px 6px 2px; }
+.hh-strip-bay > .lbl { display: flex; justify-content: space-between; margin-bottom: -2px; }
+
+/* Round strip: the holder frames the strip on all four sides and carries the status word */
+.hh-strip { --holder: var(--hh-pending); --holder-fg: var(--hh-pending-foreground); position: relative; display: grid; gap: 4px; width: 100%; text-align: left; padding: 13px 10px 8px; background: var(--hh-strip); color: var(--hh-strip-foreground); border: var(--hh-strip-holder-width) solid var(--holder); border-radius: var(--hh-radius-sm); box-shadow: 0 2px 0 var(--hh-shadow); }
+.hh-strip[data-status="answered"] { --holder: var(--hh-answered); --holder-fg: var(--hh-answered-foreground); }
+.hh-strip[data-status="expired"] { --holder: var(--hh-expired); --holder-fg: var(--hh-expired-foreground); }
+.hh-strip::after { content: ""; position: absolute; inset: -7px -7px; border: 2px solid var(--holder); border-width: 2px 0; clip-path: polygon(0 0, 14px 0, 14px 100%, 0 100%, 0 0, 100% 0, 100% 100%, calc(100% - 14px) 100%, calc(100% - 14px) 0, 100% 0); pointer-events: none; }
+.hh-strip[aria-current="true"] { outline: 2px solid var(--hh-ring); outline-offset: 7px; }
+.hh-strip__tag { position: absolute; top: -9px; left: 10px; padding: 1px 7px; background: var(--holder); color: var(--holder-fg); font-family: var(--hh-font-wide); font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 1px; }
+.hh-strip__row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.hh-strip__id { font-family: var(--hh-font-mono); font-size: 11px; font-weight: 600; }
+.hh-strip__title { font-family: var(--hh-font-wide); font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.35; }
+.hh-strip__meta { font-size: 12px; line-height: 1.35; }
+.hh-strip .hh-callsign { height: 20px; font-size: 10.5px; }
+.hh-policy-timer { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+.hh-policy-timer .track { flex: 1; height: var(--hh-timer-track-height); background: color-mix(in srgb, currentColor 16%, transparent); border-radius: 1px; overflow: hidden; }
+.hh-policy-timer .fill { display: block; height: 100%; background: var(--holder, var(--hh-pending)); }
+.hh-policy-timer .hh-readout { font-size: 11px; }
+
+/* Open Round */
+.fd-round { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) auto; min-width: 0; min-height: 0; background: var(--hh-surface-card); color: var(--hh-surface-card-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-md); box-shadow: 0 3px 0 var(--hh-shadow); }
+.fd-round__head { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; padding: 12px 14px 10px; border-bottom: 1px solid var(--hh-border); }
+.fd-round__head h2 { font-family: var(--hh-font-wide); font-weight: 400; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; margin-top: 6px; }
+.fd-round__head .status { font-size: 13px; color: var(--hh-muted-foreground); }
+.fd-round__head .status b { color: var(--hh-surface-card-foreground); font-weight: 600; }
+.fd-round__clock { display: grid; justify-items: end; gap: 4px; align-content: start; }
+.fd-round__clock .hh-readout { font-size: 20px; padding: 2px 10px; }
+.fd-round__head .hh-policy-timer { grid-column: 1 / -1; --holder: var(--hh-pending); color: var(--hh-surface-card-foreground); }
+
+/* GO / NO-GO poll board (signature) */
+.fd-poll { display: grid; grid-template-columns: auto 1fr; gap: 8px 12px; align-items: center; padding: 10px 14px; background: var(--hh-surface-shelf); color: var(--hh-surface-shelf-foreground); border-bottom: 1px solid var(--hh-border); }
+.fd-poll__go { display: inline-flex; align-items: center; gap: 8px; min-height: var(--hh-button-min-target); padding: 0 12px; background: var(--hh-primary); color: var(--hh-primary-foreground); border-radius: var(--hh-radius-sm); font-family: var(--hh-font-wide); font-size: 10px; letter-spacing: 0.1em; }
+.fd-poll__go:active { transform: scale(0.98); }
+.fd-poll__line { font-family: var(--hh-font-mono); font-size: 12.5px; }
+.fd-poll__board { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.fd-cell { display: grid; gap: 3px; padding: 5px 8px 6px; background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); text-align: left; }
+.fd-cell .q { font-family: var(--hh-font-mono); font-size: 10.5px; color: var(--hh-muted-foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fd-cell .v { font-family: var(--hh-font-wide); font-size: 11px; letter-spacing: 0.1em; }
+.fd-cell[data-call="go"] { background: var(--hh-success); color: var(--hh-success-foreground); border-color: var(--hh-success); }
+.fd-cell[data-call="nogo"] { background: var(--hh-destructive); color: var(--hh-destructive-foreground); border-color: var(--hh-destructive); }
+.fd-cell[data-call="go"] .q, .fd-cell[data-call="nogo"] .q { color: inherit; }
+.fd-cell[data-call="polling"] { border-color: var(--hh-live); box-shadow: inset 0 0 0 1px var(--hh-live); }
+.fd-cell[data-call="polling"] .v { display: inline-block; justify-self: start; background: var(--hh-live-foreground); color: var(--hh-live); padding: 0 5px; text-shadow: 0 0 6px color-mix(in srgb, var(--hh-live) 55%, transparent); }
+
+/* Questions: call (strip paper) beside its answer slot (console) */
+.fd-qs { overflow: auto; padding: 14px 14px 8px; display: grid; gap: 12px; align-content: start; }
+.hh-question { display: grid; grid-template-columns: minmax(0, 1fr) 224px; border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); scroll-margin: 12px; }
+.hh-question[data-polling="true"] { outline: 2px solid var(--hh-live); outline-offset: 2px; }
+.hh-question__call { padding: 10px 12px 11px; background: var(--hh-strip); color: var(--hh-strip-foreground); border-radius: var(--hh-radius-sm) 0 0 var(--hh-radius-sm); display: grid; gap: 6px; align-content: start; }
+.hh-question__call .top { display: flex; align-items: center; gap: 8px; }
+.hh-question__call .n { font-family: var(--hh-font-mono); font-size: 11px; font-weight: 600; }
+.hh-question__call .k { font-family: var(--hh-font-wide); font-size: 8.5px; letter-spacing: 0.12em; text-transform: uppercase; }
+.hh-question__call p { font-size: 14.5px; line-height: 1.4; font-weight: 500; }
+.hh-question__call .ctx { font-size: 12.5px; font-weight: 400; }
+.hh-recommended { display: inline-flex; align-items: center; gap: 5px; padding: 1px 7px; background: var(--hh-recommended); color: var(--hh-recommended-foreground); font-family: var(--hh-font-wide); font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 1px; white-space: nowrap; }
+.hh-question__slot { display: grid; align-content: space-between; gap: 8px; padding: 9px 10px 10px; background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground); border-left: 1px solid var(--hh-border); border-radius: 0 var(--hh-radius-sm) var(--hh-radius-sm) 0; }
+.hh-question__slot .row { display: flex; justify-content: space-between; align-items: center; }
+.fd-result { font-family: var(--hh-font-wide); font-size: 11px; letter-spacing: 0.1em; }
+.fd-vote { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.fd-vote button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 36px; border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); background: var(--hh-surface-tray); color: var(--hh-surface-tray-foreground); font-family: var(--hh-font-wide); font-size: 11px; letter-spacing: 0.1em; box-shadow: 0 2px 0 var(--hh-shadow); }
+.fd-vote button:active { transform: translateY(1px) scale(0.98); box-shadow: 0 1px 0 var(--hh-shadow); }
+.fd-vote button[data-vote="go"][aria-pressed="true"] { background: var(--hh-success); color: var(--hh-success-foreground); border-color: var(--hh-success); }
+.fd-vote button[data-vote="nogo"][aria-pressed="true"] { background: var(--hh-destructive); color: var(--hh-destructive-foreground); border-color: var(--hh-destructive); }
+.hh-kbd { display: inline-grid; place-items: center; min-width: var(--hh-kbd-size); height: var(--hh-kbd-size); padding: 0 4px; font-family: var(--hh-font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0; border: 1px solid currentColor; border-bottom-width: 2px; border-radius: 2px; opacity: 0.85; }
+
+/* Attachment: diff */
+.hh-attachment { border: 1px solid var(--hh-strip-foreground); border-radius: var(--hh-radius-sm); overflow: hidden; }
+.hh-attachment__head { display: flex; justify-content: space-between; gap: 8px; padding: 3px 8px; font-family: var(--hh-font-mono); font-size: 11px; font-weight: 500; }
+.hh-diff { background: var(--hh-code); color: var(--hh-code-foreground); font-family: var(--hh-font-mono); font-size: 11.5px; line-height: 1.55; max-height: var(--hh-code-max-height); overflow: auto; padding: 4px 0; white-space: pre; }
+.hh-diff span { display: block; padding: 0 10px; }
+.hh-diff .add { background: var(--hh-diff-add); }
+.hh-diff .rem { background: var(--hh-diff-remove); }
+.hh-diff .hunk { font-style: italic; border-bottom: 1px dashed color-mix(in srgb, var(--hh-code-foreground) 35%, transparent); }
+
+/* Single choice */
+.hh-question[data-kind="single"] { grid-template-columns: 1fr; }
+.hh-question[data-kind="single"] .hh-question__call { border-radius: var(--hh-radius-sm) var(--hh-radius-sm) 0 0; }
+.fd-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px 10px 10px; background: var(--hh-surface-panel); color: var(--hh-surface-panel-foreground); border-top: 1px solid var(--hh-border); }
+.hh-option { display: flex; align-items: center; gap: 8px; min-height: var(--hh-option-row-min-height); padding: 4px 10px; border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); background: var(--hh-surface-tray); color: var(--hh-surface-tray-foreground); text-align: left; font-size: 13px; }
+.hh-option .r { flex: none; width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid currentColor; display: grid; place-items: center; }
+.hh-option[aria-checked="true"] { border-color: var(--hh-foreground); box-shadow: inset 0 0 0 1px var(--hh-foreground); }
+.hh-option[aria-checked="true"] .r::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.hh-option .sp { flex: 1; }
+
+/* Answer bar */
+.hh-answer-bar { display: grid; gap: 8px; padding: 10px 14px 11px; background: var(--hh-surface-tray); color: var(--hh-surface-tray-foreground); border-top: 1px solid var(--hh-border); border-radius: 0 0 var(--hh-radius-md) var(--hh-radius-md); }
+.hh-answer-bar .row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.hh-answer-bar input { flex: 1; min-width: 0; height: var(--hh-button-min-target); padding: 0 10px; background: var(--hh-input); color: var(--hh-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); font-size: 13px; }
+.hh-answer-bar input::placeholder { color: var(--hh-muted-foreground); }
+.fd-summary { font-family: var(--hh-font-mono); font-size: 12px; white-space: nowrap; }
+.fd-transmit { display: inline-flex; align-items: center; gap: 8px; height: var(--hh-button-min-target); padding: 0 14px; background: var(--hh-primary); color: var(--hh-primary-foreground); border-radius: var(--hh-radius-sm); font-family: var(--hh-font-wide); font-size: 10px; letter-spacing: 0.1em; }
+.fd-transmit:active { transform: scale(0.98); }
+.hh-kbd-hints { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11.5px; color: var(--hh-muted-foreground); }
+.hh-kbd-hints span { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+
+/* ---------- Phone (glance) ---------- */
+.fd-phone-col { display: grid; grid-template-rows: auto minmax(0, 1fr); min-height: 0; }
+.fd-phone { width: 406px; min-height: 0; padding: 8px; background: var(--hh-input); border: 1px solid var(--hh-border); border-radius: 40px; box-shadow: 0 6px 0 var(--hh-shadow); }
+.fd-screen { width: 390px; height: 100%; overflow: auto; border-radius: 32px; background: var(--hh-background); color: var(--hh-foreground); display: grid; align-content: start; }
+[data-density="glance"] { --hh-button-min-target: 3.5rem; --hh-option-row-min-height: 3.25rem; font-size: 16px; }
+.fd-sbar { display: flex; justify-content: space-between; padding: 12px 26px 6px; font-family: var(--hh-font-mono); font-size: 12px; color: var(--hh-muted-foreground); }
+.fd-pbar { display: flex; align-items: center; gap: 10px; padding: 8px 18px 12px; border-bottom: 1px solid var(--hh-border); }
+.fd-pbar .brand { font-family: var(--hh-font-wide); font-size: 13px; letter-spacing: 0.1em; flex: 1; }
+.fd-pbody { display: grid; gap: 14px; padding: 18px 18px 22px; }
+.fd-pbody .hh-strip { padding: 15px 12px 10px; }
+.fd-pbody .hh-strip__title { font-size: 13px; }
+.fd-pbody .hh-strip__meta { font-size: 14px; }
+.fd-pq { display: grid; gap: 10px; padding: 14px; background: var(--hh-surface-card); color: var(--hh-surface-card-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); }
+.fd-pq p { font-size: 17px; line-height: 1.4; font-weight: 500; }
+.fd-pq .hh-diff { font-size: 12px; border-radius: var(--hh-radius-sm); }
+.fd-pvote { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fd-pvote button { min-height: var(--hh-button-min-target); font-size: 15px; }
+.fd-pline { font-family: var(--hh-font-mono); font-size: 13px; line-height: 1.45; }
+.fd-pnext { display: grid; gap: 6px; }
+.fd-pnext .r { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 2.75rem; padding: 0 10px; background: var(--hh-surface-card); color: var(--hh-surface-card-foreground); border: 1px solid var(--hh-border); border-radius: var(--hh-radius-sm); font-size: 13px; }
+.fd-pnext .w { font-family: var(--hh-font-wide); font-size: 8.5px; letter-spacing: 0.12em; color: var(--hh-muted-foreground); }
+.fd-reset { justify-self: start; font-family: var(--hh-font-mono); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; min-height: 2.75rem; }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } button:active { transform: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="fd-head">
+  <div>
+    <h1>Flight Director 2169</h1>
+    <div class="sub">Hermes Hub · world preview · hermes-flight-director</div>
+  </div>
+  <dl>
+    <dt class="lbl">Idea</dt>
+    <dd>Future flight-director consoles in a wide geometric face. Every Agent holds a console position; phosphor lights only live values.</dd>
+    <dt class="lbl">Signature</dt>
+    <dd>GO / NO-GO polling for approve/reject Rounds, with text labels. Press <b>Begin poll</b>, then call each position.</dd>
+  </dl>
+  <fieldset class="fd-switch" aria-label="Colour option">
+    <legend>Colour option</legend>
+    <button type="button" data-set-palette="console-slate" aria-pressed="true"><span class="sw"><i style="background:#101519"></i><i style="background:#ebe3cd"></i><i style="background:#7df0a8"></i></span><span class="nm">Console slate</span><span class="st">recommended</span></button>
+    <button type="button" data-set-palette="night-watch" aria-pressed="false"><span class="sw"><i style="background:#0f0c0b"></i><i style="background:#e8dcc4"></i><i style="background:#6fe6c8"></i></span><span class="nm">Night watch</span><span class="st">alternative</span></button>
+    <button type="button" data-set-palette="day-shift" aria-pressed="false"><span class="sw"><i style="background:#d4d1c6"></i><i style="background:#fdfcf8"></i><i style="background:#23343e"></i></span><span class="nm">Day shift</span><span class="st">alternative</span></button>
+    <button type="button" data-set-palette="original" aria-pressed="false"><span class="sw"><i style="background:#131c22"></i><i style="background:#efe7cf"></i><i style="background:#66ff99"></i></span><span class="nm">Original</span><span class="st">first colours</span></button>
+  </fieldset>
+</header>
+
+<main class="fd-main">
+  <!-- (a) Desktop Command Center triage -->
+  <section class="fd-cc" aria-label="Desktop Command Center triage">
+    <div class="fd-cap"><span class="lbl">(a) Desktop · Command Center · triage</span><span class="illus">Illustrative data</span></div>
+
+    <div class="hh-app-bar">
+      <span class="brand">Hermes · Command Center</span>
+      <span class="loop">loop: triage</span>
+      <span class="sp"></span>
+      <span class="stat"><span class="lbl">Pending</span><span class="hh-readout" id="cc-pending">5</span></span>
+      <span class="stat"><span class="lbl">Questions</span><span class="hh-readout" id="cc-questions">12</span></span>
+      <span class="stat hh-connection" role="status"><span class="dot" aria-hidden="true"></span><span class="lbl">SSE</span><span class="hh-readout">LIVE · 12 ms</span></span>
+    </div>
+
+    <div class="fd-banks" aria-label="Console banks, one per Agent">
+      <div class="hh-console" data-state="on-loop"><span class="hh-callsign" style="--a:var(--hh-agent-1)">CLAUDE·api-refactor</span><div class="row"><span class="pos">On loop</span><span class="hh-readout">1</span></div><span class="meta">claude-code · mbp-14 · ~/src/api</span></div>
+      <div class="hh-console"><span class="hh-callsign" style="--a:var(--hh-agent-2)">CODEX·infra-tf</span><div class="row"><span class="pos">Standby</span><span class="hh-readout">1</span></div><span class="meta">codex-cli · ci-box · tailnet</span></div>
+      <div class="hh-console"><span class="hh-callsign" style="--a:var(--hh-agent-3)">CURSOR·web-ui</span><div class="row"><span class="pos">Standby</span><span class="hh-readout">1</span></div><span class="meta">cursor · mbp-14 · ~/src/web</span></div>
+      <div class="hh-console"><span class="hh-callsign" style="--a:var(--hh-agent-4)">COPILOT·docs-site</span><div class="row"><span class="pos">Standby</span><span class="hh-readout">1</span></div><span class="meta">vscode-copilot · mbp-14</span></div>
+      <div class="hh-console"><span class="hh-callsign" style="--a:var(--hh-agent-5)">OMP·release-bot</span><div class="row"><span class="pos">Standby</span><span class="hh-readout">1</span></div><span class="meta">omp · build-03 · tailnet</span></div>
+      <div class="hh-console"><span class="hh-callsign" style="--a:var(--hh-agent-6)">SCRIPT·nightly-etl</span><div class="row"><span class="pos">Quiet</span><span class="hh-readout" data-state="idle">0</span></div><span class="meta">script · etl-01 · last 02:14</span></div>
+    </div>
+
+    <div class="fd-desk">
+      <!-- Strip bay -->
+      <div class="hh-strip-bay" aria-label="Strip bay, pending Rounds">
+        <div class="lbl"><span>Strip bay · 5 pending</span><span>by deadline</span></div>
+        <button class="hh-strip" data-status="pending"><span class="hh-strip__tag">Pending</span>
+          <span class="hh-strip__row"><span class="hh-callsign" style="--a:var(--hh-agent-5)">OMP·release-bot</span><span class="hh-strip__id">R-0417</span></span>
+          <span class="hh-strip__title">Tag v4.2.0-rc.1</span>
+          <span class="hh-strip__meta">Pending · 1 Question · waits 5 min, then cancels</span>
+          <span class="hh-policy-timer"><span class="track"><span class="fill" style="width:27%"></span></span><span class="hh-readout" data-deadline="220">03:40</span></span>
+        </button>
+        <button class="hh-strip" data-status="pending" aria-current="true" id="bay-0412"><span class="hh-strip__tag" id="bay-0412-tag">Pending</span>
+          <span class="hh-strip__row"><span class="hh-callsign" style="--a:var(--hh-agent-1)">CLAUDE·api-refactor</span><span class="hh-strip__id">R-0412</span></span>
+          <span class="hh-strip__title">Billing /v2 cutover</span>
+          <span class="hh-strip__meta" id="bay-0412-meta">Pending · 5 Questions · waits 10 min, then applies recommended</span>
+          <span class="hh-policy-timer"><span class="track"><span class="fill" style="width:38%"></span></span><span class="hh-readout" data-deadline="372" data-sync="r0412">06:12</span></span>
+        </button>
+        <button class="hh-strip" data-status="pending"><span class="hh-strip__tag">Pending</span>
+          <span class="hh-strip__row"><span class="hh-callsign" style="--a:var(--hh-agent-2)">CODEX·infra-tf</span><span class="hh-strip__id">R-0415</span></span>
+          <span class="hh-strip__title">Prod-eu apply</span>
+          <span class="hh-strip__meta">Pending · 1 Question · waits 15 min, then cancels</span>
+          <span class="hh-policy-timer"><span class="track"><span class="fill" style="width:21%"></span></span><span class="hh-readout" data-deadline="708">11:48</span></span>
+        </button>
+        <button class="hh-strip" data-status="pending"><span class="hh-strip__tag">Pending</span>
+          <span class="hh-strip__row"><span class="hh-callsign" style="--a:var(--hh-agent-4)">COPILOT·docs-site</span><span class="hh-strip__id">R-0416</span></span>
+          <span class="hh-strip__title">Docs nav restructure</span>
+          <span class="hh-strip__meta">Pending · 3 Questions · waits 30 min, then applies recommended</span>
+          <span class="hh-policy-timer"><span class="track"><span class="fill" style="width:10%"></span></span><span class="hh-readout" data-deadline="1625">27:05</span></span>
+        </button>
+        <button class="hh-strip" data-status="pending"><span class="hh-strip__tag">Pending</span>
+          <span class="hh-strip__row"><span class="hh-callsign" style="--a:var(--hh-agent-3)">CURSOR·web-ui</span><span class="hh-strip__id">R-0409</span></span>
+          <span class="hh-strip__title">Checkout form copy</span>
+          <span class="hh-strip__meta">Pending · 2 Questions · free text · keeps waiting</span>
+          <span class="hh-policy-timer"><span class="track"><span class="fill" style="width:0"></span></span><span class="hh-readout" data-state="idle">no limit</span></span>
+        </button>
+      </div>
+
+      <!-- Open Round -->
+      <article class="fd-round" aria-labelledby="round-title">
+        <div class="fd-round__head">
+          <div>
+            <div style="display:flex;gap:10px;align-items:center"><span class="hh-callsign" style="--a:var(--hh-agent-1)">CLAUDE·api-refactor</span><span class="mono" style="font-size:12px;font-weight:600">R-0412</span><span class="lbl">received 14:00:14</span></div>
+            <h2 id="round-title">Billing /v2 cutover</h2>
+            <div class="status" id="round-status"><b>Pending</b> · 5 Questions · 4 GO/NO-GO, 1 single choice · waits 10 min, then applies recommended</div>
+          </div>
+          <div class="fd-round__clock"><span class="lbl">Unanswered Policy</span><span class="hh-readout" data-deadline="372" data-sync="r0412" id="round-clock">06:12</span></div>
+          <div class="hh-policy-timer" aria-hidden="true"><span class="track"><span class="fill" style="width:38%"></span></span><span class="lbl">applies recommended at 10:00</span></div>
+        </div>
+
+        <div class="fd-poll">
+          <button class="fd-poll__go" id="poll-begin" type="button">Begin poll <span class="hh-kbd">P</span></button>
+          <div class="fd-poll__line" id="poll-line" role="status" aria-live="polite">FD › 4 positions on the loop. Begin poll when ready.</div>
+          <div class="fd-poll__board" id="poll-board">
+            <button class="fd-cell" type="button" data-for="q1" data-call="standby"><span class="q">Q1 · migration 0042</span><span class="v">Standby</span></button>
+            <button class="fd-cell" type="button" data-for="q2" data-call="standby"><span class="q">Q2 · retire /v1/charge</span><span class="v">Standby</span></button>
+            <button class="fd-cell" type="button" data-for="q3" data-call="standby"><span class="q">Q3 · force-push branch</span><span class="v">Standby</span></button>
+            <button class="fd-cell" type="button" data-for="q4" data-call="standby"><span class="q">Q4 · rotate test key</span><span class="v">Standby</span></button>
+          </div>
+        </div>
+
+        <div class="fd-qs" id="qs">
+          <section class="hh-question" data-kind="approve" id="q1" data-callout="Q1, staging migration 0042">
+            <div class="hh-question__call">
+              <div class="top"><span class="n">Q1</span><span class="k">Approve / reject</span><span class="hh-recommended">Recommended · GO</span></div>
+              <p>Run migration <span class="mono">0042_split_invoices</span> on staging?</p>
+              <p class="ctx">Adds the invoice_lines table and backfills 18,204 rows. Holds a lock on invoices for about 40 s.</p>
+            </div>
+            <div class="hh-question__slot"><div class="row"><span class="lbl">Call</span><span class="fd-result">Standby</span></div>
+              <div class="fd-vote"><button type="button" data-vote="go" aria-pressed="false">GO <span class="hh-kbd">A</span></button><button type="button" data-vote="nogo" aria-pressed="false">NO-GO <span class="hh-kbd">R</span></button></div></div>
+          </section>
+
+          <section class="hh-question" data-kind="approve" id="q2" data-callout="Q2, retire the /v1/charge handler">
+            <div class="hh-question__call">
+              <div class="top"><span class="n">Q2</span><span class="k">Approve / reject</span><span class="hh-recommended">Recommended · GO</span></div>
+              <p>Retire the <span class="mono">/v1/charge</span> handler and route it to /v2?</p>
+              <div class="hh-attachment">
+                <div class="hh-attachment__head"><span>DIFF · src/routes/v1/charge.ts</span><span>−38 +2</span></div>
+<div class="hh-diff"><span class="hunk">@@ -1,40 +1,2 @@</span><span class="rem">-import { legacyCharge } from "../../billing/legacy";</span><span class="rem">-import { assertCustomer } from "../../billing/guards";</span><span class="rem">-</span><span class="rem">-export async function POST(req: Request) {</span><span class="rem">-  const body = await req.json();</span><span class="rem">-  assertCustomer(body.customer);</span><span class="rem">-  return legacyCharge(body.customer, body.amount);</span><span class="rem">-}</span><span class="add">+// /v1/charge retired; callers moved to /v2/invoices</span><span class="add">+export { POST } from "../v2/invoices";</span><span class="hunk">  … 30 more removed lines</span></div>
+              </div>
+            </div>
+            <div class="hh-question__slot"><div class="row"><span class="lbl">Call</span><span class="fd-result">Standby</span></div>
+              <div class="fd-vote"><button type="button" data-vote="go" aria-pressed="false">GO <span class="hh-kbd">A</span></button><button type="button" data-vote="nogo" aria-pressed="false">NO-GO <span class="hh-kbd">R</span></button></div></div>
+          </section>
+
+          <section class="hh-question" data-kind="approve" id="q3" data-callout="Q3, force-push api-refactor to origin">
+            <div class="hh-question__call">
+              <div class="top"><span class="n">Q3</span><span class="k">Approve / reject</span><span class="hh-recommended">Recommended · NO-GO</span></div>
+              <p>Force-push the rebased <span class="mono">api-refactor</span> branch to origin?</p>
+              <p class="ctx">Rewrites 6 commits that CODEX·infra-tf has already pulled.</p>
+            </div>
+            <div class="hh-question__slot"><div class="row"><span class="lbl">Call</span><span class="fd-result">Standby</span></div>
+              <div class="fd-vote"><button type="button" data-vote="go" aria-pressed="false">GO <span class="hh-kbd">A</span></button><button type="button" data-vote="nogo" aria-pressed="false">NO-GO <span class="hh-kbd">R</span></button></div></div>
+          </section>
+
+          <section class="hh-question" data-kind="approve" id="q4" data-callout="Q4, rotate STRIPE_TEST key">
+            <div class="hh-question__call">
+              <div class="top"><span class="n">Q4</span><span class="k">Approve / reject</span><span class="hh-recommended">Recommended · GO</span></div>
+              <p>Rotate the <span class="mono">STRIPE_TEST</span> key in .env.local?</p>
+              <p class="ctx">The old key appeared in a test log on 11-18.</p>
+            </div>
+            <div class="hh-question__slot"><div class="row"><span class="lbl">Call</span><span class="fd-result">Standby</span></div>
+              <div class="fd-vote"><button type="button" data-vote="go" aria-pressed="false">GO <span class="hh-kbd">A</span></button><button type="button" data-vote="nogo" aria-pressed="false">NO-GO <span class="hh-kbd">R</span></button></div></div>
+          </section>
+
+          <section class="hh-question" data-kind="single" id="q5">
+            <div class="hh-question__call">
+              <div class="top"><span class="n">Q5</span><span class="k">Single choice</span></div>
+              <p>Release channel for <span class="mono">@acme/billing-sdk</span> 3.0?</p>
+            </div>
+            <div class="fd-options" role="radiogroup" aria-label="Q5 release channel">
+              <button type="button" class="hh-option" role="radio" aria-checked="false" data-value="canary"><span class="r"></span><span>canary</span><span class="sp"></span><span class="hh-recommended">Rec</span><span class="hh-kbd">1</span></button>
+              <button type="button" class="hh-option" role="radio" aria-checked="false" data-value="beta"><span class="r"></span><span>beta</span><span class="sp"></span><span class="hh-kbd">2</span></button>
+              <button type="button" class="hh-option" role="radio" aria-checked="false" data-value="stable"><span class="r"></span><span>stable</span><span class="sp"></span><span class="hh-kbd">3</span></button>
+            </div>
+          </section>
+        </div>
+
+        <div class="hh-answer-bar">
+          <div class="row">
+            <input type="text" id="notes" placeholder="Notes for CLAUDE·api-refactor (optional)" aria-label="Notes">
+            <button class="fd-transmit" type="button" id="transmit">Transmit Answer <span class="hh-kbd">⌘↵</span></button>
+          </div>
+          <div class="row" style="justify-content:space-between">
+            <span class="fd-summary" id="summary" role="status" aria-live="polite">0 GO · 0 NO-GO · 4 standing by · Q5 open</span>
+            <div class="hh-kbd-hints"><span><span class="hh-kbd">J</span><span class="hh-kbd">K</span> next / prev</span><span><span class="hh-kbd">P</span> poll</span><span><span class="hh-kbd">A</span> GO</span><span><span class="hh-kbd">R</span> NO-GO</span><span><span class="hh-kbd">1</span>–<span class="hh-kbd">9</span> choose</span></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- (b) Phone glance -->
+  <section class="fd-phone-col" aria-label="Phone glance view">
+    <div class="fd-cap"><span class="lbl">(b) Phone · 390 px · glance</span><span class="illus">Illustrative data</span></div>
+    <div class="fd-phone">
+      <div class="fd-screen" data-density="glance">
+        <div class="fd-sbar"><span>14:06</span><span>hub · tailnet</span></div>
+        <div class="fd-pbar"><span class="brand">Hermes</span><span class="lbl">Pending</span><span class="hh-readout">5</span><span class="hh-readout">LIVE</span></div>
+        <div class="fd-pbody">
+          <div class="hh-strip" data-status="pending" id="p-strip"><span class="hh-strip__tag" id="p-tag">Pending</span>
+            <span class="hh-strip__row"><span class="hh-callsign" style="--a:var(--hh-agent-2)">CODEX·infra-tf</span><span class="hh-strip__id">R-0415</span></span>
+            <span class="hh-strip__title">Prod-eu apply</span>
+            <span class="hh-strip__meta" id="p-meta">Pending · 1 Question · waits 15 min, then cancels</span>
+            <span class="hh-policy-timer"><span class="track"><span class="fill" style="width:21%"></span></span><span class="hh-readout" data-deadline="708">11:48</span></span>
+          </div>
+          <div class="fd-pq">
+            <div style="display:flex;flex-wrap:wrap;gap:6px 10px;justify-content:space-between;align-items:center"><span class="lbl">Q1 · Approve / reject</span><span class="hh-recommended">Recommended · GO</span></div>
+            <p>Apply the Terraform plan to prod-eu?</p>
+<div class="hh-diff"><span class="hunk">PLAN · prod-eu.tfplan</span><span>  ~ aws_lb.api        (in place)</span><span>  ~ aws_ecs_service.api</span><span>  ~ aws_route53_record.v2</span><span class="hunk">3 to change · 0 to add · 0 to destroy</span></div>
+            <div class="fd-vote fd-pvote"><button type="button" data-pvote="go" aria-pressed="false">GO</button><button type="button" data-pvote="nogo" aria-pressed="false">NO-GO</button></div>
+            <div class="fd-pline" id="p-line" role="status" aria-live="polite">FD › CODEX·infra-tf, prod-eu apply. GO or NO-GO?</div>
+            <button type="button" class="fd-reset" id="p-reset" hidden>Reopen preview</button>
+          </div>
+          <div class="fd-pnext"><span class="lbl">Next on the board</span>
+            <div class="r"><span class="hh-callsign" style="--a:var(--hh-agent-5)">OMP·release-bot</span><span class="w">Pending</span><span class="hh-readout" data-deadline="220">03:40</span></div>
+            <div class="r"><span class="hh-callsign" style="--a:var(--hh-agent-1)">CLAUDE·api-refactor</span><span class="w">Pending</span><span class="hh-readout" data-deadline="372">06:12</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+
+  // Colour option switcher
+  $$('[data-set-palette]').forEach((b) => b.addEventListener('click', () => {
+    root.dataset.palette = b.dataset.setPalette;
+    $$('[data-set-palette]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+
+  // Live Unanswered Policy timers (1 s tick; no CSS animation)
+  const fmt = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  const clocks = $$('[data-deadline]').map((el) => ({ el, s: Number(el.dataset.deadline) }));
+  setInterval(() => {
+    clocks.forEach((c) => {
+      if (c.el.dataset.frozen) return;
+      if (c.s > 0) c.s -= 1;
+      c.el.textContent = fmt(c.s);
+    });
+  }, 1000);
+
+  // GO / NO-GO poll (signature)
+  const qs = $$('.hh-question[data-kind="approve"]');
+  const line = $('#poll-line');
+  const cell = (q) => $(`.fd-cell[data-for="${q.id}"]`);
+  let polling = false;
+  let idx = -1;
+  let channel = null;
+  let transmitted = false;
+
+  const label = { go: 'GO', nogo: 'NO-GO', standby: 'Standby', polling: 'Polling' };
+  function paint(q) {
+    const v = q.dataset.answer || (q.dataset.polling === 'true' ? 'polling' : 'standby');
+    const c = cell(q);
+    c.dataset.call = v;
+    $('.v', c).textContent = label[v];
+    $('.fd-result', q).textContent = label[v];
+    $$('[data-vote]', q).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.vote === q.dataset.answer)));
+  }
+  function summary() {
+    const go = qs.filter((q) => q.dataset.answer === 'go').length;
+    const nogo = qs.filter((q) => q.dataset.answer === 'nogo').length;
+    const open = qs.length - go - nogo;
+    $('#summary').textContent = `${go} GO · ${nogo} NO-GO · ${open} standing by · Q5 ${channel || 'open'}`;
+    return { go, nogo, open };
+  }
+  function pollAt(i) {
+    qs.forEach((q) => { delete q.dataset.polling; });
+    idx = i;
+    const q = qs[i];
+    q.dataset.polling = 'true';
+    qs.forEach(paint);
+    line.textContent = `FD › ${q.dataset.callout}. GO or NO-GO?`;
+    q.scrollIntoView({ block: 'nearest' });
+    $('[data-vote="go"]', q).focus({ preventScroll: true });
+  }
+  function advance() {
+    const next = qs.findIndex((q, i) => i > idx && !q.dataset.answer);
+    const wrap = next === -1 ? qs.findIndex((q) => !q.dataset.answer) : next;
+    if (wrap === -1) {
+      polling = false; idx = -1;
+      qs.forEach((q) => { delete q.dataset.polling; paint(q); });
+      const { go, nogo } = summary();
+      line.textContent = `FD › Poll complete. ${go} GO, ${nogo} NO-GO.${channel ? ' Ready to transmit.' : ' Q5 still open.'}`;
+      return;
+    }
+    pollAt(wrap);
+  }
+  function call(q, v) {
+    if (transmitted) return;
+    q.dataset.answer = v;
+    paint(q);
+    summary();
+    if (polling && qs[idx] === q) advance();
+    else line.textContent = `FD › ${q.id.toUpperCase()} is ${label[v]}.`;
+  }
+  function beginPoll() {
+    if (transmitted) return;
+    polling = true;
+    const first = qs.findIndex((q) => !q.dataset.answer);
+    if (first === -1) { idx = qs.length; advance(); return; }
+    pollAt(first);
+  }
+
+  $('#poll-begin').addEventListener('click', beginPoll);
+  qs.forEach((q) => $$('[data-vote]', q).forEach((b) => b.addEventListener('click', () => {
+    if (polling && qs[idx] !== q) idx = qs.indexOf(q);
+    call(q, b.dataset.vote);
+  })));
+  $$('.fd-cell').forEach((c) => c.addEventListener('click', () => {
+    const q = $('#' + c.dataset.for);
+    if (polling) pollAt(qs.indexOf(q)); else q.scrollIntoView({ block: 'nearest' });
+  }));
+
+  // Q5 single choice
+  const opts = $$('#q5 .hh-option');
+  function choose(o) {
+    if (transmitted) return;
+    opts.forEach((x) => x.setAttribute('aria-checked', String(x === o)));
+    channel = o.dataset.value;
+    summary();
+  }
+  opts.forEach((o) => o.addEventListener('click', () => choose(o)));
+
+  // Transmit the whole Round
+  function transmit() {
+    if (transmitted) return;
+    const { go, nogo, open } = summary();
+    if (open || !channel) {
+      const missing = qs.filter((q) => !q.dataset.answer).map((q) => q.id.toUpperCase());
+      if (!channel) missing.push('Q5');
+      line.textContent = `FD › Hold. No call on ${missing.join(', ')}.`;
+      return;
+    }
+    transmitted = true;
+    polling = false;
+    const t = new Date().toTimeString().slice(0, 8);
+    $('#summary').textContent = `Answer transmitted · R-0412 · ${go} GO · ${nogo} NO-GO · ${channel} · ${t}`;
+    line.textContent = 'FD › R-0412 answered and delivered to CLAUDE·api-refactor.';
+    $('#round-status').innerHTML = `<b>Answered</b> · 5 Questions · delivered ${t}`;
+    $$('[data-sync="r0412"]').forEach((el) => { el.dataset.frozen = '1'; el.dataset.state = 'idle'; });
+    const strip = $('#bay-0412');
+    strip.dataset.status = 'answered';
+    $('#bay-0412-tag').textContent = 'Answered';
+    $('#bay-0412-meta').textContent = `Answered · 5 Questions · delivered ${t}`;
+    $('#cc-pending').textContent = '4';
+    $('#cc-questions').textContent = '7';
+    $$('.hh-question button, #poll-begin, #transmit').forEach((b) => { b.disabled = true; });
+  }
+  $('#transmit').addEventListener('click', transmit);
+
+  // Keyboard: P poll, A GO, R NO-GO, J/K move, 1-9 choose, Cmd/Ctrl+Enter transmit
+  let cursor = 0;
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { e.preventDefault(); transmit(); return; }
+    if (e.target.matches('input, textarea') || e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key.toLowerCase();
+    const current = polling ? qs[idx] : qs[cursor];
+    if (k === 'p') beginPoll();
+    else if (k === 'a' && current) call(current, 'go');
+    else if (k === 'r' && current) call(current, 'nogo');
+    else if (k === 'j' || k === 'k') {
+      cursor = Math.max(0, Math.min(qs.length - 1, (polling ? idx : cursor) + (k === 'j' ? 1 : -1)));
+      if (polling) pollAt(cursor); else { qs[cursor].scrollIntoView({ block: 'nearest' }); $('[data-vote="go"]', qs[cursor]).focus(); }
+    } else if (/^[1-9]$/.test(k) && opts[Number(k) - 1]) choose(opts[Number(k) - 1]);
+    else return;
+    e.preventDefault();
+  });
+  document.addEventListener('focusin', (e) => {
+    const q = e.target.closest && e.target.closest('.hh-question[data-kind="approve"]');
+    if (q) cursor = qs.indexOf(q);
+  });
+
+  // Phone: single approve/reject Round at glance density
+  const pStrip = $('#p-strip');
+  const pButtons = $$('[data-pvote]');
+  pButtons.forEach((b) => b.addEventListener('click', () => {
+    const v = b.dataset.pvote;
+    const t = new Date().toTimeString().slice(0, 5);
+    pButtons.forEach((x) => { x.setAttribute('aria-pressed', String(x === b)); x.disabled = true; });
+    pStrip.dataset.status = 'answered';
+    $('#p-tag').textContent = 'Answered';
+    $('#p-meta').textContent = `Answered · ${label[v]} · delivered ${t}`;
+    const clock = $('[data-deadline]', pStrip);
+    clock.dataset.frozen = '1'; clock.dataset.state = 'idle';
+    $('#p-line').textContent = `FD › R-0415 is ${label[v]}. Delivered to CODEX·infra-tf.`;
+    $('#p-reset').hidden = false;
+  }));
+  $('#p-reset').addEventListener('click', () => {
+    pButtons.forEach((x) => { x.setAttribute('aria-pressed', 'false'); x.disabled = false; });
+    pStrip.dataset.status = 'pending';
+    $('#p-tag').textContent = 'Pending';
+    $('#p-meta').textContent = 'Pending · 1 Question · waits 15 min, then cancels';
+    const clock = $('[data-deadline]', pStrip);
+    delete clock.dataset.frozen; delete clock.dataset.state;
+    $('#p-line').textContent = 'FD › CODEX·infra-tf, prod-eu apply. GO or NO-GO?';
+    $('#p-reset').hidden = true;
+  });
+})();
+</script>
+</body>
+</html>
