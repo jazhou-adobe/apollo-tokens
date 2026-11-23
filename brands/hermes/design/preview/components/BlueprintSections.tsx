@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react';
 import { AGENTS, ANSWERED_LOG, ROUNDS } from '../fixtures';
-import { CoreSettingsNav } from './BlueprintParts';
 import { Icon } from './Icon';
 import { AgentRoster } from './hermes/AgentRoster';
 import { AnsweredLog } from './hermes/AnsweredLog';
 import { Attachment } from './hermes/Attachment';
 import { Callsign } from './hermes/Callsign';
+import { AdvisorRunHistory, CommandAppBar, CommandShell, DetectionDetails, FeedAnsweredLog, SettingsPanels } from './hermes/CommandCenterParts';
 import { ConnectionStatus } from './hermes/ConnectionStatus';
+import { EndedRound, FeedAnchors, FeedIndex, FeedKeys, ForgetAgentDemo, FullRound, LanesView, SimpleRound } from './hermes/Feed';
 import { StripBay } from './hermes/StripBay';
 import { PolicyBadge } from './hermes/PolicyTimer';
 import { QuestionsDemo } from './hermes/QuestionsDemo';
@@ -46,79 +47,116 @@ export function CommandCenterBlueprints() {
         <h2 id="blueprints-command-title" className="hh-heading-lg">
           Command Center blueprints
         </h2>
-        <p className="hh-body hh-measure">Desktop first: dense, keyboard-driven triage beside the terminals. Each blueprint is composed only from the components above. Illustrative data.</p>
+        <p className="hh-body hh-measure">
+          Desktop first: dense, keyboard-driven work beside the terminals, full width beside the side nav. Each blueprint is composed only from the components above.
+          Illustrative data.
+        </p>
       </div>
 
-      <Blueprint id="bp-triage" title="Triage" note="Strip bay (compact) beside the open Round. The Round scrolls inside its sheet so its head and Answer bar stay in view; notes fold away until needed.">
-        <AppBar title="Command Center" />
-        <div className="hh-blueprint-body">
-          <StripBay controls={false} showLog={false} heading="Pending Rounds" headingLevel={4} context="Triage blueprint" />
-        </div>
-      </Blueprint>
+      <FeedAnchors prefix="bp" label="(blueprint)">
+        <Blueprint
+          id="bp-feed"
+          title="Feed"
+          note="Every Pending Round fully expanded in one scrolling column, in arrival order, beside the sticky Feed index. Only the action bar of the Round in view sticks. Superseded and expired Rounds stay in place, read-only, until removed."
+        >
+          <CommandAppBar />
+          <CommandShell current="Feed" label="Feed blueprint">
+            <div className="hh-feed">
+              <FeedIndex headingLevel={4} />
+              <div className="hh-feed-column">
+                <div className="hh-bay-status" role="status" />
+                <FeedKeys label="the Feed blueprint">
+                  <ol className="hh-feed-list" aria-label="Pending Rounds">
+                    <FullRound />
+                    <SimpleRound />
+                    <EndedRound kind="superseded" />
+                    <EndedRound kind="expired" />
+                  </ol>
+                </FeedKeys>
+              </div>
+            </div>
+          </CommandShell>
+        </Blueprint>
 
-      <Blueprint id="bp-round" title="Round detail" note="One Round on its own page, reached from a notification or a shared link. Same Questions, same Answer bar.">
-        <AppBar title="Round R-0142" />
-        <div className="hh-blueprint-body">
-          <nav className="hh-breadcrumbs" aria-label="Breadcrumb (Round detail)">
-            <ol>
-              <li>
-                <a className="hh-link" href="#bp-triage">
-                  Triage
-                </a>
-              </li>
-              <li>
-                <span aria-current="page">R-0142</span>
-              </li>
-            </ol>
-          </nav>
-          <div className="hh-row">
-            <span className="hh-badge" data-tone="pending">
-              Pending
-            </span>
-            <Callsign agent={agent} />
-            <PolicyBadge policy={ROUNDS[0].policy} remaining={ROUNDS[0].remaining} />
+        <Blueprint id="bp-round" title="Round detail" note="One Round at its own URL, opened from a notification, the log or a terminal link. Same Questions and action bar; the Advisor run history below.">
+          <CommandAppBar />
+          <div className="hh-blueprint-body">
+            <nav className="hh-breadcrumbs" aria-label="Breadcrumb (Round detail)">
+              <ol>
+                <li>
+                  <a className="hh-link" href="#bp-feed">
+                    Feed
+                  </a>
+                </li>
+                <li>
+                  <span aria-current="page">R-0142</span>
+                </li>
+              </ol>
+            </nav>
+            <div className="hh-row">
+              <span className="hh-badge" data-tone="pending">
+                Pending
+              </span>
+              <Callsign agent={agent} />
+              <PolicyBadge policy={ROUNDS[0].policy} remaining={ROUNDS[0].remaining} />
+            </div>
+            <QuestionsDemo questions={ROUNDS[0].questions.map((question) => ({ ...question, id: `detail-${question.id}` }))} />
+            <h4 className="hh-heading-md">Advisor runs</h4>
+            <AdvisorRunHistory label="Advisor runs for R-0142 (Round detail blueprint)" />
           </div>
-          <QuestionsDemo questions={ROUNDS[0].questions.map((question) => ({ ...question, id: `detail-${question.id}` }))} />
-        </div>
-      </Blueprint>
+        </Blueprint>
 
-      <Blueprint id="bp-log" title="Answered log" note="Every Round that left the bay: answered, expired, or cancelled. Compact rows, status words on holder colours.">
-        <AppBar title="Answered log" />
-        <div className="hh-blueprint-body">
-          <div className="hh-row" role="group" aria-label="Filter the log (sample)">
-            <button type="button" className="hh-chip" aria-pressed="true">
-              Today
-            </button>
-            <button type="button" className="hh-chip" aria-pressed="false">
-              Expired only
-            </button>
+        <Blueprint id="bp-log" title="Answered log" note="Every Round that left the Feed or ended in it: Outcome words, each value and who set it, delivery, search with the match marked, Copy as Markdown and Export JSON.">
+          <CommandAppBar />
+          <CommandShell current="Answered log" label="Answered log blueprint">
+            <FeedAnsweredLog />
+          </CommandShell>
+        </Blueprint>
+
+        <Blueprint id="bp-roster" title="Agents" note="The session roster, then the Lanes view: one lane per Agent session with its Pending Rounds, and the Round drawer beside the lanes.">
+          <CommandAppBar />
+          <CommandShell current="Agents" label="Agents blueprint">
+            <div className="hh-page-head">
+              <h4 className="hh-heading-lg">Agents · 4</h4>
+            </div>
+            <AgentRoster agents={AGENTS.slice(0, 4)} detail={false} />
+            <h4 className="hh-heading-md">Lanes</h4>
+            <LanesView />
+          </CommandShell>
+        </Blueprint>
+
+        <Blueprint id="bp-agent" title="Agent detail" note="One Agent: Detection details with the signal and clash suffix, the resume handle with Copy, its Rounds, and Forget.">
+          <CommandAppBar />
+          <div className="hh-blueprint-body">
+            <DetectionDetails open={false} />
+            <Attachment attachment={{ kind: 'code', title: 'Resume this session', meta: 'shell', code: 'claude --resume 7f3c9e21-48d0-4b6a-9c1e-2a7d5f0b1c33' }} />
+            <AnsweredLog entries={ANSWERED_LOG.filter((entry) => entry.agentId === agent.id)} caption="Rounds from CLAUDE·api-refactor" />
+            <ForgetAgentDemo />
           </div>
-          <AnsweredLog entries={ANSWERED_LOG} caption="Answered log (blueprint)" />
-        </div>
-      </Blueprint>
+        </Blueprint>
 
-      <Blueprint id="bp-roster" title="Agent roster" note="Every Agent the Hub has seen, with how it was identified.">
-        <AppBar title="Agents" />
-        <div className="hh-blueprint-body">
-          <AgentRoster agents={AGENTS} detail={false} />
-        </div>
-      </Blueprint>
+        <Blueprint
+          id="bp-settings"
+          title="Settings"
+          note="Live controls (notifications, quiet hours, sound off by default, appearance, single-key shortcuts) and read-only views of config.toml (Advisors, Auto-ask rules) with the file path, reload time or config error; then Storage."
+        >
+          <CommandAppBar />
+          <CommandShell current="Settings" label="Settings blueprint">
+            <SettingsPanels />
+          </CommandShell>
+        </Blueprint>
 
-      <Blueprint id="bp-agent" title="Agent detail" note="One Agent: detection details, its Rounds, and the resume command for its session.">
-        <AppBar title="CLAUDE·api-refactor" />
-        <div className="hh-blueprint-body">
-          <AgentRoster agents={[agent]} />
-          <Attachment attachment={{ kind: 'code', title: 'Resume this session', meta: 'shell', code: 'claude --resume 7f3c9e21-48d0-4b6a-9c1e-2a7d5f0b1c33' }} />
-          <AnsweredLog entries={ANSWERED_LOG.filter((entry) => entry.agentId === agent.id)} caption="Rounds from CLAUDE·api-refactor" />
-        </div>
-      </Blueprint>
-
-      <Blueprint id="bp-settings" title="Settings" note="Agent tokens, exposure (this machine or tailnet), and notifications.">
-        <AppBar title="Settings" />
-        <div className="hh-blueprint-body">
-          <CoreSettingsNav />
-        </div>
-      </Blueprint>
+        <Blueprint
+          id="bp-triage"
+          title="Strip-bay triage (reference)"
+          note="Not the Hub's Phase 1 triage, which is the Feed. Kept as the reference for the strip bay beside a single open Round, which fits its sheet so its head and Answer bar stay in view."
+        >
+          <AppBar title="Command Center" />
+          <div className="hh-blueprint-body">
+            <StripBay controls={false} showLog={false} heading="Pending Rounds" headingLevel={4} context="Triage blueprint" />
+          </div>
+        </Blueprint>
+      </FeedAnchors>
     </section>
   );
 }
@@ -131,8 +169,8 @@ export function PhoneBlueprints() {
           Phone blueprints
         </h2>
         <p className="hh-body hh-measure">
-          Phone second: quick approve / reject over the tailnet, in glance density. Pending list, then the Round as a full-width sheet with a sticky Answer bar and Back to
-          pending. The second frame opens on a Round.
+          Phone second: quick approve / reject over the tailnet, in glance density. Not in the Hub&apos;s Phase 1 (it is local only); kept as the reference for glance
+          density. Pending list, then the Round as a full-width sheet with a sticky Answer bar and Back to pending. The second frame opens on a Round.
         </p>
       </div>
       <div className="hh-phone-row">
@@ -172,11 +210,14 @@ export function SystemBlueprints() {
         <h2 id="blueprints-system-title" className="hh-heading-lg">
           System blueprints
         </h2>
-        <p className="hh-body hh-measure">Sign-in, the Hub not reachable, reconnecting, empty, and error. Each names its state in words and says what happens next.</p>
+        <p className="hh-body hh-measure">
+          The Hub not reachable, reconnecting, empty, and error; sign-in stays as a reference (the Hub is local only and has no sign-in). Each names its state in words and
+          says what happens next.
+        </p>
       </div>
       <div className="hh-system-grid">
         <div className="hh-demo">
-          <code className="hh-demo-label">Sign in</code>
+          <code className="hh-demo-label">Sign in (reference, not in the Hub)</code>
           <SignInDemo />
         </div>
         <div className="hh-demo">

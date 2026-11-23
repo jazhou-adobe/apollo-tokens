@@ -30,6 +30,7 @@ const REQUIRED_ARTIFACTS = [
   'components/round-widgets.md',
   'components/agent-widgets.md',
   'components/status-widgets.md',
+  'components/feed-widgets.md',
   'patterns/command-center-blueprints.md',
   'patterns/phone-blueprints.md',
   'patterns/system-blueprints.md',
@@ -50,11 +51,12 @@ const REQUIRED_ARTIFACTS = [
   'preview/theme-constants.ts',
   'preview/fixtures.ts',
   'preview/hermes-components.css',
+  'preview/hermes-icons.json',
   'validation/smoke-report.md',
 ];
 
 const REQUIRED_PREVIEW_SECTIONS = [
-  'Colour roles', 'Typography', 'Spacing, radius and elevation', 'Density modes', 'Core components', 'Domain widgets',
+  'Colour roles', 'Typography', 'Spacing, radius and elevation', 'Density modes', 'Core components', 'Domain widgets', 'Command Center Feed',
   'Strip bay', 'Command Center blueprints', 'Phone blueprints', 'System blueprints', 'Agent recipe',
 ];
 
@@ -707,6 +709,34 @@ function archivedWorldFailures(artifacts, files) {
   return failures;
 }
 
+// Every class the component stylesheet styles is documented in components/ or patterns/, so an app (and the Hub's re-copy)
+// can rely on the docs for the whole class vocabulary.
+const COMPONENTS_CSS = 'preview/hermes-components.css';
+export function undocumentedClassFailures(sources) {
+  const css = sources.get(COMPONENTS_CSS);
+  if (css === undefined) return [];
+  const docs = [...sources].filter(([path]) => /^(?:components|patterns)\/.+\.md$/.test(path)).map(([, text]) => text).join('\n');
+  const preludes = [...css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/([^{};]+)\{/g)].map(([, prelude]) => prelude);
+  const classes = new Set(preludes.flatMap((prelude) => [...prelude.matchAll(/\.(hh-[a-z0-9-]+)/g)].map(([, name]) => name)));
+  return [...classes]
+    .filter((name) => !new RegExp(`(?<![\\w-])${escapeRegExp(name)}(?![\\w-])`).test(docs))
+    .map((name) => `${COMPONENTS_CSS}: .${name} is styled but not documented in components/ or patterns/`);
+}
+
+// Unicode glyphs never stand in for an icon: triangles, check and cross marks, warning signs and emoji come from the SVG
+// icon set (preview/hermes-icons.json) beside words. Docs may name a glyph; code and styles may not use one. Arrows stay
+// allowed: comments and key names (the arrow keys) use them as text.
+const GLYPH_ICON = /[\u25B2-\u25C5\u2713-\u2718\u26A0\u{1F300}-\u{1FAFF}]/u;
+export function glyphIconFailures(sources) {
+  const failures = [];
+  for (const [path, text] of sources) {
+    if (extname(path) === '.md') continue;
+    const match = GLYPH_ICON.exec(text);
+    if (match) failures.push(`${path}: uses the glyph "${match[0]}" as an icon; use an SVG icon from preview/hermes-icons.json beside words`);
+  }
+  return failures;
+}
+
 // ---------- validation ----------
 
 export function validateDesignSystem({ tokens: coreTokens, themesCss: coreCss, sources, codeFiles = new Map(), artifacts, worlds = [], loadErrors = [] }) {
@@ -722,6 +752,8 @@ export function validateDesignSystem({ tokens: coreTokens, themesCss: coreCss, s
   failures.push(...registryFailures(worlds, sources));
   failures.push(...fontFailures(sources, artifacts, coreCss, loadedWorlds));
   failures.push(...archivedWorldFailures(artifacts, [...sources, ...codeFiles]));
+  failures.push(...undocumentedClassFailures(sources));
+  failures.push(...glyphIconFailures(sources));
   const coreThemes = coreTokens.meta?.themes ?? [];
   for (const world of loadedWorlds) if (coreThemes.includes(world.theme)) fail(`${world.theme}: a world cannot reuse a core theme name`);
   const tokens = {

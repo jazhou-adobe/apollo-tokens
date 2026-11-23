@@ -34,9 +34,11 @@ The strip bay on `/design` and `/specimen` is live: Unanswered Policy timers tic
 | `tokens/tailwind-theme.css` | Tailwind 4 `@theme` bridge: semantic utilities only. | tokens |
 | `tokens/token-taxonomy.md` | Roles, density modes, the world contract, gates, how to add a world. | tokens |
 | `tokens/worlds/` | `<slug>.json` + `<slug>.css` per world. Empty for now. | worlds |
-| `foundations/`, `components/*.md`, `patterns/`, `agent-contract/`, `governance.md`, `research/` | Docs: design language, typography, accessibility, imagery, motion, component families, blueprints, the screen-generation rules, governance, sources. | docs |
+| `foundations/`, `components/*.md`, `patterns/`, `agent-contract/`, `governance.md`, `research/` | Docs: design language, typography, accessibility, imagery, motion, component families (including the Command Center Feed, `components/feed-widgets.md`), blueprints, the screen-generation rules, governance, sources. | docs |
+| `briefs/` | Contribution briefs from the Hub and their status (`command-center-additions.md`, `command-center-additions-status.md` with the `pv-*` → `.hh-*` map). | docs |
 | `app/` | Next.js 16 routes, `fonts.ts`, `layout.tsx` (pre-paint theme, palette, and density script). | preview |
-| `preview/` | Theme registry (`themes.ts`), fixtures, `hermes-components.css` (every `.hh-*` component), `hermes-preview.css` (preview-only layout), React components. | preview |
+| `preview/` | Theme registry (`themes.ts`), fixtures, `hermes-components.css` (every `.hh-*` component), `hermes-icons.json` (the icon set apps copy), `hermes-preview.css` (preview-only layout), React components. | preview |
+| `public/fixtures/` | Illustrative images for preview specimens (the image Attachment). | preview |
 | `validation/` | The validator, its tests, and the smoke report. | validation |
 
 ## Themes, density, fonts

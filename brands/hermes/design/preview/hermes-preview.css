@@ -331,7 +331,8 @@
 .hh-blueprint {
   display: grid;
   min-width: 0;
-  overflow: hidden;
+  /* clip, not hidden: no scroll container, so the Feed index and the sticky action bar stick to the page inside a frame. */
+  overflow: clip;
   border: var(--hh-border-width-thick) solid var(--hh-border);
   border-radius: var(--hh-radius-lg);
   background: var(--hh-background);

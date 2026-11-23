@@ -3,6 +3,7 @@ import { AgentRecipeSection } from '../../preview/components/AgentRecipeSection'
 import { CommandCenterBlueprints, PhoneBlueprints, SystemBlueprints } from '../../preview/components/BlueprintSections';
 import { CoreSection } from '../../preview/components/CoreSection';
 import { DomainSection } from '../../preview/components/DomainSection';
+import { FeedSection } from '../../preview/components/FeedSection';
 import { ColourSection, DensitySection, DirectionSection, SpacingSection, TypographySection } from '../../preview/components/FoundationSections';
 import { PreviewShell } from '../../preview/components/PreviewShell';
 import { SECTIONS } from '../../preview/fixtures';
@@ -22,6 +23,7 @@ export default function DesignPage() {
       <DensitySection />
       <CoreSection />
       <DomainSection />
+      <FeedSection />
       <CommandCenterBlueprints />
       <PhoneBlueprints />
       <SystemBlueprints />

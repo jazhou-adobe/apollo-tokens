@@ -1,5 +1,7 @@
 # Brief: Command Center additions (from the hermes-hub prototype)
 
+**Status:** specified and previewed; where each item lives, and the Hub's `pv-*` → `.hh-*` mapping, are in [command-center-additions-status.md](command-center-additions-status.md).
+
 **Source:** the hermes-hub wayfinder ticket [How should the Command Center flow work?](https://github.com/jazhou-adobe/hermes-hub/issues/12), confirmed on 2026-11-20.
 
 - **Behaviour spec:** [command-center.md](https://github.com/jazhou-adobe/hermes-hub/blob/spec/command-center/docs/specs/command-center.md).

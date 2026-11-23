@@ -453,3 +453,22 @@ test('live code that names an archived world fails; prose and docs do not', () =
   const failures = failuresMatching(pkg, /names archived world "retired-fixture"/);
   assert.deepEqual(failures.map((failure) => failure.split(':')[0]).sort(), ['preview/legacy.ts', 'tokens/legacy.json'], failures.join('\n'));
 });
+
+test('a class the component stylesheet styles but no component doc or blueprint names fails', () => {
+  const pkg = freshPackage();
+  const css = pkg.sources.get('preview/hermes-components.css');
+  pkg.sources.set('preview/hermes-components.css', `${css}\n.hh-fixture-widget[data-state='open'] > .hh-fixture-part { display: block; }\n`);
+  const failures = failuresMatching(pkg, /is styled but not documented/);
+  assert.deepEqual(failures.map((failure) => failure.split(' ')[1]).sort(), ['.hh-fixture-part', '.hh-fixture-widget'], failures.join('\n'));
+  pkg.sources.set('components/fixture.md', 'The `.hh-fixture-widget` holds one `.hh-fixture-part`.\n');
+  assert.equal(failuresMatching(pkg, /is styled but not documented/).length, 0, all(pkg));
+});
+
+test('a unicode glyph used as an icon in code or styles fails; docs may name it', () => {
+  const pkg = freshPackage();
+  pkg.sources.set('preview/components/GlyphFixture.tsx', 'export const InView = () => <span>▸ In view</span>;\n');
+  pkg.sources.set('tokens/worlds/glyph.css', "html[data-theme=\"hermes-x\"] .hh-alert::before { content: '⚠'; }\n");
+  pkg.sources.set('components/glyph.md', 'The brief wrote "▸ In view"; the cue is the chevron icon plus words.\n');
+  const failures = failuresMatching(pkg, /uses the glyph/);
+  assert.deepEqual(failures.map((failure) => failure.split(':')[0]).sort(), ['preview/components/GlyphFixture.tsx', 'tokens/worlds/glyph.css'], failures.join('\n'));
+});

@@ -75,11 +75,14 @@ const densities = [...read('preview/theme-constants.ts').matchAll(/\{\s*(?:value
   .map((m) => ({ value: m[1], label: m[2] }));
 
 const componentsCss = readdirSync(join(DESIGN, 'preview')).find((file) => file.endsWith('-components.css'));
+// A brand may ship its icon set as framework-free path data (`preview/<brand>-icons.json`, icon name → SVG path).
+const iconsJson = readdirSync(join(DESIGN, 'preview')).find((file) => file.endsWith('-icons.json'));
 const files = [
   'tokens/themes.css',
   'tokens/tailwind-theme.css',
   'tokens/tokens.json',
   `preview/${componentsCss}`,
+  ...(iconsJson ? [`preview/${iconsJson}`] : []),
   'agent-contract/screen-generation-rules.md',
   'foundations/',
   'components/',

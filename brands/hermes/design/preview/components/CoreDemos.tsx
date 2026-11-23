@@ -55,7 +55,7 @@ export function SwitchDemo({ label, initial = false }: { label: string; initial?
         <span className="hh-switch-thumb" />
       </span>
       <span>
-        {label} <span className="hh-mono-sm">{on ? 'On' : 'Off'}</span>
+        {label} <span className="hh-switch-state">{on ? 'On' : 'Off'}</span>
       </span>
     </button>
   );
