@@ -10,7 +10,7 @@ Preview anchors are on `/design` (through the hub: `/hermes/design#<anchor>`).
 |---|---|---|---|
 | Feed | Triage becomes a Feed | [command-center-blueprints.md](../patterns/command-center-blueprints.md) Feed (strip-bay triage kept as reference), [feed-widgets.md](../components/feed-widgets.md) The Feed, keyboard map, live regions | `#bp-feed`; strip-bay reference `#bp-triage` |
 | 1 | Feed index | [feed-widgets.md](../components/feed-widgets.md) Feed index | `#cmd-index`, `#bp-feed` |
-| 2 | Page-scroll Round, diff folds, sticky action bar | [round-widgets.md](../components/round-widgets.md) Page-scroll Round, Diff | `#cmd-round` (two Rounds: only the bar in view sticks), `#bp-feed` |
+| 2 | Page-scroll Round, diff folds, sticky action bar | [round-widgets.md](../components/round-widgets.md) Page-scroll Round, Diff | `#cmd-round` (two Rounds: only the bar in view sticks, never over a Round head; `j`/`k` between Rounds), `#bp-feed`; Feed states `#cmd-states` |
 | 3 | Lock soon | [feed-widgets.md](../components/feed-widgets.md) Lock soon | `#cmd-index`, `#cmd-round` head |
 | 4 | Dismiss and Redirect panels, Outcome words | [feed-widgets.md](../components/feed-widgets.md) Inline panel; [round-widgets.md](../components/round-widgets.md) Answer bar states; [status-widgets.md](../components/status-widgets.md) Answered log | `#cmd-round` (Dismiss `d`, Redirect `e`, empty Redirect shows the error) |
 | 5 | Edit-then-approve Proposal | [round-widgets.md](../components/round-widgets.md) Proposal | `#cmd-round` Q2 (Edit, change the text: Edited, Approve (edited), Reset) |
@@ -79,7 +79,7 @@ Smaller findings (hermes-hub `web/preview/GAPS.md`):
 | `pv-feed-item`, `pv-detail-strip` | `.hh-feed-item` |
 | `form.hh-round` in the Feed and Round detail | add `data-layout="page"` |
 | `h2.hh-strip-header` in the Round head | add `.hh-round-title` |
-| `pv-action-bar` | `.hh-answer-bar[data-sticky="true"]` |
+| `pv-action-bar` | `.hh-answer-bar[data-sticky="true"]`, inside a new `.hh-round-flow` wrapper around everything after `.hh-round-head` |
 | `pv-ended-bar` | drop it (`.hh-round[data-state="ended"] .hh-answer-bar` is static) |
 | `pv-inline-panel` | `.hh-inline-panel` |
 | `pv-round-error` | `.hh-round-error` |

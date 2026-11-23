@@ -7,7 +7,7 @@ import { Attachment } from './hermes/Attachment';
 import { Callsign } from './hermes/Callsign';
 import { AdvisorRunHistory, CommandAppBar, CommandShell, DetectionDetails, FeedAnsweredLog, SettingsPanels } from './hermes/CommandCenterParts';
 import { ConnectionStatus } from './hermes/ConnectionStatus';
-import { EndedRound, FeedAnchors, FeedIndex, ForgetAgentDemo, FullRound, LanesView, SimpleRound } from './hermes/Feed';
+import { EndedRound, FeedAnchors, FeedIndex, FeedKeys, ForgetAgentDemo, FullRound, LanesView, SimpleRound } from './hermes/Feed';
 import { StripBay } from './hermes/StripBay';
 import { PolicyBadge } from './hermes/PolicyTimer';
 import { QuestionsDemo } from './hermes/QuestionsDemo';
@@ -65,12 +65,14 @@ export function CommandCenterBlueprints() {
               <FeedIndex headingLevel={4} />
               <div className="hh-feed-column">
                 <div className="hh-bay-status" role="status" />
-                <ol className="hh-feed-list" aria-label="Pending Rounds">
-                  <FullRound />
-                  <SimpleRound />
-                  <EndedRound kind="superseded" />
-                  <EndedRound kind="expired" />
-                </ol>
+                <FeedKeys label="the Feed blueprint">
+                  <ol className="hh-feed-list" aria-label="Pending Rounds">
+                    <FullRound />
+                    <SimpleRound />
+                    <EndedRound kind="superseded" />
+                    <EndedRound kind="expired" />
+                  </ol>
+                </FeedKeys>
               </div>
             </div>
           </CommandShell>

@@ -377,6 +377,7 @@ export const SECTIONS = [
     items: [
       { id: 'cmd-index', label: 'Feed index' },
       { id: 'cmd-round', label: 'Page-scroll Round' },
+      { id: 'cmd-states', label: 'Feed states, JSON, GIF' },
       { id: 'cmd-ended', label: 'Rounds that end in place' },
       { id: 'cmd-advisor', label: 'Advisor states' },
       { id: 'cmd-attachments', label: 'Image without alt text' },

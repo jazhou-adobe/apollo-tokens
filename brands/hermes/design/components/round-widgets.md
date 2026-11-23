@@ -122,14 +122,15 @@ li.hh-strip.hh-feed-item[data-status]       holder, status word in .hh-strip-tab
     └── form.hh-round[data-layout="page"][data-state="ended"?][aria-labelledby]
         ├── .hh-round-head                   callsign, project · branch, badges, h2/h3.hh-strip-header.hh-round-title[tabindex="-1"], context (.hh-prose), .hh-policy-badge, links, Round attachments
         ├── .hh-round-note                   ended in place: the Outcome sentence on the paper (optional)
-        ├── ol.hh-round-questions            li.hh-advisor-row (first, when a run exists), li.hh-question …
-        ├── details.hh-notes                 notes (.hh-notes-summary "Add notes for CALLSIGN (optional)" + n)
-        ├── .hh-inline-panel | .hh-round-error
-        └── .hh-answer-bar[data-sticky="true"]   the Round's own action bar
+        └── .hh-round-flow                   everything after the head; the sticky bar's containing block
+            ├── ol.hh-round-questions        li.hh-advisor-row (first, when a run exists), li.hh-question …
+            ├── details.hh-notes             notes (.hh-notes-summary "Add notes for CALLSIGN (optional)" + n)
+            ├── .hh-inline-panel | .hh-round-error
+            └── .hh-answer-bar[data-sticky="true"]   the Round's own action bar
 ```
 
 - **Page-scroll vs sheet-fit.** Use `data-layout="page"` (and no `.hh-round-body`) wherever several Rounds stack in one column or the Round is the whole page: the Feed, Round detail. Use the sheet-fit Round (`.hh-round-body` inside, the only scrolling part) only beside the strip bay or in the phone sheet. A page-scroll Round has no max height, `.hh-round-body` (if present) does not scroll, and Attachments run **full height**: diffs and prose are never capped; only a code plane (`pre.hh-attachment-body`) keeps `--hh-code-max-height`, because logs can be thousands of lines.
-- **Sticky action bar.** `.hh-answer-bar[data-sticky="true"]` sticks to the viewport's bottom edge while its Round spans it, so only the bar of the Round in view sticks. It carries a full-width top border. Its actions wrap to a second row in narrow columns. The last Question stays reachable because the bar sits in the Round's flow after it, and the page sets `scroll-padding-block` (two bar rows at the end) so a focused control is never hidden under the bar (SC 2.4.11).
+- **Sticky action bar.** `.hh-answer-bar[data-sticky="true"]` sticks to the viewport's bottom edge while its Round spans it, so only the bar of the Round in view sticks. Its containing block is `.hh-round-flow`, which starts after `.hh-round-head`, so the bar never rises over the Round head or title: while only the head of the next Round has scrolled into view, its bar waits below the fold. It carries a full-width top border. Its actions wrap to a second row in narrow columns. The last Question stays reachable because the bar sits in the Round's flow after it, and the page sets `scroll-padding-block` (two bar rows at the end) so a focused control is never hidden under the bar (SC 2.4.11).
 - **Round title.** `.hh-round-title` beside `.hh-strip-header` keeps sentence case and normal tracking in every theme, because Round titles are long; core themes would otherwise uppercase the strip-header face.
 - **Head badges**, in this order after the callsign and project: the Outcome word (ended), "n of m locked · Round stays pending" (warning, lock icon), Lock soon ([feed-widgets.md](feed-widgets.md)), "Replaces r_…" (info, refresh icon) and "Draft carried over".
 - **Ended in place** (`data-state="ended"`): expired (its last Question locked), superseded, or cancelled by the Agent or by Forget. Questions read-only (`fieldset[disabled]`, ink unchanged), the bar never sticks and swaps its actions for the "Not sent" alert, **Copy draft** and **Remove from feed** (ghost, trash icon, `aria-label="Remove from feed r_…"`). The strip's holder turns `expired` with the Outcome word in its tab. Removing it announces "r_… removed from the Feed · it stays in the answered log".

@@ -1,5 +1,5 @@
-import { AddedIcons, AdvisorRunHistory, AdvisorStates, DetectionDetails, FillScaleDemo, ToastVariants } from './hermes/CommandCenterParts';
-import { EndedRound, FeedIndex, ForgetAgentDemo, FullRound, ImageAttachment, LanesView, SimpleRound } from './hermes/Feed';
+import { AddedIcons, AdvisorRunHistory, AdvisorStates, DetectionDetails, FeedStates, FillScaleDemo, ToastVariants } from './hermes/CommandCenterParts';
+import { EndedRound, FeedIndex, FeedKeys, ForgetAgentDemo, FullRound, GifAttachment, ImageAttachment, JsonProposal, LanesView, SimpleRound } from './hermes/Feed';
 
 // The Command Center additions (briefs/command-center-additions.md), one subsection per part, in every theme and density
 // the switcher sets. Docs: components/feed-widgets.md and the sections it links. Illustrative data.
@@ -32,14 +32,30 @@ export function FeedSection() {
         <h3 className="hh-heading-md">Page-scroll Round</h3>
         <p className="hh-body-sm hh-measure">
           Every addition in one Pending Round: Lock soon, Replaces, 1 of 4 locked, a Suggestion with its markers, a diff fold, the editable Proposal, free-text Recommended
-          with Use it, an own policy, and a Locked Question with its Draft and markdown and image Attachments. The action bar sticks while this Round is in view; press{' '}
-          <kbd className="hh-kbd">D</kbd>, <kbd className="hh-kbd">E</kbd> or <kbd className="hh-kbd">V</kbd> inside it (outside a text field) to open Dismiss, Redirect or
-          Ask advisor. Send Redirect with an empty message to see the error.
+          with Use it, an own policy, and a Locked Question with its Draft and markdown and image Attachments. The action bar sticks while this Round is in view, and never
+          over the Round head: the bar&apos;s containing block starts after the head. With focus in a Round (outside a text field), <kbd className="hh-kbd">J</kbd> /{' '}
+          <kbd className="hh-kbd">K</kbd> move to the next or previous Round and focus its title; <kbd className="hh-kbd">D</kbd>, <kbd className="hh-kbd">E</kbd> or{' '}
+          <kbd className="hh-kbd">V</kbd> open Dismiss, Redirect or Ask advisor. Send Redirect with an empty message to see the error.
         </p>
-        <ol className="hh-feed-list">
-          <FullRound />
-          <SimpleRound />
-        </ol>
+        <FeedKeys label="the page-scroll Rounds">
+          <ol className="hh-feed-list">
+            <FullRound />
+            <SimpleRound />
+          </ol>
+        </FeedKeys>
+      </div>
+
+      <div id="cmd-states" className="hh-subsection">
+        <h3 className="hh-heading-md">Feed states, invalid JSON, GIF</h3>
+        <p className="hh-body-sm hh-measure">
+          The Feed column when empty, loading, reconnecting and offline (Send stays focusable with its reason). An editable JSON Proposal whose edit does not parse: the
+          field is invalid and says what blocks Send; fix the trailing comma to clear it. A GIF under reduced motion: the first frame and Play, never a loop on its own.
+        </p>
+        <FeedStates />
+        <div className="hh-demo-grid">
+          <JsonProposal />
+          <GifAttachment />
+        </div>
       </div>
 
       <div id="cmd-ended" className="hh-subsection">

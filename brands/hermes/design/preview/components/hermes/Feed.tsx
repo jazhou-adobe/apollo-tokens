@@ -551,6 +551,7 @@ export function FullRound({ sticky = true }: { sticky?: boolean }) {
             <Icon name="check" /> Draft carried over
           </span>
         </RoundHead>
+        <div className="hh-round-flow">
         <div className="hh-round-head">
           <div className="hh-policy-badge">
             <span className="hh-badge">
@@ -782,6 +783,7 @@ export function FullRound({ sticky = true }: { sticky?: boolean }) {
         </ol>
         <InlinePanels scope={scope} callsign={callsign} panel={panel} onClose={() => setPanel(null)} />
         <ActionBar scope={scope} callsign={callsign} progress="2 of 3 open Questions answered" sticky={sticky} panel={panel} onPanel={setPanel} />
+        </div>
       </form>
     </FeedStrip>
   );
@@ -800,6 +802,7 @@ export function SimpleRound({ sticky = true }: { sticky?: boolean }) {
         <RoundHead entry={entry}>
           <span className="hh-mono-sm">Next Lock in 08:12 · then cancels</span>
         </RoundHead>
+        <div className="hh-round-flow">
         <ol className="hh-round-questions">
           <li className="hh-question">
             <div className="hh-question-call">
@@ -824,6 +827,7 @@ export function SimpleRound({ sticky = true }: { sticky?: boolean }) {
         </ol>
         <InlinePanels scope={scope} callsign={entry.agent.callsign} panel={panel} onClose={() => setPanel(null)} />
         <ActionBar scope={scope} callsign={entry.agent.callsign} progress={value ? '1 of 1 required answered' : '0 of 1 required answered'} sticky={sticky} panel={panel} onPanel={setPanel} />
+        </div>
       </form>
     </FeedStrip>
   );
@@ -1102,5 +1106,158 @@ export function Toggletip({ label, children }: { label: string; children: ReactN
         </div>
       ) : null}
     </div>
+  );
+}
+
+/* ---------- Feed keys: j / k between Rounds ---------- */
+
+/**
+ * Scoped single keys for a Feed list: j / k move to the next / previous Round, scroll it below the app bar and focus its
+ * title. They listen on the list only (never the document) and never fire inside a text field or with a modifier.
+ */
+export function FeedKeys({ label, children }: { label: string; children: ReactNode }) {
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLElement;
+    if ((event.key !== 'j' && event.key !== 'k') || event.metaKey || event.ctrlKey || event.altKey) return;
+    if (target.closest('textarea, input:not([type="radio"]):not([type="checkbox"]), select, [contenteditable="true"]')) return;
+    const items = [...event.currentTarget.querySelectorAll<HTMLElement>('.hh-feed-item')].filter((item) => item.querySelector('.hh-round-title'));
+    if (!items.length) return;
+    const index = items.findIndex((item) => item.contains(target));
+    const next = event.key === 'j' ? Math.min(items.length - 1, index + 1) : Math.max(0, index < 0 ? 0 : index - 1);
+    event.preventDefault();
+    const title = items[next].querySelector<HTMLElement>('.hh-round-title');
+    items[next].scrollIntoView({ block: 'start' });
+    title?.focus({ preventScroll: true });
+  };
+  return (
+    <div className="hh-stack" onKeyDown={onKeyDown}>
+      <ul className="hh-kbd-hints" aria-label={`Keys for ${label}`}>
+        <li>
+          <kbd className="hh-kbd">j</kbd>
+          <kbd className="hh-kbd">k</kbd> next / previous Round
+        </li>
+        <li>
+          <kbd className="hh-kbd">1</kbd>–<kbd className="hh-kbd">9</kbd> choose
+        </li>
+        <li>
+          <kbd className="hh-kbd">d</kbd> Dismiss
+        </li>
+        <li>
+          <kbd className="hh-kbd">e</kbd> Redirect
+        </li>
+        <li>
+          <kbd className="hh-kbd">v</kbd> Ask advisor
+        </li>
+        <li>
+          <kbd className="hh-kbd">⌘↵</kbd> Send
+        </li>
+      </ul>
+      {children}
+    </div>
+  );
+}
+
+/* ---------- Proposal with JSON that does not parse ---------- */
+
+const JSON_PROPOSAL = '{\n  "replicas": 3,\n  "window": "22:00"\n}';
+
+/** An editable JSON Proposal: while the edit does not parse, the field is invalid and the Round cannot be sent. */
+export function JsonProposal() {
+  const scope = useId();
+  const [text, setText] = useState('{\n  "replicas": 3,\n  "window": "22:00",\n}');
+  let invalid = false;
+  try {
+    JSON.parse(text);
+  } catch {
+    invalid = true;
+  }
+  const edited = text !== JSON_PROPOSAL;
+  return (
+    <figure className="hh-attachment hh-proposal" data-state={invalid ? 'invalid' : edited ? 'edited' : 'read'}>
+      <figcaption className="hh-attachment-head">
+        <span className="hh-badge">
+          <Icon name="code" /> JSON
+        </span>
+        <span className="hh-badge" data-tone="info">
+          Editable
+        </span>
+        {edited ? (
+          <span className="hh-badge" data-tone="warning">
+            <Icon name="check" /> Edited
+          </span>
+        ) : null}
+        <span className="hh-attachment-title hh-mono">Proposal · json</span>
+      </figcaption>
+      <div className="hh-proposal-edit">
+        <div className="hh-field">
+          <label className="hh-label" htmlFor={`${scope}-json`}>
+            Edit the proposal before approving
+          </label>
+          <textarea
+            id={`${scope}-json`}
+            className="hh-textarea hh-proposal-input"
+            spellCheck={false}
+            rows={5}
+            value={text}
+            aria-invalid={invalid || undefined}
+            aria-describedby={`${scope}-hint${invalid ? ` ${scope}-err` : ''}`}
+            onChange={(event) => setText(event.target.value)}
+          />
+          <p className="hh-hint" id={`${scope}-hint`}>
+            JSON. Approving sends your version and marks it edited.
+          </p>
+          {invalid ? (
+            <p className="hh-error" id={`${scope}-err`} role="alert">
+              <span className="hh-badge" data-tone="destructive">
+                Error
+              </span>{' '}
+              The edited JSON does not parse. Send reports &ldquo;Fix the JSON in Q2 to send&rdquo;.
+            </p>
+          ) : null}
+        </div>
+        <div className="hh-row">
+          <button type="button" className="hh-button" data-size="sm" onClick={() => setText(JSON_PROPOSAL)}>
+            <Icon name="refresh" /> Reset to CLAUDE·api-refactor&apos;s version
+          </button>
+        </div>
+      </div>
+    </figure>
+  );
+}
+
+/* ---------- GIF under reduced motion ---------- */
+
+/**
+ * A GIF Attachment as the Human sees it with reduced motion: a still first frame and Play. The still here is the
+ * illustrative PNG standing in for the GIF's first frame; in the Hub the frame is drawn once to a canvas.
+ */
+export function GifAttachment() {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <figure className="hh-attachment">
+      <figcaption className="hh-attachment-head">
+        <span className="hh-badge">
+          <Icon name="image" /> Image
+        </span>
+        <span className="hh-attachment-title hh-mono">latency-replay.gif</span>
+        <span className="hh-mono-sm">GIF · 640 × 360 · 12 frames</span>
+        <button type="button" className="hh-button" data-size="sm" aria-pressed={playing} onClick={() => setPlaying(!playing)}>
+          {playing ? 'Pause' : 'Play'}
+        </button>
+      </figcaption>
+      <div className="hh-attachment-image">
+        <img
+          src={withBase('/fixtures/latency-chart.png')}
+          width={640}
+          height={360}
+          alt="First frame of an animation of p95 latency on /v2/invoices by hour, rising to about 240 ms during the 10:00 to 16:00 deploy."
+        />
+      </div>
+      <div className="hh-attachment-row">
+        <span className="hh-body-sm" role="status">
+          {playing ? 'Playing · the animation runs until you press Pause.' : 'Paused on the first frame · reduced motion is on. Press Play to run it.'}
+        </span>
+      </div>
+    </figure>
   );
 }

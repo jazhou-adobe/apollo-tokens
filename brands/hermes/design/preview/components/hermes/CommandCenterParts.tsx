@@ -174,6 +174,107 @@ export function AdvisorRunHistory({ label }: { label: string }) {
   );
 }
 
+/* ---------- Feed states: empty, loading, reconnecting, offline ---------- */
+
+/** A small pending strip for the state specimens: holder, status word, callsign, title and policy sentence. */
+function StateStrip({ stale = false }: { stale?: boolean }) {
+  return (
+    <li className="hh-strip hh-feed-item" data-status="pending">
+      <div className="hh-strip-tab">
+        <span>Pending</span>
+        <span className="hh-mono-sm">r_e41a6b02</span>
+      </div>
+      <div className="hh-strip-paper">
+        <div className="hh-round-head">
+          <div className="hh-row">
+            <Callsign agent={CODEX} />
+            <span className="hh-mono-sm">billing</span>
+            {stale ? <span className="hh-badge">Stale · last update 14:02</span> : null}
+          </div>
+          <p className="hh-strip-header hh-round-title">Pick the Postgres 17 cut-over</p>
+          <p className="hh-body-sm">08:12 · then cancels</p>
+        </div>
+      </div>
+    </li>
+  );
+}
+
+/** The Feed's non-happy states, each as the Feed column shows it. */
+export function FeedStates() {
+  return (
+    <div className="hh-demo-grid">
+      <div className="hh-demo">
+        <code className="hh-demo-label">Empty Feed</code>
+        <div className="hh-feed-column">
+          <div className="hh-empty-state">
+            <Icon name="bay" />
+            <p className="hh-heading-md">No pending Rounds.</p>
+            <p className="hh-body-sm">Agents ask through the Hub Skill.</p>
+            <a className="hh-link" href="#bp-log">
+              Open the answered log
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="hh-demo">
+        <code className="hh-demo-label">Loading</code>
+        <div className="hh-feed-column" aria-busy="true">
+          <p className="hh-body-sm">
+            <span className="hh-spinner" aria-hidden="true" /> Loading Rounds…
+          </p>
+          <ol className="hh-feed-list" aria-label="Pending Rounds (loading)">
+            {[0, 1, 2].map((index) => (
+              <li key={index}>
+                <span className="hh-skeleton" data-shape="strip" />
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+      <div className="hh-demo">
+        <code className="hh-demo-label">Reconnecting</code>
+        <div className="hh-feed-column">
+          <div className="hh-alert" data-tone="warning" role="status">
+            <span className="hh-badge" data-tone="warning">
+              <Icon name="refresh" /> Reconnecting
+            </span>
+            <p className="hh-label">Reconnecting · retry in 4 s</p>
+            <p className="hh-body-sm">The Feed may be out of date. Send still tries; your Drafts stay on this page.</p>
+          </div>
+          <ol className="hh-feed-list" aria-label="Pending Rounds (reconnecting)">
+            <StateStrip />
+          </ol>
+        </div>
+      </div>
+      <div className="hh-demo">
+        <code className="hh-demo-label">Offline</code>
+        <div className="hh-feed-column">
+          <div className="hh-alert" data-tone="destructive" role="alert">
+            <span className="hh-badge" data-tone="destructive">
+              <Icon name="alert" /> Offline
+            </span>
+            <p className="hh-label">Offline · last update 14:02 · Answers cannot be sent</p>
+            <p className="hh-body-sm">Drafts stay on this page. The Feed refreshes in place when the Hub is back.</p>
+          </div>
+          <ol className="hh-feed-list" aria-label="Pending Rounds (offline)">
+            <StateStrip stale />
+          </ol>
+          <div className="hh-answer-bar">
+            <div className="hh-answer-bar-row">
+              <span className="hh-mono-sm" id="cmd-offline-reason">
+                Offline · Cannot send until the Hub is reachable.
+              </span>
+              <button type="button" className="hh-button" data-variant="primary" aria-disabled="true" aria-describedby="cmd-offline-reason">
+                <Icon name="send" /> Send Answer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ---------- Toasts with Open ---------- */
 
 /** The three notification toasts. Each stays until dismissed and carries Open; in the Hub they stack under the app bar. */

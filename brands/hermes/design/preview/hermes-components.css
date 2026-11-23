@@ -2209,6 +2209,15 @@ html:has(.hh-answer-bar[data-sticky='true']) {
 
 /* ---------- Page-scroll Round: the page scrolls, not the Round ---------- */
 
+/* Everything after the head: the sticky bar's containing block. A sticky bar never rises above the top of its containing
+   block, so with the head outside it the bar can never cover the Round head or title; while only the head is in view,
+   the bar waits under it. */
+.hh-round-flow {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .hh-round[data-layout='page'] {
   max-height: none;
 }
