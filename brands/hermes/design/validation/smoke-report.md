@@ -71,3 +71,14 @@ Run 2026-11-20 against the shared preview hub (http://localhost:3000/hermes/, pr
 - **FR-11 (`/worlds`, 1440 and 390):** Play signature → frame shows GO on R-0142 Q2, in view inside the Round body, still held 5 s later; button reads Replay signature. Choosing Day shift reloads to Standby and the button reads Play signature.
 - **Gates:** `npm run validate` passed; `npm run test:validator` 46/46 (new test for focus on filled checked controls); `npx tsc --noEmit` clean; `npm run build` passed. The build prints one Next.js notice that 16.4.1 has a published security advisory (an upgrade reminder from Next, not from this code).
 - **Not covered:** no screen-reader session (live-region text read from DOM mutations); no Safari or Firefox.
+
+## Command Center additions (2026-11-23)
+
+Branch `feat/hermes-command-center-additions`: the Feed, its parts and the new blueprints ([briefs/command-center-additions-status.md](../briefs/command-center-additions-status.md)), checked through the hub (`npm run preview`, Next.js 16.4.6) with headless Chrome.
+
+- **Gates:** `npm run check` passed (validator, 54/54 validator tests including the two new rules for undocumented classes and glyph icons, `tsc --noEmit`, `next build`). From the repository root, `npm run check` passed and `npm run smoke -- hermes` reported 12/12 loads clean; with extra `/design` routes for Flight Director (default compact, Night watch glance, Day shift, Original), `hermes-dark` compact and `hermes-light` glance, 24/24 loads clean at 1440 and 390 (no console errors, no failed requests, no sideways scroll).
+- **Sticky action bar:** with two page-scroll Rounds in `#cmd-round` and the first spanning the viewport, its bar sat at the viewport's bottom edge (0 px gap) and the second Round's bar stayed in its own flow below the viewport, in Flight Director compact, `hermes-light` and at 390.
+- **Ids and labels:** no duplicate ids, no `aria-labelledby` or in-page anchor pointing at a missing id on `/design`.
+- **axe-core 4.13** on `/design` (Flight Director compact, `hermes-light`): 0 violations. Fixed during the check: a sideways-scrolling `pre` in markdown prose became focusable with a name; the second copies of the Feed Rounds, index, drawer and run history in the blueprints now carry distinct accessible names.
+- **Also fixed during the check:** attachment titles squeezed to one letter per line in narrow columns (they now wrap to their own line); markdown lists inherited `list-style: none` from the Questions list; preview frames used `overflow: hidden`, which made them scroll containers and stopped sticky parts sticking (now `overflow: clip`).
+- **Not covered:** no screen-reader session; no Safari or Firefox; the `favicon.ico` 404 in the console is pre-existing and ignored by the smoke script.
